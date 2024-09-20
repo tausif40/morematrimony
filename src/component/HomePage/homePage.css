@@ -1,0 +1,33 @@
+.hero-section {
+	/* position: relative; */
+	/* height: 200vh; */
+	background: url("../../../public/assets/img/img2.jpeg") no-repeat;
+	/* z-index: 0; */
+}
+
+.trusted-img {
+	background: url("../../../public/assets/img/img13.png");
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.happy-gradient-btn {
+	background: linear-gradient(to right, #ed6068, #a248a8, #6535db);
+	color: white;
+	font-size: 0.875rem;
+	padding: 12px 24px;
+	border-radius: 0.25rem;
+}
+
+@media (max-width: 350px) {
+	.responsive {
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.textCenter {
+		align-items: center;
+		text-align: center;
+	}
+}

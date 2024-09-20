@@ -1,0 +1,41 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import TopNav from './component/NavBar/TopNav'
+import NavMain from './component/NavBar/NavMain';
+import HomePageLayout from './component/Layout/HomePageLayout';
+import PremiumPlans from './component/PremiumPlans/PremiumPlans';
+import ContactUs from './component/Form/ContactUs';
+import RegistrationForm from './component/Form/RegistrationForm';
+import LoginPage from './component/Form/LoginPage';
+import ActiveMembers from './component/ActiveMembers/ActiveMembers';
+import HappyStories from './component/HappyStories/HappyStories';
+import Footer from './component/Footer/Footer';
+
+const App = () => {
+  return (
+    <>
+      <div className="">
+        <TopNav />
+        <NavMain />
+        <Routes>
+          <Route path="/" element={<HomePageLayout />} />
+          <Route path="/premium-plans" element={<PremiumPlans />} />
+          <Route path="/active-members" element={<ActiveMembers />} />
+          <Route path="/happy-stories" element={<HappyStories />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/login" element={<LoginPage />} />
+          {/* <Route path="/happy-stories" element={<HappyStore />} /> */}
+          {/* <Route path="/active-members" element={<ActiveMembers />} /> */}
+          {/* <Route path="/premium-plans" element={<PremiumPlans />} /> */}
+          {/* <Route path="/happy-stories" element={<HappyStories />} /> */}
+          {/* <Route path="/contact-us" element={<ContactUs />} /> */}
+        </Routes>
+        <Footer />
+      </div >
+
+    </>
+  );
+};
+
+export default App;

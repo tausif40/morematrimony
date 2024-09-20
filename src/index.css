@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	--padding-inline-section: 20px;
+}
+
+body {
+	font-family: "poppins", sans-serif;
+	/* background-image: url(../public/assets/img/img13.png) no-repeat;
+	display: fixed; */
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+h1 {
+	font-size: 3rem;
+}
+
+h2 {
+	font-size: 2rem;
+}
+
+h3 {
+	font-size: 1.5rem;
+}
+
+a {
+	text-decoration: none;
+	display: inline-block;
+}
+
+ul {
+	list-style: none;
+}
+
+/* utility classes */
+.textColor {
+	color: #252525;
+}
+.small-bold-text {
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.container {
+	max-width: 1400px;
+	margin-inline: auto;
+	padding-inline: var(--padding-inline-section);
+	overflow: hidden;
+}
+
+.gradient-btn {
+	background: linear-gradient(to right, #ed6068, #a248a8, #6535db);
+	color: white;
+	font-size: 0.875rem;
+	padding: 3px 12px;
+	border-radius: 0.25rem;
+	display: flex;
+	align-items: center;
+}
+
+.text-gradient {
+	background-color: #eb4786;
+	/* background-image: linear-gradient(315deg, #eb4786 0%, #b854a6 74%); */
+	background: linear-gradient(to bottom, #ed6068, #a248a8, #8e42b9);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	/* font-weight: 600; */
+	/* font-size: 17px; */
+	/* padding: 6px 16px 0; */
+}
+
+.active {
+	text-decoration: none;
+	position: relative;
+	padding-bottom: 6px;
+}
+
+.active::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 4px;
+	background: linear-gradient(to right, #ed6068, #a248a8, #6535db);
+}
