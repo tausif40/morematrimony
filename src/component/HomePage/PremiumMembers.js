@@ -5,7 +5,7 @@ function PremiumMembers() {
 	return (
 		<>
 			{/* Premium Members */}
-			<section className="bg-white py-20">
+			<section className="bg-white py-28">
 				<div className='container'>
 					<div className="max-w-7xl mx-auto text-center">
 						<h3 className="text-3xl font-semibold text-gray-900">Premium Members</h3>
@@ -13,7 +13,7 @@ function PremiumMembers() {
 							Every Premium member on Active Matrimonial is privileged by our policy & rules so you don’t have to worry about your privacy or security.
 						</p>
 					</div>
-					<div className='grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 mt-28 gap-4 w-full'>
+					<div className='grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 mt-16 gap-4 w-full'>
 						<div className="h-72 overflow-hidden relative">
 							<img src="./assets/img/find.jpg" alt="" className="w-full" />
 							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
