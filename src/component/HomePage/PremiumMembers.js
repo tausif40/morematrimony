@@ -84,26 +84,34 @@ function PremiumMembers() {
 			</section>
 
 			{/* Trusted by Millions */}
-			<section className='trusted-img w-full lg:h-screen'>
-				{/* <img src="./assets/img/img13.png" alt="" className='fixed' /> */}
-				<div className='container h-full flex flex-col justify-between'>
+			<section className='trusted-img w-full lg:h-screen relative'>
+				{/* Transparent overlay */}
+				<div className="absolute inset-0 bg-black opacity-60 z-10"></div>
+
+				<div className='container h-full flex flex-col justify-between relative z-20'>
 					<div className='text-center pt-20 w-full flex flex-col items-center text-white'>
 						<h2 className='font-semibold'>Trusted by Millions</h2>
-						<p className='pt-6 max-w-4xl'>"Love doesn't make the world go around. Love is what makes the ride worthwhile." Millions of Active Matrimonial users around the world find their true love and partners from this site. We are always there to help and find you the suitable match for yourself.</p>
+						<p className='pt-6 max-w-4xl'>
+							"Love doesn't make the world go around. Love is what makes the ride worthwhile." Millions of Active Matrimonial users around the world find their true love and partners from this site. We are always there to help and find you the suitable match for yourself.
+						</p>
 					</div>
 					<div className='pb-20 grid grid-cols-1 lg:grid-cols-3 md:px-20 lg:px-0 mt-48 lg:mt-0 gap-4 justify-items-center w-full'>
-						<div className='text-white border flex item-center gap-2 justify-center py-12 w-full bg-black opacity-50'>
-							<img src="./assets/img/img9.png" alt="" className='size-5' /><p> Best Matches</p>
+						<div className='text-white border flex items-center gap-2 justify-center py-12 w-full bg-black opacity-60'>
+							<img src="./assets/img/img9.png" alt="" className='size-5' />
+							<p> Best Matches</p>
 						</div>
-						<div className='text-white border flex item-center gap-2 justify-center py-12 w-full bg-black opacity-50'>
-							<img src="./assets/img/img10.png" alt="" className='size-6' /> <p>Verified Profiles</p>
+						<div className='text-white border flex items-center gap-2 justify-center py-12 w-full bg-black opacity-60'>
+							<img src="./assets/img/img10.png" alt="" className='size-6' />
+							<p> Verified Profiles</p>
 						</div>
-						<div className='text-white border flex item-center gap-2 justify-center py-12 w-full bg-black opacity-50'>
-							<img src="./assets/img/img11.png" alt="" className='size-5' /> <p>100% Privacy</p>
+						<div className='text-white border flex items-center gap-2 justify-center py-12 w-full bg-black opacity-60'>
+							<img src="./assets/img/img11.png" alt="" className='size-5' />
+							<p> 100% Privacy</p>
 						</div>
 					</div>
 				</div>
 			</section>
+
 
 
 		</>
