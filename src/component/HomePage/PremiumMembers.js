@@ -17,31 +17,25 @@ function PremiumMembers() {
 						<div className="h-72 overflow-hidden relative">
 							<img src="./assets/img/find.jpg" alt="" className="w-full" />
 							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
-							<div className="absolute inset-0 flex flex-col items-center justify-end">
-								<div className='pb-4'>
-									<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
-									<p className='text-hotYellow cursor-pointer'>View Real Life Stories →</p>
-								</div>
+							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
+								<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
+								<p className='text-hotYellow cursor-pointer'>View Real Life Stories →</p>
 							</div>
 						</div>
 						<div className="h-72 overflow-hidden relative">
 							<img src="./assets/img/destination.jpg" alt="" className="w-full" />
 							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
-							<div className="absolute inset-0 flex flex-col items-center justify-end">
-								<div className='pb-4'>
-									<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
-									<p className='text-hotYellow cursor-pointer'>Offer for new Premium Member Only →</p>
-								</div>
+							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
+								<p className="font-semibold text-white text-3xl pb-2">Reach Your Destiny Quickly</p>
+								<p className='text-hotYellow cursor-pointer'>Offer for new Premium Member Only →</p>
 							</div>
 						</div>
 						<div className="h-72 overflow-hidden relative">
 							<img src="./assets/img/memory.jpg" alt="" className="w-full" />
 							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
-							<div className="absolute inset-0 flex flex-col items-center justify-end">
-								<div className='pb-4'>
-									<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
-									<p className='text-hotYellow cursor-pointer'>Click here to get Amazing Discount →</p>
-								</div>
+							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
+								<p className="font-semibold text-white text-3xl pb-2">Save Your Memory</p>
+								<p className='text-hotYellow cursor-pointer'>Click here to get Amazing Discount →</p>
 							</div>
 						</div>
 					</div>
