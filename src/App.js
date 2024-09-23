@@ -10,6 +10,7 @@ import LoginPage from './component/Form/LoginPage';
 import ActiveMembers from './component/ActiveMembers/ActiveMembers';
 import HappyStories from './component/HappyStories/HappyStories';
 import Footer from './component/Footer/Footer';
+import DashboardLayout from './component/Layout/DashboardLayout';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
       <div className="">
         <TopNav />
         <NavMain />
+        {/* <DashboardMenu /> */}
         <Routes>
           <Route path="/" element={<HomePageLayout />} />
           <Route path="/premium-plans" element={<PremiumPlans />} />
@@ -25,11 +27,9 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
-          {/* <Route path="/happy-stories" element={<HappyStore />} /> */}
-          {/* <Route path="/active-members" element={<ActiveMembers />} /> */}
-          {/* <Route path="/premium-plans" element={<PremiumPlans />} /> */}
-          {/* <Route path="/happy-stories" element={<HappyStories />} /> */}
-          {/* <Route path="/contact-us" element={<ContactUs />} /> */}
+
+          <Route path="/dashboard" element={<DashboardLayout />} />
+
         </Routes>
         <Footer />
       </div >

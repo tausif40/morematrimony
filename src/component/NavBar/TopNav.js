@@ -9,7 +9,7 @@ function Header() {
 			{/* top header */}
 
 			<div className=' block lg:hidden w-full'>
-				<img src="./assets/img/logo.png" alt="" className='w-40 md:w-44 p-2 mx-auto' />
+				<img src="/assets/img/logo.png" alt="" className='w-40 md:w-44 p-2 mx-auto' />
 			</div>
 
 			<header className='hidden lg:block bg-white z-50'>
@@ -28,7 +28,7 @@ function Header() {
 						</Link>
 						<div className="flex space-x-4">
 							<Link to={'/register'}>
-								<button className="gradient-btn"><p>Registration</p></button>
+								<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
 							</Link>
 						</div>
 					</div>

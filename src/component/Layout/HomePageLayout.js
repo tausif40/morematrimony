@@ -11,8 +11,8 @@ const HomePageLayout = () => {
 		<div className="">
 			<Hero />
 			<PremiumMembers />
-			<NewMember />
-			<HappyStories />
+			{/* <NewMember /> */}
+			{/* <HappyStories /> */}
 			<Packages />
 			<div className='mt-8'>
 				<Reviews />

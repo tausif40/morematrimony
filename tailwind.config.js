@@ -13,6 +13,8 @@ module.exports = {
         headingGray: "#6d6e6f",
         black: "#111723",
         hotPink: "#fd2c79",
+        hotRed: "#f21a2d",
+        hotYellow: "#f8c928",
         pink2: "#fd655b",
       }
     },

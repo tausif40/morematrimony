@@ -14,9 +14,36 @@ function PremiumMembers() {
 						</p>
 					</div>
 					<div className='grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 mt-28 gap-4 w-full'>
-						<div><img src="./assets/img/img3.png" alt="" className='w-full' /></div>
-						<div><img src="./assets/img/img4.png" alt="" className='w-full' /></div>
-						<div><img src="./assets/img/img5.png" alt="" className='w-full' /></div>
+						<div className="h-72 overflow-hidden relative">
+							<img src="./assets/img/find.jpg" alt="" className="w-full" />
+							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
+							<div className="absolute inset-0 flex flex-col items-center justify-end">
+								<div className='pb-4'>
+									<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
+									<p className='text-hotYellow cursor-pointer'>View Real Life Stories →</p>
+								</div>
+							</div>
+						</div>
+						<div className="h-72 overflow-hidden relative">
+							<img src="./assets/img/destination.jpg" alt="" className="w-full" />
+							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
+							<div className="absolute inset-0 flex flex-col items-center justify-end">
+								<div className='pb-4'>
+									<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
+									<p className='text-hotYellow cursor-pointer'>Offer for new Premium Member Only →</p>
+								</div>
+							</div>
+						</div>
+						<div className="h-72 overflow-hidden relative">
+							<img src="./assets/img/memory.jpg" alt="" className="w-full" />
+							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
+							<div className="absolute inset-0 flex flex-col items-center justify-end">
+								<div className='pb-4'>
+									<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
+									<p className='text-hotYellow cursor-pointer'>Click here to get Amazing Discount →</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -34,29 +61,29 @@ function PremiumMembers() {
 
 						<div className='responsive border p-4 flex justify-between items-center gap-16 w-full'>
 							<div className='textCenter flex flex-col gap-3'>
-								<p className='text-hotPink font-semibold text-5xl'>1</p>
-								<p className='text-primary font-medium text-xl'>Sign up</p>
+								<p className='text-hotRed font-semibold text-5xl'>1</p>
+								<p className='text-gradient font-medium text-xl'>Sign up</p>
 								<p className='text-text font-medium'>Register for free & put up your Profile</p>
 							</div>
-							<img src="./assets/img/img6.png" alt="" className='w-20' />
+							<img src="./assets/img/login.png" alt="" className='w-20' />
 						</div>
 
 						<div className='responsive border p-4 flex justify-between items-center gap-16 w-full'>
 							<div className='textCenter flex flex-col gap-3'>
-								<p className='text-hotPink font-semibold text-5xl'>2</p>
-								<p className='text-primary font-medium text-xl'>Connect</p>
+								<p className='text-hotRed font-semibold text-5xl'>2</p>
+								<p className='text-gradient font-medium text-xl'>Connect</p>
 								<p className='text-text font-medium'>Select & Connect with Matches you like</p>
 							</div>
-							<img src="./assets/img/img7.png" alt="" className='w-20' />
+							<img src="./assets/img/network.png" alt="" className='w-20' />
 						</div>
 
 						<div className='responsive border p-4 flex justify-between items-center gap-16 w-full'>
 							<div className='textCenter flex flex-col gap-3'>
-								<p className='text-hotPink font-semibold text-5xl'>3</p>
-								<p className='text-primary font-medium text-xl'>Interact</p>
+								<p className='text-hotRed font-semibold text-5xl'>3</p>
+								<p className='text-gradient font-medium text-xl'>Interact</p>
 								<p className='text-text font-medium'>Become a Premium Member & Start a Conversation</p>
 							</div>
-							<img src="./assets/img/img8.png" alt="" className='w-20' />
+							<img src="./assets/img/conversation.png" alt="" className='w-24' />
 						</div>
 					</div>
 				</div>
