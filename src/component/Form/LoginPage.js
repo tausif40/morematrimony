@@ -27,7 +27,7 @@ const LoginPage = () => {
 		// <div className="flex items-center justify-center min-h-screen my-10 px-2 md:px-4">
 		<div className=" ">
 			<div className="px-6 md:px-8 py-6 rounded-lg shadow-md w-full inset-0 bg-black/60 ">
-				<h2 className="text-xl md:text-2xl font-medium text-center text-hotRed">Login to your Account</h2>
+				<h2 className="text-xl md:text-2xl font-medium text-center text-gold">Login to your Account</h2>
 
 				{/* Email Input */}
 				<form onSubmit={handleLogin} className="space-y-6 mt-8">
@@ -67,7 +67,7 @@ const LoginPage = () => {
 					{/* Login Button */}
 					<button
 						type="submit"
-						className="gradient-btn opacity-70 rounded-md w-full px-3 py-2 font-medium"
+						className="gradient-btn opacity-80 rounded-md w-full px-3 py-2 font-medium"
 					>
 						Login to your Account
 					</button>
@@ -98,7 +98,7 @@ const LoginPage = () => {
 				<div className="text-center mt-8">
 					<p className="text-sm text-gray-100">
 						Don’t have an account?{' '} <br />
-						<Link to='/register' className="text-primary hover:underline">
+						<Link to='/register' className="text-gold hover:underline">
 							Create an account
 						</Link>
 					</p>
