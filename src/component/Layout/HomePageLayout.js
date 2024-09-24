@@ -15,7 +15,7 @@ const HomePageLayout = () => {
 			{/* <HappyStories /> */}
 			<Packages />
 			<div className='mt-8'>
-				<Reviews />
+				{/* <Reviews /> */}
 			</div>
 
 		</div>

@@ -6,17 +6,17 @@ const NavMain = () => {
 	const [ path, setPath ] = useState('')
 
 	const navOption = [
-		{
-			url: '/',
-			name: 'Home'
-		},
+		// {
+		// 	url: '/',
+		// 	name: 'Home'
+		// },
 		// {
 		// 	url: '/active-members',
 		// 	name: 'Active Members'
 		// },
 		{
-			url: '/premium-plans',
-			name: 'Premium Plans'
+			url: '/plans',
+			name: 'Plans'
 		},
 		// {
 		// 	url: '/happy-stories',
@@ -39,10 +39,10 @@ const NavMain = () => {
 			<div className="container mx-auto flex justify-between ">
 				<Link to='/'>
 					<div className='flex items-center gap-2 pt-[2px]'>
-						<img src="/assets/img/logo/smallIcon.png" alt="" className='w-14 pb-1 hidden lg:block' />
-						<div className='space-y-1'>
-							<img src="/assets/img/logo/fistName.png" alt="" className='w-16 hidden lg:block' />
-							<img src="/assets/img/logo/lastName.png" alt="" className='w-32 hidden lg:block' />
+						<img src="/assets/img/logo/smallIcon.png" alt="" className='w-12 p-2 hidden lg:block' />
+						<div className='space-y-1 p-2'>
+							<img src="/assets/img/logo/fistName.png" alt="" className='w-14 hidden lg:block' />
+							<img src="/assets/img/logo/lastName.png" alt="" className='w-28 hidden lg:block' />
 						</div>
 					</div>
 				</Link>

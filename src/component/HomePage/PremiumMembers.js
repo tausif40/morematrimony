@@ -16,26 +16,26 @@ function PremiumMembers() {
 					<div className='grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 mt-16 gap-4 w-full'>
 						<div className="h-72 overflow-hidden relative">
 							<img src="./assets/img/find.jpg" alt="" className="w-full" />
-							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
+							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
 								<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
-								<p className='text-hotYellow cursor-pointer'>View Real Life Stories →</p>
+								<p className='text-gold cursor-pointer'>View Real Life Stories →</p>
 							</div>
 						</div>
 						<div className="h-72 overflow-hidden relative">
 							<img src="./assets/img/destination.jpg" alt="" className="w-full" />
-							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
+							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
 								<p className="font-semibold text-white text-3xl pb-2">Reach Your Destiny Quickly</p>
-								<p className='text-hotYellow cursor-pointer'>Offer for new Premium Member Only →</p>
+								<p className='text-gold cursor-pointer'>Offer for new Premium Member Only →</p>
 							</div>
 						</div>
 						<div className="h-72 overflow-hidden relative">
 							<img src="./assets/img/memory.jpg" alt="" className="w-full" />
-							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div> {/* Gradient overlay */}
+							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
 								<p className="font-semibold text-white text-3xl pb-2">Save Your Memory</p>
-								<p className='text-hotYellow cursor-pointer'>Click here to get Amazing Discount →</p>
+								<p className='text-gold cursor-pointer'>Click here to get Amazing Discount →</p>
 							</div>
 						</div>
 					</div>
@@ -86,7 +86,7 @@ function PremiumMembers() {
 			{/* Trusted by Millions */}
 			<section className='trusted-img w-full lg:h-screen relative'>
 				{/* Transparent overlay */}
-				<div className="absolute inset-0 bg-black opacity-60 z-10"></div>
+				<div className="absolute inset-0 bg-black opacity-60"></div>
 
 				<div className='container h-full flex flex-col justify-between relative z-20'>
 					<div className='text-center pt-20 w-full flex flex-col items-center text-white'>

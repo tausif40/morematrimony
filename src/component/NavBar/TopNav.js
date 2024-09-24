@@ -9,8 +9,16 @@ function Header() {
 			{/* top header */}
 
 			<div className=' block lg:hidden w-full'>
-				<img src="/assets/img/logo.png" alt="" className='w-40 md:w-44 p-2 mx-auto' />
-			</div>
+				{/* <img src="/assets/img/logo/icon.png" alt="" className='w-40 md:w-44 p-2 mx-auto' /> */}
+				<div className='flex items-center justify-center gap-2 pt-2'>
+					<img src="/assets/img/logo/icon.png" alt="" className='w-10 pb-1' />
+					<div className='flex items-center space-y-1'>
+						<img src="/assets/img/logo/fistName.png" alt="" className='size-14 h-5 md:w-24' />
+						<img src="/assets/img/logo/lastName.png" alt="" className='w-28 md:w-44' />
+					</div>
+				</div>
+			</div >
+
 
 			<header className='hidden lg:block bg-white z-50'>
 				<div className='container pt-4'>
@@ -23,9 +31,9 @@ function Header() {
 							<p className='font-semibold flex items-center' >Hi, &nbsp;<p className='text-gradient' style={{ fontSize: "14px", padding: 0 }}>
 								User Name</p></p>
 						</div> */}
-						<Link to='/login'>
+						{/* <Link to='/login'>
 							<p>Login</p>
-						</Link>
+						</Link> */}
 						<div className="flex space-x-4">
 							<Link to={'/register'}>
 								<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>

@@ -42,7 +42,7 @@ const ContactUs = () => {
 				className="bg-white p-8 rounded-md shadow-md w-full max-w-2xl border"
 			>
 				<div className="mb-4">
-					<label className="text-gradient block text-sm font-medium text-gray-700 ">
+					<label className=" block text-sm font-medium text-gray-700 ">
 						Name <span className="text-red-500">*</span>
 					</label>
 					<input
@@ -56,7 +56,7 @@ const ContactUs = () => {
 					/>
 				</div>
 				<div className="mb-4">
-					<label className="text-gradient block text-sm font-medium text-gray-700">
+					<label className=" block text-sm font-medium text-gray-700">
 						Email <span className="text-red-500">*</span>
 					</label>
 					<input
@@ -73,7 +73,7 @@ const ContactUs = () => {
 					</p>
 				</div>
 				<div className="mb-4">
-					<label className="text-gradient block text-sm font-medium text-gray-700">
+					<label className=" block text-sm font-medium text-gray-700">
 						Subject <span className="text-red-500">*</span>
 					</label>
 					<input
@@ -87,7 +87,7 @@ const ContactUs = () => {
 					/>
 				</div>
 				<div className="mb-6">
-					<label className="text-gradient block text-sm font-medium text-gray-700">
+					<label className=" block text-sm font-medium text-gray-700">
 						Description <span className="text-red-500">*</span>
 					</label>
 					<textarea
@@ -102,7 +102,7 @@ const ContactUs = () => {
 				</div>
 				<button
 					type="submit"
-					className="w-full p-3 text-white font-semibold bg-gradient-to-r from-primary to-purple-600 rounded-md shadow hover:from-pink-600 hover:to-purple-700"
+					className="gradient-btn w-full p-3 text-white font-semibold rounded-md"
 				>
 					Send
 				</button>

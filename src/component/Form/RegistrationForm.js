@@ -58,7 +58,7 @@ const RegistrationForm = () => {
 				onSubmit={handleSubmit}
 				className="bg-white px-4 py-8 md:p-8 rounded-md shadow-md w-full max-w-xl border text-headingGray"
 			>
-				<h2 className="text-3xl font-medium text-center text-hotPink mb-2">
+				<h2 className="text-3xl font-medium text-center text-primary mb-2">
 					Create Your Account
 				</h2>
 				<p className="text-sm text-center text-headingGray mb-6">
@@ -199,13 +199,13 @@ const RegistrationForm = () => {
 						name="agree"
 						checked={formData.agree}
 						onChange={handleChange}
-						className="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
+						className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
 						id="termAndCondition"
 						required
 					/>
 					<label for="termAndCondition" className="ml-2 text-sm text-gray-600 cursor-pointer">
 						By signing up you agree to our{" "}
-						<a href="#" className="text-pink-500 hover:underline">
+						<a href="#" className="text-primary hover:underline">
 							terms and conditions
 						</a>
 						.
@@ -214,11 +214,11 @@ const RegistrationForm = () => {
 
 				<button
 					type="submit"
-					className="w-full p-3 text-white font-semibold bg-gradient-to-r from-pink-500 to-purple-600 rounded-md shadow hover:from-pink-600 hover:to-purple-700 transition-all"
+					className="gradient-btn w-full p-3 text-white font-semibold rounded-md"
 				>
 					Create Account
 				</button>
-
+{/* 
 				<div className="flex items-center justify-center my-5">
 					<div className="flex-grow h-px bg-gray-300"></div>
 					<div className="mx-3 text-sm text-gray-500">Or Join With</div>
@@ -235,12 +235,12 @@ const RegistrationForm = () => {
 					<button className="text-[#1da1f2] ">
 						<AiFillTwitterCircle size={32} />
 					</button>
-				</div>
+				</div> */}
 
 				<div className="text-center mt-8">
 					<p className="text-sm text-gray-500">
 						Already have an account?{" "} <br />
-						<Link to='/login' className="text-hotPink hover:underline">
+						<Link to='/' className="text-primary hover:underline">
 							Login to your Account
 						</Link>
 					</p>

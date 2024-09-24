@@ -69,22 +69,36 @@ ul {
 	/* background: linear-gradient(to right, #ed6068, #a248a8, #6535db); */
 	color: white;
 	display: flex;
-	align-items: center;
+	justify-content: center;
 	cursor: pointer;
 }
 
 .text-gradient {
-	background: rgb(240, 26, 45);
+	background: rgb(242, 26, 45);
 	background: linear-gradient(
-		3deg,
-		rgba(240, 26, 45, 1) 48%,
-		rgba(245, 211, 45, 1) 100%
+		0deg,
+		rgba(242, 26, 45, 1) 30%,
+		rgba(245, 211, 45, 1) 50%
 	);
 	/* background-color: #eb4786;
 	background: linear-gradient(to bottom, #ed6068, #a248a8, #8e42b9); */
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
+}
+
+@media screen and (min-width: 1024px) {
+	.text-gradient {
+		background: rgb(242, 26, 45);
+		background: linear-gradient(
+			0deg,
+			rgba(242, 26, 45, 1) 35%,
+			rgba(245, 211, 45, 1) 65%
+		);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
 }
 
 .active {

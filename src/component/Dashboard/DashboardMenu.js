@@ -30,7 +30,7 @@ function DashboardMenu() {
 				<div className='container flex text-headingGray font-medium text-sm gap-4'>
 					{navOption.map((value, index) => (
 						<Link to={value.path} >
-							<div className={`cursor-pointer px-4 py-4 flex items-center gap-2 ${value.path == currentPath && 'text-gradient'}`}><value.icon className={`${value.path == currentPath && 'text-[#a549a6]'}`} />{value.name}</div>
+							<div className={`cursor-pointer px-4 py-4 flex items-center gap-2 ${value.path == currentPath && 'text-gradient'}`}><value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} />{value.name}</div>
 						</Link>
 					))}
 				</div >

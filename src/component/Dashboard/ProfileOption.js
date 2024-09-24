@@ -38,17 +38,17 @@ function ProfileOption() {
 	})
 	return (
 		<>
-			< section className='bg-white border my-10 pt-6 rounded-md'>
+			< section className='bg-white border pt-6 rounded-md'>
 				<div className='px-4 flex flex-col items-center gap-4'>
 					<img src="/assets/img/img0.png" alt="" className='size-20 rounded-full' />
 					<p className='font-bold text-2xl text-headingGray'>Mohd. Tausif</p>
-					<p className='bg-[#fcdde8] cursor-pointer text-hotPink py-2 rounded-md w-full flex justify-center border border-[#fcdde8] hover:border-hotPink transition-all'>Public Profile</p>
+					<p className='bg-[#fbcbcfd4] cursor-pointer text-hotRed py-2 rounded-md w-full flex justify-center border border-[#fbcbcfd4] hover:border-hotRed transition-all'>Public Profile</p>
 				</div>
 
 				<div className='flex flex-col text-headingGray text-sm mt-6'>
 					{navOption.map((value, index) => (
 						<Link to={value.path} >
-							<p className={`cursor-pointer px-8 py-[10px] flex items-center gap-2 border-l-[3px] border-white hover:bg-[#fcdde8] hover:border-l-[3px] hover:border-hotPink ${value.path == currentPath && 'bg-[#fcdde8] border-hotPink'}`}><value.icon size={13} />{value.name}</p>
+							<p className={`cursor-pointer px-8 py-[10px] flex items-center gap-2 border-l-[3px] border-white hover:bg-[#fbcbcfd4] hover:border-l-[3px] hover:border-hotRed ${value.path == currentPath && 'bg-[#fbcbcfd4] border-red-600'}`}><value.icon size={13} />{value.name}</p>
 						</Link>
 					))}
 				</div >
