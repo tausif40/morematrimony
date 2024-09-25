@@ -55,7 +55,7 @@ const LoginPage = () => {
 							className="mt-1 px-3 py-2 block w-full border border-slate-300 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-gray-700 bg-slate-300/50 rounded-md"
 						/>
 						<div className="text-right mt-2">
-							<a href="#" className="text-sm text-primary hover:underline">
+							<a href="#" className="text-sm text-gold hover:underline">
 								Forgot Password?
 							</a>
 						</div>
@@ -67,7 +67,7 @@ const LoginPage = () => {
 					{/* Login Button */}
 					<button
 						type="submit"
-						className="gradient-btn opacity-80 rounded-md w-full px-3 py-2 font-medium"
+						className="gradient-btn opacity-70 hover:opacity-85 transition-all rounded-md w-full px-3 py-2 font-medium"
 					>
 						Login to your Account
 					</button>

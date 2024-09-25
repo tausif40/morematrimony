@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const NavMain = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const [ path, setPath ] = useState('')
 
 	const navOption = [
@@ -14,24 +15,42 @@ const NavMain = () => {
 		// 	url: '/active-members',
 		// 	name: 'Active Members'
 		// },
-		{
-			url: '/plans',
-			name: 'Plans'
-		},
+		// {
+		// 	url: '/plans',
+		// 	name: 'Plans'
+		// },
 		// {
 		// 	url: '/happy-stories',
 		// 	name: 'Happy Stories'
 		// },
-		{
-			url: '/contact-us',
-			name: 'Contact Us'
-		}
+		// {
+		// 	url: '/contact-us',
+		// 	name: 'Contact Us'
+		// }
 	]
+
+	const handleScroll = (id) => {
+		// console.log(document.getElementById(id));
+		if (document.getElementById(id) == null) {
+			navigate('/');
+			return;
+		}
+		document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+	};
+
+	// const handleScroll = (id) => {
+	// 	const element = document.getElementById(id);
+	// 	const yOffset = -70; // Adjust this based on your navbar height
+	// 	const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+	// 	window.scrollTo({ top: y, behavior: 'smooth' });
+	// };
+
 
 	useEffect(() => {
 		const pathName = location.pathname
 		setPath(pathName)
-		// console.log('pathName:', pathName);
+		// console.log('pathName: ', pathName);
 	}, [ location ]);
 
 	return (
@@ -46,12 +65,17 @@ const NavMain = () => {
 						</div>
 					</div>
 				</Link>
-				<div className="nav-option w-full lg:w-auto flex md:justify-center lg:justify-normal overflow-x-auto">
-					{navOption.map((value, inx) => (
-						<Link to={value.url} key={inx} className={`text-gradient text-base font-bold px-4 pt-4 ${value.url == path && 'active'}`}>
-							<p className='min-w-max'>{value.name}</p>
-						</Link>
-					))}
+				<div className="nav-option w-full lg:w-auto flex md:justify-center lg:justify-normal overflow-x-auto  gap-4">
+					{/* {navOption.map((value, inx) => ( */}
+					<p className={`text-gradient text-base font-bold px-4 pt-4 cursor-pointer ${'plans' == path && 'active'}`}
+						onClick={() => handleScroll('plans')}
+					>
+						<p className='min-w-max pb-2 lg:pb-0'>PLANS</p>
+					</p>
+					<Link to={'/contact-us'} className={`text-gradient text-base font-bold px-4 pt-4 ${'/contact-us' == path && 'active'}`}>
+						<p className='min-w-max pb-2 lg:pb-0'>CONTACT</p>
+					</Link>
+					{/* ))} */}
 				</div>
 			</div>
 		</header>

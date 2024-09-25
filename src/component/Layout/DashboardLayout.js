@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import DashboardMenu from '../Dashboard/DashboardMenu'
 import ProfileOption from '../Dashboard/ProfileOption'
 import { Link, useLocation } from 'react-router-dom';
-// import Dashboard from '../Dashboard/Dashboard';
-// import Reviews from '../HomePage/Reviews';
+import Dashboard from '../Dashboard/Dashboard';
+import Reviews from '../HomePage/Reviews';
 
 function DashboardLayout({ children }) {
 	const location = useLocation();
@@ -12,16 +12,16 @@ function DashboardLayout({ children }) {
 	// const [ currentTab, setCurrentTab ] = useState('');
 	// const tabs = [ 'Dashboard', 'My Profile', 'My Interest', 'Shortlist', 'Messaging' ];
 
-	// const renderTabContent = () => {
-	// 	switch (currentPath) {
-	// 		case '/dashboard':
-	// 			return <Dashboard />;
-	// 		case '/profile-setting':
-	// 			return <Reviews />;
-	// 		default:
-	// 			return <Dashboard />;
-	// 	}
-	// };
+	const renderTabContent = () => {
+		switch (currentPath) {
+			case '/dashboard':
+				return <Dashboard />;
+			case '/profile-setting':
+				return <Reviews />;
+			default:
+				return <Dashboard />;
+		}
+	};
 
 	return (
 		<>
@@ -34,8 +34,8 @@ function DashboardLayout({ children }) {
 							<ProfileOption />
 						</div>
 						<div className='w-[80%]'>
-							{/* {renderTabContent()} */}
-							{children}
+							{renderTabContent()}
+							{/* {children} */}
 						</div>
 					</div>
 

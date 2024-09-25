@@ -31,9 +31,9 @@ function Header() {
 							<p className='font-semibold flex items-center' >Hi, &nbsp;<p className='text-gradient' style={{ fontSize: "14px", padding: 0 }}>
 								User Name</p></p>
 						</div> */}
-						<Link to='/login'>
+						{/* <Link to='/login'>
 							<p>Login</p>
-						</Link>
+						</Link> */}
 						<div className="flex space-x-4">
 							<Link to={'/register'}>
 								<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>

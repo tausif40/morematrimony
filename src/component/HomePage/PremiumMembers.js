@@ -84,7 +84,7 @@ function PremiumMembers() {
 			</section>
 
 			{/* Trusted by Millions */}
-			<section className='trusted-img w-full lg:h-screen relative'>
+			<section className='trusted-img w-full lg:h-screen relative mb-6'>
 				{/* Transparent overlay */}
 				<div className="absolute inset-0 bg-black opacity-60"></div>
 

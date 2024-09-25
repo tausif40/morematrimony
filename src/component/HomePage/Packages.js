@@ -3,7 +3,7 @@ import React from 'react'
 function Packages() {
 	return (
 		<>
-			<section className="py-16">
+			<section id='plans' className="py-10">
 				<div className="container text-center flex flex-col items-center">
 					<h2 className="text-3xl font-bold text-gray-800">Packages</h2>
 					<p className="mt-4 text-gray-600 max-w-3xl">Choose any of our packages as per your need. You'll get your money back anytime if we're unable to satisfy your need.</p>
