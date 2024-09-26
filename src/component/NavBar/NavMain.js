@@ -33,6 +33,9 @@ const NavMain = () => {
 		// console.log(document.getElementById(id));
 		if (document.getElementById(id) == null) {
 			navigate('/');
+			setTimeout(() => {
+				document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+			}, 300);
 			return;
 		}
 		document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
