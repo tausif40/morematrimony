@@ -6,28 +6,28 @@ const NavMain = () => {
 	const navigate = useNavigate();
 	const [ path, setPath ] = useState('')
 
-	const navOption = [
-		// {
-		// 	url: '/',
-		// 	name: 'Home'
-		// },
-		// {
-		// 	url: '/active-members',
-		// 	name: 'Active Members'
-		// },
-		// {
-		// 	url: '/plans',
-		// 	name: 'Plans'
-		// },
-		// {
-		// 	url: '/happy-stories',
-		// 	name: 'Happy Stories'
-		// },
-		// {
-		// 	url: '/contact-us',
-		// 	name: 'Contact Us'
-		// }
-	]
+	// const navOption = [
+	// {
+	// 	url: '/',
+	// 	name: 'Home'
+	// },
+	// {
+	// 	url: '/active-members',
+	// 	name: 'Active Members'
+	// },
+	// {
+	// 	url: '/plans',
+	// 	name: 'Plans'
+	// },
+	// {
+	// 	url: '/happy-stories',
+	// 	name: 'Happy Stories'
+	// },
+	// {
+	// 	url: '/contact-us',
+	// 	name: 'Contact Us'
+	// }
+	// ]
 
 	const handleScroll = (id) => {
 		// console.log(document.getElementById(id));
@@ -40,15 +40,6 @@ const NavMain = () => {
 		}
 		document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 	};
-
-	// const handleScroll = (id) => {
-	// 	const element = document.getElementById(id);
-	// 	const yOffset = -70; // Adjust this based on your navbar height
-	// 	const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-	// 	window.scrollTo({ top: y, behavior: 'smooth' });
-	// };
-
 
 	useEffect(() => {
 		const pathName = location.pathname
