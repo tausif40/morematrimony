@@ -17,11 +17,17 @@ import { Toaster } from 'react-hot-toast';
 // layout page
 import DashboardLayout from './component/Layout/DashboardLayout';
 
-// render this page
-import Dashboard from './component/Dashboard/Dashboard';
-import Reviews from './component/HomePage/Reviews';
-
 const App = () => {
+  const dashboardPaths = [
+    '/dashboard',
+    '/profile-setting',
+    '/my-interest',
+    '/shortlist',
+    '/message',
+    '/ignored-list'
+  ];
+
+
   return (
     <>
       <Toaster position="top-right" reverseOrder={true} />
@@ -38,16 +44,11 @@ const App = () => {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
 
-          <Route path="/dashboard" element={<DashboardLayout />} />
-          <Route path="/profile-setting" element={<DashboardLayout />} />
+          {/* <Route path={'/dashboard' || '/profile-setting'} element={<DashboardLayout />} /> */}
+          {dashboardPaths.map((path) => (
+            <Route key={path} path={path} element={<DashboardLayout />} />
+          ))}
         </Routes>
-
-        {/* <DashboardLayout>
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile-setting" element={<Reviews />} />
-          </Routes>
-        </DashboardLayout> */}
 
         <Footer />
         <BackToTopButton />

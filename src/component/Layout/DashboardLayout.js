@@ -18,8 +18,8 @@ function DashboardLayout({ children }) {
 				return <Dashboard />;
 			case '/profile-setting':
 				return <Reviews />;
-			default:
-				return <Dashboard />;
+			// default:
+			// 	return <Dashboard />;
 		}
 	};
 

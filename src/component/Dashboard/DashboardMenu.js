@@ -14,8 +14,8 @@ function DashboardMenu() {
 		{ name: 'Dashboard', path: '/dashboard', icon: AiOutlineDashboard },
 		{ name: 'My Profile', path: '/profile-setting', icon: AiOutlineUser },
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
-		{ name: 'Shortlist', path: '/my-shortlist', icon: IoListOutline },
-		{ name: 'Messaging', path: '/chat', icon: HiOutlineMail },
+		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
+		{ name: 'Messaging', path: '/message', icon: HiOutlineMail },
 		{ name: 'Ignore User List', path: '/ignored-list', icon: MdOutlineBlock },
 	]
 
