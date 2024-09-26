@@ -12,6 +12,7 @@ import ActiveMembers from './component/ActiveMembers/ActiveMembers';
 import HappyStories from './component/HappyStories/HappyStories';
 import Footer from './component/Footer/Footer';
 import BackToTopButton from './component/BackToTop/backToTop';
+import { Toaster } from 'react-hot-toast';
 
 // layout page
 import DashboardLayout from './component/Layout/DashboardLayout';
@@ -23,6 +24,7 @@ import Reviews from './component/HomePage/Reviews';
 const App = () => {
   return (
     <>
+      <Toaster position="top-right" reverseOrder={true} />
       <div className="">
         <ScrollToTop />
         <TopNav />

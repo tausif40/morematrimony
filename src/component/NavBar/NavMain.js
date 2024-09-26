@@ -54,14 +54,14 @@ const NavMain = () => {
 	}, [ location ]);
 
 	return (
-		<header className="bg-white shadow-md lg:border-t border-gray-200 z-50">
+		<header className="bg-white shadow-md  border-gray-200 z-50">
 			<div className="container mx-auto flex justify-between ">
 				<Link to='/'>
 					<div className='flex items-center gap-2 pt-[2px]'>
-						<img src="/assets/img/logo/smallIcon.png" alt="" className='w-12 p-2 hidden lg:block' />
+						<img src="/assets/img/logo/smallIcon.png" alt="" className='w-12 hidden lg:block' />
 						<div className='space-y-1 p-2'>
-							<img src="/assets/img/logo/fistName.png" alt="" className='w-14 hidden lg:block' />
-							<img src="/assets/img/logo/lastName.png" alt="" className='w-28 hidden lg:block' />
+							<img src="/assets/img/logo/fistName.png" alt="" className='w-12 hidden lg:block' />
+							<img src="/assets/img/logo/lastName.png" alt="" className='w-24 hidden lg:block' />
 						</div>
 					</div>
 				</Link>
@@ -72,9 +72,11 @@ const NavMain = () => {
 					>
 						<p className='min-w-max pb-2 lg:pb-0'>PLANS</p>
 					</p>
-					<Link to={'/contact-us'} className={`text-gradient text-base font-bold px-4 pt-4 ${'/contact-us' == path && 'active'}`}>
+					<p to={'/contact-us'} className={`text-gradient text-base font-bold px-4 pt-4 cursor-pointer ${'/contact-us' == path && 'active'}`}
+						onClick={() => handleScroll('contactPage')}
+					>
 						<p className='min-w-max pb-2 lg:pb-0'>CONTACT</p>
-					</Link>
+					</p>
 					{/* ))} */}
 				</div>
 			</div>
