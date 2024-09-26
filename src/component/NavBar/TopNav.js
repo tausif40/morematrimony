@@ -8,15 +8,16 @@ function Header() {
 		<>
 			{/* top header */}
 
-			<div className=' block lg:hidden w-full'>
-				{/* <img src="/assets/img/logo/icon.png" alt="" className='w-40 md:w-44 p-2 mx-auto' /> */}
-				<div className='flex items-center justify-center gap-2 pt-2'>
-					<img src="/assets/img/logo/icon.png" alt="" className='w-10 pb-1' />
-					<div className='flex items-center space-x-1'>
-						<img src="/assets/img/logo/fistName.png" alt="" className='w-14 h-5 md:w-20' />
-						<img src="/assets/img/logo/lastName.png" alt="" className='w-28 md:w-40' />
+			<div className='lg:hidden w-full flex justify-center'>
+				<Link to='/'>
+					<div className='flex items-center justify-center gap-2 pt-2'>
+						<img src="/assets/img/logo/icon.png" alt="" className='w-8 md:w-10 pb-1' />
+						<div className='flex items-center space-x-1'>
+							<img src="/assets/img/logo/fistName.png" alt="" className='max-w-14 md:max-w-20' />
+							<img src="/assets/img/logo/lastName.png" alt="" className='max-w-28 md:max-w-40' />
+						</div>
 					</div>
-				</div>
+				</Link>
 			</div >
 
 
