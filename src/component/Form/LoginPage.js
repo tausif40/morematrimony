@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { FaFacebook } from "react-icons/fa";
-import { AiFillTwitterCircle } from "react-icons/ai";
-import { TiSocialGooglePlus } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import toast from 'react-hot-toast';
 
@@ -21,7 +18,7 @@ const LoginPage = () => {
 			console.log(response.data);
 		} catch (err) {
 			setError("Email password does't match");
-			toast.error("Email password does't match")
+			toast.error("Email password does't match");
 		}
 	};
 

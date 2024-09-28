@@ -6,6 +6,7 @@ import Dashboard from '../Dashboard/Dashboard';
 import Reviews from '../HomePage/Reviews';
 import BottomMenu from '../Dashboard/BottomMenu';
 import SideMenu from '../Dashboard/SideMenu'
+import MyProfilePage from '../MyProfile/MyProfilePage';
 
 function DashboardLayout({ children }) {
 	const location = useLocation();
@@ -35,7 +36,7 @@ function DashboardLayout({ children }) {
 			case '/dashboard':
 				return <Dashboard />;
 			case '/profile-setting':
-				return <Reviews />;
+				return <MyProfilePage />;
 			// default:
 			// 	return <Dashboard />;
 		}
@@ -50,7 +51,7 @@ function DashboardLayout({ children }) {
 					</div>
 
 					<div className='container flex gap-8 my-10 '>
-						<div className='min-w-64 hidden lg:block border rounded-md overflow-hidden'>
+						<div className='min-w-64 hidden lg:block border rounded-md overflow-hidden h-[810px]'>
 							<ProfileOption />
 						</div>
 						<div className='w-full'>

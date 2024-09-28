@@ -19,7 +19,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
 				<div className="absolute top-3 right-3 cursor-pointer text-primary" onClick={closeMenu}>
 					<IoCloseCircleOutline size={28} />
 				</div>
-				<div className='w-full'>
+				<div className='w-full '>
 					<ProfileOption />
 				</div>
 			</div>

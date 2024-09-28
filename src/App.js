@@ -5,7 +5,6 @@ import ScrollToTop from './component/ScrollToTop/ScrollToTop';
 import TopNav from './component/NavBar/TopNav';
 import NavMain from './component/NavBar/NavMain';
 import HomePageLayout from './component/Layout/HomePageLayout';
-import PremiumPlans from './component/PremiumPlans/PremiumPlans';
 import ContactUs from './component/Form/ContactUs';
 import RegistrationForm from './component/Form/RegistrationForm';
 import LoginPage from './component/Form/LoginPage';
@@ -38,7 +37,6 @@ const App = () => {
         <NavMain />
         <Routes>
           <Route path="/" element={<HomePageLayout />} />
-          <Route path="/premium-plans" element={<PremiumPlans />} />
           <Route path="/active-members" element={<ActiveMembers />} />
           <Route path="/happy-stories" element={<HappyStories />} />
           <Route path="/contact-us" element={<ContactUs />} />
