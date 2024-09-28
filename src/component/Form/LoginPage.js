@@ -27,9 +27,11 @@ const LoginPage = () => {
 
 	return (
 		// <div className="flex items-center justify-center min-h-screen my-10 px-2 md:px-4">
-		<div className=" ">
+		<div className="w-80 sm:min-w-[356px] md:min-w-96">
 			<div className="px-6 md:px-8 py-6 rounded-lg shadow-md w-full inset-0 bg-black/60 ">
-				<h2 className="text-xl md:text-3xl font-medium text-center text-gold">Login to your Account</h2>
+				<div className='	'>
+					<h2 className="text-xl md:text-3xl text-center text-gold">Member Login</h2>
+				</div>
 
 				{/* Email Input */}
 				<form onSubmit={handleLogin} className="space-y-4 sm:space-y-8 mt-8">
@@ -44,7 +46,7 @@ const LoginPage = () => {
 							}}
 							required
 							placeholder='Enter Email'
-							className="mt-1 p-3 block w-full border border-slate-300 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-gray-700 bg-slate-300/40 rounded-md"
+							className="mt-1 p-3 block w-full border border-slate-400 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-slate-700 bg-gray-300/30 rounded-md"
 						/>
 					</div>
 
@@ -60,7 +62,7 @@ const LoginPage = () => {
 							}}
 							required
 							placeholder='Enter Password'
-							className="mt-1 p-3 block w-full border border-slate-300 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-gray-700 bg-slate-300/50 rounded-md"
+							className="mt-1 p-3 block w-full border border-slate-400 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-slate-700 bg-gray-300/30 rounded-md"
 						/>
 						<div className="text-right mt-2">
 							<a href="#" className="text-sm text-gold hover:underline">

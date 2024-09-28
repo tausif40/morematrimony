@@ -1,17 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DashboardMenu from '../Dashboard/DashboardMenu'
 import ProfileOption from '../Dashboard/ProfileOption'
 import { Link, useLocation } from 'react-router-dom';
 import Dashboard from '../Dashboard/Dashboard';
 import Reviews from '../HomePage/Reviews';
 import BottomMenu from '../Dashboard/BottomMenu';
+import SideMenu from '../Dashboard/SideMenu'
 
 function DashboardLayout({ children }) {
 	const location = useLocation();
 	const currentPath = location.pathname;
 
-	// const [ currentTab, setCurrentTab ] = useState('');
-	// const tabs = [ 'Dashboard', 'My Profile', 'My Interest', 'Shortlist', 'Messaging' ];
+	const [ menuOpen, setMenuOpen ] = useState(false);
+
+	// Close the menu when clicking outside of it
+	useEffect(() => {
+		const handleOutsideClick = (event) => {
+			if (menuOpen && !document.getElementById('sideMenu').contains(event.target)) {
+				setMenuOpen(false);
+			}
+		};
+		document.addEventListener('mousedown', handleOutsideClick);
+		return () => {
+			document.removeEventListener('mousedown', handleOutsideClick);
+		};
+	}, [ menuOpen ]);
+
+	// const toggleMenu = () => {
+	// 	setMenuOpen(prevState => !prevState);
+	// };
 
 	const renderTabContent = () => {
 		switch (currentPath) {
@@ -27,7 +44,7 @@ function DashboardLayout({ children }) {
 	return (
 		<>
 			{
-				<div className=''>
+				<div className='app-container relative'>
 					<div className='hidden lg:block'>
 						<DashboardMenu />
 					</div>
@@ -36,14 +53,17 @@ function DashboardLayout({ children }) {
 						<div className='min-w-64 hidden lg:block border rounded-md overflow-hidden'>
 							<ProfileOption />
 						</div>
-						<div className='w-full h-screen'>
+						<div className='w-full'>
 							{renderTabContent()}
 							{/* {children} */}
 						</div>
 					</div>
 
 					<div className='block lg:hidden fixed bottom-0 w-full'>
-						<BottomMenu />
+						<BottomMenu onMenuClick={() => setMenuOpen(true)} />
+					</div>
+					<div className=''>
+						<SideMenu isOpen={menuOpen} closeMenu={() => setMenuOpen(false)} />
 					</div>
 				</div>
 			}

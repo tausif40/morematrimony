@@ -78,8 +78,8 @@ ul {
 	background: rgb(242, 26, 45);
 	background: linear-gradient(
 		0deg,
-		rgba(242, 26, 45, 1) 30%,
-		rgba(245, 211, 45, 1) 50%
+		rgba(242, 26, 45, 1) 40%,
+		rgba(245, 211, 45, 1) 80%
 	);
 
 	-webkit-background-clip: text;

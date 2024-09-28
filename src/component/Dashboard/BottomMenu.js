@@ -4,7 +4,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { RiMessage2Line } from "react-icons/ri";
 import { Link } from 'react-router-dom';
 
-function BottomMenu() {
+const BottomMenu = ({ onMenuClick }) => {
 	return (
 		<>
 			<section className='w-ful'>
@@ -28,7 +28,7 @@ function BottomMenu() {
 						</div>
 					</Link>
 					{/* <Link to='/profile'> */}
-					<div className='flex flex-col items-center gap-1'>
+					<div className='flex flex-col items-center gap-1'onClick={onMenuClick}>
 						<img src="./assets/img/avatar-place.png" alt="" className='rounded-full w-5' />
 						<p>Account</p>
 					</div>

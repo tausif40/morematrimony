@@ -8,7 +8,7 @@ function PremiumMembers() {
 			<section className="bg-white py-28">
 				<div className='container'>
 					<div className="max-w-7xl mx-auto text-center">
-						<h3 className="text-3xl font-semibold text-gray-900">Premium Members</h3>
+						<h3 className="text-3xl font-semibold text-gray-900">PREMIUM MEMBER</h3>
 						<p className="mt-4 text-text max-w-2xl mx-auto">
 							Every Premium member on Active Matrimonial is privileged by our policy & rules so you don’t have to worry about your privacy or security.
 						</p>
@@ -46,7 +46,7 @@ function PremiumMembers() {
 			<section className="bg-white pb-24">
 				<div className='container'>
 					<div className="max-w-7xl mx-auto text-center">
-						<h2 className="text-3xl font-semibold text-text">How It Works</h2>
+						<h2 className="text-3xl font-semibold text-text">HOW IT WORKS</h2>
 						<p className="mt-4 text-text max-w-2xl mx-auto">
 							When you realize you want to spend the rest of your life with somebody, you want the rest of your life to start as soon as possible.
 						</p>
@@ -90,7 +90,7 @@ function PremiumMembers() {
 
 				<div className='container h-full flex flex-col justify-between relative z-20'>
 					<div className='text-center pt-20 w-full flex flex-col items-center text-white'>
-						<h2 className='font-semibold'>Trusted by Millions</h2>
+						<h2 className='font-semibold'>TRUSTED BY MILLIONS</h2>
 						<p className='pt-6 max-w-4xl'>
 							"Love doesn't make the world go around. Love is what makes the ride worthwhile." Millions of Active Matrimonial users around the world find their true love and partners from this site. We are always there to help and find you the suitable match for yourself.
 						</p>
@@ -111,8 +111,6 @@ function PremiumMembers() {
 					</div>
 				</div>
 			</section>
-
-
 
 		</>
 	)

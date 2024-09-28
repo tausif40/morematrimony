@@ -31,7 +31,7 @@ const ContactUs = () => {
 	};
 
 	return (
-		<div id="contactPage" className="flex flex-col justify-center items-center min-h-screen py-10 px-2 md:px-4">
+		<div id="contactPage" className="flex flex-col justify-center items-center py-10 px-2 md:px-4">
 
 			<h2 className="text-headingGray text-3xl font-medium text-center mb-6">
 				Can we help you?
@@ -39,7 +39,7 @@ const ContactUs = () => {
 
 			<form
 				onSubmit={handleSubmit}
-				className="bg-white p-8 rounded-md shadow-md w-full max-w-2xl border"
+				className="bg-white p-8 rounded-md w-full max-w-2xl"
 			>
 				<div className="mb-4">
 					<label className=" block text-sm font-medium text-gray-700 ">
@@ -95,7 +95,7 @@ const ContactUs = () => {
 						value={formData.description}
 						onChange={handleChange}
 						className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary  sm:text-sm"
-						rows="6"
+						rows="4"
 						placeholder="Write your description here"
 						required
 					></textarea>

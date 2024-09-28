@@ -48,29 +48,34 @@ const NavMain = () => {
 	}, [ location ]);
 
 	return (
-		<header className="bg-white shadow-md  border-gray-200 z-50">
+		<header className="bg-white shadow-md lg:border-t border-gray-200 z-50">
 			<div className="container mx-auto flex justify-between ">
-				<Link to='/'>
-					<div className='flex items-center gap-2 pt-[2px]'>
-						<img src="/assets/img/logo/smallIcon.png" alt="" className='w-12 hidden lg:block' />
+				<Link to='/' className='hidden lg:block'>
+					<div className='flex items-center gap-2 p-2'>
+						<img src="/assets/img/logo/smallIcon.png" alt="" className='w-12' />
 						<div className='space-y-1 p-2'>
-							<img src="/assets/img/logo/fistName.png" alt="" className='w-12 hidden lg:block' />
-							<img src="/assets/img/logo/lastName.png" alt="" className='w-24 hidden lg:block' />
+							<img src="/assets/img/logo/fistName.png" alt="" className='w-12 ' />
+							<img src="/assets/img/logo/lastName.png" alt="" className='w-24' />
 						</div>
 					</div>
 				</Link>
-				<div className="nav-option w-full lg:w-auto flex md:justify-center lg:justify-normal overflow-x-auto  gap-4">
+				<div className="nav-option py-2 lg:py-0 w-full lg:w-auto flex justify-center items-center lg:justify-normal overflow-x-auto gap-4">
 					{/* {navOption.map((value, inx) => ( */}
-					<p className={`text-gradient text-base font-bold px-4 pt-4 cursor-pointer ${'plans' == path && 'active'}`}
+					<div className={`text-gradient text-base font-bold px-4 cursor-pointer ${'plans' == path && 'active'}`}
 						onClick={() => handleScroll('plans')}
 					>
-						<p className='min-w-max pb-2 lg:pb-0'>PLANS</p>
-					</p>
-					<p to={'/contact-us'} className={`text-gradient text-base font-bold px-4 pt-4 cursor-pointer ${'/contact-us' == path && 'active'}`}
+						<p className='min-w-max'>PLANS</p>
+					</div>
+					<div to={'/contact-us'} className={`text-gradient text-base font-bold px-4 cursor-pointer ${'/contact-us' == path && 'active'}`}
 						onClick={() => handleScroll('contactPage')}
 					>
-						<p className='min-w-max pb-2 lg:pb-0'>CONTACT</p>
-					</p>
+						<p className='min-w-max'>CONTACT</p>
+					</div>
+					<div className='text-sm font-medium text-text'>
+						<Link to={'/register'}>
+							<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
+						</Link>
+					</div>
 					{/* ))} */}
 				</div>
 			</div>
