@@ -13,7 +13,7 @@ import HappyStories from './component/HappyStories/HappyStories';
 import Footer from './component/Footer/Footer';
 import BackToTopButton from './component/BackToTop/backToTop';
 import { Toaster } from 'react-hot-toast';
-
+import PageNotFound from './component/PageNotFound/PageNotFound';
 // layout page
 import DashboardLayout from './component/Layout/DashboardLayout';
 
@@ -36,6 +36,7 @@ const App = () => {
         <TopNav />
         <NavMain />
         <Routes>
+          <Route path="/*" element={<PageNotFound />} />
           <Route path="/" element={<HomePageLayout />} />
           <Route path="/active-members" element={<ActiveMembers />} />
           <Route path="/happy-stories" element={<HappyStories />} />

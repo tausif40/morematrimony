@@ -7,6 +7,7 @@ import Reviews from '../HomePage/Reviews';
 import BottomMenu from '../Dashboard/BottomMenu';
 import SideMenu from '../Dashboard/SideMenu'
 import MyProfilePage from '../MyProfile/MyProfilePage';
+import PageNotFound from '../PageNotFound/PageNotFound';
 
 function DashboardLayout({ children }) {
 	const location = useLocation();
@@ -37,8 +38,14 @@ function DashboardLayout({ children }) {
 				return <Dashboard />;
 			case '/profile-setting':
 				return <MyProfilePage />;
-			// default:
-			// 	return <Dashboard />;
+			default:
+				return <>
+					<div className='w-full h-screen flex flex-col items-center pt-10'>
+						<img src="./assets/img/maintainance.svg" alt="Page Not Found" className='h-[50%] ' />
+						<p className='mt-6 px-4 py-1 rounded-md font-light cursor-pointer text-xl text-primary gradient-btn'
+							onClick={() => window.history.back()}>back...</p>
+					</div >
+				</>;
 		}
 	};
 
