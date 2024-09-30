@@ -5,7 +5,7 @@ import BasicInformation from './BasicInformation';
 import Career from './Career';
 import EducationInfo from './EducationInfo';
 import FamilyInformation from './FamilyInformation';
-import HobbiesInterest from './HobbiesInterest';
+import Hobbies from './Hobbies';
 import Introduction from './Introduction';
 import Language from './Language';
 import Lifestyle from './Lifestyle';
@@ -20,7 +20,7 @@ import UpdateEmail from './UpdateEmail';
 
 const MyProfilePage = () => {
 	return (
-		<div>
+		<div className='space-y-10'>
 			<Introduction />
 			<UpdateEmail />
 			<BasicInformation />
@@ -29,7 +29,7 @@ const MyProfilePage = () => {
 			<Career />
 			<PhysicalAttributes />
 			<Language />
-			<HobbiesInterest />
+			<Hobbies />
 			<PersonalAttitude />
 			<ResidencyInformation />
 			<SocialBackground />

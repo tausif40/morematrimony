@@ -3,11 +3,11 @@ import DashboardMenu from '../Dashboard/DashboardMenu'
 import ProfileOption from '../Dashboard/ProfileOption'
 import { Link, useLocation } from 'react-router-dom';
 import Dashboard from '../Dashboard/Dashboard';
-import Reviews from '../HomePage/Reviews';
 import BottomMenu from '../Dashboard/BottomMenu';
 import SideMenu from '../Dashboard/SideMenu'
 import MyProfilePage from '../MyProfile/MyProfilePage';
-import PageNotFound from '../PageNotFound/PageNotFound';
+import PageNotFound2 from '../PageNotFound/PageNotFound2';
+import MyInterest from '../MyInterest/MyInterest';
 
 function DashboardLayout({ children }) {
 	const location = useLocation();
@@ -15,7 +15,6 @@ function DashboardLayout({ children }) {
 
 	const [ menuOpen, setMenuOpen ] = useState(false);
 
-	// Close the menu when clicking outside of it
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
 			if (menuOpen && !document.getElementById('sideMenu').contains(event.target)) {
@@ -28,23 +27,17 @@ function DashboardLayout({ children }) {
 		};
 	}, [ menuOpen ]);
 
-	// const toggleMenu = () => {
-	// 	setMenuOpen(prevState => !prevState);
-	// };
-
 	const renderTabContent = () => {
 		switch (currentPath) {
 			case '/dashboard':
 				return <Dashboard />;
 			case '/profile-setting':
 				return <MyProfilePage />;
+			case '/my-interest':
+				return <MyInterest />;
 			default:
 				return <>
-					<div className='w-full h-screen flex flex-col items-center pt-10'>
-						<img src="./assets/img/maintainance.svg" alt="Page Not Found" className='h-[50%] ' />
-						<p className='mt-6 px-4 py-1 rounded-md font-light cursor-pointer text-xl text-primary gradient-btn'
-							onClick={() => window.history.back()}>back...</p>
-					</div >
+					<PageNotFound2 />
 				</>;
 		}
 	};

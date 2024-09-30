@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import apiClient from '../../api/apiClient';
 
-const IntroductionForm = () => {
+const MyInterest = () => {
 	const [ introduction, setIntroduction ] = useState('');
 
 	const handleSubmit = async (e) => {
@@ -16,7 +16,7 @@ const IntroductionForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit} className="box-shadow bg-white border rounded-md">
-			<p className='px-6 py-3 font-medium border-b text-headingGray'>Introduction</p>
+			<p className='px-6 py-3 font-medium border-b text-headingGray'>My Interests</p>
 			<div className='py-4 px-6 text-sm'>
 				<div className='flex flex-col md:flex-row gap-6 md:gap-14 text-text'>
 					<p className=''>Introduction</p>
@@ -42,4 +42,4 @@ const IntroductionForm = () => {
 	);
 };
 
-export default IntroductionForm;
+export default MyInterest;

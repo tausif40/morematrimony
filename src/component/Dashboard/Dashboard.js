@@ -7,7 +7,7 @@ function Dashboard() {
 	return (
 		<>
 			<section className='bg-white rounded-md w-full'>
-				<div className='grid grid-cols-3 gap-6 text-center'>
+				<div className='grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6 text-center'>
 					<div className='bg-zinc-100 text-headingGray py-10 space-y-6 rounded-md'>
 						<p className='font-bold text-3xl text-gradient'>5</p>
 						<p className='w-28 text-sm m-auto'>Remaining Interest</p>
@@ -21,12 +21,13 @@ function Dashboard() {
 						<p className='w-36 text-sm m-auto'>Remaining Gallery Image Upload</p>
 					</div>
 				</div>
-				<div className='py-12 grid grid-cols-2 gap-6'>
-					<div className='w-full border shadow-sm rounded-md'>
+
+				<div className='py-12 flex sm:flex-row flex-col-reverse gap-6'>
+					<div className='border shadow-sm rounded-md w-full sm:w-1/2'>
 						<p className='px-6 py-2 border-b text-headingGray text-lg'>Current Plan</p>
 						<PremiumPlans />
 					</div>
-					<div className='space-y-6'>
+					<div className='space-y-6 w-full sm:w-1/2'>
 						<div className='border w-full m-auto flex flex-col items-center pb-8 rounded-md shadow-sm'>
 							<img src="./assets/img/non_verified.png" alt="non_verified" className='w-auto' />
 							<button className='gradient-btn text-white px-4 py-2 rounded-md'>Verify Now</button>
