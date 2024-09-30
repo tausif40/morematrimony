@@ -16,6 +16,7 @@ import { Toaster } from 'react-hot-toast';
 import PageNotFound from './component/PageNotFound/PageNotFound';
 // layout page
 import DashboardLayout from './component/Layout/DashboardLayout';
+import MemberProfileLayout from './component/Layout/MemberProfileLayout';
 
 const App = () => {
   const dashboardPaths = [
@@ -44,10 +45,11 @@ const App = () => {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
 
-          {/* <Route path={'/dashboard' || '/profile-setting'} element={<DashboardLayout />} /> */}
           {dashboardPaths.map((path) => (
             <Route key={path} path={path} element={<DashboardLayout />} />
           ))}
+
+          <Route path="/member-profile" element={<MemberProfileLayout />} />
         </Routes>
 
         <Footer />

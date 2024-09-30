@@ -117,6 +117,16 @@ textarea:focus,
 	color: transparent;
 }
 
+.backGroundGradient{
+	background: rgb(240, 26, 45);
+	background: linear-gradient(
+		21deg,
+		rgba(240, 26, 45, 1) 21%,
+		rgba(249, 214, 40, 1) 100%
+	);
+	/* box-shadow: inset 0px 10px 35px -20px rgba(0, 0, 0, 1); */
+	box-shadow: inset 0px 10px 19px -13px rgba(0,0,0,0.6);
+}
 @media screen and (min-width: 1024px) {
 	.text-gradient {
 		background: rgb(242, 26, 45);

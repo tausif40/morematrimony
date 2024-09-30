@@ -42,7 +42,9 @@ function ProfileOption() {
 				<div className='px-4 flex flex-col items-center gap-4'>
 					<img src="/assets/img/img0.png" alt="" className='size-20 rounded-full' />
 					<p className='font-bold text-2xl text-headingGray'>Mohd. Tausif</p>
-					<p className='bg-[#fbcbcfd4] cursor-pointer text-hotRed py-2 rounded-md w-full flex justify-center border border-[#fbcbcfd4] hover:border-hotRed transition-all'>Public Profile</p>
+					<Link to='/member-profile'>
+						<p className='bg-[#fbcbcfd4] cursor-pointer text-hotRed py-2 px-8 rounded-md w-full flex justify-center border border-[#fbcbcfd4] hover:border-hotRed transition-all'>Public Profile</p>
+					</Link>
 				</div>
 
 				<div className='flex flex-col text-headingGray text-sm mt-6'>

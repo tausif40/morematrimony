@@ -8,6 +8,9 @@ import SideMenu from '../Dashboard/SideMenu'
 import MyProfilePage from '../MyProfile/MyProfilePage';
 import PageNotFound2 from '../PageNotFound/PageNotFound2';
 import MyInterest from '../MyInterest/MyInterest';
+import ShortList from '../ShortList/ShortList';
+import Chat from '../Chat/Chat';
+import IgnoreList from '../IgnoreList/IgnoreList';
 
 function DashboardLayout({ children }) {
 	const location = useLocation();
@@ -35,6 +38,12 @@ function DashboardLayout({ children }) {
 				return <MyProfilePage />;
 			case '/my-interest':
 				return <MyInterest />;
+			case '/shortlist':
+				return <ShortList />;
+			case '/message':
+				return <Chat />;
+			case '/ignored-list':
+				return <IgnoreList />;
 			default:
 				return <>
 					<PageNotFound2 />
