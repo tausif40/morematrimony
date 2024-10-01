@@ -3,7 +3,7 @@ import React from 'react';
 
 function BasicInformation() {
 	return (
-		<div className="p-4 bg-white shadow-md rounded-lg">
+		<div className="">
 			<div className="grid grid-cols-2 gap-4">
 				<div>
 					<h3 className="font-bold">First Name:</h3>

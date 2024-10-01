@@ -13,6 +13,7 @@ function MemberProfile() {
 				<div className="backGroundGradient bg-white px-4 flex gap-12">
 
 					<div className='container flex gap-6 items-end pt-14'>
+							
 						<div className='w-1/3 py-4 object-cover'>
 							<img src="./assets/img/avatar-place.png" alt="" className='rounded-md shadow-lg absolute w-[320px] bottom-56' />
 						</div>
