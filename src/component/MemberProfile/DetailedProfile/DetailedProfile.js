@@ -51,11 +51,11 @@ function DetailedProfile() {
 					onClick={() => toggleSection(section)}
 				>
 					<div className="flex items-center gap-6">
-						<p className='text-3xl border rounded-full p-2 bg-white'>{Icon}</p>
+						<p className='text-xl md:text-3xl border rounded-full p-2 bg-white'>{Icon}</p>
 						<span className="ml-2">{section}</span>
 					</div>
 				</div>
-				<div className={`border-l ml-6 overflow-hidden transition-all duration-1000 ease-in-out`}>
+				<div className={`border-l ml-[18px] md:ml-6 overflow-hidden transition-all duration-1000 ease-in-out`}>
 					<div
 						className={` pt-4 pb-10 max-h-0 transition-all duration-1000 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
 							}`}
