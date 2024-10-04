@@ -11,7 +11,7 @@ const LoginPage = () => {
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.post('https://your-api-endpoint.com/login', {
+			const response = await axios.post('', {
 				email,
 				password,
 			});
@@ -31,7 +31,7 @@ const LoginPage = () => {
 				</div>
 
 				{/* Email Input */}
-				<form onSubmit={handleLogin} className="space-y-4 sm:space-y-8 mt-8">
+				<form onSubmit={handleLogin} className="space-y-4 sm:space-y-8 mt-8" action="">
 					<div>
 						<label className="block text-sm text-gold text-semibold">Email</label>
 						<input

@@ -38,7 +38,7 @@ function ProfileOption() {
 	})
 	return (
 		<>
-			< section className='bg-white pt-6 min-h-screen'>
+			< section className='bg-white pt-6 min-h-screen '>
 				<div className='px-4 flex flex-col items-center gap-4'>
 					<img src="/assets/img/img0.png" alt="" className='size-20 rounded-full' />
 					<p className='font-bold text-2xl text-headingGray'>Mohd. Tausif</p>

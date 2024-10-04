@@ -60,7 +60,7 @@ function DashboardLayout({ children }) {
 					</div>
 
 					<div className='container flex gap-8 my-10 '>
-						<div className='min-w-64 hidden lg:block border rounded-md overflow-hidden h-[810px]'>
+						<div className='min-w-64 hidden lg:block border rounded-md overflow-hidden h-[810px] sticky top-0'>
 							<ProfileOption />
 						</div>
 						<div className='w-full'>
