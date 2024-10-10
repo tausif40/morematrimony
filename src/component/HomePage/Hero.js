@@ -4,7 +4,7 @@ import LoginPage from '../Form/LoginPage';
 function Hero() {
 	return (
 		<>
-			<section className="relative">
+			<section className="relative border-t-[6px] border-gold">
 				<img src="./assets/img/hero.jpg" alt="Trusted" className="w-full h-[90vh] lg:h-[91vh] object-cover" />
 				<div className="absolute inset-0 flex justify-center md:justify-end items-center py-4 sm:pt-0 text-white">
 					{/* <div className="custom-shadow text-4xl md:text-2xl font-semibold lg:font-bold max-w-3xl px-2 py-2 lg:pl-20 pr-10 lg:pr-20 bg-[#FFD700] bg-opacity-60">

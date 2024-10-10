@@ -48,7 +48,7 @@ const NavMain = () => {
 	}, [ location ]);
 
 	return (
-		<header className="bg-white shadow-md z-50 border-b-[6px] border-gold">
+		<header className="bg-white shadow-md z-50 ">
 			<div className="container mx-auto flex justify-between ">
 				<Link to='/' className='hidden lg:block'>
 					<div className='flex items-center gap-2 p-2'>
