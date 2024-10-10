@@ -8,7 +8,13 @@ function PremiumMembers() {
 			<section className="bg-white py-28">
 				<div className='container'>
 					<div className="max-w-7xl mx-auto text-center">
-						<h3 className="text-3xl font-semibold text-gray-900">PREMIUM MEMBER</h3>
+						{/* <h3 className="text-3xl font-semibold text-gray-900">PREMIUM MEMBER</h3> */}
+						<div className="flex items-center w-96 m-auto my-4">
+							<div className="flex-grow border-t-4 border-primary"></div>
+							<span className="text-3xl px-2 font-semibold text-gray-900">PREMIUM MEMBER</span>
+							<div className="flex-grow border-t-4 border-primary"></div>
+						</div>
+
 						<p className="mt-4 text-text max-w-2xl mx-auto">
 							Every Premium member on Active Matrimonial is privileged by our policy & rules so you don’t have to worry about your privacy or security.
 						</p>
@@ -46,7 +52,12 @@ function PremiumMembers() {
 			<section className="bg-white pb-24">
 				<div className='container'>
 					<div className="max-w-7xl mx-auto text-center">
-						<h2 className="text-3xl font-semibold text-text">HOW IT WORKS</h2>
+						<div className="flex items-center w-[350px] m-auto my-4">
+							<div className="flex-grow border-t-4 border-gold"></div>
+							<h2 className="text-3xl font-semibold px-2 text-text">HOW IT WORKS</h2>
+							<div className="flex-grow border-t-4 border-gold"></div>
+						</div>
+
 						<p className="mt-4 text-text max-w-2xl mx-auto">
 							When you realize you want to spend the rest of your life with somebody, you want the rest of your life to start as soon as possible.
 						</p>
