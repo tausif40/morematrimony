@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DashboardMenu from './DashboardMenu'
 import { Outlet } from 'react-router-dom'
 import PremiumPlans from '../PremiumPlans/PremiumPlans'
+import VerificationForm from '../Form/VerificationForm';
+
 
 function Dashboard() {
+	const [ verified, setVerified ] = useState(false);
+	const [ showVerification, setShowVerification ] = useState(false);
+
 	return (
 		<>
+			{!verified && showVerification && (
+				<VerificationForm verify={setVerified} onClose={() => setShowVerification(false)} />
+			)}
+
 			<section className='bg-white rounded-md w-full'>
 				<div className='grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6 text-center'>
 					<div className='bg-zinc-100 text-headingGray py-10 space-y-6 rounded-md'>
@@ -30,8 +39,9 @@ function Dashboard() {
 					<div className='space-y-6 w-full sm:w-1/2'>
 						<div className='border w-full m-auto flex flex-col items-center pb-8 rounded-md shadow-sm'>
 							<img src="./assets/img/non_verified.png" alt="non_verified" className='w-auto' />
-							<button className='gradient-btn text-white px-4 py-2 rounded-md'>Verify Now</button>
+							<button className='gradient-btn text-white px-4 py-2 rounded-md' onClick={() => setShowVerification(true)}>Verify Now</button>
 						</div>
+
 						<div className='w-full border shadow-sm rounded-md'>
 							<p className='px-6 py-2 border-b text-headingGray text-lg'>Matched profile</p>
 							<div className='px-6 py-6'>

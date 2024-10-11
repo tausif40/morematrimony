@@ -25,7 +25,11 @@ const App = () => {
     '/my-interest',
     '/shortlist',
     '/message',
-    '/ignored-list'
+    '/ignored-list',
+    '/change-password',
+    '/gallery',
+    '/deactivate-account',
+    '/delete-account'
   ];
 
 

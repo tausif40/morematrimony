@@ -20,16 +20,16 @@ function ProfileOption() {
 	const navOption = [
 		{ name: 'Dashboard', path: '/dashboard', icon: RiHome4Line },
 		{ name: 'Gallery', path: '/gallery', icon: HiOutlinePhotograph },
-		{ name: 'Happy Story', path: '/happy-story', icon: LiaHandshakeSolid },
-		{ name: 'Packages', path: '/packages', icon: PiGiftLight },
-		{ name: 'My Wallet', path: '/my-wallet', icon: TbCurrencyDollar },
+		// { name: 'Happy Story', path: '/happy-story', icon: LiaHandshakeSolid },
+		// { name: 'Packages', path: '/packages', icon: PiGiftLight },
+		// { name: 'My Wallet', path: '/my-wallet', icon: TbCurrencyDollar },
 		{ name: 'Message', path: '/message', icon: HiOutlineMail },
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
 		{ name: 'Ignored User List', path: '/ignored-list', icon: MdOutlineBlock },
 		{ name: 'Change Password', path: '/change-password', icon: LuKeyRound },
-		{ name: 'Manage Profile', path: '/manage-profile', icon: AiOutlineUser },
-		{ name: 'Deactive Account', path: '/deactive-account', icon: HiOutlineLockClosed },
+		{ name: 'Manage Profile', path: '/profile-setting', icon: AiOutlineUser },
+		{ name: 'Deactivate Account', path: '/deactivate-account', icon: HiOutlineLockClosed },
 		{ name: 'Delete Account', path: '/delete-account', icon: HiOutlineTrash },
 	];
 
