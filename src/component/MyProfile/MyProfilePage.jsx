@@ -22,7 +22,7 @@ const MyProfilePage = () => {
 	return (
 		<div className='space-y-10'>
 			<Introduction />
-			<UpdateEmail />
+			{/* <UpdateEmail /> */}
 			<BasicInformation />
 			<PresentAddress />
 			<EducationInfo />
@@ -34,7 +34,7 @@ const MyProfilePage = () => {
 			<ResidencyInformation />
 			<SocialBackground />
 			<Lifestyle />
-			<AstronomicInformation />
+			{/* <AstronomicInformation /> */}
 			<PermanentAddress />
 			<FamilyInformation />
 			<PartnerExpectation />

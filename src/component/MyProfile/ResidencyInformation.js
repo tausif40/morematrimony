@@ -83,16 +83,18 @@ const ResidencyInformation = () => {
 				{/* Immigration Status */}
 				<div>
 					<label htmlFor="immigrationStatus" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Immigration Status</label>
-					<input
-						type="text"
+					<select
 						id="immigrationStatus"
-						className="input-field"
-						placeholder="Immigration Status"
+						className="input-field text-text"
 						name="immigrationStatus"
 						value={formData.immigrationStatus}
 						onChange={handleChange}
 						required
-					/>
+					>
+						<option value="" disabled>Immigration Status</option>
+						<option value="country1">st1</option>
+						{/* Add more countries as needed */}
+					</select>
 				</div>
 
 				{/* Submit Button */}

@@ -38,8 +38,14 @@ function Dashboard() {
 					</div>
 					<div className='space-y-6 w-full sm:w-1/2'>
 						<div className='border w-full m-auto flex flex-col items-center pb-8 rounded-md shadow-sm'>
-							<img src="./assets/img/non_verified.png" alt="non_verified" className='w-auto' />
-							<button className='gradient-btn text-white px-4 py-2 rounded-md' onClick={() => setShowVerification(true)}>Verify Now</button>
+							{
+								verified ?
+									<img src="./assets/img/verified.png" alt="non_verified" className='w-auto' />
+									: <>
+										<img src="./assets/img/non_verified.png" alt="non_verified" className='w-auto' />
+										<button className='gradient-btn text-white px-4 py-2 rounded-md' onClick={() => setShowVerification(true)}>Verify Now</button>
+									</>
+							}
 						</div>
 
 						<div className='w-full border shadow-sm rounded-md'>

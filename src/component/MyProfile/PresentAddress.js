@@ -29,30 +29,38 @@ const PresentAddress = () => {
 				{/* Country */}
 				<div>
 					<label htmlFor="country" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Country</label>
-					<input
-						type="text"
+					<select
 						id="country"
-						className="input-field"
-						placeholder="Country"
+						className="input-field text-text"
 						name="country"
 						value={formData.country}
 						onChange={handleChange}
 						required
-					/>
+					>
+						<option value="">Select Country</option>
+						<option value="country1">Country 1</option>
+						<option value="country2">Country 2</option>
+						<option value="country3">Country 3</option>
+						<option value="country4">Country 4</option>
+					</select>
 				</div>
 				{/* State */}
 				<div>
 					<label htmlFor="state" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">State</label>
-					<input
-						type="text"
+					<select
 						id="state"
-						className="input-field"
-						placeholder="State"
+						className="input-field text-text"
 						name="state"
 						value={formData.state}
 						onChange={handleChange}
 						required
-					/>
+					>
+						<option value="">Select State</option>
+						<option value="state1">State 1</option>
+						<option value="state2">State 2</option>
+						<option value="state3">State 3</option>
+						<option value="state4">State 4</option>
+					</select>
 				</div>
 				{/* City */}
 				<div>

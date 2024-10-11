@@ -101,7 +101,7 @@ const BasicInformationForm = () => {
 					</select>
 				</div>
 				{/* Phone Number */}
-				<div>
+				{/* <div>
 					<label htmlFor="phoneNumber" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Phone Number</label>
 					<input
 						type="tel"
@@ -113,23 +113,9 @@ const BasicInformationForm = () => {
 						onChange={handleChange}
 						required
 					/>
-				</div>
-				{/* On Behalf */}
-				<div>
-					<label htmlFor="onBehalf" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">On Behalf</label>
-					<select
-						id="onBehalf"
-						className="input-field text-text"
-						name="onBehalf"
-						value={formData.onBehalf}
-						onChange={handleChange}
-						required
-					>
-						<option value="">Select</option>
-						<option value="myself">Myself</option>
-						<option value="someoneElse">Someone Else</option>
-					</select>
-				</div>
+				</div> */}
+				
+				
 				{/* Marital Status */}
 				<div>
 					<label htmlFor="maritalStatus" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Marital Status</label>
@@ -161,9 +147,25 @@ const BasicInformationForm = () => {
 						required
 					/>
 				</div>
+				{/* On Behalf */}
+				<div>
+					<label htmlFor="onBehalf" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">On Behalf</label>
+					<select
+						id="onBehalf"
+						className="input-field text-text"
+						name="onBehalf"
+						value={formData.onBehalf}
+						onChange={handleChange}
+						required
+					>
+						<option value="">Select</option>
+						<option value="myself">Myself</option>
+						<option value="someoneElse">Someone Else</option>
+					</select>
+				</div>
 				{/* Photo */}
-				<div className="col-span-2">
-					<label htmlFor="photo" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Photo</label>
+				<div className="">
+					<label htmlFor="photo" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Profile Photo</label>
 					<input
 						type="file"
 						id="photo"

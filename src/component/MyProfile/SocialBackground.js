@@ -6,9 +6,11 @@ const SocialBackground = () => {
 		caste: '',
 		subCaste: '',
 		ethnicity: '',
-		personalValue: '',
-		familyValue: '',
-		communityValue: '',
+		star: '',
+		moon: '',
+		zodiac: '',
+		birthTime: '',
+		birthPlace: [ '', '', '' ],
 	});
 
 	const handleSubmit = (e) => {
@@ -100,45 +102,111 @@ const SocialBackground = () => {
 				</div>
 				{/* Personal Value */}
 				<div>
-					<label htmlFor="personalValue" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Personal Value</label>
-					<input
-						type="text"
-						id="personalValue"
-						className="input-field"
-						placeholder="Personal Value"
-						name="personalValue"
-						value={formData.personalValue}
+					<label htmlFor="star" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Star</label>
+					<select
+						id="star"
+						className="input-field text-text"
+						name="star"
+						value={formData.star}
 						onChange={handleChange}
 						required
-					/>
+					>
+						<option value="">Select star</option>
+						<option value="ethnicity1">star 1</option>
+						<option value="ethnicity2">star 2</option>
+						{/* Add more ethnicities as needed */}
+					</select>
 				</div>
 				{/* Family Value */}
 				<div>
-					<label htmlFor="familyValue" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Family Value</label>
-					<input
-						type="text"
-						id="familyValue"
-						className="input-field"
-						placeholder="Family Value"
-						name="familyValue"
-						value={formData.familyValue}
+					<label htmlFor="moon" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Raasi / Moon Sign</label>
+					<select
+						id="moon"
+						className="input-field text-text"
+						name="moon"
+						value={formData.moon}
 						onChange={handleChange}
 						required
-					/>
+					>
+						<option value="">Select moon</option>
+						<option value="ethnicity1">moon 1</option>
+						<option value="ethnicity2">moon 2</option>
+						{/* Add more ethnicities as needed */}
+					</select>
 				</div>
 				{/* Community Value */}
 				<div>
-					<label htmlFor="communityValue" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Community Value</label>
-					<input
-						type="text"
-						id="communityValue"
-						className="input-field"
-						placeholder="Community Value"
-						name="communityValue"
-						value={formData.communityValue}
+					<label htmlFor="zodiac" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Zodiac/star sign</label>
+					<select
+						id="zodiac"
+						className="input-field text-text"
+						name="zodiac"
+						value={formData.zodiac}
 						onChange={handleChange}
 						required
+					>
+						<option value="">Select zodiac</option>
+						<option value="ethnicity1">zodiac 1</option>
+						<option value="ethnicity2">zodiac 2</option>
+						{/* Add more ethnicities as needed */}
+					</select>
+				</div>
+
+				<div>
+					<label htmlFor="birthTime" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Time Of Birth</label>
+					<input
+						type="time"
+						id="birthTime"
+						className="input-field"
+						name="birthTime"
+						value={formData.birthTime}
+						onChange={handleChange}
+						placeholder="Time of birth"
 					/>
+				</div>
+
+				<div className='col-span-2'>
+					<label htmlFor="birthPlace" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Place Of Birth</label>
+					<div className='p-2 border rounded-md flex gap-4'>
+						<select
+							id="birthCountry"
+							className="input-field text-text"
+							name="birthPlace"
+							value={formData.birthPlace[ 0 ]}  // Use index 0 for Country
+							onChange={(e) => handleChange(e, 0)}  // Pass index 0
+							required
+						>
+							<option value="">Country</option>
+							<option value="Country 1">Country 1</option>
+							<option value="Country 2">Country 2</option>
+						</select>
+						{/* State */}
+						<select
+							id="birthState"
+							className="input-field text-text"
+							name="birthPlace"
+							value={formData.birthPlace[ 1 ]}  // Use index 1 for State
+							onChange={(e) => handleChange(e, 1)}  // Pass index 1
+							required
+						>
+							<option value="">State</option>
+							<option value="State 1">State 1</option>
+							<option value="State 2">State 2</option>
+						</select>
+						{/* City */}
+						<select
+							id="birthCity"
+							className="input-field text-text"
+							name="birthPlace"
+							value={formData.birthPlace[ 2 ]}  // Use index 2 for City
+							onChange={(e) => handleChange(e, 2)}  // Pass index 2
+							required
+						>
+							<option value="">City</option>
+							<option value="City 1">City 1</option>
+							<option value="City 2">City 2</option>
+						</select>
+					</div>
 				</div>
 
 				{/* Submit Button */}

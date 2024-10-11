@@ -10,7 +10,8 @@ const PhysicalAttributes = () => {
 		complexion: '',
 		bloodGroup: '',
 		bodyType: '',
-		bodyArt: '',
+		tattoo: '',
+		anyDisability: '',
 		disability: ''
 	});
 
@@ -39,16 +40,18 @@ const PhysicalAttributes = () => {
 				{/* Height */}
 				<div>
 					<label htmlFor="height" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Height (in Feet)</label>
-					<input
-						type="number"
+					<select
 						id="height"
-						className="input-field"
+						className="input-field text-text"
 						name="height"
 						value={formData.height}
 						onChange={handleChange}
-						placeholder="Height"
 						required
-					/>
+					>
+						<option value="">Select Height</option>
+						<option value="4 ft 1 in">4 ft 1 in</option>
+						<option value="4 ft 2 in">4 ft 2 in</option>
+					</select>
 				</div>
 				{/* Weight */}
 				<div>
@@ -67,99 +70,135 @@ const PhysicalAttributes = () => {
 				{/* Eye Color */}
 				<div>
 					<label htmlFor="eyeColor" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Eye Color</label>
-					<input
-						type="text"
+					<select
 						id="eyeColor"
-						className="input-field"
+						className="input-field text-text"
 						name="eyeColor"
 						value={formData.eyeColor}
 						onChange={handleChange}
-						placeholder="Eye Color"
 						required
-					/>
+					>
+						<option value="">Select Eye Color</option>
+						<option value="Normal">Normal</option>
+						<option value="Amber">Amber</option>
+						<option value="Blue">Blue</option>
+						<option value="Brown">Brown</option>
+						<option value="Green">Green</option>
+						<option value="Hazel">Hazel</option>
+					</select>
 				</div>
 				{/* Hair Color */}
 				<div>
 					<label htmlFor="hairColor" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Hair Color</label>
-					<input
-						type="text"
+					<select
 						id="hairColor"
-						className="input-field"
+						className="input-field text-text"
 						name="hairColor"
 						value={formData.hairColor}
 						onChange={handleChange}
-						placeholder="Hair Color"
 						required
-					/>
+					>
+						<option value="">Select Hair Color</option>
+						<option value="Black">Black</option>
+						<option value="Gray">Gray</option>
+						<option value="White">White</option>
+					</select>
 				</div>
 				{/* Complexion */}
 				<div>
 					<label htmlFor="complexion" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Complexion</label>
-					<input
-						type="text"
+					<select
 						id="complexion"
-						className="input-field"
+						className="input-field text-text"
 						name="complexion"
 						value={formData.complexion}
 						onChange={handleChange}
-						placeholder="Complexion"
 						required
-					/>
+					>
+						<option value="">Select Complexion</option>
+						<option value="Fair Skin">Fair Skin</option>
+						<option value="Medium Skin">Medium Skin</option>
+						<option value="Black Skin">Black Skin</option>
+					</select>
 				</div>
 				{/* Blood Group */}
 				<div>
 					<label htmlFor="bloodGroup" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Blood Group</label>
-					<input
-						type="text"
+					<select
 						id="bloodGroup"
-						className="input-field"
+						className="input-field text-text"
 						name="bloodGroup"
 						value={formData.bloodGroup}
 						onChange={handleChange}
-						placeholder="Blood Group"
 						required
-					/>
+					>
+						<option value="">Select Blood Group</option>
+						<option value="A+">A positive (A+)</option>
+						<option value="A-">A negative (A-)</option>
+						<option value="O+">O positive (O+)</option>
+					</select>
 				</div>
 				{/* Body Type */}
 				<div>
 					<label htmlFor="bodyType" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Body Type</label>
-					<input
-						type="text"
+					<select
 						id="bodyType"
-						className="input-field"
+						className="input-field text-text"
 						name="bodyType"
 						value={formData.bodyType}
 						onChange={handleChange}
-						placeholder="Body Type"
-						required
-					/>
+					>
+						<option value="">Select Body Type</option>
+						<option value="Slim">Slim</option>
+						<option value="Fat">Fat</option>
+						<option value="Average">Average</option>
+					</select>
 				</div>
-				{/* Body Art */}
+				{/* Tattoo */}
 				<div>
-					<label htmlFor="bodyArt" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Body Art</label>
-					<input
-						type="text"
-						id="bodyArt"
-						className="input-field"
-						name="bodyArt"
-						value={formData.bodyArt}
+					<label htmlFor="tattoo" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Tattoo on Body</label>
+					<select
+						id="tattoo"
+						className="input-field text-text"
+						name="tattoo"
+						value={formData.tattoo}
 						onChange={handleChange}
-						placeholder="Body Art"
-					/>
+					>
+						<option value="">Select Option</option>
+						<option value="Yes">Yes</option>
+						<option value="No">No</option>
+					</select>
 				</div>
 				{/* Disability */}
 				<div>
-					<label htmlFor="disability" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Disability</label>
-					<input
-						type="text"
-						id="disability"
-						className="input-field"
-						name="disability"
-						value={formData.disability}
+					<label htmlFor="anyDisability" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Any Disability</label>
+					<select
+						id="anyDisability"
+						className="input-field text-text"
+						name="anyDisability"
+						value={formData.anyDisability}
 						onChange={handleChange}
-						placeholder="Disability"
-					/>
+					>
+						<option value="">Select Option</option>
+						<option value="Yes">Yes</option>
+						<option value="No">No</option>
+					</select>
 				</div>
+				{
+					formData.anyDisability === 'Yes' &&
+					<div>
+						<label htmlFor="disability" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Disability Details</label>
+						<input
+							type="text"
+							id="disability"
+							className="input-field"
+								name="disability Details"
+							value={formData.disability}
+							onChange={handleChange}
+							placeholder="Disability"
+						/>
+					</div>
+				}
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
