@@ -7,23 +7,24 @@ function VerificationForm({ verify, onClose }) {
 	const handleVerification = () => {
 		verify(true);
 		setShowModal(false);
-		onClose(); 
+		onClose();
 	};
 
 	return (
 		<>
 			<Modal show={showModal} onClose={() => { setShowModal(false); onClose(); }}>
-				<h2 className="text-xl font-semibold">Enter Details for Verification</h2>
-				<p className="mt-4 text-gray-600">
-					Please provide your details for account verification.
-				</p>
+				<h2 className="text-xl font-semibold text-primary">Enter mobile & email for Verification</h2>
+				<div className="mt-6 text-gray-600">
+					<p className='mb-2'>Enter Mobile Number</p>
+					<input type="number" name="" id="" className='input-field' />
+				</div>
 				<button
-					className="mt-6 px-4 py-2 bg-blue-600 text-white rounded"
+					className="gradient-btn mt-6 px-4 py-2 text-white rounded m-auto"
 					onClick={handleVerification}
 				>
 					Verify Now
 				</button>
-			</Modal>
+			</Modal >
 		</>
 	);
 }

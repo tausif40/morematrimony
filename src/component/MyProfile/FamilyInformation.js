@@ -206,7 +206,7 @@ const FamilyInformation = () => {
 
 				{/* Family Location */}
 				<div className="col-span-2">
-					<label className="block font-medium mb-1 text-headingGray">Family Location</label>
+					<label className="block font-medium mb-2 text-headingGray">Family Location</label>
 					<div className="flex items-center space-x-4">
 						<label className="flex items-center space-x-2">
 							<input

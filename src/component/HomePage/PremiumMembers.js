@@ -102,6 +102,7 @@ function PremiumMembers() {
 				<div className='container h-full flex flex-col justify-between relative z-20'>
 					<div className='text-center pt-20 w-full flex flex-col items-center text-white'>
 						<h2 className='font-semibold'>TRUSTED BY MILLIONS</h2>
+						<div className='bg-white h-2'></div>
 						<p className='pt-6 max-w-4xl'>
 							"Love doesn't make the world go around. Love is what makes the ride worthwhile." Millions of Active Matrimonial users around the world find their true love and partners from this site. We are always there to help and find you the suitable match for yourself.
 						</p>
