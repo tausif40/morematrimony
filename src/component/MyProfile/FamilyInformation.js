@@ -20,15 +20,15 @@ const FamilyInformation = () => {
 	const validateForm = () => {
 		let formErrors = {};
 
-		if (!formData.familyValue) formErrors.familyValue = 'Family value is ';
-		if (!formData.familyType) formErrors.familyType = 'Family type is ';
-		if (!formData.familyStatus) formErrors.familyStatus = 'Family status is ';
-		if (!formData.fatherOccupation) formErrors.fatherOccupation = "Father's occupation is ";
-		if (!formData.motherOccupation) formErrors.motherOccupation = "Mother's occupation is ";
-		if (!formData.numBrothers) formErrors.numBrothers = 'Number of brothers is ';
-		if (!formData.brothersMarried) formErrors.brothersMarried = 'Please specify married brothers';
-		if (!formData.numSisters) formErrors.numSisters = 'Number of sisters is ';
-		if (!formData.sistersMarried) formErrors.sistersMarried = 'Please specify married sisters';
+		if (!formData.familyValue) formErrors.familyValue = 'Family value is requeued';
+		if (!formData.familyType) formErrors.familyType = 'Family type is requeued';
+		if (!formData.familyStatus) formErrors.familyStatus = 'Family status is requeued';
+		if (!formData.fatherOccupation) formErrors.fatherOccupation = "Father's occupation is requeued";
+		if (!formData.motherOccupation) formErrors.motherOccupation = "Mother's occupation is requeued";
+		if (!formData.numBrothers) formErrors.numBrothers = 'Number of brothers is requeued';
+		if (!formData.brothersMarried) formErrors.brothersMarried = 'Please specify married brothers requeued';
+		if (!formData.numSisters) formErrors.numSisters = 'Number of sisters is requeued';
+		if (!formData.sistersMarried) formErrors.sistersMarried = 'Please specify married sisters requeued';
 
 		setErrors(formErrors);
 		return Object.keys(formErrors).length === 0;
