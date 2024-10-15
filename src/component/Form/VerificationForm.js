@@ -16,7 +16,7 @@ function VerificationForm({ verify, onClose }) {
 				<h2 className="text-xl font-semibold text-primary">Enter mobile & email for Verification</h2>
 				<div className="mt-6 text-gray-600">
 					<p className='mb-2'>Enter Mobile Number</p>
-					<input type="number" name="" id="" className='input-field' />
+					<input type="number" name="" id="" className='input-field' placeholder='enter mobile number' />
 				</div>
 				<button
 					className="gradient-btn mt-6 px-4 py-2 text-white rounded m-auto"
