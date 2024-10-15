@@ -72,7 +72,7 @@ const FamilyInformation = () => {
 				{/* Family Value */}
 				<div>
 					<label htmlFor="familyValue" className="block font-medium mb-1 text-headingGray">
-						Family Value
+						Family Value <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="familyValue"
@@ -96,7 +96,7 @@ const FamilyInformation = () => {
 				{/* Family Type */}
 				<div>
 					<label htmlFor="familyType" className="block font-medium mb-1 text-headingGray">
-						Family Type
+						Family Type <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="familyType"
@@ -119,7 +119,7 @@ const FamilyInformation = () => {
 				{/* Family Status */}
 				<div>
 					<label htmlFor="familyStatus" className="block font-medium mb-1 text-headingGray">
-						Family Status
+						Family Status <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="familyStatus"
@@ -143,7 +143,7 @@ const FamilyInformation = () => {
 				{/* Father's Occupation */}
 				<div>
 					<label htmlFor="fatherOccupation" className="block font-medium mb-1 text-headingGray">
-						Father's Occupation
+						Father's Occupation <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="fatherOccupation"
@@ -167,7 +167,7 @@ const FamilyInformation = () => {
 				{/* Mother's Occupation */}
 				<div>
 					<label htmlFor="motherOccupation" className="block font-medium mb-1 text-headingGray">
-						Mother's Occupation
+						Mother's Occupation <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="motherOccupation"
@@ -191,7 +191,7 @@ const FamilyInformation = () => {
 				{/* Number of Brothers */}
 				<div>
 					<label htmlFor="numBrothers" className="block font-medium mb-1 text-headingGray">
-						No. of Brothers
+						No. of Brothers <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="numBrothers"
@@ -216,7 +216,7 @@ const FamilyInformation = () => {
 				{/* Brothers Married */}
 				<div>
 					<label htmlFor="brothersMarried" className="block font-medium mb-1 text-headingGray">
-						Brothers Married
+						Brothers Married <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="brothersMarried"
@@ -240,7 +240,7 @@ const FamilyInformation = () => {
 				{/* Number of Sisters */}
 				<div>
 					<label htmlFor="numSisters" className="block font-medium mb-1 text-headingGray">
-						No. of Sisters
+						No. of Sisters <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="numSisters"
@@ -265,7 +265,7 @@ const FamilyInformation = () => {
 				{/* Sisters Married */}
 				<div>
 					<label htmlFor="sistersMarried" className="block font-medium mb-1 text-headingGray">
-						Sisters Married
+						Sisters Married <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="sistersMarried"
