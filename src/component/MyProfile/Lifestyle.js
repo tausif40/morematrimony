@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const Lifestyle = () => {
 	const [ formData, setFormData ] = useState({
@@ -7,11 +9,31 @@ const Lifestyle = () => {
 		smoke: '',
 		livingWith: '',
 	});
+	const [ errors, setErrors ] = useState({});
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// Handle form submission logic here
-		console.log('Form submitted:', formData);
+
+		const validationErrors = {};
+		if (!formData.diet) validationErrors.diet = 'Diet is required';
+		if (!formData.drink) validationErrors.drink = 'Drink preference is required';
+		if (!formData.smoke) validationErrors.smoke = 'Smoking preference is required';
+		if (!formData.livingWith) validationErrors.livingWith = 'Living With is required';
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			toast.error('Please correct all highlighted errors!');
+		} else {
+			try {
+				const response = await axios.post('/api/lifestyle-info', formData);
+				toast.success('Lifestyle details update successfully!');
+				console.log('Form submitted:', response.data);
+				setErrors({});
+			} catch (error) {
+				toast.error('Lifestyle details update successfully!');
+				console.error('Error submitting form:', error);
+			}
+		}
 	};
 
 	const handleChange = (e) => {
@@ -20,7 +42,15 @@ const Lifestyle = () => {
 			...prevFormData,
 			[ name ]: value,
 		}));
+		if (errors[ name ]) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				[ name ]: '',
+			}));
+		}
 	};
+
+	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
@@ -28,70 +58,70 @@ const Lifestyle = () => {
 			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
 				{/* Diet */}
 				<div>
-					<label htmlFor="diet" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Diet</label>
+					<label htmlFor="diet" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Diet<span className="text-red-500"> *</span></label>
 					<select
 						id="diet"
-						className="input-field text-text"
+						className={getInputClasses('diet')}
 						name="diet"
 						value={formData.diet}
 						onChange={handleChange}
-						required
 					>
-						<option value="">Select Diet</option>
+						<option value="" disabled>Select Diet</option>
 						<option value="vegetarian">Vegetarian</option>
 						<option value="nonVegetarian">Non-Vegetarian</option>
 						<option value="vegan">Vegan</option>
-						{/* Add more diet options as needed */}
 					</select>
+					{errors.diet && <p className="text-red-500 text-xs mt-1">{errors.diet}</p>}
 				</div>
+
 				{/* Drink */}
 				<div>
-					<label htmlFor="drink" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Drink</label>
+					<label htmlFor="drink" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Drink<span className="text-red-500"> *</span></label>
 					<select
 						id="drink"
-						className="input-field text-text"
+						className={getInputClasses('drink')}
 						name="drink"
 						value={formData.drink}
 						onChange={handleChange}
-						required
 					>
-						<option value="">Select Drink Preference</option>
+						<option value="" disabled>Select Drink Preference</option>
 						<option value="social">Social</option>
 						<option value="regular">Regular</option>
 						<option value="never">Never</option>
-						{/* Add more drink options as needed */}
 					</select>
+					{errors.drink && <p className="text-red-500 text-xs mt-1">{errors.drink}</p>}
 				</div>
+
 				{/* Smoke */}
 				<div>
-					<label htmlFor="smoke" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Smoke</label>
+					<label htmlFor="smoke" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Smoke<span className="text-red-500"> *</span></label>
 					<select
 						id="smoke"
-						className="input-field text-text"
+						className={getInputClasses('smoke')}
 						name="smoke"
 						value={formData.smoke}
 						onChange={handleChange}
-						required
 					>
-						<option value="">Select Smoking Preference</option>
+						<option value="" disabled>Select Smoking Preference</option>
 						<option value="smokes">Smokes</option>
 						<option value="doesNotSmoke">Does Not Smoke</option>
-						{/* Add more smoking options as needed */}
 					</select>
+					{errors.smoke && <p className="text-red-500 text-xs mt-1">{errors.smoke}</p>}
 				</div>
+
 				{/* Living With */}
 				<div>
-					<label htmlFor="livingWith" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Living With</label>
+					<label htmlFor="livingWith" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Living With<span className="text-red-500"> *</span></label>
 					<input
 						type="text"
 						id="livingWith"
-						className="input-field"
+						className={getInputClasses('livingWith')}
 						placeholder="Living With"
 						name="livingWith"
 						value={formData.livingWith}
 						onChange={handleChange}
-						required
 					/>
+					{errors.livingWith && <p className="text-red-500 text-xs mt-1">{errors.livingWith}</p>}
 				</div>
 
 				{/* Submit Button */}

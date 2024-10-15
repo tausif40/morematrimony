@@ -19,7 +19,7 @@ function DashboardLayout() {
 	const location = useLocation();
 	const currentPath = location.pathname;
 	const [ menuOpen, setMenuOpen ] = useState(false);
-	const [ verified, setVerified ] = useState(false);
+	const [ verified, setVerified ] = useState(true);
 	const [ showVerification, setShowVerification ] = useState(false);
 
 	useEffect(() => {

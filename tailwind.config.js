@@ -15,7 +15,6 @@ module.exports = {
         hotPink: "#fd2c79",
         hotRed: "#f21a2d",
         gold: "#f8c928",
-        pink2: "#fd655b",
       }
     },
   },

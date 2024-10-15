@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { TiSocialGooglePlus } from "react-icons/ti";
-import { FaFacebook } from "react-icons/fa";
-import { AiFillTwitterCircle } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 
 const RegistrationForm = () => {
-
+	const dropdownRef = useRef(null);
+	const navigate = useNavigate();
 	const [ isOpen, setIsOpen ] = useState(false);
 	const [ selectedProfile, setSelectedProfile ] = useState('');
 
@@ -21,10 +19,22 @@ const RegistrationForm = () => {
 		setIsOpen(false);
 	};
 
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setIsOpen(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
 	const [ formData, setFormData ] = useState({
 		firstName: "",
 		lastName: "",
-		gender: "Male",
+		gender: "",
 		dateOfBirth: "",
 		email: "",
 		password: "",
@@ -67,6 +77,11 @@ const RegistrationForm = () => {
 		}
 	};
 
+	const handleLoginPage = () => {
+		navigate('/')
+		window.scrollTo(0, 0)
+	}
+
 	return (
 		<div className="flex justify-center items-center w-full min-h-screen py-10 px-2 md:px-4">
 			<form
@@ -94,7 +109,7 @@ const RegistrationForm = () => {
 
 						{isOpen && (
 							<div className="absolute mt-2 bg-white border border-gray-300 rounded-md shadow-lg w-full hover:ring-primary hover:border-primary">
-								<div className="grid grid-cols-3 gap-4 p-4">
+								<div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4" ref={dropdownRef}>
 									{profiles.map((profile, index) => (
 										<div
 											key={index}
@@ -269,9 +284,9 @@ const RegistrationForm = () => {
 				<div className="text-center mt-8">
 					<p className="text-sm text-gray-500">
 						Already have an account?{" "} <br />
-						<Link to='/' className="text-primary hover:underline">
+						<p className="text-primary hover:underline cursor-pointer" onClick={handleLoginPage}>
 							Login to your Account
-						</Link>
+						</p>
 					</p>
 				</div>
 			</form>

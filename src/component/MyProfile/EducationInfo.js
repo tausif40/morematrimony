@@ -1,17 +1,37 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const EducationInfo = () => {
 	const [ formData, setFormData ] = useState({
 		highestEducation: '',
 		highestDetails: '',
 		college: '',
-		other: '',
 	});
+	const [ errors, setErrors ] = useState({});
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// Handle form submission logic here
-		console.log('Form submitted:', formData);
+
+		const validationErrors = {};
+		if (!formData.highestEducation) validationErrors.highestEducation = 'Highest Education is required';
+		if (!formData.highestDetails) validationErrors.highestDetails = 'Education Details are required';
+		if (!formData.college) validationErrors.college = 'College / Institution is required';
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			toast.error('Please correct all highlighted errors!');
+		} else {
+			try {
+				const response = await axios.post('/api/education-info', formData);
+				toast.success('Education Info submitted successfully!');
+				console.log('Form submitted:', response.data);
+				setErrors({});
+			} catch (error) {
+				toast.error('Failed to submit Education Info!');
+				console.error('Error submitting form:', error);
+			}
+		}
 	};
 
 	const handleChange = (e) => {
@@ -20,68 +40,72 @@ const EducationInfo = () => {
 			...prevFormData,
 			[ name ]: value,
 		}));
+		if (errors[ name ]) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				[ name ]: '',
+			}));
+		}
 	};
+
+	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Education Details</p>
-			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
-				{/* Country */}
+			<form className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4 px-6" onSubmit={handleSubmit}>
+				{/* Highest Education */}
 				<div>
-					<label htmlFor="highestEducation" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Highest Education</label>
+					<label htmlFor="highestEducation" className="block font-medium mb-1 mt-1 text-headingGray">
+						Highest Education <span className="text-red-500">*</span>
+					</label>
 					<select
 						id="highestEducation"
-						className="input-field text-text"
+						className={getInputClasses('highestEducation')}
 						name="highestEducation"
 						value={formData.highestEducation}
 						onChange={handleChange}
-						required
 					>
-						<option value="course1">course1</option>
-						<option value="course2">course2</option>
+						<option value="" disabled>Select Education</option>
+						<option value="course1">Course 1</option>
+						<option value="course2">Course 2</option>
+						<option value="other">Other</option>
 					</select>
+					{errors.highestEducation && <p className="text-red-500 text-xs">{errors.highestEducation}</p>}
 				</div>
-				{/* State */}
+
+				{/* Education in Detail */}
 				<div>
-					<label htmlFor="highestDetails" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Education in Detail</label>
+					<label htmlFor="highestDetails" className="block font-medium mb-1 mt-1 text-headingGray">
+						Education in Detail <span className="text-red-500">*</span>
+					</label>
 					<input
 						type="text"
 						id="highestDetails"
-						className="input-field"
+						className={getInputClasses('highestDetails')}
 						placeholder="Education in Detail"
-						name="state"
+						name="highestDetails"
 						value={formData.highestDetails}
 						onChange={handleChange}
-						required
 					/>
+					{errors.highestDetails && <p className="text-red-500 text-xs">{errors.highestDetails}</p>}
 				</div>
-				{/* City */}
-				<div>
-					<label htmlFor="college" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">College / Institution</label>
+
+				{/* College / Institution */}
+				<div className="col-span-2">
+					<label htmlFor="college" className="block font-medium mb-1 mt-1 text-headingGray">
+						College / Institution <span className="text-red-500">*</span>
+					</label>
 					<input
 						type="text"
 						id="college"
-						className="input-field"
+						className={getInputClasses('college')}
 						placeholder="College / Institution"
-						name="city"
+						name="college"
 						value={formData.college}
 						onChange={handleChange}
-						required
 					/>
-				</div>
-				{/* Postal Code */}
-				<div>
-					<label htmlFor="other" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Other</label>
-					<input
-						type="text"
-						id="other"
-						className="input-field"
-						placeholder="Other"
-						name="postalCode"
-						value={formData.other}
-						onChange={handleChange}
-						required
-					/>
+					{errors.college && <p className="text-red-500 text-xs">{errors.college}</p>}
 				</div>
 
 				{/* Submit Button */}
@@ -93,4 +117,4 @@ const EducationInfo = () => {
 	);
 };
 
-export default EducationInfo
+export default EducationInfo;

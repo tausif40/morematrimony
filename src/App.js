@@ -37,7 +37,7 @@ const App = () => {
     <>
       <Toaster position="top-right" reverseOrder={true} />
       <div className="">
-        <ScrollToTop />
+        {/* <ScrollToTop /> */}
         <TopNav />
         <NavMain />
         <Routes>
