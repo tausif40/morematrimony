@@ -28,6 +28,7 @@ const ResidencyInformation = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
+			console.log(formData);
 			try {
 				const response = await axios.post('/api/residency-information', formData);
 				toast.success('Residency Information uploaded');

@@ -86,10 +86,10 @@ const Language = () => {
 						value={formData.motherTongue}
 						onChange={handleChange}
 					>
-						<option value="" disabled>Select Drink Preference</option>
-						<option value="social">Social</option>
-						<option value="regular">Regular</option>
-						<option value="never">Never</option>
+						<option value="" disabled>Select Mother Tongue</option>
+						<option value="Hindi">Hindi</option>
+						<option value="Gujarati">Gujarati</option>
+						<option value="Gujarati">Gujarati</option>
 					</select>
 					<p className="text-red-500 text-xs mt-1	">{error}</p>
 				</div>

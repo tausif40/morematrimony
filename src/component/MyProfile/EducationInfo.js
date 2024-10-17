@@ -22,6 +22,7 @@ const EducationInfo = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
+			console.log(formData);
 			try {
 				const response = await axios.post('/api/education-info', formData);
 				toast.success('Education Info submitted successfully!');

@@ -24,6 +24,7 @@ const Lifestyle = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
+			console.log(formData);
 			try {
 				const response = await axios.post('/api/lifestyle-info', formData);
 				toast.success('Lifestyle details update successfully!');

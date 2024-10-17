@@ -23,7 +23,7 @@ const MyProfilePage = () => {
 			{/* <UpdateEmail /> */}
 			<BasicInformation />
 			<PresentAddress />
-			<PermanentAddress />
+			{/* <PermanentAddress /> */}
 			<ResidencyInformation />
 			<EducationInfo />
 			<Career />

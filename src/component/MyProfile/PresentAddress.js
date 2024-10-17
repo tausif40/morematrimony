@@ -18,6 +18,7 @@ const PresentAddress = () => {
 		const newErrors = validateForm();
 
 		if (Object.keys(newErrors).length === 0) {
+			console.log(formData);
 			try {
 				const response = await axios.post('/api/present-address', formData);
 				toast.success('Present Address update successfully!');

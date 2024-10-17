@@ -27,7 +27,7 @@ const LoginPage = () => {
 		<div className="w-80 sm:min-w-[356px] md:min-w-96">
 			<div className="px-6 md:px-8 py-6 rounded-lg shadow-md w-full inset-0 bg-black/60 ">
 				<div className='	'>
-					<h2 className="text-xl md:text-3xl text-center text-gold">Member Login</h2>
+					<h2 className="text-[1.375rem] text-center text-gold">Member Login</h2>
 				</div>
 
 				{/* Email Input */}

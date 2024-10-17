@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import axios from 'axios';
 
 const SocialBackground = () => {
 	const [ formData, setFormData ] = useState({
@@ -23,12 +24,22 @@ const SocialBackground = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const newErrors = {};
+
 		Object.keys(formData).forEach((key) => {
-			if (!formData[ key ]) {
+			if (!formData[ key ] && key !== 'gothra' && key !== 'kundli' && key !== 'dosh' && key !== 'doshName') {
 				const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
 				newErrors[ key ] = `${formattedKey} is required`;
 			}
 		});
+
+		if (formData.religion === 'hindu') {
+			if (!formData.gothra) newErrors.gothra = 'Gothra is required';
+			if (!formData.kundli)	newErrors.kundli = 'Kundli is required';
+			if (!formData.dosh)	newErrors.dosh = 'Dosh is required';
+			if (formData.dosh === 'yes' && !formData.doshName) {
+				newErrors.doshName = 'Dosh Name is required';
+			}
+		}
 
 		if (Object.keys(newErrors).length > 0) {
 			setErrors(newErrors);
@@ -36,8 +47,24 @@ const SocialBackground = () => {
 			return;
 		}
 
-		console.log('Form submitted:', formData);
+		let cleanedFormData = { ...formData };
+
+		if (formData.religion !== 'hindu') {
+			delete cleanedFormData.gothra;
+			delete cleanedFormData.kundli;
+			delete cleanedFormData.dosh;
+			delete cleanedFormData.doshName;
+		}
+
+		if (formData.religion === 'hindu' && formData.dosh === 'no') {
+			delete cleanedFormData.doshName;
+		}
+
+		console.log('Form submitted:', cleanedFormData);
+
 	};
+
+
 
 	const handleChange = (e) => {
 		const { name, value, files } = e.target;
@@ -248,41 +275,43 @@ const SocialBackground = () => {
 					</div>
 					{errors.birthPlace && <p className="text-red-500 text-xs">{errors.birthPlace}</p>}
 				</div>
-				{/* Gothra */}
+
 				{formData.religion === 'hindu' && (
 					<>
 						<div>
 							<label htmlFor="gothra" className="block font-medium mb-1 mt-1 text-headingGray">
-								Gothra(m) <span className="text-red-500">*</span>
+								Gothra <span className="text-red-500">*</span>
 							</label>
 							<input
 								type="text"
 								id="gothra"
-								className={getInputClasses('Kundli')}
-								placeholder="gothra name"
+								className={getInputClasses('gothra')}
+								placeholder="Enter Gothra"
 								name="gothra"
+								value={formData.gothra}
 								onChange={handleChange}
 							/>
 							{errors.gothra && <p className="text-red-500 text-xs">{errors.gothra}</p>}
 						</div>
-						{/* upload kundli */}
+
 						<div>
 							<label htmlFor="kundli" className="block font-medium mb-1 mt-1 text-headingGray">
-								Upload kundli <span className="text-red-500">*</span>
+								Upload Kundli <span className="text-red-500">*</span>
 							</label>
 							<input
 								type="file"
 								id="kundli"
-								className={getInputClasses('Kundli')}
-								placeholder="Upload kundli"
+								className={getInputClasses('kundli')}
 								name="kundli"
 								onChange={handleChange}
 							/>
 							{errors.kundli && <p className="text-red-500 text-xs">{errors.kundli}</p>}
 						</div>
-						{/* dosh */}
+
 						<div>
-							<label htmlFor="dosh" className="block font-medium mb-1 mt-1 text-headingGray">Have Dosh? <span className="text-red-500">*</span></label>
+							<label htmlFor="dosh" className="block font-medium mb-1 mt-1 text-headingGray">
+								Have Dosh? <span className="text-red-500">*</span>
+							</label>
 							<select
 								id="dosh"
 								className={getInputClasses('dosh')}
@@ -290,16 +319,18 @@ const SocialBackground = () => {
 								value={formData.dosh}
 								onChange={handleChange}
 							>
-								<option value="" disabled>Have Dosh?</option>
+								<option value="" disabled>Select</option>
 								<option value="yes">Yes</option>
 								<option value="no">No</option>
 							</select>
 							{errors.dosh && <p className="text-red-500 text-xs">{errors.dosh}</p>}
 						</div>
-						{/* dosh name*/}
-						{formData.dosh == 'yes' &&
+
+						{formData.dosh === 'yes' && (
 							<div>
-								<label htmlFor="doshName" className="block font-medium mb-1 mt-1 text-headingGray">Dosh Name<span className="text-red-500">*</span></label>
+								<label htmlFor="doshName" className="block font-medium mb-1 mt-1 text-headingGray">
+									Dosh Name <span className="text-red-500">*</span>
+								</label>
 								<select
 									id="doshName"
 									className={getInputClasses('doshName')}
@@ -307,15 +338,15 @@ const SocialBackground = () => {
 									value={formData.doshName}
 									onChange={handleChange}
 								>
-									<option value="" disabled>Select dosh Name</option>
-									<option value="doshName1">doshName 1</option>
-									<option value="doshName2">doshName 2</option>
+									<option value="" disabled>Select Dosh Name</option>
+									<option value="doshName1">Dosh Name 1</option>
+									<option value="doshName2">Dosh Name 2</option>
 								</select>
 								{errors.doshName && <p className="text-red-500 text-xs">{errors.doshName}</p>}
-							</div>}
+							</div>
+						)}
 					</>
 				)}
-
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">

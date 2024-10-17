@@ -25,6 +25,7 @@ const Career = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
+			console.log(formData);
 			try {
 				const response = await axios.post('/api/career-info', formData);
 				toast.success('Career information updated successfully');

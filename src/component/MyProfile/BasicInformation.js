@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 const BasicInformationForm = () => {
+	const [ numberOfChildren, setNumberOfChildren ] = useState('');
 	const [ formData, setFormData ] = useState({
 		firstName: '',
 		lastName: '',
@@ -10,7 +11,6 @@ const BasicInformationForm = () => {
 		gender: '',
 		onBehalf: '',
 		maritalStatus: '',
-		numberOfChildren: '',
 		ProfilePhoto: null,
 	});
 
@@ -21,6 +21,13 @@ const BasicInformationForm = () => {
 		const newErrors = validateForm();
 		if (Object.keys(newErrors).length === 0) {
 
+			if (formData.maritalStatus === 'married' || formData.maritalStatus === 'divorced' || formData.maritalStatus === 'widowed') {
+				setFormData((previousData) => ({
+					...previousData,
+					numberOfChildren: numberOfChildren
+				}));
+			}
+
 			console.log('Form submitted:', formData);
 
 			await axios.post('/api', formData)
@@ -29,8 +36,8 @@ const BasicInformationForm = () => {
 					toast.success('Basic information updated successfully');
 				}).catch((error) => {
 					console.log(error);
-					toast.error('Basic information updated failed!');
-				})
+					toast.error('Basic information update failed!');
+				});
 
 		} else {
 			setErrors(newErrors);
@@ -65,14 +72,16 @@ const BasicInformationForm = () => {
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
 		if (!formData.gender) newErrors.gender = 'Gender is required';
 		if (!formData.maritalStatus) newErrors.maritalStatus = 'Marital Status is required';
-		if (!formData.numberOfChildren) newErrors.numberOfChildren = 'Number of Children is required';
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
 		if (formData.ProfilePhoto == null) newErrors.ProfilePhoto = 'Profile Photo is required';
+		if (formData.maritalStatus !== 'single' && !numberOfChildren) {
+			newErrors.numberOfChildren = 'Number of Children is required';
+		}
+
 		return newErrors;
 	};
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
-
 
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
@@ -163,9 +172,7 @@ const BasicInformationForm = () => {
 						value={formData.maritalStatus}
 						onChange={handleChange}
 					>
-						<option value="" disabled>
-							Select
-						</option>
+						<option value="" disabled>Select</option>
 						<option value="single">Single</option>
 						<option value="married">Married</option>
 						<option value="divorced">Divorced</option>
@@ -175,22 +182,27 @@ const BasicInformationForm = () => {
 				</div>
 
 				{/* Number of Children */}
-				<div>
-					<label htmlFor="numberOfChildren" className="block font-medium mb-1 mt-1 text-headingGray">
-						Number of Children<span className="text-red-500"> *</span>
-					</label>
-					<input
-						type="number"
-						id="numberOfChildren"
-						className={getInputClasses('numberOfChildren')}
-						name="numberOfChildren"
-						value={formData.numberOfChildren}
-						onChange={handleChange}
-					/>
-					{errors.numberOfChildren && (
-						<p className="text-red-500 text-xs mt-1">{errors.numberOfChildren}</p>
-					)}
-				</div>
+				{(formData.maritalStatus === 'married' || formData.maritalStatus === 'divorced' || formData.maritalStatus === 'widowed') && (
+					<div>
+						<label htmlFor="numberOfChildren" className="block font-medium mb-1 mt-1 text-headingGray">
+							Number of Children<span className="text-red-500"> *</span>
+						</label>
+						<input
+							type="number"
+							id="numberOfChildren"
+							className={getInputClasses('numberOfChildren')}
+							name="numberOfChildren"
+							value={numberOfChildren}
+							onChange={(e) => {
+								handleChange(e);
+								setNumberOfChildren(e.target.value);
+							}}
+						/>
+						{errors.numberOfChildren && (
+							<p className="text-red-500 text-xs mt-1">{errors.numberOfChildren}</p>
+						)}
+					</div>
+				)}
 
 				{/* On Behalf */}
 				<div>
@@ -211,27 +223,23 @@ const BasicInformationForm = () => {
 					{errors.onBehalf && <p className="text-red-500 text-xs mt-1">{errors.onBehalf}</p>}
 				</div>
 
-				{/* Photo */}
-				<div className="">
-					<label htmlFor="photo" className="block font-medium mb-1 mt-1 text-headingGray">
+				{/* Profile Photo */}
+				<div>
+					<label htmlFor="ProfilePhoto" className="block font-medium mb-1 mt-1 text-headingGray">
 						Profile Photo<span className="text-red-500"> *</span>
 					</label>
 					<input
 						type="file"
-						id="photo"
-						className="input-field"
-						accept="image/*"
+						id="ProfilePhoto"
 						name="ProfilePhoto"
+						className={getInputClasses('ProfilePhoto')}
 						onChange={handleChange}
 					/>
 					{errors.ProfilePhoto && <p className="text-red-500 text-xs mt-1">{errors.ProfilePhoto}</p>}
 				</div>
 
-				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">
-						Update
-					</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
 				</div>
 			</form>
 		</div>
