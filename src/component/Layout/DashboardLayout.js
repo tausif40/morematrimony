@@ -89,7 +89,7 @@ function DashboardLayout() {
 					</div>
 				</div>
 
-				<div className="block lg:hidden fixed bottom-0 w-full">
+				<div className="block lg:hidden fixed bottom-0 w-full z-50">
 					<BottomMenu onMenuClick={() => setMenuOpen(true)} />
 				</div>
 				<div className="">

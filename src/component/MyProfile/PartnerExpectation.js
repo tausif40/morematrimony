@@ -3,10 +3,9 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 const PartnerExpectation = () => {
-	const [ lookingFor, setLookingFor ] = useState('')
 	const [ formData, setFormData ] = useState({
-		brideAge: '',
-		height: '',
+		brideAge: { minAge: '', maxAge: '' },
+		height: { feet: '', inches: '' },
 		maritalStatus: '',
 		numberOfChildren: '',
 		childrenAcceptable: '',
@@ -23,38 +22,64 @@ const PartnerExpectation = () => {
 		drinkingAcceptable: '',
 		smokingAcceptable: '',
 		bodyType: '',
-		manglik: '',
 		preferredCountry: '',
 		preferredState: '',
 		complexion: '',
+		lookingFor: ''
 	});
 
 	const [ errors, setErrors ] = useState({});
 
 	const validateForm = () => {
 		let formErrors = {};
+
 		Object.keys(formData).forEach((field) => {
-			if (!formData[ field ]) {
+			if (!formData[ field ] && field !== 'numberOfChildren' && field !== 'childrenAcceptable' && field !== 'lookingFor') {
 				const formattedKey = field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
 				formErrors[ field ] = `${formattedKey} is required`;
 			}
 		});
+
+		if (!formData.brideAge.minAge || !formData.brideAge.maxAge) {
+			formErrors.brideAge = 'Bride age (min and max) is required';
+		} else if (parseInt(formData.brideAge.minAge) >= parseInt(formData.brideAge.maxAge)) {
+			formErrors.brideAge = 'Min age should be less than max age';
+		}
+
+		if (!formData.height.feet) {
+			formErrors[ 'height.feet' ] = 'Height is required';
+		}
+
+		if (isChildrenFieldsVisible()) {
+			if (!formData.numberOfChildren) {
+				formErrors.numberOfChildren = 'Number of children is required';
+			}
+			if (!formData.childrenAcceptable) {
+				formErrors.childrenAcceptable = 'Children acceptable is required';
+			}
+		}
+
 		setErrors(formErrors);
 		return Object.keys(formErrors).length === 0;
 	};
 
+	const isChildrenFieldsVisible = () => {
+		if (formData.maritalStatus == 'single') {
+			delete formData.numberOfChildren;
+			delete formData.childrenAcceptable;
+		} else if (formData.lookingFor == "") delete formData.lookingFor;
+
+		return (formData.maritalStatus !== 'single' && formData.maritalStatus !== '')
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
 		if (!validateForm()) {
-			toast.error('Please fill in all  fields');
-			console.log("half Data", formData);
+			toast.error('Please fill in all required fields');
 			return;
 		}
-		setFormData((previousData) => ({
-			...previousData, lookingFor: lookingFor
-		}))
 		console.log(formData);
-
 		try {
 			const response = await axios.post('/api/partner-expectation', formData);
 			if (response.status === 200) {
@@ -67,43 +92,54 @@ const PartnerExpectation = () => {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			[ name ]: value,
-		}));
+
+		if (name.includes('brideAge') || name.includes('height')) {
+			const [ group, field ] = name.split('.');
+			setFormData((prevFormData) => ({
+				...prevFormData,
+				[ group ]: { ...prevFormData[ group ], [ field ]: value }
+			}));
+		} else {
+			setFormData((prevFormData) => ({
+				...prevFormData,
+				[ name ]: value
+			}));
+		}
+
+		// Remove error once the field is corrected
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
+	// Get input classes for error styling
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Partner Expectation</p>
 			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
-				{/* age */}
+				{/* {brideAge} */}
 				<div>
-					<label className="block font-medium mb-1 mt-1 text-headingGray">Bride's Age <span className="text-red-500">*</span></label>
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
+						Bride's Age <span className="text-red-500">*</span>
+					</label>
 					<div className="rounded-md flex gap-4">
 						<select
-							id="brideAge"
 							className={`input-field text-gray-700 p-1 outline-none border`}
-							name="brideAge"
-							value={formData.brideAge}
+							name="brideAge.minAge"
+							value={formData.brideAge.minAge}
 							onChange={handleChange}
 						>
-							<option value="" disabled>From</option>
+							<option value="" disabled>Min</option>
 							<option value="18">18</option>
 							<option value="19">19</option>
 						</select>
-						{/* State */}
 						<select
-							id="brideAge"
 							className={`input-field text-gray-700 p-1 outline-none border`}
-							name="brideAge"
-							value={formData.brideAge}
+							name="brideAge.maxAge"
+							value={formData.brideAge.maxAge}
 							onChange={handleChange}
 						>
-							<option value="" disabled>To</option>
+							<option value="" disabled>Max</option>
 							<option value="18">18</option>
 							<option value="19">19</option>
 						</select>
@@ -116,45 +152,43 @@ const PartnerExpectation = () => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Height <span className="text-red-500">*</span></label>
 					<div className="rounded-md flex gap-4">
 						<select
-							id="height"
 							className={`input-field text-gray-700 p-1 outline-none border`}
-							name="height"
-							value={formData.height}
+							name="height.feet"
+							value={formData.height.feet}
 							onChange={handleChange}
 						>
-							<option value="" disabled>Foot</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
+							<option value="" disabled>Feet</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
 						</select>
-						{/* State */}
+
 						<select
-							id="height"
 							className={`input-field text-gray-700 p-1 outline-none border`}
-							name="height"
-							value={formData.height}
+							name="height.inches"
+							value={formData.height.inches}
 							onChange={handleChange}
 						>
-							<option value="" disabled>Inch</option>
+							<option value="" disabled>Inches</option>
+							<option value="0">0</option>
 							<option value="1">1</option>
-							<option value="2">2</option>
 						</select>
 					</div>
-					{errors.height && <p className="text-red-500 text-xs">{errors.height}</p>}
+					{errors[ 'height.feet' ] && <p className="text-red-500 text-xs">{errors[ 'height.feet' ]}</p>}
 				</div>
 
 				{/* Marital Status */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
-						Marital Status<span className="text-red-500"> *</span>
+						Marital Status <span className="text-red-500"> *</span>
 					</label>
 					<select
-						id="maritalStatus"
 						className={getInputClasses('maritalStatus')}
 						name="maritalStatus"
 						value={formData.maritalStatus}
 						onChange={handleChange}
 					>
-						<option value='' disabled>Select</option>
+						<option value="" disabled>Select</option>
 						<option value="single">Single</option>
 						<option value="married">Married</option>
 						<option value="divorced">Divorced</option>
@@ -163,31 +197,27 @@ const PartnerExpectation = () => {
 					{errors.maritalStatus && <p className="text-red-500 text-xs mt-1">{errors.maritalStatus}</p>}
 				</div>
 
-				{/* Number of Children */}
-				{(formData.maritalStatus == 'married' || formData.maritalStatus == 'divorced' || formData.maritalStatus == 'widowed') &&
+				{/* Number of Children & Children Acceptable */}
+				{isChildrenFieldsVisible() && (
 					<>
 						<div>
 							<label className="block font-medium mb-1 mt-1 text-headingGray">
-								Number of Children<span className="text-red-500"> *</span>
+								Number of Children <span className="text-red-500">*</span>
 							</label>
 							<input
 								type="number"
-								id="numberOfChildren"
 								className={getInputClasses('numberOfChildren')}
 								name="numberOfChildren"
 								value={formData.numberOfChildren}
 								onChange={handleChange}
 							/>
-							{errors.numberOfChildren && (
-								<p className="text-red-500 text-xs mt-1">{errors.numberOfChildren}</p>
-							)}
+							{errors.numberOfChildren && <p className="text-red-500 text-xs mt-1">{errors.numberOfChildren}</p>}
 						</div>
-
-						{/* // Children Acceptable */}
 						<div>
-							<label className="block font-medium mb-1 mt-1 text-headingGray">Children Acceptable <span className="text-red-500">*</span></label>
+							<label className="block font-medium mb-1 mt-1 text-headingGray">
+								Children Acceptable <span className="text-red-500">*</span>
+							</label>
 							<select
-								id="childrenAcceptable"
 								className={getInputClasses('childrenAcceptable')}
 								name="childrenAcceptable"
 								value={formData.childrenAcceptable}
@@ -196,30 +226,11 @@ const PartnerExpectation = () => {
 								<option value="" disabled>Select</option>
 								<option value="yes">Yes</option>
 								<option value="no">No</option>
-								<option value="maybe">Maybe</option>
 							</select>
-							{errors.childrenAcceptable && <p className="text-red-500 text-xs">{errors.childrenAcceptable}</p>}
+							{errors.childrenAcceptable && <p className="text-red-500 text-xs mt-1">{errors.childrenAcceptable}</p>}
 						</div>
 					</>
-				}
-
-				{/* Mother Tongue */}
-				<div>
-					<label className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Mother Tongue<span className="text-red-500"> *</span></label>
-					<select
-						id="motherTongue"
-						className="input-field text-gray-700"
-						name="motherTongue"
-						value={formData.motherTongue}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Mother Tongue</option>
-						<option value="Hindi">Hindi</option>
-						<option value="Gujarati">Gujarati</option>
-						<option value="Gujarati">Gujarati</option>
-					</select>
-					{errors.generalRequirement && <p className="text-red-500 text-xs">{errors.generalRequirement}</p>}
-				</div>
+				)}
 
 				{/* Residence Country */}
 				<div>
@@ -258,6 +269,7 @@ const PartnerExpectation = () => {
 					</select>
 					{errors.religion && <p className="text-red-500 text-xs">{errors.religion}</p>}
 				</div>
+
 				{/* Caste */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Caste <span className="text-red-500">*</span></label>
@@ -466,25 +478,6 @@ const PartnerExpectation = () => {
 					{errors.bodyType && <p className="text-red-500 text-xs">{errors.bodyType}</p>}
 				</div>
 
-				{/* Manglik */}
-				<div>
-					<label className="block font-medium mb-1 mt-1 text-headingGray">Manglik <span className="text-red-500">*</span></label>
-					<select
-						id="manglik"
-						className={getInputClasses('manglik')}
-						name="manglik"
-						value={formData.manglik}
-						onChange={handleChange}
-
-					>
-						<option value="" disabled>Select</option>
-						<option value="yes">Yes</option>
-						<option value="no">No</option>
-						<option value="unknown">Unknown</option>
-					</select>
-					{errors.manglik && <p className="text-red-500 text-xs">{errors.manglik}</p>}
-				</div>
-
 				{/* {preferredCountry} */}
 				<div>
 					<label htmlFor="preferredCountry" className="block font-medium mb-1 mt-1 text-headingGray">
@@ -547,17 +540,17 @@ const PartnerExpectation = () => {
 				</div>
 
 				{/* {What we are looking for} */}
-				<div>
+				<div className='col-span-2'>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">What we are looking for</label>
-					<input
+					<textarea
 						type="text"
-						className={`input-field`}
+						rows="3"
 						placeholder="General Requirement"
-						name="generalRequirement"
-						value={lookingFor}
-						onChange={(e) => setLookingFor(e.target.value)}
-					/>
-					{errors.lookingFor && <p className="text-red-500 text-xs">{errors.lookingFor}</p>}
+						name="lookingFor"
+						className={getInputClasses('lookingFor')}
+						value={formData.lookingFor}
+						onChange={handleChange}
+					></textarea>
 				</div>
 
 				{/* Submit Button */}

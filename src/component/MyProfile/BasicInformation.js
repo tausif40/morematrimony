@@ -20,16 +20,17 @@ const BasicInformationForm = () => {
 		e.preventDefault();
 		const newErrors = validateForm();
 		if (Object.keys(newErrors).length === 0) {
-
-			if (formData.maritalStatus === 'married' || formData.maritalStatus === 'divorced' || formData.maritalStatus === 'widowed') {
+			
+			if (formData.maritalStatus !== 'single') {
 				setFormData((previousData) => ({
 					...previousData,
 					numberOfChildren: numberOfChildren
 				}));
+			} else {
+				delete formData.numberOfChildren;
 			}
 
 			console.log('Form submitted:', formData);
-
 			await axios.post('/api', formData)
 				.then((response) => {
 					console.log(response);

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const BottomMenu = ({ onMenuClick }) => {
 	return (
 		<>
-			<section className='w-ful'>
+			<section className='w-ful z-50'>
 				<div className='custom-shadow2 flex justify-around items-end py-2 bg-white text-xs text-text font-light'>
 					<Link to='/dashboard'>
 						<div className='flex flex-col items-center gap-1'>

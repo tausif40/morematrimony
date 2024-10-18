@@ -105,7 +105,7 @@ const Language = () => {
 						</div>
 
 						{isOpen && (
-							<div className="absolute mt-2 bg-white border border-gray-300 rounded-md shadow-lg w-full">
+							<div className="absolute mt-2 bg-white z-40 border border-gray-300 rounded-md shadow-lg w-full">
 								<div className="flex flex-wrap gap-4 p-4">
 									{languages.map((language, index) => (
 										<div

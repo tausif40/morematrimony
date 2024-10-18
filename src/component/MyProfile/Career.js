@@ -63,7 +63,7 @@ const Career = () => {
 					<label htmlFor="employedIn" className="block font-medium mb-1 mt-1 text-headingGray">
 						Employed in <span className="text-red-500">*</span>
 					</label>
-					<div className="flex gap-8 items-center border rounded-md p-3">
+					<div className="flex flex-wrap gap-8 items-center border rounded-md p-3">
 						{[ 'Government/PSU', 'Private', 'Business', 'Defence', 'Self Employed', 'Not Working' ].map((option) => (
 							<label key={option} className="flex items-center gap-1">
 								<input

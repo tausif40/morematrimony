@@ -12,7 +12,7 @@ const SocialBackground = () => {
 		moon: '',
 		zodiac: '',
 		birthTime: '',
-		birthPlace: [ '', '', '' ],
+		birthPlace: { country: '', state: '', city: '' },
 		gothra: '',
 		kundli: null,
 		dosh: '',
@@ -31,11 +31,14 @@ const SocialBackground = () => {
 				newErrors[ key ] = `${formattedKey} is required`;
 			}
 		});
+		if (!formData.birthPlace.country) newErrors.birthPlaceCountry = 'Country is required';
+		if (!formData.birthPlace.state) newErrors.birthPlaceState = 'State is required';
+		if (!formData.birthPlace.city) newErrors.birthPlaceCity = 'City is required';
 
 		if (formData.religion === 'hindu') {
 			if (!formData.gothra) newErrors.gothra = 'Gothra is required';
-			if (!formData.kundli)	newErrors.kundli = 'Kundli is required';
-			if (!formData.dosh)	newErrors.dosh = 'Dosh is required';
+			if (!formData.kundli) newErrors.kundli = 'Kundli is required';
+			if (!formData.dosh) newErrors.dosh = 'Dosh is required';
 			if (formData.dosh === 'yes' && !formData.doshName) {
 				newErrors.doshName = 'Dosh Name is required';
 			}
@@ -59,12 +62,8 @@ const SocialBackground = () => {
 		if (formData.religion === 'hindu' && formData.dosh === 'no') {
 			delete cleanedFormData.doshName;
 		}
-
 		console.log('Form submitted:', cleanedFormData);
-
 	};
-
-
 
 	const handleChange = (e) => {
 		const { name, value, files } = e.target;
@@ -81,14 +80,21 @@ const SocialBackground = () => {
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
-	const handleBirthPlaceChange = (e, index) => {
+	const handleBirthPlaceChange = (e, field) => {
 		const { value } = e.target;
-		setFormData((prevFormData) => {
-			const updatedBirthPlace = [ ...prevFormData.birthPlace ];
-			updatedBirthPlace[ index ] = value;
-			return { ...prevFormData, birthPlace: updatedBirthPlace };
-		});
-		setErrors((prevErrors) => ({ ...prevErrors, birthPlace: '' }));
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			birthPlace: {
+				...prevFormData.birthPlace,
+				[ field ]: value
+			}
+		}));
+		if (value) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				[ `birthPlace${field.charAt(0).toUpperCase() + field.slice(1)}` ]: undefined,
+			}));
+		}
 	};
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
@@ -235,43 +241,52 @@ const SocialBackground = () => {
 				<div className="col-span-2">
 					<label htmlFor="birthPlace" className="block font-medium mb-1 mt-1 text-headingGray">Place Of Birth <span className="text-red-500">*</span></label>
 					<div className="p-2 border rounded-md flex gap-4">
-						<select
-							id="birthCountry"
-							className={getInputClasses('birthPlace')}
-							name="birthPlace"
-							value={formData.birthPlace[ 0 ]}
-							onChange={(e) => handleBirthPlaceChange(e, 0)}
+						<div className='w-full'>
+							<select
+								id="birthCountry"
+								className={getInputClasses('birthPlace')}
+								name="birthCountry"
+								value={formData.birthPlace.country}
+								onChange={(e) => handleBirthPlaceChange(e, 'country')}
+							>
+								<option value="" disabled>Country</option>
+								<option value="Country 1">Country 1</option>
+								<option value="Country 2">Country 2</option>
+							</select>
+							{errors.birthPlaceCountry && <p className="text-red-500 text-xs">{errors.birthPlaceCountry}</p>}
+						</div>
 
-						>
-							<option value="" disabled>Country</option>
-							<option value="Country 1">Country 1</option>
-							<option value="Country 2">Country 2</option>
-						</select>
 						{/* State */}
-						<select
-							id="birthState"
-							className={getInputClasses('birthPlace')}
-							name="birthPlace"
-							value={formData.birthPlace[ 1 ]}
-							onChange={(e) => handleBirthPlaceChange(e, 1)}
+						<div className='w-full'>
+							<select
+								id="birthState"
+								className={getInputClasses('state')}
+								name="birthState"
+								value={formData.birthPlace.state}
+								onChange={(e) => handleBirthPlaceChange(e, 'state')}
+							>
+								<option value="" disabled>State</option>
+								<option value="State 1">State 1</option>
+								<option value="State 2">State 2</option>
+							</select>
+							{errors.birthPlaceState && <p className="text-red-500 text-xs">{errors.birthPlaceState}</p>}
+						</div>
 
-						>
-							<option value="" disabled>State</option>
-							<option value="State 1">State 1</option>
-							<option value="State 2">State 2</option>
-						</select>
 						{/* City */}
-						<select
-							id="birthCity"
-							className={getInputClasses('birthPlace')}
-							name="birthPlace"
-							value={formData.birthPlace[ 2 ]}
-							onChange={(e) => handleBirthPlaceChange(e, 2)}
-						>
-							<option value="" disabled>City</option>
-							<option value="City 1">City 1</option>
-							<option value="City 2">City 2</option>
-						</select>
+						<div className='w-full'>
+							<select
+								id="birthCity"
+								className={getInputClasses('city')}
+								name="birthCity"
+								value={formData.birthPlace.city}
+								onChange={(e) => handleBirthPlaceChange(e, 'city')}
+							>
+								<option value="" disabled>City</option>
+								<option value="City 1">City 1</option>
+								<option value="City 2">City 2</option>
+							</select>
+							{errors.birthPlaceCity && <p className="text-red-500 text-xs">{errors.birthPlaceCity}</p>}
+						</div>
 					</div>
 					{errors.birthPlace && <p className="text-red-500 text-xs">{errors.birthPlace}</p>}
 				</div>
