@@ -111,7 +111,7 @@ const Lifestyle = () => {
 				</div>
 
 				{/* Living With */}
-				<div>
+				{/* <div>
 					<label htmlFor="livingWith" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Living With<span className="text-red-500"> *</span></label>
 					<input
 						type="text"
@@ -123,7 +123,7 @@ const Lifestyle = () => {
 						onChange={handleChange}
 					/>
 					{errors.livingWith && <p className="text-red-500 text-xs mt-1">{errors.livingWith}</p>}
-				</div>
+				</div> */}
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">

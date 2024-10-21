@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 
 const PhysicalAttributes = () => {
 	const [ formData, setFormData ] = useState({
-		height: '',
+		height: { feet: '', inches: '' },
 		weight: '',
 		eyeColor: '',
 		hairColor: '',
@@ -23,7 +23,7 @@ const PhysicalAttributes = () => {
 		e.preventDefault();
 
 		let validationErrors = {};
-		if (!formData.height) validationErrors.height = 'Height is required';
+		if (!formData.height.feet) validationErrors.height = 'Height is required';
 		if (!formData.weight) validationErrors.weight = 'Weight is required';
 		if (!formData.eyeColor) validationErrors.eyeColor = 'Eye Color is required';
 		if (!formData.hairColor) validationErrors.hairColor = 'Hair Color is required';
@@ -36,6 +36,7 @@ const PhysicalAttributes = () => {
 		if (formData.anyDisability === 'Yes' && !formData.disability) {
 			validationErrors.disability = 'Disability details are required';
 		}
+
 
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors);
@@ -56,16 +57,29 @@ const PhysicalAttributes = () => {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			[ name ]: value,
-		}));
+
+		if (name.includes('height')) {
+			const [ group, field ] = name.split('.');
+			setFormData((prevFormData) => ({
+				...prevFormData,
+				[ group ]: { ...prevFormData[ group ], [ field ]: value }
+			}));
+		} else {
+			setFormData((prevFormData) => ({
+				...prevFormData,
+				[ name ]: value
+			}));
+		}
+
 		if (errors[ name ]) {
 			setErrors((prevErrors) => ({
 				...prevErrors,
 				[ name ]: '',
 			}));
 		}
+
+
+
 	};
 
 	return (
@@ -74,20 +88,31 @@ const PhysicalAttributes = () => {
 			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
 				{/* Height */}
 				<div>
-					<label htmlFor="height" className="block font-medium mb-1 mt-1 text-headingGray">
-						Height (in Feet) <span className="text-red-500">*</span>
-					</label>
-					<select
-						id="height"
-						className={getInputClasses('height')}
-						name="height"
-						value={formData.height}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Height</option>
-						<option value="4 ft 1 in">4 ft 1 in</option>
-						<option value="4 ft 2 in">4 ft 2 in</option>
-					</select>
+					<label className="block font-medium mb-1 mt-1 text-headingGray">Height <span className="text-red-500">*</span></label>
+					<div className="rounded-md flex gap-4">
+						<select
+							className={`input-field text-gray-700 p-1 outline-none border`}
+							name="height.feet"
+							value={formData.height.feet}
+							onChange={handleChange}
+						>
+							<option value="" disabled>Feet</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+						</select>
+
+						<select
+							className={`input-field text-gray-700 p-1 outline-none border`}
+							name="height.inches"
+							value={formData.height.inches}
+							onChange={handleChange}
+						>
+							<option value="" disabled>Inches</option>
+							<option value="0">0</option>
+							<option value="1">1</option>
+						</select>
+					</div>
 					{errors.height && <p className="text-red-500 text-xs">{errors.height}</p>}
 				</div>
 

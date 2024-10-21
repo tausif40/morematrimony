@@ -30,7 +30,7 @@ function ProfileOption() {
 		{ name: 'Ignored User List', path: '/ignored-list', icon: MdOutlineBlock },
 		{ name: 'Change Password', path: '/change-password', icon: LuKeyRound },
 		{ name: 'Manage Profile', path: '/profile-setting', icon: AiOutlineUser },
-		{ name: 'Partner Preferences', path: '/partner-Preferences', icon: BiMaleFemale },
+		// { name: 'Partner Preferences', path: '/partner-Preferences', icon: BiMaleFemale },
 		{ name: 'Deactivate Account', path: '/deactivate-account', icon: HiOutlineLockClosed },
 		{ name: 'Delete Account', path: '/delete-account', icon: HiOutlineTrash },
 	];
@@ -59,7 +59,7 @@ function ProfileOption() {
 				<p className='gradient-btn py-2 rounded-md flex justify-center items-center mt-4'><RiLogoutCircleRLine size={16} />&nbsp;Logout</p>
 			</ section>
 		</>
-	)	
+	)
 }
 
 export default ProfileOption;
