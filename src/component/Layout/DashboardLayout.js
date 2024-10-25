@@ -14,6 +14,7 @@ import IgnoreList from '../IgnoreList/IgnoreList';
 import VerificationForm from '../Form/VerificationForm';
 import ChangePassword from '../Form/ChangePassword';
 import Gallery from '../Gallery/Gallery';
+import Matches from '../Matches/Matches';
 
 function DashboardLayout() {
 	const location = useLocation();

@@ -223,7 +223,7 @@ const SocialBackground = () => {
 				</div>
 				{/* Birth Time */}
 				<div>
-					<label htmlFor="birthTime" className="block font-medium mb-1 mt-1 text-headingGray">Time Of Birth</label>
+					<label htmlFor="birthTime" className="block font-medium mb-1 mt-1 text-headingGray">Time Of Birth <span className="text-red-500">*</span></label>
 					<input
 						type="time"
 						id="birthTime"

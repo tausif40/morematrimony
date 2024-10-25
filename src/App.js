@@ -17,10 +17,13 @@ import PageNotFound from './component/PageNotFound/PageNotFound';
 // layout page
 import DashboardLayout from './component/Layout/DashboardLayout';
 import MemberProfileLayout from './component/Layout/MemberProfileLayout';
+// import ViewProfile from './component/ViewProfile/ViewProfile';
+import ViewProfileLayout from './component/Layout/ViewProfileLayout';
 
 const App = () => {
   const dashboardPaths = [
     '/dashboard',
+    '/matches',
     '/profile-setting',
     '/my-interest',
     '/shortlist',
@@ -31,6 +34,15 @@ const App = () => {
     '/deactivate-account',
     '/delete-account'
   ];
+
+  // document.addEventListener('contextmenu', (e) => e.preventDefault());
+  // document.addEventListener('keydown', (e) => {
+  //   if (e.key === 'F12' ||
+  //     (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+  //     (e.ctrlKey && e.key === 'U')) {
+  //     e.preventDefault();
+  //   }
+  // });
 
 
   return (
@@ -54,6 +66,7 @@ const App = () => {
           ))}
 
           <Route path="/member-profile" element={<MemberProfileLayout />} />
+          <Route path="/viewProfile" element={<ViewProfileLayout />} />
         </Routes>
 
         <Footer />

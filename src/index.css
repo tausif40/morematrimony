@@ -12,6 +12,11 @@ html {
 	padding: 0;
 }
 
+/* body * {
+  user-select: none;
+} */
+
+
 :root {
 	--padding-inline-section: 20px;
 	--primary-color: #f21a2d,
@@ -40,6 +45,9 @@ h2 {
 
 h3 {
 	font-size: 1.5rem;
+}
+h4 {
+	font-size: 1.2rem;
 }
 
 a {

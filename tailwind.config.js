@@ -11,6 +11,7 @@ module.exports = {
         // secondary: "#6735da",
         text: "#a8a9a9",
         headingGray: "#6d6e6f",
+        textGray: "#303030",
         black: "#111723",
         hotPink: "#fd2c79",
         hotRed: "#f21a2d",

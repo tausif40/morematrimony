@@ -5,6 +5,8 @@ import { IoListOutline } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
 import { MdOutlineBlock } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { FaPeopleArrows } from "react-icons/fa6";
+
 
 function DashboardMenu() {
 	const location = useLocation();
@@ -12,6 +14,7 @@ function DashboardMenu() {
 
 	const navOption = [
 		{ name: 'Dashboard', path: '/dashboard', icon: AiOutlineDashboard },
+		// { name: 'Matches', path: '/matches', icon: FaPeopleArrows },
 		{ name: 'My Profile', path: '/profile-setting', icon: AiOutlineUser },
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },

@@ -6,7 +6,7 @@ function Reviews() {
 			<section
 				className="w-full lg:h-screen"
 				style={{
-					backgroundImage: `url(${require('../../img/img14.jpg')})`,
+					// backgroundImage: `url(${require('../../img/img14.jpg')})`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
 					backgroundRepeat: 'no-repeat'
