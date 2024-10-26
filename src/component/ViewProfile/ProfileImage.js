@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import './viewProfile.css';
 
 const ProfileImage = () => {
 	const [ isPurchased, setIsPurchased ] = useState(false);
@@ -24,7 +25,8 @@ const ProfileImage = () => {
 	};
 
 	return (
-		<div className='h-96 w-[360px] rounded-lg object-cover'>
+		<div className='box before:h-96 w-[360px] rounded-lg object-cover'>
+			<div class="ribbon"><span>New Join</span></div>
 			<Swiper
 				modules={[ Autoplay, Pagination, Navigation, EffectFade ]}
 				spaceBetween={20}

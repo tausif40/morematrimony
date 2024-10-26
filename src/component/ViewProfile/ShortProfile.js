@@ -7,15 +7,19 @@ import { RiStackshareLine } from "react-icons/ri";
 import { IoIosStarOutline } from "react-icons/io";
 import { IoMdStar } from "react-icons/io";
 import { MdOutlineWorkOutline } from "react-icons/md";
-import { RxCross1 } from "react-icons/rx";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
+import { GoHeartFill } from "react-icons/go";
+
+import { GoHeart } from "react-icons/go";
+
+
 
 function ShortProfile() {
 	const hideSideMenu = useRef(null);
-	const [ isShortList, setIsShortList ] = useState(false)
+	const [ interest, setInterest ] = useState(false)
 	const [ showMenu, setShowMenu ] = useState(false)
 
-	const handelShortlist = () => setIsShortList((prev) => !prev);
+	const handelInterest = () => setInterest((prev) => !prev);
 	const showSideMenu = () => setShowMenu((prev) => !prev);
 
 	useEffect(() => {
@@ -38,23 +42,24 @@ function ShortProfile() {
 	return (
 		<>
 			<section className='text-textGray'>
-				<div className='container '>
+				<div className='container border shadow-md rounded-xl '>
 					{/* details section */}
-					<div className='flex gap-12 w-full p-6 border rounded-xl shadow-md'>
+					<div className='flex gap-12 w-full py-6 '>
 						<div className='relative'>
 							<div>
 								<ProfileImage />
 							</div>
 							{/* <img src="https://res.cloudinary.com/drfni1iqf/image/upload/v1717399015/Tausif/temp/img_rjd4en.png" alt="" className='h-96 w-[360px] rounded-lg object-cover' /> */}
-							<div className='absolute top-2 right-3 cursor-pointer z-50'
-								onClick={handelShortlist}>
-								<p className={`flex items-center ${isShortList ? 'text-green-600' : 'text-black'} bg-white text-black px-2 rounded-md`}>
-									<span>{isShortList ? <IoMdStar /> : <IoIosStarOutline />}</span>
-									<span className='text-sm font-light ml-1 pt-[2px]'>{isShortList ? 'Shortlisted' : 'ShortList'}</span></p>
+							<div className='absolute top-2 right-0 cursor-pointer z-50'
+								onClick={handelInterest}>
+								<p className={`flex items-center ${interest ? 'text-primary ' : 'text-white'} border-3 border-white px-2 rounded-md`}>
+									<span>{interest ? <GoHeartFill size={24} /> : <GoHeart size={24} />}</span>
+									{/* <span className='text-sm font-light ml-1 pt-[2px]'>{interest ? 'Shortlisted' : 'ShortList'}</span> */}
+								</p>
 							</div>
 						</div>
 
-						<div className='flex flex-col justify-between'>
+						<div className='flex flex-col justify-between w-full'>
 							<div className='relative'>
 								<div className='absolute top-0 right-1 cursor-pointer z-50 flex flex-row-reverse'>
 									<div onClick={showSideMenu}>

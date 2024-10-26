@@ -5,7 +5,7 @@ import UserDetails from '../ViewProfile/UserDetails'
 function ViewProfileLayout() {
 	return (
 		<>
-			<div className='lg:px-28 py-16'>
+			<div className='lg:px-40 py-16'>
 				<div className=''>
 					<ShortProfile />
 				</div>
