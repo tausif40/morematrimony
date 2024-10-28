@@ -8,7 +8,7 @@ import 'swiper/css/scrollbar';
 import './viewProfile.css';
 
 const ProfileImage = () => {
-	const [ isPurchased, setIsPurchased ] = useState(false);
+	const [ isPurchased, setIsPurchased ] = useState(true);
 
 	const images = [
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img2_pop07c.jpg' },

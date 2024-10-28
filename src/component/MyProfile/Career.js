@@ -7,6 +7,7 @@ const Career = () => {
 		employedIn: '',
 		occupation: '',
 		occupationDetail: '',
+		organizationName: '',
 		jobLocation: '',
 		annualIncome: '',
 	});
@@ -18,6 +19,7 @@ const Career = () => {
 		if (!formData.employedIn) validationErrors.employedIn = 'Employed in is required';
 		if (!formData.occupation) validationErrors.occupation = 'Occupation is required';
 		if (!formData.occupationDetail) validationErrors.occupationDetail = 'Occupation details are required';
+		if (!formData.organizationName) validationErrors.organizationName = 'organization Name is required';
 		if (!formData.jobLocation) validationErrors.jobLocation = 'Job location is required';
 		if (!formData.annualIncome) validationErrors.annualIncome = 'Annual income is required';
 
@@ -113,6 +115,22 @@ const Career = () => {
 						onChange={handleChange}
 					/>
 					{errors.occupationDetail && <p className="text-red-500 text-xs">{errors.occupationDetail}</p>}
+				</div>
+
+				<div>
+					<label htmlFor="organizationName" className="block font-medium mb-1 mt-1 text-headingGray">
+						organization Name <span className="text-red-500">*</span>
+					</label>
+					<input
+						type="text"
+						id="organizationName"
+						className={getInputClasses('organizationName')}
+						placeholder="Occupation Details"
+						name="organizationName"
+						value={formData.organizationName}
+						onChange={handleChange}
+					/>
+					{errors.organizationName && <p className="text-red-500 text-xs">{errors.organizationName}</p>}
 				</div>
 
 				<div>

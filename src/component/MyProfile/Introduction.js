@@ -45,11 +45,12 @@ const IntroductionForm = () => {
 					<p className="text-red-500 text-xs mt-1 md:pl-40">{error}</p>
 					<button
 						type="submit"
-						className="gradient-btn mt-4 text-white py-2 px-4 rounded right"
+						className="gradient-btn mt-4 text-white py-2 px-4 rounded-md right text-sm"
 					>
 						Submit
 					</button>
 				</div>
+				
 			</div>
 		</form>
 	);
