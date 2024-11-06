@@ -68,7 +68,7 @@ const App = () => {
           ))}
 
           <Route path="/member-profile" element={<MemberProfileLayout />} />
-          <Route path="/viewProfile" element={<ViewProfileLayout />} />
+          <Route path="/view-profile" element={<ViewProfileLayout />} />
         </Routes>
 
         <Footer />

@@ -14,7 +14,6 @@ import IgnoreList from '../IgnoreList/IgnoreList';
 import VerificationForm from '../Form/VerificationForm';
 import ChangePassword from '../Form/ChangePassword';
 import Gallery from '../Gallery/Gallery';
-import Matches from '../Matches/Matches';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -81,7 +80,7 @@ function DashboardLayout() {
 				</div>
 
 				<div className="container flex gap-8 my-10 ">
-					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-fit ">
+					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[690px]">
 						<ProfileOption />
 					</div>
 
@@ -90,7 +89,7 @@ function DashboardLayout() {
 					</div>
 				</div>
 
-				<div className="block lg:hidden fixed bottom-0 w-full ">
+				<div className="block lg:hidden fixed bottom-0 w-full">
 					<BottomMenu onMenuClick={() => setMenuOpen(true)} />
 				</div>
 				<div className="z-50">
