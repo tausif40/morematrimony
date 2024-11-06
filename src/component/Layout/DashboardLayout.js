@@ -80,8 +80,8 @@ function DashboardLayout() {
 					<DashboardMenu />
 				</div>
 
-				<div className="container flex gap-8 my-10">
-					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[690px] sticky top-0">
+				<div className="container flex gap-8 my-10 ">
+					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-fit ">
 						<ProfileOption />
 					</div>
 
@@ -90,10 +90,10 @@ function DashboardLayout() {
 					</div>
 				</div>
 
-				<div className="block lg:hidden fixed bottom-0 w-full z-50">
+				<div className="block lg:hidden fixed bottom-0 w-full ">
 					<BottomMenu onMenuClick={() => setMenuOpen(true)} />
 				</div>
-				<div className="">
+				<div className="z-50">
 					<SideMenu isOpen={menuOpen} closeMenu={() => setMenuOpen(false)} />
 				</div>
 			</div>

@@ -19,6 +19,7 @@ import DashboardLayout from './component/Layout/DashboardLayout';
 import MemberProfileLayout from './component/Layout/MemberProfileLayout';
 // import ViewProfile from './component/ViewProfile/ViewProfile';
 import ViewProfileLayout from './component/Layout/ViewProfileLayout';
+import MatchesLayout from './component/Layout/MatchesLayout';
 
 const App = () => {
   const dashboardPaths = [
@@ -60,6 +61,7 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/matches" element={<MatchesLayout />} />
 
           {dashboardPaths.map((path) => (
             <Route key={path} path={path} element={<DashboardLayout />} />

@@ -65,6 +65,12 @@ const NavMain = () => {
 						<p className='min-w-max'>Matches</p>
 					</div> */}
 
+					<Link to={'/matches'}>
+						<div className={`text-gradient font-bold text-md px-4 cursor-pointer ${'Matches' == path && 'active'}`}>
+							<p className='min-w-max'>MATCHES</p>
+						</div>
+					</Link>
+
 					<div className={`text-gradient text-base font-bold px-4 cursor-pointer ${'plans' == path && 'active'}`}
 						onClick={() => handleScroll('plans')}
 					>

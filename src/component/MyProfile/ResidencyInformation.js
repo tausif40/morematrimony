@@ -137,7 +137,7 @@ const ResidencyInformation = () => {
 					{errors.residencyStatus && <p className="text-red-500 text-xs">{errors.residencyStatus}</p>}
 				</div>
 				{/* Immigration Status */}
-				<div>
+				{/* <div>
 					<label htmlFor="immigrationStatus" className="block font-medium mb-1 mt-1 text-headingGray">
 						Immigration Status <span className="text-red-500">*</span>
 					</label>
@@ -152,7 +152,7 @@ const ResidencyInformation = () => {
 						<option value="status1">Status 1</option>
 					</select>
 					{errors.immigrationStatus && <p className="text-red-500 text-xs">{errors.immigrationStatus}</p>}
-				</div>
+				</div> */}
 				{/* Citizenship */}
 				<div>
 					<label htmlFor="citizenship" className="block font-medium mb-1 mt-1 text-headingGray">
