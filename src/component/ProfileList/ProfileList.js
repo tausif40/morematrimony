@@ -25,13 +25,13 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 	}, [ accountCreate ]);
 
 	return (
-		<div className="border rounded-lg shadow-sm p-4 mb-4 flex items-start space-x-8 ">
+		<div className="border rounded-lg shadow-sm p-3 md:p-4 mb-4 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 ">
 			{/* Profile Image */}
-			<div className="box flex-shrink-0 bg-gray-200 flex items-center  rounded-xl  justify-center relative">
+			<div className="box flex-shrink-0 bg-gray-200 flex items-center  rounded-xl justify-center relative">
 				<Link to={'/view-profile'}>
 					<span className="text-4xl text-gray-400">
 						{newUser && <div className="ribbon"><span>New Join</span></div>}
-						<img src={img} alt="img" className='w-64 h-64 rounded-xl object-cover' />
+						<img src={img} alt="img" className='w-full sm:w-64 sm:h-64 rounded-xl object-cover' />
 					</span>
 				</Link>
 			</div>
@@ -40,12 +40,12 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 			<div className="h-64 w-full flex flex-col justify-between py-2">
 				<div>
 					<Link to={'/view-profile'}>
-						<h3 className="text-2xl font-semibold text-black">{name}</h3>
+						<h3 className="text-xl font-semibold text-black">{name}</h3>
 					</Link>
-					<p className="mt-1 text-base text-gray-500">
+					<p className="mt-1 text-sm text-gray-500">
 						{id} | Last seen {lastSeen}
 					</p>
-					<p className="mt-4 text-base text-textGray">
+					<p className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
 						{age} yrs • {height} • {religion} - {caste} • {education} • {occupation} • {location}
 					</p>
 				</div>
@@ -55,18 +55,19 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 					<p className="text-base mt-2 font-bold text-gray-600">
 						<span>{isInterestAccept ? <p>You have sent an interest to her <span className='text-sm font-light'> - {'06 Nov 24'}</span></p> : 'Interested in her?'}</span>
 					</p>
-					<div className='flex items-center gap-6 mt-4'>
+					<div className='flex items-center gap-4 md:gap-6 mt-4'>
 						{!isInterestAccept && (
 							<p className={`text-sm flex items-center border gap-2 rounded-full pr-6 pl-4 py-2 cursor-pointer ${shortlist ? 'text-primary border-primary font-semibold' : 'text-text border-text'} transition-all`}
 								onClick={handelShortlist}>
-								<span className='text-sm font-light flex items-center'>
+								<span className='flex items-center'>
 									{shortlist ? <><IoMdStar />&nbsp;<p className=''>Shortlisted</p></> : <><IoIosStarOutline />&nbsp;<p className='border-text'>ShortList</p></>}
 								</span>
 							</p>
 						)}
 						<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${isInterestAccept ? 'border-green-500 bg-green-500' : 'border-orange-500 bg-orange-500'} transition-all`}
 							onClick={handelInterest}
-						><span>{isInterestAccept ? 'Interest Accepted' : 'Send Interest'}</span>
+						>
+							<span>{isInterestAccept ? 'Interest Accepted' : 'Send Interest'}</span>
 						</p>
 					</div>
 				</div>
@@ -79,12 +80,12 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 const ProfileList = () => {
 	const profiles = [
 		{
-			name: 'Roshni Khanam',
+			name: 'Priyanka Singh',
 			id: 'H13285375',
 			age: 19,
 			height: "5'4\"",
-			religion: 'Muslim',
-			caste: 'Pathan',
+			religion: 'Hindu',
+			caste: 'Brahaman',
 			education: 'B.Com.',
 			occupation: 'Not Working',
 			location: 'Bettiah',
@@ -102,17 +103,17 @@ const ProfileList = () => {
 			education: 'B.Sc.',
 			occupation: 'Not Working',
 			location: 'Ahmadnagar',
-			lastSeen: 'few hour ago',
+			lastSeen: '2 days ago',
 			accountCreate: '2024-11-03',
 			img: './assets/img/profileImages/img2.jpg'
 		},
 		{
-			name: 'Shakina Khatoon',
+			name: 'Mansi jain',
 			id: 'H12904665',
 			age: 21,
 			height: "5'5\"",
-			religion: 'Muslim',
-			caste: 'Arain',
+			religion: 'Jain',
+			caste: 'axyz',
 			education: 'Other Bachelor Degree in Arts / Science / Commerce',
 			occupation: 'Teaching / Academician',
 			location: 'Madhubani',
@@ -123,7 +124,7 @@ const ProfileList = () => {
 	];
 
 	return (
-		<div className="mx-auto p-4">
+		<div className="mx-auto md:p-4">
 			{profiles.map((profile, index) => (
 				<ProfileCard key={index} {...profile} />
 			))}

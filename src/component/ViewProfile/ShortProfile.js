@@ -9,6 +9,7 @@ import { IoMdStar } from "react-icons/io";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import ContactDetails from './ContactDetails';
+import { MdKeyboardBackspace } from "react-icons/md";
 
 function ShortProfile() {
 	const hideSideMenu = useRef(null);
@@ -43,9 +44,10 @@ function ShortProfile() {
 		<>
 			{contactPopup && <ContactDetails showDetails={setContactPopup} onClose={() => setContactPopup(false)} />}
 			<section className='text-textGray'>
+				{/* <div className='px-4 text-xl font-semibold text-gray-600 mb-3 flex items-center'><MdKeyboardBackspace size={20} />&nbsp; Back</div> */}
 				<div className='container border shadow-md rounded-xl '>
 					{/* details section */}
-					<div className='flex gap-12 w-full py-6 '>
+					<div className='flex gap-6 md:gap-8 lg:gap-12 w-full py-6 '>
 						<div className='relative'>
 							<div>
 								<ProfileImage />
@@ -60,7 +62,7 @@ function ShortProfile() {
 						</div>
 
 						<div className='flex flex-col justify-between w-full'>
-							<div className='relative'>
+							<div className='relative text-black'>
 								<div className='absolute top-0 right-1 cursor-pointer z-50 flex flex-row-reverse'>
 									<div onClick={showSideMenu}>
 										<PiDotsThreeOutlineVerticalFill size={20} />
@@ -75,31 +77,31 @@ function ShortProfile() {
 									}
 
 								</div>
-								<p className='font-medium text-xl'>Name surname</p>
+								<p className='font-medium text-xl md:text-2xl'>Name surname</p>
 								<div className='flex items-center text-sm font-light text-headingGray py-2 tracking-wide'>
 									<p className=''>H32YD1R454F</p>
 									<span className='text-text'>&nbsp;|&nbsp;</span>
 									<p> Last seen </p>
 								</div>
-								<div className='flex items-center  mt-2'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-4'><HiOutlineUserCircle /></p>
+								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
+									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
 									<p className=' tracking-wider'>20 Yrs, </p>&nbsp;<p className='tracking-widest'> 4'11"</p>
 								</div>
-								<div className='flex items-center  mt-2'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-4'><RiStackshareLine /></p>
+								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
+									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><RiStackshareLine /></p>
 									<p className=''>Hindu</p>&nbsp;-&nbsp;<p className='tracking-wide'>Brahman (Caste _)</p>
 								</div>
-								<div className='flex items-center  mt-2'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-4'><HiOutlineUserCircle /></p>
-									<p className=''>BCA</p>,&nbsp;<p className='tracking-wide'>Human Resources Professional</p>
+								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
+									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
+									<p className=''>BCA,</p>&nbsp;<p className='tracking-wide'>Human Resources Professional</p>
 								</div>
-								<div className='flex items-center  mt-2'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-4'><HiOutlineUserCircle /></p>
-									<p className=''>Pratapgarh City</p>,&nbsp;<p className=''>Uttar Pradesh</p>
+								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
+									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
+									<p className=''>Pratapgarh City,</p>&nbsp;<p className=''>Uttar Pradesh</p>
 								</div>
-								<div className='flex items-center  mt-2 '>
-									<p className='p-[1px] bg-text rounded-md text-white mr-4'><MdOutlineWorkOutline /></p>
-									<p className=''>Employed in (Job Location), Annual Income</p>,&nbsp;<p className='tracking-wide'></p>
+								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
+									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><MdOutlineWorkOutline /></p>
+									<p className=''>Employed in (Job Location), Annual Income</p>&nbsp;<p className='tracking-wide'></p>
 								</div>
 								{/* <div className='flex mt-4	 mb-3'>
 									<p className=''><p className='text-sm min-w-max bg-gray-200 rounded-md px-2 h-auto'>Looking for - </p></p>&nbsp;

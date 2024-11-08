@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
+import { MdKeyboardArrowUp } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { LiaPenSolid } from "react-icons/lia";
+import { LuPencilLine } from "react-icons/lu";
 
 const FilterSection = ({ title, children }) => {
 	const [ isOpen, setIsOpen ] = useState(false);
+
+	const showEditPopup = () => {
+		alert('open')
+	}
 
 	return (
 		<div className=" border rounded-md overflow-hidden">
@@ -10,10 +18,13 @@ const FilterSection = ({ title, children }) => {
 				className={`w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 ${isOpen ? 'bg-gray-200 hover:bg-gray-200' : 'hover:bg-gray-100'}`}
 			>
 				<p className='font-semibold'>{title}</p>
-				<span>{isOpen ? '▲' : '▼'}</span>
+				<div className='flex items-center gap-3'>
+					{isOpen && <p className='cursor-pointer p-1 hover:bg-gray-100 rounded-md' onClick={showEditPopup}><LuPencilLine size={16} /></p>}
+					{isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
+				</div>
 			</button>
 			<div
-				className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+				className={`overflow-hidden duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
 					}`}
 			>
 				<div className="p-4 bg-white text-sm">
@@ -36,15 +47,15 @@ const FilterProfileList = () => {
 					<div className="space-y-2">
 						<div className="flex justify-between">
 							<span>Age</span>
-							<span>18 Yrs - 21 Yrs ✏️</span>
+							<p className='flex items-center gap-2'>18 Yrs - 21 Yrs </p>
 						</div>
 						<div className="flex justify-between">
 							<span>Height</span>
-							<span>4'10" - 5'10" ✏️</span>
+							<p className='flex items-center gap-2'>4'10" - 5'10" </p>
 						</div>
 						<div className="flex justify-between">
 							<span>Profile Created By</span>
-							<span>Any ✏️</span>
+							<p className='flex items-center gap-2'>Any </p>
 						</div>
 						{/* <button className="text-orange-500 text-sm">View more ▼</button> */}
 					</div>

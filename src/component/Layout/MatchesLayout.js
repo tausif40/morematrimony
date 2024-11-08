@@ -6,12 +6,12 @@ import FilterMenu from '../ProfileList/FilterMenu'
 function MatchesLayout() {
 	return (
 		<>
-			<div className="app-container relative lg:px-20">
-				<div className="hidden lg:block mt-4 mx-6">
+			<div className="app-container relative lg:px-8 xl:px-20">
+				<div className="mt-4 mx-6 z-40">
 					<FilterMenu />
 				</div>
-				<div className="container flex gap-8 mb-10 mt-8 ">
-					<div className="h-[690px] min-w-80 hidden lg:block rounded-md overflow-hidden overflow-y-auto customScroll-bar mt-4">
+				<div className="container flex lg:gap-6 xl:gap-8 mb-10 mt-8 ">
+					<div className="h-[690px] lg:min-w-[28%] xl:min-w-[25%] hidden lg:block rounded-md overflow-hidden overflow-y-auto customScroll-bar mt-4">
 						<FilterProfileList />
 					</div>
 

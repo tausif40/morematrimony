@@ -25,7 +25,7 @@ const ProfileImage = () => {
 	};
 
 	return (
-		<div className='box before:h-96 w-[360px] rounded-lg object-cover'>
+		<div className='box sm:before:h-[20rem] md:before:h-[22rem] lg:before:h-96 sm:w-[260px] md:w-[320px] lg:w-[360px] rounded-lg object-cover'>
 			<div class="ribbon"><span>New Join</span></div>
 			<Swiper
 				modules={[ Autoplay, Pagination, Navigation, EffectFade ]}
@@ -38,7 +38,7 @@ const ProfileImage = () => {
 			>
 				{images.map((value, index) => (
 					<SwiperSlide key={index}>
-						<div className="relative h-96 w-[360px] overflow-hidden">
+						<div className="relative sm:w-[260px] md:w-[320px] lg:w-[360px] sm:h-[20rem] md:h-[22rem] lg:h-96 overflow-hidden">
 							{/* <img
 								src={value.img}
 								onContextMenu={(e) => e.preventDefault()} 
