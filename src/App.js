@@ -30,6 +30,7 @@ const App = () => {
     '/shortlist',
     '/message',
     '/ignored-list',
+    '/notification',
     '/change-password',
     '/gallery',
     '/deactivate-account',

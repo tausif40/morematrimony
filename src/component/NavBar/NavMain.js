@@ -59,7 +59,7 @@ const NavMain = () => {
 						</div>
 					</div>
 				</Link>
-				<div className="nav-option py-2 lg:py-0 w-full lg:w-auto flex justify-center items-center lg:justify-normal overflow-x-auto gap-4">
+				<div className="nav-option py-2 lg:py-0 w-full lg:w-auto flex justify-center items-center lg:justify-normal overflow-x-auto gap-2 sm:gap-3 md:gap-4">
 					{/* {navOption.map((value, inx) => ( */}
 					{/* <div className={`text-gradient text-base font-bold px-4 cursor-pointer ${'plans' == path && 'active'}`}>
 						<p className='min-w-max'>Matches</p>

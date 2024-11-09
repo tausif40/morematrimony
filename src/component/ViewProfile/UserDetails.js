@@ -114,17 +114,17 @@ const UserDetails = () => {
 
 	return (
 		<div className="container text-textGray border shadow-md rounded-xl ">
-			<div className=" space-y-8 pt-6 pb-12  lg:px-6">
+			<div className="space-y-6 md:space-y-8 pt-2 md:pt-4 pb-12 lg:px-6">
 				{/* Introduction */}
 				<div className="p-4">
 					<p className="text-gradient text-xl font-medium mb-2">About Me</p>
 					<p className='flex gap-2 font-light'>{profileData.introduction}</p>
 				</div>
 
-				<div className="grid grid-cols-2">
+				<div className="px-1 sm:px-4 md:px-0 grid grid-cols-1 md:grid-cols-2">
 					{/* Profile Information */}
-					<div className="border-r">
-						<div className="border-b pb-6 pr-6">
+					<div className="md:border-r">
+						<div className="md:border-b pb-6 md:pr-6">
 							<dt className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
 								Profile Information
 							</dt>
@@ -157,7 +157,7 @@ const UserDetails = () => {
 						</div>
 
 						{/* Present Address */}
-						<div className="border-b pb-6 pr-6">
+						<div className="md:border-b pb-6 md:pr-6">
 							<p className="w-44 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Present Address</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<dl className="grid grid-cols-2 gap-y-4 mt-6">
@@ -177,7 +177,7 @@ const UserDetails = () => {
 						</div>
 
 						{/* Residency Information */}
-						<div className="border-b pb-6 pr-6">
+						<div className="md:border-b pb-6 md:pr-6">
 							<p className="w-60 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Residency Information</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<dl className="grid grid-cols-2 gap-y-4 mt-6">
@@ -200,7 +200,7 @@ const UserDetails = () => {
 						</div>
 
 						{/* Education Details */}
-						<div className="border-b pb-6 pr-6">
+						<div className="md:border-b pb-6 md:pr-6">
 							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Education Details</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<div className="grid grid-cols-2">
@@ -220,7 +220,7 @@ const UserDetails = () => {
 
 
 						{/* Career */}
-						<div className="border-b pb-6 pr-6">
+						<div className="md:border-b pb-6 md:pr-6">
 							<p className="w-20 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Career</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<div className="grid grid-cols-2">
@@ -247,7 +247,7 @@ const UserDetails = () => {
 						</div>
 
 						{/* Physical Attributes */}
-						<div className="border-b pb-6 pr-6">
+						<div className="md:border-b pb-6 md:pr-6">
 							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Physical Attributes</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Height:</p> {profileData.physicalAttributes.height}</p>
@@ -263,7 +263,7 @@ const UserDetails = () => {
 						</div>
 
 						{/* Hobbies */}
-						<div className="pb-6 pr-6">
+						<div className="pb-6 md:pr-6">
 							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Hobbies</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<p className='flex gap-2 flex-wrap'>
@@ -275,8 +275,8 @@ const UserDetails = () => {
 					{/* end */}
 
 					{/* language */}
-					<div className="border-l">
-						<div className="border-b pb-6 pl-6">
+					<div className="md:border-l">
+						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-28 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Language</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<div className="grid grid-cols-2">
@@ -292,7 +292,7 @@ const UserDetails = () => {
 
 
 						{/* Spiritual and Social Background */}
-						<div className="border-b pb-6 pl-6">
+						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-24 bg-white text-primary  flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Spiritual</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Religion:</p> {profileData.spiritualSocial.religion}</p>
@@ -304,7 +304,7 @@ const UserDetails = () => {
 						</div>
 
 						{/* Lifestyle */}
-						<div className="border-b pb-6 pl-6">
+						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Lifestyle</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Diet:</p> {profileData.lifestyle.diet}</p>
@@ -314,7 +314,7 @@ const UserDetails = () => {
 						</div>
 
 						{/* Family Details */}
-						<div className="border-b pb-6 pl-6">
+						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-36 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Family Details</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 
@@ -357,7 +357,7 @@ const UserDetails = () => {
 						</div>
 
 						{/* Partner Expectation */}
-						<div className="pb-6 pl-6">
+						<div className="pb-6 md:pl-6">
 							<p className="bg-white text-primary w-52 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
 								Partner Expectation
 							</p>

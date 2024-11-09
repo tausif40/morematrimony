@@ -6,6 +6,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { MdOutlineBlock } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { FaPeopleArrows } from "react-icons/fa6";
+import { IoIosNotificationsOutline } from "react-icons/io";
 
 
 function DashboardMenu() {
@@ -18,8 +19,8 @@ function DashboardMenu() {
 		{ name: 'My Profile', path: '/profile-setting', icon: AiOutlineUser },
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
-		{ name: 'Messaging', path: '/message', icon: HiOutlineMail },
-		{ name: 'Ignore User List', path: '/ignored-list', icon: MdOutlineBlock },
+		// { name: 'Messaging', path: '/message', icon: HiOutlineMail },
+		{ name: 'Notification', path: '/notification', icon: IoIosNotificationsOutline },
 	]
 
 	// useEffect(() => {

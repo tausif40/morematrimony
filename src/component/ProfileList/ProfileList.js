@@ -36,10 +36,10 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 				</Link>
 			</div> */}
 			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl overflow-hidden">
-				<div className="absolute inset-0 bg-cover bg-center"
-					style={{ backgroundImage: `url(${img})`, filter: `blur(14px)` }} >
+				<div className="absolute inset-0 bg-cover"
+					style={{ backgroundImage: `url(${img})`, filter: `blur(16px)` }} >
 				</div>
-				<div className="absolute inset-0 bg-black opacity-30 rounded-xl"></div>
+				<div className="absolute inset-0  rounded-xl "></div>
 				<Link to={'/view-profile'} className="relative z-10">
 					<span className="text-4xl text-gray-400">
 						{newUser && <div className="ribbon"><span>New Join</span></div>}

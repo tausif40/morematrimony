@@ -47,7 +47,7 @@ function ShortProfile() {
 				{/* <div className='px-4 text-xl font-semibold text-gray-600 mb-3 flex items-center'><MdKeyboardBackspace size={20} />&nbsp; Back</div> */}
 				<div className='container border shadow-md rounded-xl '>
 					{/* details section */}
-					<div className='flex flex-col sm:flex-row gap-6 md:gap-8 lg:gap-12 w-full py-6 '>
+					<div className='flex flex-col sm:flex-row gap-6 md:gap-8 lg:gap-12 w-full pt-2 pb-6 sm:py-6 '>
 						<div className='relative'>
 							<div>
 								<ProfileImage />
@@ -61,7 +61,7 @@ function ShortProfile() {
 							</div> */}
 						</div>
 
-						<div className='flex flex-col justify-between w-full'>
+						<div className='px-4 md:px-0 flex flex-col justify-between w-full'>
 							<div className='relative text-black pb-4'>
 								<div className='absolute top-0 right-1 cursor-pointer z-50 flex flex-row-reverse'>
 									<div onClick={showSideMenu}>

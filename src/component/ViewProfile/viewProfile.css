@@ -52,35 +52,3 @@
 	border-bottom: 3px solid transparent;
 	border-top: 3px solid #f21a2d;
 }
-
-
-/* image effect */
-  .image-container {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* position: absolute; */
-    filter: blur(5px);
-}
-
-.image-container .overlay {
-    position: absolute;
-    width: 80%;
-    height: 80%;
-    background-image: url("https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img2_pop07c.jpg");
-    background-size: cover;
-   object-fit: contain;
-    background-position: center;
-}
-
-/* image effect end */
