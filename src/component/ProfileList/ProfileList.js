@@ -26,15 +26,29 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 
 	return (
 		<div className="border rounded-lg shadow-sm p-3 md:p-4 mb-10 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 ">
-			{/* Profile Image */}
-			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl object-cover">
+			{/* <div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl object-cover blur-sm"
+				style={{ backgroundImage: `url(${img})`}}>
 				<Link to={'/view-profile'}>
 					<span className="text-4xl text-gray-400">
 						{newUser && <div className="ribbon"><span>New Join</span></div>}
 					</span>
-					<img src={img} alt="img" className=' rounded-xl object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64' />
+					<img src={img} alt="img" className='blur-none	rounded-xl object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64' />
+				</Link>
+			</div> */}
+			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl overflow-hidden">
+				<div className="absolute inset-0 bg-cover bg-center"
+					style={{ backgroundImage: `url(${img})`, filter: `blur(14px)` }} >
+				</div>
+				<div className="absolute inset-0 bg-black opacity-30 rounded-xl"></div>
+				<Link to={'/view-profile'} className="relative z-10">
+					<span className="text-4xl text-gray-400">
+						{newUser && <div className="ribbon"><span>New Join</span></div>}
+					</span>
+					<img src={img} alt="img" className="object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64" />
 				</Link>
 			</div>
+
+
 
 			{/* Profile Details */}
 			<div className="h-64 w-full flex flex-col justify-between py-2 mt-4">
