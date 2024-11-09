@@ -25,19 +25,19 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 	}, [ accountCreate ]);
 
 	return (
-		<div className="border rounded-lg shadow-sm p-3 md:p-4 mb-4 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 ">
+		<div className="border rounded-lg shadow-sm p-3 md:p-4 mb-10 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 ">
 			{/* Profile Image */}
-			<div className="box flex-shrink-0 bg-gray-200 flex items-center  rounded-xl justify-center relative">
+			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl object-cover">
 				<Link to={'/view-profile'}>
 					<span className="text-4xl text-gray-400">
 						{newUser && <div className="ribbon"><span>New Join</span></div>}
-						<img src={img} alt="img" className='w-full sm:w-64 sm:h-64 rounded-xl object-cover' />
 					</span>
+					<img src={img} alt="img" className=' rounded-xl object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64' />
 				</Link>
 			</div>
 
 			{/* Profile Details */}
-			<div className="h-64 w-full flex flex-col justify-between py-2">
+			<div className="h-64 w-full flex flex-col justify-between py-2 mt-4">
 				<div>
 					<Link to={'/view-profile'}>
 						<h3 className="text-xl font-semibold text-black">{name}</h3>
@@ -105,7 +105,7 @@ const ProfileList = () => {
 			location: 'Ahmadnagar',
 			lastSeen: '2 days ago',
 			accountCreate: '2024-11-03',
-			img: './assets/img/profileImages/img2.jpg'
+			img: './assets/img/profileImages/img3.jpg'
 		},
 		{
 			name: 'Mansi jain',
@@ -119,7 +119,21 @@ const ProfileList = () => {
 			location: 'Madhubani',
 			lastSeen: 'yesterday',
 			accountCreate: '2024-10-20',
-			img: './assets/img/profileImages/img3.jpg'
+			img: './assets/img/profileImages/img5.jpg'
+		},
+		{
+			name: 'Mansi jain',
+			id: 'H12904665',
+			age: 21,
+			height: "5'5\"",
+			religion: 'Jain',
+			caste: 'axyz',
+			education: 'Other Bachelor Degree in Arts / Science / Commerce',
+			occupation: 'Teaching / Academician',
+			location: 'Madhubani',
+			lastSeen: 'yesterday',
+			accountCreate: '2024-10-20',
+			img: './assets/img/profileImages/img6.jpg'
 		},
 	];
 

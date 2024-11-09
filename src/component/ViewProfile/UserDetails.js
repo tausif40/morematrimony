@@ -114,7 +114,7 @@ const UserDetails = () => {
 
 	return (
 		<div className="container text-textGray border shadow-md rounded-xl ">
-			<div className=" space-y-8 pt-6 pb-12 px-6">
+			<div className=" space-y-8 pt-6 pb-12  lg:px-6">
 				{/* Introduction */}
 				<div className="p-4">
 					<p className="text-gradient text-xl font-medium mb-2">About Me</p>
@@ -125,25 +125,54 @@ const UserDetails = () => {
 					{/* Profile Information */}
 					<div className="border-r">
 						<div className="border-b pb-6 pr-6">
-							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Profile Information</p>
+							<dt className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Profile Information
+							</dt>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>First Name:</p> {profileData.profileInfo.firstName}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Last Name:</p> {profileData.profileInfo.lastName}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Date of Birth:</p> {profileData.profileInfo.dateOfBirth}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Gender:</p> {profileData.profileInfo.gender}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Marital Status:</p> {profileData.profileInfo.maritalStatus}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Profile Created By:</p> {profileData.profileInfo.profileCreatedBy}</p>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">First Name:</dt>
+									<dd>{profileData.profileInfo.firstName}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Last Name:</dt>
+									<dd>{profileData.profileInfo.lastName}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Date of Birth:</dt>
+									<dd>{profileData.profileInfo.dateOfBirth}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Gender:</dt>
+									<dd>{profileData.profileInfo.gender}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Marital Status:</dt>
+									<dd>{profileData.profileInfo.maritalStatus}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Profile Created By:</dt>
+									<dd>{profileData.profileInfo.profileCreatedBy}</dd>
+								</div>
 							</div>
 						</div>
 
 						{/* Present Address */}
 						<div className="border-b pb-6 pr-6">
 							<p className="w-44 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Present Address</p>
-							<div className="gradientBorder pb-4 px-6 pt-8 w-full  rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Country:</p> {profileData.presentAddress.country}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>State:</p> {profileData.presentAddress.state}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>City:</p> {profileData.presentAddress.city}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Postal Code:</p> {profileData.presentAddress.postalCode}</p>
+							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
+								<dl className="grid grid-cols-2 gap-y-4 mt-6">
+									<dt className="text-md font-medium">Country:</dt>
+									<dd>{profileData.presentAddress.country}</dd>
+
+									<dt className="text-md font-medium">State:</dt>
+									<dd>{profileData.presentAddress.state}</dd>
+
+									<dt className="text-md font-medium">City:</dt>
+									<dd>{profileData.presentAddress.city}</dd>
+
+									<dt className="text-md font-medium">Postal Code:</dt>
+									<dd>{profileData.presentAddress.postalCode}</dd>
+								</dl>
 							</div>
 						</div>
 
@@ -151,12 +180,22 @@ const UserDetails = () => {
 						<div className="border-b pb-6 pr-6">
 							<p className="w-60 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Residency Information</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Birth Country:</p> {profileData.residencyInformation.birthCountry}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Residency Country:</p> {profileData.residencyInformation.residencyCountry}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Immigration Status:</p> {profileData.residencyInformation.immigrationStatus}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Immigration Status:</p> {profileData.residencyInformation.immigrationStatus}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Grow Up Country:</p> {profileData.residencyInformation.immigrationStatus}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Citizenship:</p> {profileData.residencyInformation.immigrationStatus}</p>
+								<dl className="grid grid-cols-2 gap-y-4 mt-6">
+									<dt className="text-md font-medium">Birth Country:</dt>
+									<dd>{profileData.residencyInformation.birthCountry}</dd>
+
+									<dt className="text-md font-medium">Residency Country:</dt>
+									<dd>{profileData.residencyInformation.residencyCountry}</dd>
+
+									<dt className="text-md font-medium">Immigration Status:</dt>
+									<dd>{profileData.residencyInformation.immigrationStatus}</dd>
+
+									<dt className="text-md font-medium">Grow Up Country:</dt>
+									<dd>{profileData.residencyInformation.immigrationStatus}</dd>
+
+									<dt className="text-md font-medium">Citizenship:</dt>
+									<dd>{profileData.residencyInformation.immigrationStatus}</dd>
+								</dl>
 							</div>
 						</div>
 
@@ -164,9 +203,18 @@ const UserDetails = () => {
 						<div className="border-b pb-6 pr-6">
 							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Education Details</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-52 mb-2'>Highest Education:</p> {profileData.educationDetails.highestEducation}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-52 mb-2'>Education in Detail:</p> {profileData.educationDetails.educationInDetail}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-52 mb-2'>College:</p> {profileData.educationDetails.college}</p>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Highest Education:</dt>
+									<dd>{profileData.educationDetails.highestEducation}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Education in Detail:</dt>
+									<dd>{profileData.educationDetails.educationInDetail}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">College:</dt>
+									<dd>{profileData.educationDetails.college}</dd>
+								</div>
 							</div>
 						</div>
 
@@ -175,11 +223,26 @@ const UserDetails = () => {
 						<div className="border-b pb-6 pr-6">
 							<p className="w-20 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Career</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Employment Sector:</p> {profileData.career.sector}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Occupation:</p> {profileData.career.occupation}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>organization Name:</p> {profileData.career.organizationName}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Job Location:</p> {profileData.career.jobLocation}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Annual Income:</p> {profileData.career.annualIncome}</p>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Employment Sector:</dt>
+									<dd>{profileData.career.sector}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Occupation:</dt>
+									<dd>{profileData.career.occupation}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Organization Name:</dt>
+									<dd>{profileData.career.organizationName}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Job Location:</dt>
+									<dd>{profileData.career.jobLocation}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Annual Income:</dt>
+									<dd>{profileData.career.annualIncome}</dd>
+								</div>
 							</div>
 						</div>
 
@@ -216,8 +279,14 @@ const UserDetails = () => {
 						<div className="border-b pb-6 pl-6">
 							<p className="w-28 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Language</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Mother Tongue:</p> {profileData.language.MotherTongue}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Known Languages:</p> {profileData.language.KnownLanguages}</p>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Mother Tongue:</dt>
+									<dd>{profileData.language.MotherTongue}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Known Languages:</dt>
+									<dd>{profileData.language.KnownLanguages}</dd>
+								</div>
 							</div>
 						</div>
 
