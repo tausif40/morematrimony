@@ -52,7 +52,7 @@ const App = () => {
       <Toaster position="top-right" reverseOrder={true} />
       <div className="">
         {/* <ScrollToTop /> */}
-        <TopNav />
+        {/* <TopNav /> */}
         <NavMain />
         <Routes>
           <Route path="/*" element={<PageNotFound />} />
