@@ -8,7 +8,7 @@ function GetInTouch() {
 	return (
 		<>
 			<div className='container pt-8 pb-14 flex gap-10 text-gray-700'>
-				<div className='w-[50%]'>
+				<div className='w-full md:w-[50%]'>
 					<p className='font-normal text-[36px] '>Get in touch</p>
 					<div className='details mt-10'>
 						<p className='font-semibold'>Call</p>

@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { PiUsers } from "react-icons/pi";
+import { PiCurrencyDollarDuotone } from "react-icons/pi";
+import { RiContactsLine } from "react-icons/ri";
+import { TbMessage2Question } from "react-icons/tb";
+import { IoIosNotificationsOutline } from "react-icons/io";
 
 const NavMain = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [ path, setPath ] = useState('')
+	const [ userRegister, setUserRegister ] = useState(true)
 
 	// const navOption = [
 	// {
@@ -48,7 +54,7 @@ const NavMain = () => {
 	}, [ location ]);
 
 	return (
-		<header className="bg-white shadow-md z-50 ">
+		<header className="bg-white shadow-md z-50 border-t">
 			<div className="container mx-auto flex justify-between ">
 				<Link to='/' className='hidden lg:block'>
 					<div className='flex items-center gap-2 p-2'>
@@ -59,37 +65,52 @@ const NavMain = () => {
 						</div>
 					</div>
 				</Link>
-				<div className="nav-option py-2 lg:py-0 w-full lg:w-auto flex justify-center items-center lg:justify-normal overflow-x-auto gap-2 sm:gap-3 md:gap-4">
+				<div className="nav-option py-2 lg:py-0 w-full lg:w-auto flex justify-center items-center lg:justify-normal overflow-x-auto gap-2 sm:gap-3 md:gap-4  text-sm">
 					{/* {navOption.map((value, inx) => ( */}
 					{/* <div className={`text-gradient text-base font-bold px-4 cursor-pointer ${'plans' == path && 'active'}`}>
 						<p className='min-w-max'>Matches</p>
 					</div> */}
 
 					<Link to={'/matches'}>
-						<div className={`text-gradient font-bold text-md px-4 cursor-pointer ${'Matches' == path && 'active'}`}>
-							<p className='min-w-max'>MATCHES</p>
+						<div className={`text-headingGray text-md px-4 cursor-pointer ${'Matches' == path && 'active'} flex items-center gap-1`}>
+							<PiUsers size={20} /><p className='min-w-max text-sm'>Matches</p>
 						</div>
 					</Link>
 
-					<div className={`text-gradient text-base font-bold px-4 cursor-pointer ${'plans' == path && 'active'}`}
+					<div className={`text-headingGray text-base px-4 cursor-pointer ${'plans' == path && 'active'} flex items-center gap-1`}
 						onClick={() => handleScroll('plans')}
 					>
-						<p className='min-w-max'>PLANS</p>
+						<PiCurrencyDollarDuotone size={18} /><p className='min-w-max text-sm'>Plans</p>
 					</div>
-					<div to={'/contact-us'} className={`text-gradient text-base font-bold px-4 cursor-pointer ${'/contact-us' == path && 'active'}`}
+					<div to={'/contact-us'} className={`text-headingGray text-base px-4 cursor-pointer ${'/contact-us' == path && 'active'} flex items-center gap-1`}
 						onClick={() => handleScroll('contactPage')}
 					>
-						<p className='min-w-max'>CONTACT</p>
+						<TbMessage2Question size={20} /><p className='min-w-max text-sm'>Contact</p>
 					</div>
+					{/* <Link to={'/matches'}> */}
+					<div className={`text-headingGray text-md px-4 cursor-pointer ${'Matches' == path && 'active'} flex items-center gap-1`}>
+						<IoIosNotificationsOutline size={20} /><p className='min-w-max text-sm'>Notifications</p>
+					</div>
+					{/* </Link> */}
+
 					<div className='text-sm font-medium text-text'>
-						<Link to={'/register'}>
-							<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
-						</Link>
+						{userRegister
+							?
+							<Link to={'/dashboard'}>
+								<button className="px-4 py-[3px] w-[70px]">
+									{/* <div className='w-4 h-4 bg-red-500 text-white rounded-full relative top-2 left-6 text-xs flex items-center justify-center'>2</div> */}
+									<img src="/assets/img/img0.png" alt="" className='rounded-full border' />
+								</button>
+							</Link>
+							: <Link to={'/register'}>
+								<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
+							</Link>
+						}
 					</div>
 					{/* ))} */}
 				</div>
 			</div>
-		</header>
+		</header >
 	);
 };
 

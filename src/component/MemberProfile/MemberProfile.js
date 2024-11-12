@@ -18,17 +18,17 @@ function MemberProfile() {
 							<img src="./assets/img/avatar-place.png" alt="" className='rounded-md shadow-lg absolute w-[320px] top-40' />
 						</div> */}
 
-						<div className="w-full px-16">
+						<div className="w-full px-4 md:px-6 lg:px-10 xl:px-12">
 							<div className='text-white flex relative'>
 								<div className='w-full pt-16'>
 									<p className='font-medium text-2xl md:text-3xl'>Mohd. Tausif</p>
-									<div className='flex font-light text-sm py-2 border-b border-text w-full md:w-1/2 lg:w-1/2'>
-										<p className='min-w-max'>Member ID : &nbsp;</p> <p className='font-medium'>2024093</p>
+									<div className='flex font-light text-sm py-2 border-b border-text w-2/5 sm:w-1/2'>
+										<p className='min-w-max'>Member ID : &nbsp;</p> <p className=''>2024093</p>
 									</div>
-									<p className='py-4'>23 yrs</p>
+									<p className='py-4'>Age - 23 yrs</p>
 								</div>
-								<div className='absolute object-cover right-0 top-0 pt-4'>
-									<img src="./assets/img/avatar-place.png" alt="" className='rounded-full shadow-lg min-w-[80px] w-[180px] md:w-[220px]' />
+								<div className='absolute object-cover right-0 top-0 pt-8 sm:pt-4'>
+									<img src="./assets/img/avatar-place.png" alt="" className='rounded-full shadow-lg w-[160px] sm:w-[220px]' />
 								</div>
 							</div>
 
@@ -56,7 +56,7 @@ function MemberProfile() {
 					</div>
 				</div>
 
-				<div className="my-10 px-36 flex gap-6 justify-center">
+				<div className="my-10 px-4 sm:px-8 md:px-16 lg:px-32 xl:px-40 flex gap-6 justify-center">
 					{activeTab === 'DetailedProfile' && <DetailedProfile />}
 					{activeTab === 'PartnerPreference' && <PartnerPreference />}
 					{activeTab === 'PhotoGallery' && <PhotoGallery />}

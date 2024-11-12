@@ -20,7 +20,7 @@ function DashboardMenu() {
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
 		// { name: 'Messaging', path: '/message', icon: HiOutlineMail },
-		{ name: 'Notification', path: '/notification', icon: IoIosNotificationsOutline },
+		// { name: 'Notification', path: '/notification', icon: IoIosNotificationsOutline },
 	]
 
 	// useEffect(() => {
