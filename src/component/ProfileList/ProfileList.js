@@ -51,7 +51,7 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 
 
 			{/* Profile Details */}
-			<div className="h-64 w-full flex flex-col justify-between py-2 mt-4">
+			<div className="h-64 w-full flex flex-col justify-between py-2 ">
 				<div>
 					<Link to={'/view-profile'}>
 						<h3 className="text-xl font-semibold text-black">{name}</h3>

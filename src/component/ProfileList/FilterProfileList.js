@@ -3,41 +3,53 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { LiaPenSolid } from "react-icons/lia";
 import { LuPencilLine } from "react-icons/lu";
+import FilterProfileEdit from './FilterProfileEdit';
 
 const FilterSection = ({ title, children }) => {
 	const [ isOpen, setIsOpen ] = useState(false);
+	const [ editFilterPopup, setEditFilterPopup ] = useState(false);
+	const [ filterData, setFilterData ] = useState({});
 
-	const showEditPopup = () => {
-		alert('open')
+	const showEditPopup = (children) => {
+		// alert('open')
+		setIsOpen(true)
+		setEditFilterPopup(true);
+		setFilterData(children);
+
 	}
 
 	return (
-		<div className=" border rounded-md overflow-hidden">
-			<button
-				onClick={() => setIsOpen(!isOpen)}
-				className={`w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 ${isOpen ? 'bg-gray-200 hover:bg-gray-200' : 'hover:bg-gray-100'}`}
-			>
-				<p className='font-semibold'>{title}</p>
-				<div className='flex items-center gap-3'>
-					{isOpen && <p className='cursor-pointer p-1 hover:bg-gray-100 rounded-md' onClick={showEditPopup}><LuPencilLine size={16} /></p>}
-					{isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
-				</div>
-			</button>
-			<div
-				className={`overflow-hidden duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-					}`}
-			>
-				<div className="p-4 bg-white text-sm">
-					{children}
+		<>
+			{editFilterPopup && <FilterProfileEdit onClose={() => setEditFilterPopup(false)} filterData={filterData} />}
+			<div className="border rounded-md overflow-hidden">
+				<button
+					className={`w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 ${isOpen ? 'bg-gray-200 hover:bg-gray-200' : 'hover:bg-gray-100'} cursor-auto`}
+				>
+					<p className='font-semibold cursor-pointer' onClick={() => setIsOpen(!isOpen)}>{title}</p>
+					<div className='flex items-center gap-3 z-40'>
+						{isOpen && <p className='cursor-pointer p-1 hover:bg-gray-100 rounded-md' onClick={() => showEditPopup(children)}><LuPencilLine size={16} /></p>
+						}
+						{isOpen
+							? <MdKeyboardArrowUp onClick={() => setIsOpen(!isOpen)} className='cursor-pointer' />
+							: <MdKeyboardArrowDown onClick={() => setIsOpen(!isOpen)} className='cursor-pointer' />}
+					</div>
+				</button>
+				<div
+					className={`overflow-hidden duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+						}`}
+				>
+					<div className="p-4 bg-white text-sm">
+						{children}
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
 const FilterProfileList = () => {
 	return (
-		<div className="container p-4 border rounded-lg shadow-sm bg-white text-black">
+		<div className="container p-4 rounded-lg shadow-sm bg-white text-black">
 			{/* Header */}
 			<div className="text-lg font-semibold mb-4 relative top-0">Filter Profiles</div>
 
@@ -61,16 +73,40 @@ const FilterProfileList = () => {
 					</div>
 				</FilterSection>
 
+				<FilterSection title="Present Address">
+					<p>Present Address filters go here</p>
+				</FilterSection>
+
+				<FilterSection title="Residency Information">
+					<p>Residency Information go here</p>
+				</FilterSection>
+
+				<FilterSection title="Education Details">
+					<p>Education Details go here</p>
+				</FilterSection>
+
+				<FilterSection title="Career">
+					<p>Career filters go here</p>
+				</FilterSection>
+
+				<FilterSection title="Physical Attributes">
+					<p>Physical Attributes filters go here</p>
+				</FilterSection>
+
+				<FilterSection title="Language">
+					<p>Language filters go here</p>
+				</FilterSection>
+
+				<FilterSection title="Hobbies">
+					<p>Hobbies filters go here</p>
+				</FilterSection>
+
 				<FilterSection title="Religious Details">
 					<p>Religious filters go here</p>
 				</FilterSection>
 
-				<FilterSection title="Professional Details">
-					<p>Professional filters go here</p>
-				</FilterSection>
-
-				<FilterSection title="Location Details">
-					<p>Location filters go here</p>
+				<FilterSection title="Spiritual Details">
+					<p>Spiritual Details go here</p>
 				</FilterSection>
 
 				<FilterSection title="Lifestyle">
@@ -81,13 +117,10 @@ const FilterProfileList = () => {
 					<p>Family filters go here</p>
 				</FilterSection>
 
-				<FilterSection title="Recently active profiles">
-					<p>Activity filters go here</p>
+				<FilterSection title="Partner Expectation">
+					<p>Partner Expectation go here</p>
 				</FilterSection>
 
-				<FilterSection title="Profile Type">
-					<p>Profile type filters go here</p>
-				</FilterSection>
 			</div>
 		</div>
 	);

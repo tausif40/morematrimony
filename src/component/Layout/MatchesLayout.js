@@ -11,7 +11,7 @@ function MatchesLayout() {
 					<FilterMenu />
 				</div>
 				<div className="container flex lg:gap-6 xl:gap-8 mb-10 mt-8 ">
-					<div className="h-[690px] lg:min-w-[28%] xl:min-w-[25%] hidden lg:block rounded-md overflow-hidden overflow-y-auto customScroll-bar mt-4">
+					<div className="h-[95vh] border lg:min-w-[28%] xl:min-w-[25%] hidden lg:block rounded-md overflow-hidden overflow-y-auto customScroll-bar mt-4">
 						<FilterProfileList />
 					</div>
 

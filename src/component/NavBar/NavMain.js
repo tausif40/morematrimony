@@ -17,6 +17,7 @@ const NavMain = () => {
 	const [ userRegister, setUserRegister ] = useState(true)
 	const [ showProfileMenu, setShowProfileMenu ] = useState(false)
 	const [ isOpen, setIsOpen ] = useState(false)
+	const [ showNotification, setShowNotification ] = useState(false)
 	const dropdownRef = useRef(null);
 
 	// const [ isVisible, setIsVisible ] = useState(true)
@@ -80,7 +81,7 @@ const NavMain = () => {
 	useEffect(() => {
 		const pathName = location.pathname
 		setPath(pathName)
-		console.log('pathName: ', pathName);
+		// console.log('pathName: ', pathName);
 	}, [ location ]);
 
 	return (
@@ -127,7 +128,7 @@ const NavMain = () => {
 						</div>
 						 */}
 								{/* <Link to={'/notifications'}> */}
-								<div div className={`text-headingGray text-md px-2 cursor-pointer flex items-center gap-1`}>
+								<div div className={`text-headingGray text-md px-2 cursor-pointer flex items-center gap-1`} onClick={() => setShowNotification(!showNotification)}>
 									<IoIosNotificationsOutline size={20} color='#6d6e6f' /><p className='min-w-max text-sm'>Notifications</p>
 								</div>
 							</div>
@@ -159,8 +160,8 @@ const NavMain = () => {
 					</div>
 				</div>
 				{isOpen &&
-					<div className='shadow-md border absolute right-[5%] -mt-2 w-48 bg-white rounded-lg py-1 z-20' ref={dropdownRef}>
-						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+					<div className='shadow-md border absolute right-[6%] -mt-2 w-48 bg-white rounded-lg py-1 z-20' ref={dropdownRef}>
+						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-2">
 							{ProfileOption.map((value, ind) => (
 								<Link to={value.path} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
 									onClick={() => setIsOpen(false)}>

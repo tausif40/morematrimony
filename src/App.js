@@ -20,6 +20,7 @@ import MemberProfileLayout from './component/Layout/MemberProfileLayout';
 // import ViewProfile from './component/ViewProfile/ViewProfile';
 import ViewProfileLayout from './component/Layout/ViewProfileLayout';
 import MatchesLayout from './component/Layout/MatchesLayout';
+import Plans from './component/Plans/Plans';
 
 const App = () => {
   const dashboardPaths = [
@@ -70,6 +71,7 @@ const App = () => {
 
           <Route path="/member-profile" element={<MemberProfileLayout />} />
           <Route path="/view-profile" element={<ViewProfileLayout />} />
+          <Route path="/plans" element={<Plans />} />
         </Routes>
 
         <Footer />
