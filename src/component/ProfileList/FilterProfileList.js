@@ -23,7 +23,7 @@ const FilterSection = ({ title, children }) => {
 			{editFilterPopup && <FilterProfileEdit onClose={() => setEditFilterPopup(false)} filterData={filterData} />}
 			<div className="border rounded-md overflow-hidden">
 				<button
-					className={`w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 ${isOpen ? 'bg-gray-200 hover:bg-gray-200' : 'hover:bg-gray-100'} cursor-auto`}
+					className={`w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 ${isOpen ? 'bg-gray-200 hover:bg-gray-200' : ''} cursor-auto`}
 				>
 					<p className='font-semibold cursor-pointer' onClick={() => setIsOpen(!isOpen)}>{title}</p>
 					<div className='flex items-center gap-3 z-40'>

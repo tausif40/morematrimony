@@ -14,7 +14,6 @@ function PremiumMembers() {
 							<span className="text-3xl px-2 font-semibold text-gray-900">PREMIUM MEMBER</span>
 							<div className="flex-grow border-t-4 border-primary"></div>
 						</div>
-
 						<p className="mt-4 text-text max-w-2xl mx-auto">
 							Every Premium member on Active Matrimonial is privileged by our policy & rules so you don’t have to worry about your privacy or security.
 						</p>

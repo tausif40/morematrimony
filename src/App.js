@@ -21,6 +21,7 @@ import MemberProfileLayout from './component/Layout/MemberProfileLayout';
 import ViewProfileLayout from './component/Layout/ViewProfileLayout';
 import MatchesLayout from './component/Layout/MatchesLayout';
 import Plans from './component/Plans/Plans';
+import Help from './component/Help/Help';
 
 const App = () => {
   const dashboardPaths = [
@@ -72,6 +73,7 @@ const App = () => {
           <Route path="/member-profile" element={<MemberProfileLayout />} />
           <Route path="/view-profile" element={<ViewProfileLayout />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
 
         <Footer />

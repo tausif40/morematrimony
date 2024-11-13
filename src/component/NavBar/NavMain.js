@@ -2,23 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { PiUsers } from "react-icons/pi";
 import { PiCurrencyDollarDuotone } from "react-icons/pi";
-import { RiContactsLine } from "react-icons/ri";
 import { TbMessage2Question } from "react-icons/tb";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { IoNotificationsCircleSharp } from "react-icons/io5";
-
+import { IoIosLogOut } from "react-icons/io";
+import DeviceDetector from '../../utils/device/DeviceDetector';
 
 const NavMain = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [ path, setPath ] = useState('')
 	const [ userRegister, setUserRegister ] = useState(true)
-	const [ showProfileMenu, setShowProfileMenu ] = useState(false)
+	const [ mobileScreen, setMobileScreen ] = useState(false)
 	const [ isOpen, setIsOpen ] = useState(false)
 	const [ showNotification, setShowNotification ] = useState(false)
 	const dropdownRef = useRef(null);
+	const deviceType = DeviceDetector();
 
 	// const [ isVisible, setIsVisible ] = useState(true)
 	// const [ lastScrollY, setLastScrollY ] = useState(0)
@@ -47,12 +48,17 @@ const NavMain = () => {
 		{ path: '/matches', name: 'Matches', icon: PiUsers },
 		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
-		// { path: '/notifications', name: 'Notifications', icon: IoIosNotificationsOutline }
 	]
 	const ProfileOption = [
 		{ path: '/dashboard', name: 'Dashboard', icon: AiOutlineDashboard },
-		{ path: '/Help', name: 'Help', icon: IoIosHelpCircleOutline },
-		// { path: '/notifications', name: 'Notifications', icon: IoIosNotificationsOutline }
+		{ path: '/help', name: 'Help', icon: IoIosHelpCircleOutline },
+	]
+	const MobileProfileOption = [
+		{ path: '/dashboard', name: 'Dashboard', icon: AiOutlineDashboard },
+		{ path: '/matches', name: 'Matches', icon: PiUsers },
+		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
+		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
+		{ path: '/help', name: 'Help', icon: IoIosHelpCircleOutline },
 	]
 
 	// const handleScroll = (id) => {
@@ -98,10 +104,10 @@ const NavMain = () => {
 							</div>
 						</div>
 					</Link>
-					<div className="nav-option py-2 lg:py-0 w-auto flex items-center overflow-x-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 text-sm">
+					<div className="nav-option py-2 lg:py-0 w-auto flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 text-sm">
 
 						<div className='hidden md:block'>
-							<div className='flex items-center overflow-x-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 text-sm'>
+							<div className='flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 text-sm'>
 								{navOption.map((value, inx) => (
 									<Link to={value.path}>
 										<div className={`text-md px-2 cursor-pointer ${path == value.path ? 'text-gradient' : 'text-headingGray'} flex items-center gap-1`}>
@@ -135,12 +141,12 @@ const NavMain = () => {
 							{/* </Link> */}
 						</div>
 
-						<div className='text-sm font-medium text-text'>
+						<div className='text-sm font-medium text-text flex items-center gap-4 md:gap-0'>
 							{userRegister
 								? <>
+									<div className='block md:hidden'><IoNotificationsCircleSharp size={44} /></div>
 									<div className="relative" >
-										{/* <div className=''><IoNotificationsCircleSharp size={28} /></div> */}
-										<button className="px-4 py-[3px] w-[70px] "
+										<button className="px-2 py-[3px] w-14 "
 											onClick={() => setIsOpen(!isOpen)}
 											aria-haspopup="true"
 											aria-expanded={isOpen}
@@ -162,12 +168,24 @@ const NavMain = () => {
 				{isOpen &&
 					<div className='shadow-md border absolute right-[6%] -mt-2 w-48 bg-white rounded-lg py-1 z-20' ref={dropdownRef}>
 						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-2">
-							{ProfileOption.map((value, ind) => (
-								<Link to={value.path} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
-									onClick={() => setIsOpen(false)}>
-									<value.icon className={`${value.path == path && 'text-[#6d6e6f]'}`} /><p className='min-w-max'>{value.name}</p>
-								</Link>
-							))}
+
+							{deviceType === 'Mobile'
+								? MobileProfileOption.map((value, ind) => (
+									<Link to={value.path} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
+										onClick={() => setIsOpen(false)}>
+										<value.icon className={`${value.path == path && 'text-[#6d6e6f]'}`} /><p className='min-w-max'>{value.name}</p>
+									</Link>
+								))
+								: ProfileOption.map((value, ind) => (
+									<Link to={value.path} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
+										onClick={() => setIsOpen(false)}>
+										<value.icon className={`${value.path == path && 'text-[#6d6e6f]'}`} /><p className='min-w-max'>{value.name}</p>
+									</Link>
+								))}
+							<p className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center cursor-pointer"
+								onClick={() => setIsOpen(false)}>
+								<IoIosLogOut /><p className='min-w-max'>Logout</p>
+							</p>
 						</div>
 					</div>
 				}
