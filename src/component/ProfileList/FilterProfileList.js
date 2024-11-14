@@ -26,7 +26,7 @@ const FilterSection = ({ title, children }) => {
 					className={`w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 ${isOpen ? 'bg-gray-200 hover:bg-gray-200' : ''} cursor-auto`}
 				>
 					<p className='font-semibold cursor-pointer' onClick={() => setIsOpen(!isOpen)}>{title}</p>
-					<div className='flex items-center gap-3 z-40'>
+					<div className='flex items-center gap-3 z-40 p-1'>
 						{isOpen && <p className='cursor-pointer p-1 hover:bg-gray-100 rounded-md' onClick={() => showEditPopup(children)}><LuPencilLine size={16} /></p>
 						}
 						{isOpen
