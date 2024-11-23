@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { lifestyle } from '../../utils/data/MyProfileData'
 
 const Lifestyle = () => {
 	const [ formData, setFormData ] = useState({
@@ -68,9 +69,11 @@ const Lifestyle = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Diet</option>
-						<option value="vegetarian">Vegetarian</option>
-						<option value="nonVegetarian">Non-Vegetarian</option>
-						<option value="vegan">Vegan</option>
+						{lifestyle.diet.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.diet && <p className="text-red-500 text-xs mt-1">{errors.diet}</p>}
 				</div>
@@ -86,9 +89,11 @@ const Lifestyle = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Drink Preference</option>
-						<option value="social">Social</option>
-						<option value="regular">Regular</option>
-						<option value="never">Never</option>
+						{lifestyle.drink.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.drink && <p className="text-red-500 text-xs mt-1">{errors.drink}</p>}
 				</div>
@@ -104,8 +109,11 @@ const Lifestyle = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Smoking Preference</option>
-						<option value="smokes">Smokes</option>
-						<option value="doesNotSmoke">Does Not Smoke</option>
+						{lifestyle.smoke.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.smoke && <p className="text-red-500 text-xs mt-1">{errors.smoke}</p>}
 				</div>

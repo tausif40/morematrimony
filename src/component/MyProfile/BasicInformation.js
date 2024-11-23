@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { maritalStatus } from '../../utils/data/MyProfileData';
 
 const BasicInformationForm = () => {
 	const [ numberOfChildren, setNumberOfChildren ] = useState('');
@@ -11,7 +12,7 @@ const BasicInformationForm = () => {
 		gender: '',
 		onBehalf: '',
 		maritalStatus: '',
-		ProfilePhoto: null,
+		// ProfilePhoto: null,
 	});
 
 	const [ errors, setErrors ] = useState({});
@@ -20,7 +21,7 @@ const BasicInformationForm = () => {
 		e.preventDefault();
 		const newErrors = validateForm();
 		if (Object.keys(newErrors).length === 0) {
-			
+
 			if (formData.maritalStatus !== 'single') {
 				setFormData((previousData) => ({
 					...previousData,
@@ -30,8 +31,8 @@ const BasicInformationForm = () => {
 				delete formData.numberOfChildren;
 			}
 
-			console.log('Form submitted:', formData);
-			await axios.post('/api', formData)
+			// console.log('Form submitted:', formData);
+			await axios.patch('/user/myProfile', formData)
 				.then((response) => {
 					console.log(response);
 					toast.success('Basic information updated successfully');
@@ -53,17 +54,17 @@ const BasicInformationForm = () => {
 			[ name ]: '',
 		}));
 
-		if (name === 'ProfilePhoto') {
-			setFormData((prevFormData) => ({
-				...prevFormData,
-				[ name ]: files[ 0 ],
-			}));
-		} else {
-			setFormData((prevFormData) => ({
-				...prevFormData,
-				[ name ]: value,
-			}));
-		}
+		// if (name === 'ProfilePhoto') {
+		// 	setFormData((prevFormData) => ({
+		// 		...prevFormData,
+		// 		[ name ]: files[ 0 ],
+		// 	}));
+		// } else {
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[ name ]: value,
+		}));
+		// }
 	};
 
 	const validateForm = () => {
@@ -74,7 +75,7 @@ const BasicInformationForm = () => {
 		if (!formData.gender) newErrors.gender = 'Gender is required';
 		if (!formData.maritalStatus) newErrors.maritalStatus = 'Marital Status is required';
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
-		if (formData.ProfilePhoto == null) newErrors.ProfilePhoto = 'Profile Photo is required';
+		// if (formData.ProfilePhoto == null) newErrors.ProfilePhoto = 'Profile Photo is required';
 		if (formData.maritalStatus !== 'single' && !numberOfChildren) {
 			newErrors.numberOfChildren = 'Number of Children is required';
 		}
@@ -174,10 +175,11 @@ const BasicInformationForm = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select</option>
-						<option value="single">Single</option>
-						<option value="married">Married</option>
-						<option value="divorced">Divorced</option>
-						<option value="widowed">Widowed</option>
+						{maritalStatus.status.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.maritalStatus && <p className="text-red-500 text-xs mt-1">{errors.maritalStatus}</p>}
 				</div>
@@ -225,7 +227,7 @@ const BasicInformationForm = () => {
 				</div>
 
 				{/* Profile Photo */}
-				<div>
+				{/* <div>
 					<label htmlFor="ProfilePhoto" className="block font-medium mb-1 mt-1 text-headingGray">
 						Profile Photo<span className="text-red-500"> *</span>
 					</label>
@@ -237,7 +239,7 @@ const BasicInformationForm = () => {
 						onChange={handleChange}
 					/>
 					{errors.ProfilePhoto && <p className="text-red-500 text-xs mt-1">{errors.ProfilePhoto}</p>}
-				</div>
+				</div> */}
 
 				<div className="col-span-2 flex justify-end mt-4">
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>

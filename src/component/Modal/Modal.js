@@ -23,9 +23,9 @@ const Modal = ({ show, onClose, children }) => {
 	return (
 		<div
 			id="modal-wrapper"
-			className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+			className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 "
 		>
-			<div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative mx-2 ">
+			<div className="bg-white rounded-lg custom-shadow2 p-6 max-w-md w-full relative mx-2 ">
 				<button
 					onClick={onClose}
 					className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 rounded-md bg-gray-200 p-1"

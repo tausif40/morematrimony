@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LoginPage from '../Form/LoginPage';
+import Cookies from 'js-cookie';
 
 function Hero() {
+	const [ isUserLogin, setIsUserLogin ] = useState(false)
+	const token = Cookies.get('access_token');
+
+	useEffect(() => {
+		token && setIsUserLogin(true)
+	}, [ token ])
+
 	return (
 		<>
 			<section className="relative border-t-[6px] border-gold">
@@ -12,7 +20,7 @@ function Hero() {
 						<p className='text-hotRed text-3xl md:text-4xl sm:leading-[50px]'>Make Yours <br /> Special</p>
 					</div> */}
 					<div className='mr-0 md:mr-12 lg:mr-28'>
-						<LoginPage />
+						{!isUserLogin && <LoginPage />}
 					</div>
 				</div>
 			</section>

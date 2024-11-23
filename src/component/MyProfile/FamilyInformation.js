@@ -175,7 +175,6 @@ const FamilyInformation = () => {
 						name="motherOccupation"
 						value={formData.motherOccupation}
 						onChange={handleChange}
-
 					>
 						<option value="" disabled>
 							Select Mother's Occupation
@@ -188,7 +187,7 @@ const FamilyInformation = () => {
 					{errors.motherOccupation && <p className="text-red-500 text-xs">{errors.motherOccupation}</p>}
 				</div>
 
-				{/* Number of Brothers */}
+				{/* Number of Brothers */} 
 				<div>
 					<label htmlFor="numBrothers" className="block font-medium mb-1 text-headingGray">
 						No. of Brothers <span className="text-red-500">*</span>

@@ -9,17 +9,19 @@ import { IoIosHelpCircleOutline } from "react-icons/io";
 import { IoNotificationsCircleSharp } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import DeviceDetector from '../../utils/device/DeviceDetector';
+import Cookies from 'js-cookie';
 
 const NavMain = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [ path, setPath ] = useState('')
-	const [ userRegister, setUserRegister ] = useState(true)
+	const [ isUserRegister, setIsUserRegister ] = useState(false)
 	const [ mobileScreen, setMobileScreen ] = useState(false)
 	const [ isOpen, setIsOpen ] = useState(false)
 	const [ showNotification, setShowNotification ] = useState(false)
 	const dropdownRef = useRef(null);
 	const deviceType = DeviceDetector();
+	const token = Cookies.get('access_token');
 
 	// const [ isVisible, setIsVisible ] = useState(true)
 	// const [ lastScrollY, setLastScrollY ] = useState(0)
@@ -44,6 +46,9 @@ const NavMain = () => {
 	// 	}
 	// }, [ lastScrollY ])
 
+	const VisitorNav = [
+		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
+	]
 	const navOption = [
 		{ path: '/matches', name: 'Matches', icon: PiUsers },
 		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
@@ -88,7 +93,10 @@ const NavMain = () => {
 		const pathName = location.pathname
 		setPath(pathName)
 		// console.log('pathName: ', pathName);
-	}, [ location ]);
+		// console.log(token);
+		token ? setIsUserRegister(true) : setIsUserRegister(false)
+
+	}, [ location, token ]);
 
 	return (
 		<>
@@ -108,13 +116,22 @@ const NavMain = () => {
 
 						<div className='hidden md:block'>
 							<div className='flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 text-sm'>
-								{navOption.map((value, inx) => (
-									<Link to={value.path}>
-										<div className={`text-md px-2 cursor-pointer ${path == value.path ? 'text-gradient' : 'text-headingGray'} flex items-center gap-1`}>
-											<value.icon className={`${value.path == path && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
-										</div>
-									</Link>
-								))}
+								{isUserRegister
+									? navOption.map((value, inx) => (
+										<Link to={value.path}>
+											<div className={`text-md px-2 cursor-pointer ${path == value.path ? 'text-gradient' : 'text-headingGray'} flex items-center gap-1`}>
+												<value.icon className={`${value.path == path && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+											</div>
+										</Link>
+									))
+									: VisitorNav.map((value, inx) => (
+										<Link to={value.path}>
+											<div className={`text-md px-2 cursor-pointer ${path == value.path ? 'text-gradient' : 'text-headingGray'} flex items-center gap-1`}>
+												<value.icon className={`${value.path == path && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+											</div>
+										</Link>
+									))
+								}
 
 								{/* <Link to={'/matches'}>
 							<div className={`text-gradient text-md px-4 cursor-pointer ${path == '/matches' && 'activeBtn'} flex items-center gap-1`}>
@@ -142,7 +159,7 @@ const NavMain = () => {
 						</div>
 
 						<div className='text-sm font-medium text-text flex items-center gap-4 md:gap-0'>
-							{userRegister
+							{isUserRegister
 								? <>
 									<div className='block md:hidden'><IoNotificationsCircleSharp size={44} /></div>
 									<div className="relative" >
@@ -183,7 +200,11 @@ const NavMain = () => {
 									</Link>
 								))}
 							<p className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center cursor-pointer"
-								onClick={() => setIsOpen(false)}>
+								onClick={() => {
+									setIsOpen(false)
+									Cookies.remove('access_token')
+									navigate('/')
+								}}>
 								<IoIosLogOut /><p className='min-w-max'>Logout</p>
 							</p>
 						</div>

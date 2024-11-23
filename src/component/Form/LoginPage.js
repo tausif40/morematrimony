@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
-
+import Cookies from 'js-cookie';
 const LoginPage = () => {
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
+	const [ emailError, setEmailError ] = useState('');
 	const [ error, setError ] = useState('');
-
+	const navigate = useNavigate();
+	const url = process.env.REACT_APP_API_URL;
 	const handleLogin = async (e) => {
 		e.preventDefault();
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(email)) {
+			setEmailError("Invalid email format")
+		}
 		try {
-			const response = await axios.post('', {
+			const response = await axios.post(`${url}/auth/logIn`, {
 				email,
 				password,
+			}).then((response) => {
+				toast.success("Login successfully");
+				Cookies.set('access_token', response.data.tokens.access.token);
+				Cookies.set('refresh_token', response.data.tokens.refresh.token);
+				navigate('/dashboard')
+				// console.log(response.data);
 			});
-			console.log(response.data);
 		} catch (err) {
 			setError("Email password does't match");
 			toast.error("Email password does't match");
@@ -34,17 +45,19 @@ const LoginPage = () => {
 				<form onSubmit={handleLogin} className="space-y-4 sm:space-y-8 mt-8" action="">
 					<div>
 						<label className="block text-sm text-gold text-semibold">Email</label>
-						<input	
-							type="email"
+						<input
+							type="text"
 							value={email}
 							onChange={(e) => {
 								setEmail(e.target.value)
 								setError("")
+								setEmailError("")
 							}}
 							required
 							placeholder='Enter Email'
 							className="mt-1 p-3 block w-full border border-slate-400 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-slate-700 bg-gray-300/30 rounded-md"
 						/>
+						{emailError && <p className="text-red-500 text-sm pt-2">{emailError}</p>}
 					</div>
 
 					{/* Password Input */}

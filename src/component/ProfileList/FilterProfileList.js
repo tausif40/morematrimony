@@ -15,7 +15,6 @@ const FilterSection = ({ title, children }) => {
 		setIsOpen(true)
 		setEditFilterPopup(true);
 		setFilterData(children);
-
 	}
 
 	return (
@@ -26,21 +25,20 @@ const FilterSection = ({ title, children }) => {
 					className={`w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 ${isOpen ? 'bg-gray-200 hover:bg-gray-200' : ''} cursor-auto`}
 				>
 					<p className='font-semibold cursor-pointer' onClick={() => setIsOpen(!isOpen)}>{title}</p>
-					<div className='flex items-center gap-3 z-40 p-1'>
+					<div className='flex items-center gap-3 z-40'>
 						{isOpen && <p className='cursor-pointer p-1 hover:bg-gray-100 rounded-md' onClick={() => showEditPopup(children)}><LuPencilLine size={16} /></p>
 						}
 						{isOpen
-							? <MdKeyboardArrowUp onClick={() => setIsOpen(!isOpen)} className='cursor-pointer' />
-							: <MdKeyboardArrowDown onClick={() => setIsOpen(!isOpen)} className='cursor-pointer' />}
+							? <MdKeyboardArrowUp onClick={() => setIsOpen(!isOpen)} className='cursor-pointer ' />
+							: <MdKeyboardArrowDown onClick={() => setIsOpen(!isOpen)} className='cursor-pointer ' />}
 					</div>
 				</button>
 				<div
-					className={`overflow-hidden duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-						}`}
+					className={`overflow-hidden duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
 				>
 					<div className="p-4 bg-white text-sm">
 						{children}
-					</div>
+					</div> 
 				</div>
 			</div>
 		</>

@@ -37,8 +37,7 @@ function AccordionItem({ number, isOpen, onClick, question, answer }) {
 			</button>
 			<div
 				ref={contentRef}
-				className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
-					}`}
+				className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}
 				style={{ maxHeight: isOpen ? contentRef.current.scrollHeight : 0 }}
 			>
 				<div className="text-gray-500 mt-2 pl-6 pr-8">

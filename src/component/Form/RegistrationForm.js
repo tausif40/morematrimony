@@ -3,14 +3,23 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
+import Cookies from 'js-cookie';
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../store/auth/userRegister-slicer2";
+import { useSelector } from "react-redux";
 
 const RegistrationForm = () => {
 	const dropdownRef = useRef(null);
 	const navigate = useNavigate();
 	const [ isOpen, setIsOpen ] = useState(false);
+	const [ agreement, setAgreement ] = useState(false);
+	const [ confirmPassword, setConfirmPassword ] = useState('');
 	const [ selectedProfile, setSelectedProfile ] = useState('');
+	const dispatch = useDispatch();
+	const url = process.env.REACT_APP_API_URL;
+	const { currentUser, loading, error } = useSelector((state) => state.registerUser);
 
-	const profiles = [ 'Myself', 'Daughter', 'Son', 'Sister', 'Brother', 'Relative', 'Friend' ];
+	const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -38,43 +47,57 @@ const RegistrationForm = () => {
 		dateOfBirth: "",
 		email: "",
 		password: "",
-		confirmPassword: "",
-		agree: false,
 	});
 
 	const handleChange = (e) => {
-		const { name, value, type, checked } = e.target;
+		const { name, value } = e.target;
 		setFormData({
 			...formData,
-			[ name ]: type === "checkbox" ? checked : value,
+			[ name ]: value,
 		});
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (formData.password !== formData.confirmPassword) {
+		if (formData.password !== confirmPassword) {
 			toast.error("Passwords do not match!");
 			return;
-		}
-		try {
-
-			const data = { ...formData, onBehalf: selectedProfile, }
-			console.log(data);
-			const response = await axios.post("/api/register", data);
-			toast.success("Registration successful!");
-			setFormData({
-				firstName: "",
-				lastName: "",
-				gender: "Male",
-				dateOfBirth: "",
-				email: "",
-				password: "",
-				confirmPassword: "",
-				agree: false,
+		} else if (!agreement) {
+			toast('Please accept agreement!', {
+				icon: '⚠️'
 			});
-		} catch (error) {
-			toast.error("Registration failed.");
+			return;
 		}
+		
+		const userData = { ...formData, onBehalf: selectedProfile, }
+		// console.log(userData);
+		const loadingToast = toast.loading('Logging.....');
+
+		// dispatch(registerUser(userData));
+		await axios.post(`${url}/auth/signUp`, userData)
+			.then((response) => {
+				console.log(response);
+				Cookies.set('access_token', response.data.tokens.access.token);
+				Cookies.set('refresh_token', response.data.tokens.refresh.token);
+				navigate('/dashboard')
+				new Promise((resolve) => setTimeout(resolve, 2000));
+				toast.success(("Registration successful!"), { id: loadingToast })
+
+				setFormData({
+					firstName: "",
+					lastName: "",
+					gender: "",
+					dateOfBirth: "",
+					email: "",
+					password: "",
+					confirmPassword: "",
+				});
+
+			}).catch((error) => {
+				console.log(error);
+				new Promise((resolve) => setTimeout(resolve, 2000));
+				toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
+			})
 	};
 
 	const handleLoginPage = () => {
@@ -168,8 +191,9 @@ const RegistrationForm = () => {
 							onChange={handleChange}
 							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
 						>
-							<option value="Male">Male</option>
-							<option value="Female">Female</option>
+							<option>Select Gender</option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
 						</select>
 					</div>
 
@@ -227,8 +251,8 @@ const RegistrationForm = () => {
 						<input
 							type="password"
 							name="confirmPassword"
-							value={formData.confirmPassword}
-							onChange={handleChange}
+							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
 							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
 							placeholder="********"
 							required
@@ -240,12 +264,9 @@ const RegistrationForm = () => {
 				<div className="flex items-center mb-6 mt-4">
 					<input
 						type="checkbox"
-						name="agree"
-						checked={formData.agree}
-						onChange={handleChange}
+						onChange={() => setAgreement(true)}
 						className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
 						id="termAndCondition"
-						required
 					/>
 					<label for="termAndCondition" className="ml-2 text-sm text-gray-600 cursor-pointer">
 						By signing up you agree to our{" "}

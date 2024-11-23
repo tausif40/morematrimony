@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { personalInformation } from '../../utils/data/MyProfileData';
 
 const ResidencyInformation = () => {
 	const [ formData, setFormData ] = useState({
@@ -131,8 +132,11 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Residency Status</option>
-						<option value="status1">Status 1</option>
-						<option value="status2">Status 2</option>
+						{personalInformation.residencyStatus.map((status, index) => (
+							<option key={index} value={status}>
+								{status}
+							</option>
+						))}
 					</select>
 					{errors.residencyStatus && <p className="text-red-500 text-xs">{errors.residencyStatus}</p>}
 				</div>

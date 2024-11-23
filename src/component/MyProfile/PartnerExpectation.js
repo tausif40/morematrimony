@@ -120,7 +120,7 @@ const PartnerExpectation = () => {
 				{/* {brideAge} */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
-						Bride's Age <span className="text-red-500">*</span>
+						Partner's Age <span className="text-red-500">*</span>
 					</label>
 					<div className="rounded-md flex gap-4">
 						<select

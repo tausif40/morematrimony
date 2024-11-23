@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { PhysicalAttributesData } from '../../utils/data/MyProfileData';
 
 const PhysicalAttributes = () => {
 	const [ formData, setFormData ] = useState({
@@ -13,7 +14,8 @@ const PhysicalAttributes = () => {
 		bodyType: '',
 		tattoo: '',
 		anyDisability: '',
-		disability: ''
+		disabilityType: '',
+		disabilityDetails: ''
 	});
 	const [ errors, setErrors ] = useState({});
 
@@ -32,9 +34,11 @@ const PhysicalAttributes = () => {
 		if (!formData.bodyType) validationErrors.bodyType = 'Body Type is required';
 		if (!formData.tattoo) validationErrors.tattoo = 'Tattoo details are required';
 		if (!formData.anyDisability) validationErrors.anyDisability = 'Disability details are required';
-
-		if (formData.anyDisability === 'Yes' && !formData.disability) {
-			validationErrors.disability = 'Disability details are required';
+		if (formData.anyDisability === 'yes' && !formData.disabilityType) {
+			validationErrors.disabilityType = 'disability Type is required';
+		}
+		if (formData.anyDisability === 'yes' && !formData.disabilityDetails) {
+			validationErrors.disabilityDetails = 'Disability Details is required';
 		}
 
 
@@ -58,7 +62,7 @@ const PhysicalAttributes = () => {
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 
-		if (name.includes('height')) {
+		if (name.includes('height') || name.includes('inch')) {
 			const [ group, field ] = name.split('.');
 			setFormData((prevFormData) => ({
 				...prevFormData,
@@ -77,9 +81,6 @@ const PhysicalAttributes = () => {
 				[ name ]: '',
 			}));
 		}
-
-
-
 	};
 
 	return (
@@ -97,9 +98,11 @@ const PhysicalAttributes = () => {
 							onChange={handleChange}
 						>
 							<option value="" disabled>Feet</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
+							{PhysicalAttributesData.foot.map((status, index) => (
+								<option key={index} value={status}>
+									{status}
+								</option>
+							))}
 						</select>
 
 						<select
@@ -109,8 +112,11 @@ const PhysicalAttributes = () => {
 							onChange={handleChange}
 						>
 							<option value="" disabled>Inches</option>
-							<option value="0">0</option>
-							<option value="1">1</option>
+							{PhysicalAttributesData.inch.map((status, index) => (
+								<option key={index} value={status}>
+									{status}
+								</option>
+							))}
 						</select>
 					</div>
 					{errors.height && <p className="text-red-500 text-xs">{errors.height}</p>}
@@ -146,12 +152,11 @@ const PhysicalAttributes = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Eye Color</option>
-						<option value="Normal">Normal</option>
-						<option value="Amber">Amber</option>
-						<option value="Blue">Blue</option>
-						<option value="Brown">Brown</option>
-						<option value="Green">Green</option>
-						<option value="Hazel">Hazel</option>
+						{PhysicalAttributesData.eyeColor.map((status, index) => (
+							<option key={index} value={status}>
+								{status.charAt(0).toUpperCase() + status.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.eyeColor && <p className="text-red-500 text-xs">{errors.eyeColor}</p>}
 				</div>
@@ -169,9 +174,11 @@ const PhysicalAttributes = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Hair Color</option>
-						<option value="Black">Black</option>
-						<option value="Gray">Gray</option>
-						<option value="White">White</option>
+						{PhysicalAttributesData.eyeColor.map((color, index) => (
+							<option key={index} value={color}>
+								{color.charAt(0).toUpperCase() + color.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.hairColor && <p className="text-red-500 text-xs">{errors.hairColor}</p>}
 				</div>
@@ -189,9 +196,11 @@ const PhysicalAttributes = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Complexion</option>
-						<option value="Fair Skin">Fair Skin</option>
-						<option value="Medium Skin">Medium Skin</option>
-						<option value="Black Skin">Black Skin</option>
+						{PhysicalAttributesData.complexion.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.complexion && <p className="text-red-500 text-xs">{errors.complexion}</p>}
 				</div>
@@ -209,9 +218,11 @@ const PhysicalAttributes = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Blood Group</option>
-						<option value="A+">A positive (A+)</option>
-						<option value="A-">A negative (A-)</option>
-						<option value="O+">O positive (O+)</option>
+						{PhysicalAttributesData.bloodGroup.map((value, index) => (
+							<option key={index} value={value}>
+								{value}
+							</option>
+						))}
 					</select>
 					{errors.bloodGroup && <p className="text-red-500 text-xs">{errors.bloodGroup}</p>}
 				</div>
@@ -229,9 +240,11 @@ const PhysicalAttributes = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Body Type</option>
-						<option value="Slim">Slim</option>
-						<option value="Fat">Fat</option>
-						<option value="Average">Average</option>
+						{PhysicalAttributesData.bodyType.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.bodyType && <p className="text-red-500 text-xs">{errors.bodyType}</p>}
 				</div>
@@ -268,28 +281,52 @@ const PhysicalAttributes = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Option</option>
-						<option value="Yes">Yes</option>
-						<option value="No">No</option>
+						<option value="yes">Yes</option>
+						<option value="no">No</option>
 					</select>
 					{errors.anyDisability && <p className="text-red-500 text-xs">{errors.anyDisability}</p>}
 				</div>
 
-				{/* Disability Details */}
-				{formData.anyDisability === 'Yes' && (
+				{/* disability Type */}
+				{formData.anyDisability === 'yes' && (
 					<div>
-						<label htmlFor="disability" className="block font-medium mb-1 mt-1 text-headingGray">
+						<label htmlFor="disabilityType" className="block font-medium mb-1 mt-1 text-headingGray">
+							Select Disability Type <span className="text-red-500">*</span>
+						</label>
+						<select
+							id="disabilityType"
+							className={getInputClasses('disabilityType')}
+							name="disabilityType"
+							value={formData.disabilityType}
+							onChange={handleChange}
+						>
+							<option value="" disabled>Select Option</option>
+							{PhysicalAttributesData.disabilityType.map((value, index) => (
+								<option key={index} value={value}>
+									{value.charAt(0).toUpperCase() + value.slice(1)}
+								</option>
+							))}
+						</select>
+						{errors.disabilityType && <p className="text-red-500 text-xs">{errors.disabilityType}</p>}
+					</div>
+				)}
+
+				{/* Disability Details */}
+				{formData.anyDisability === 'yes' && formData.disabilityType === 'other' && (
+					<div>
+						<label htmlFor="disabilityDetails" className="block font-medium mb-1 mt-1 text-headingGray">
 							Disability Details <span className="text-red-500">*</span>
 						</label>
 						<input
 							type="text"
-							id="disability"
-							className={getInputClasses('disability')}
+							id="disabilityDetails"
+							className={getInputClasses('disabilityDetails')}
 							placeholder="Disability Details"
-							name="disability"
-							value={formData.disability}
+							name="disabilityDetails"
+							value={formData.disabilityDetails}
 							onChange={handleChange}
 						/>
-						{errors.disability && <p className="text-red-500 text-xs">{errors.disability}</p>}
+						{errors.disabilityDetails && <p className="text-red-500 text-xs">{errors.disabilityDetails}</p>}
 					</div>
 				)}
 
