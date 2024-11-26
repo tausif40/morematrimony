@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { familyInformation } from '../../utils/data/MyProfileData';
 
 const FamilyInformation = () => {
 	const [ formData, setFormData ] = useState({
@@ -86,9 +87,11 @@ const FamilyInformation = () => {
 							Choose Family Value
 						</option>
 						<option value="orthodox">Orthodox</option>
-						<option value="traditional">Traditional</option>
-						<option value="moderate">Moderate</option>
-						<option value="liberal">Liberal</option>
+						{familyInformation.familyValue.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.familyValue && <p className="text-red-500 text-xs">{errors.familyValue}</p>}
 				</div>
@@ -110,8 +113,11 @@ const FamilyInformation = () => {
 							Choose Family Type
 						</option>
 						<option value="jointFamily">Joint Family</option>
-						<option value="nuclearFamily">Nuclear Family</option>
-						<option value="others">Others</option>
+						{familyInformation.familyType.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.familyType && <p className="text-red-500 text-xs">{errors.familyType}</p>}
 				</div>
@@ -134,8 +140,11 @@ const FamilyInformation = () => {
 						</option>
 						<option value="middleClass">Middle Class</option>
 						<option value="upperMiddleClass">Upper Middle Class</option>
-						<option value="highClass">High Class</option>
-						<option value="richAffluent">Rich/Affluent</option>
+						{familyInformation.familyStatus.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.familyStatus && <p className="text-red-500 text-xs">{errors.familyStatus}</p>}
 				</div>
@@ -187,7 +196,7 @@ const FamilyInformation = () => {
 					{errors.motherOccupation && <p className="text-red-500 text-xs">{errors.motherOccupation}</p>}
 				</div>
 
-				{/* Number of Brothers */} 
+				{/* Number of Brothers */}
 				<div>
 					<label htmlFor="numBrothers" className="block font-medium mb-1 text-headingGray">
 						No. of Brothers <span className="text-red-500">*</span>
@@ -203,11 +212,13 @@ const FamilyInformation = () => {
 						<option value="" disabled>
 							Choose Number
 						</option>
-						<option value="0">0</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="more">More than 3</option>
+						<option value="none">None</option>
+						{familyInformation.number.map((value, index) => (
+							<option key={index} value={value}>
+								{value}
+							</option>
+						))}
+						<option value="more">More than 10</option>
 					</select>
 					{errors.numBrothers && <p className="text-red-500 text-xs">{errors.numBrothers}</p>}
 				</div>
@@ -229,9 +240,12 @@ const FamilyInformation = () => {
 							Select Married Brothers
 						</option>
 						<option value="none">None</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="more">More than 2</option>
+						{familyInformation.number.map((value, index) => (
+							<option key={index} value={value}>
+								{value}
+							</option>
+						))}
+						<option value="more">All</option>
 					</select>
 					{errors.brothersMarried && <p className="text-red-500 text-xs">{errors.brothersMarried}</p>}
 				</div>
@@ -252,11 +266,13 @@ const FamilyInformation = () => {
 						<option value="" disabled>
 							Choose Number
 						</option>
-						<option value="0">0</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="more">More than 3</option>
+						<option value="none">None</option>
+						{familyInformation.number.map((value, index) => (
+							<option key={index} value={value}>
+								{value}
+							</option>
+						))}
+						<option value="more">More then 10</option>
 					</select>
 					{errors.numSisters && <p className="text-red-500 text-xs">{errors.numSisters}</p>}
 				</div>
@@ -278,9 +294,12 @@ const FamilyInformation = () => {
 							Select Married Sisters
 						</option>
 						<option value="none">None</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="more">More than 2</option>
+						{familyInformation.number.map((value, index) => (
+							<option key={index} value={value}>
+								{value}
+							</option>
+						))}
+						<option value="more">All</option>
 					</select>
 					{errors.sistersMarried && <p className="text-red-500 text-xs">{errors.sistersMarried}</p>}
 				</div>

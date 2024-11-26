@@ -9,21 +9,29 @@ import Introduction from './Introduction';
 import Language from './Language';
 import Lifestyle from './Lifestyle';
 import PartnerExpectation from './PartnerExpectation';
-import PermanentAddress from './PermanentAddress';
 import PhysicalAttributes from './PhysicalAttributes';
 import PresentAddress from './PresentAddress';
 import ResidencyInformation from './ResidencyInformation';
 import SocialBackground from './SocialBackground';
-import UpdateEmail from './UpdateEmail';
+
+// import { useDispatch, useSelector } from 'react-redux';
+// import { fetchCountries, fetchStates, fetchCities } from '../../store/features/profileData-slice';
+
 
 const MyProfilePage = () => {
+	// const dispatch = useDispatch();
+	// const { countries, states, cities, loading, error } = useSelector((state) => state.profileData);
+	
+
+	// useEffect(() => {
+	// 	dispatch(fetchCountries());
+	// }, [ dispatch ]);
+
 	return (
 		<div className='space-y-10'>
 			<Introduction />
-			{/* <UpdateEmail /> */}
 			<BasicInformation />
 			<PresentAddress />
-			{/* <PermanentAddress /> */}
 			<ResidencyInformation />
 			<EducationInfo />
 			<Career />

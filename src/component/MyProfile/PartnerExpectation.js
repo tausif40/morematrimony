@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { partnerExpectations, maritalStatus, career } from '../../utils/data/MyProfileData';
+import { fetchCountries } from '../../store/features/profileData-slice';
 
 const PartnerExpectation = () => {
+	const dispatch = useDispatch();
+	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
+
+	useEffect(() => {
+		dispatch(fetchCountries());
+	}, [ dispatch ]);
+
 	const [ formData, setFormData ] = useState({
 		brideAge: { minAge: '', maxAge: '' },
 		height: { feet: '', inches: '' },
@@ -71,10 +81,18 @@ const PartnerExpectation = () => {
 
 		return (formData.maritalStatus !== 'single' && formData.maritalStatus !== '')
 	};
+	const isNotEmployed = () => {
+		if (formData.employedIn == 'not working' || formData.employedIn == "doesn't matter") {
+			delete formData.occupation;
+			delete formData.annualIncome;
+		}
+		return (formData.employedIn !== 'not working' && formData.employedIn !== "doesn't matter" && formData.employedIn !== "")
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
+		console.log("isChildrenFieldsVisible - ", isChildrenFieldsVisible());
+		console.log("isNotEmployed - ", isNotEmployed());
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
 			return;
@@ -130,8 +148,11 @@ const PartnerExpectation = () => {
 							onChange={handleChange}
 						>
 							<option value="" disabled>Min</option>
-							<option value="18">18</option>
-							<option value="19">19</option>
+							{partnerExpectations.age.map((value, index) => (
+								<option key={index} value={value}>
+									{value}
+								</option>
+							))}
 						</select>
 						<select
 							className={`input-field text-gray-700 p-1 outline-none border`}
@@ -140,8 +161,11 @@ const PartnerExpectation = () => {
 							onChange={handleChange}
 						>
 							<option value="" disabled>Max</option>
-							<option value="18">18</option>
-							<option value="19">19</option>
+							{partnerExpectations.age.map((value, index) => (
+								<option key={index} value={value}>
+									{value}
+								</option>
+							))}
 						</select>
 					</div>
 					{errors.brideAge && <p className="text-red-500 text-xs">{errors.brideAge}</p>}
@@ -158,9 +182,11 @@ const PartnerExpectation = () => {
 							onChange={handleChange}
 						>
 							<option value="" disabled>Feet</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
+							{partnerExpectations.height.map((value, index) => (
+								<option key={index} value={value}>
+									{value}
+								</option>
+							))}
 						</select>
 
 						<select
@@ -171,7 +197,11 @@ const PartnerExpectation = () => {
 						>
 							<option value="" disabled>Inches</option>
 							<option value="0">0</option>
-							<option value="1">1</option>
+							{partnerExpectations.height.map((value, index) => (
+								<option key={index} value={value}>
+									{value}
+								</option>
+							))}
 						</select>
 					</div>
 					{errors[ 'height.feet' ] && <p className="text-red-500 text-xs">{errors[ 'height.feet' ]}</p>}
@@ -189,10 +219,11 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select</option>
-						<option value="single">Single</option>
-						<option value="married">Married</option>
-						<option value="divorced">Divorced</option>
-						<option value="widowed">Widowed</option>
+						{maritalStatus.status.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.maritalStatus && <p className="text-red-500 text-xs mt-1">{errors.maritalStatus}</p>}
 				</div>
@@ -245,9 +276,12 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Residency Country</option>
-						<option value="country1">Country 1</option>
-						<option value="country2">Country 2</option>
-						<option value="country3">Country 3</option>
+						{countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>}
+						{countries?.country?.map((country, index) => (
+							<option key={country._id} value={country._id}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.residencyCountry && <p className="text-red-500 text-xs">{errors.residencyCountry}</p>}
 				</div>
@@ -356,51 +390,60 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Education</option>
-						<option value="course1">employed 1</option>
-						<option value="course2">employed 2</option>
-						<option value="other">Not Working</option>
+						{career.employedIn.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
+						<option value="doesn't matter">Doesn't matter</option>
 					</select>
 					{errors.employedIn && <p className="text-red-500 text-xs">{errors.employedIn}</p>}
 				</div>
 				{/* Occupation */}
-				<div>
-					<label htmlFor="occupation" className="block font-medium mb-1 mt-1 text-headingGray">
-						Occupation <span className="text-red-500">*</span>
-					</label>
-					<select
-						id="occupation"
-						className={getInputClasses('occupation')}
-						name="occupation"
-						value={formData.occupation}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Occupation</option>
-						<option value="Engineer">Engineer</option>
-						<option value="Doctor">Doctor</option>
-						<option value="Teacher">Teacher</option>
-					</select>
-					{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
-				</div>
-				{/* Annual Income */}
-				<div>
-					<label htmlFor="annualIncome" className="block font-medium mb-1 mt-1 text-headingGray">
-						Annual Income <span className="text-red-500">*</span>
-					</label>
-					<select
-						id="annualIncome"
-						className={getInputClasses('annualIncome')}
-						name="annualIncome"
-						value={formData.annualIncome}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Annual Income</option>
-						<option value="1 Lakh">1 Lakh</option>
-						<option value="2 Lakh">2 Lakh</option>
-						<option value="5 Lakh">5 Lakh</option>
-					</select>
-					{errors.annualIncome && <p className="text-red-500 text-xs">{errors.annualIncome}</p>}
-				</div>
-
+				{isNotEmployed() &&
+					<>
+						<div>
+							<label htmlFor="occupation" className="block font-medium mb-1 mt-1 text-headingGray">
+								Occupation <span className="text-red-500">*</span>
+							</label>
+							<select
+								id="occupation"
+								className={getInputClasses('occupation')}
+								name="occupation"
+								value={formData.occupation}
+								onChange={handleChange}
+							>
+								<option value="" disabled>Select Occupation</option>
+								<option value="Engineer">Engineer</option>
+								<option value="Doctor">Doctor</option>
+								<option value="Teacher">Teacher</option>
+							</select>
+							{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
+						</div>
+						{/* Annual Income */}
+						<div>
+							<label htmlFor="annualIncome" className="block font-medium mb-1 mt-1 text-headingGray">
+								Annual Income <span className="text-red-500">*</span>
+							</label>
+							<select
+								id="annualIncome"
+								className={getInputClasses('annualIncome')}
+								name="annualIncome"
+								value={formData.annualIncome}
+								onChange={handleChange}
+							>
+								<option value="" disabled>Select Annual Income</option>
+								{career.annualIncome.map((value, index) => (
+									<option key={index} value={value}>
+										{value.charAt(0).toUpperCase() + value.slice(1)}
+									</option>
+								))}
+								<option value="doesn't matter">Doesn't matter</option>
+							</select>
+							{errors.annualIncome && <p className="text-red-500 text-xs">{errors.annualIncome}</p>}
+						</div>
+					</>
+				}
 				{/* Smoking Acceptable */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Smoking Acceptable <span className="text-red-500">*</span></label>

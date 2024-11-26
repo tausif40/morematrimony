@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCountries, fetchStates, fetchCities } from '../../store/features/profileData-slice';
 
 const PresentAddress = () => {
+	const dispatch = useDispatch();
+	// const { countries, states, cities, loading, error } = useSelector((state) => state.profileData);
+
+	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
+	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
+	const { data: cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.profileData.cities);
+
+	useEffect(() => {
+		dispatch(fetchCountries());
+	}, [ dispatch ]);
+
 	const [ formData, setFormData ] = useState({
-		country: '',
-		state: '',
-		city: '',
-		postalCode: '',
+		country: '', state: '', city: '', postalCode: '',
 	});
 	const [ errors, setErrors ] = useState({});
 
-	// Function to handle form submission
+	// Function to handle form submission 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -41,7 +51,17 @@ const PresentAddress = () => {
 			...prevFormData,
 			[ name ]: value,
 		}));
-		// Remove error when the user interacts with the field
+
+		if (name === 'country') {
+			dispatch(fetchStates(value));
+			formData.state = ''
+			formData.city = ''
+		}
+		if (name === 'state') {
+			dispatch(fetchCities(value));
+			formData.city = ''
+		}
+
 		if (errors[ name ]) {
 			setErrors((prevErrors) => ({
 				...prevErrors,
@@ -61,6 +81,10 @@ const PresentAddress = () => {
 	};
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
+
+	// loading && console.log('loading start', loading);
+	// !loading && console.log('loading start', loading);
+	// console.log('countries - ', countries);
 
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
@@ -82,10 +106,12 @@ const PresentAddress = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Country</option>
-						<option value="country1">Country 1</option>
-						<option value="country2">Country 2</option>
-						<option value="country3">Country 3</option>
-						<option value="country4">Country 4</option>
+						{countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>}
+						{countries?.country?.map((country, index) => (
+							<option key={country._id} value={country._id}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.country && <p className="text-red-500 text-xs">{errors.country}</p>}
 				</div>
@@ -94,6 +120,7 @@ const PresentAddress = () => {
 					<label htmlFor="state" className="block font-medium mb-1 mt-1 text-headingGray">
 						State <span className="text-red-500">*</span>
 					</label>
+
 					<select
 						id="state"
 						className={getInputClasses('state')}
@@ -102,10 +129,13 @@ const PresentAddress = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select State</option>
-						<option value="state1">State 1</option>
-						<option value="state2">State 2</option>
-						<option value="state3">State 3</option>
-						<option value="state4">State 4</option>
+						{formData.country == '' && <option value="" disabled>Please Select country</option>}
+						{statesLoading && !states?.length && <option value="" disabled>Loading states...</option>}
+						{states?.state?.map((state) => (
+							<option key={state._id} value={state._id}>
+								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.state && <p className="text-red-500 text-xs">{errors.state}</p>}
 				</div>
@@ -114,15 +144,23 @@ const PresentAddress = () => {
 					<label htmlFor="city" className="block font-medium mb-1 mt-1 text-headingGray">
 						City <span className="text-red-500">*</span>
 					</label>
-					<input
-						type="text"
+					<select
 						id="city"
 						className={getInputClasses('city')}
-						placeholder="City"
 						name="city"
 						value={formData.city}
 						onChange={handleChange}
-					/>
+					>
+						<option value="" disabled>Select State</option>
+						{formData.state == '' && <option value="" disabled>Please Select state</option>}
+						{citiesLoading && !cities?.length && <option value="" disabled> Loading cities...</option>}
+						{cities?.city?.map((city) => (
+							<option key={city._id} value={city._id}>
+								{city.name.charAt(0).toUpperCase() + city.name.slice(1)}
+							</option>
+						))}
+					</select>
+
 					{errors.city && <p className="text-red-500 text-xs">{errors.city}</p>}
 				</div>
 				{/* Postal Code */}

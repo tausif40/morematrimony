@@ -1,8 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { career } from '../../utils/data/MyProfileData';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchOccupations } from '../../store/features/profileData-slice';
 
 const Career = () => {
+	const dispatch = useDispatch();
+	// const { occupations, loading, error } = useSelector((state) => state.profileData);
+	const { data: occupations, loading: occupationLoading, error: occupationError } = useSelector((state) => state.profileData.occupations);
+	const { data: countries, loading: countryLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
+
+	useEffect(() => {
+		dispatch(fetchOccupations());
+	}, [ dispatch ]);
+
 	const [ formData, setFormData ] = useState({
 		employedIn: '',
 		occupation: '',
@@ -65,8 +77,8 @@ const Career = () => {
 					<label htmlFor="employedIn" className="block font-medium mb-1 mt-1 text-headingGray">
 						Employed in <span className="text-red-500">*</span>
 					</label>
-					<div className="flex flex-wrap gap-8 items-center border rounded-md p-3">
-						{[ 'Government/PSU', 'Private', 'Business', 'Defence', 'Self Employed', 'Not Working' ].map((option) => (
+					<div className="flex flex-wrap gap-8 items-center border rounded-md p-3 text-gray-700">
+						{career.employedIn.map((option) => (
 							<label key={option} className="flex items-center gap-1">
 								<input
 									type="radio"
@@ -75,7 +87,7 @@ const Career = () => {
 									onChange={handleChange}
 									checked={formData.employedIn === option}
 								/>
-								<p>{option}</p>
+								<p>{option.charAt(0).toUpperCase() + option.slice(1)}</p>
 							</label>
 						))}
 					</div>
@@ -94,9 +106,24 @@ const Career = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Occupation</option>
-						<option value="Engineer">Engineer</option>
-						<option value="Doctor">Doctor</option>
-						<option value="Teacher">Teacher</option>
+						{/* {occupations?.occupation?.map((occupation) => (
+							<option key={occupation.id} value={occupation.id}>
+								{occupation.occupationName}
+							</option>
+							
+						))} */}
+						{occupations?.occupation?.map((occupation) => (
+							<optgroup
+								label={occupation.occupationName}
+								key={occupation.occupationName}
+							>
+								{occupation.roles.map((role) => (
+									<option key={role.id} value={role.id}>
+										{role.role}
+									</option>
+								))}
+							</optgroup>
+						))}
 					</select>
 					{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
 				</div>
@@ -145,9 +172,12 @@ const Career = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Country</option>
-						<option value="India">India</option>
-						<option value="USA">USA</option>
-						<option value="UK">UK</option>
+						{countryLoading && !countries.length && <option>Loading countries...</option>}
+						{countries?.country?.map((country) => (
+							<option key={country.id} value={country._id}>
+								{country.name}
+							</option>
+						))}
 					</select>
 					{errors.jobLocation && <p className="text-red-500 text-xs">{errors.jobLocation}</p>}
 				</div>
@@ -164,9 +194,11 @@ const Career = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Annual Income</option>
-						<option value="1 Lakh">1 Lakh</option>
-						<option value="2 Lakh">2 Lakh</option>
-						<option value="5 Lakh">5 Lakh</option>
+						{career.annualIncome.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.annualIncome && <p className="text-red-500 text-xs">{errors.annualIncome}</p>}
 				</div>

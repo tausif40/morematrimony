@@ -11,34 +11,42 @@ export const PhysicalAttributesData = {
 	complexion: [ "fair", "wheatish", "dark", "medium", "dusky", "brown", "light brown" ],
 	bodyType: [ "slim", "athletic", "muscular", "average", "curvy", "full-figured", "petite", "stocky", "tall", "short", "obese" ],
 	bloodGroup: [ "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "A1+", "A1-", "A2+", "A2-" ],
-	disabilityType: [ "visual impairment", "hearing impairment", "locomotor disability" , "other"]
+	disabilityType: [ "visual impairment", "hearing impairment", "locomotor disability", "other" ]
 }
 
 export const lifestyle = {
-	diet: [ "vegetarian", "non-vegetarian", "pescatarian", "vegan", "other" ],
+	diet: [ "vegetarian", "non-vegetarian", "Eggetarian", "pescatarian", "vegan", "other" ],
 	drink: [ "social", "regular", "none", "occasional", "other" ],
 	smoke: [ "social", "regular", "none", "occasional", "other" ]
 }
 
 export const maritalStatus = {
-	status: [ "single", "divorced", "widowed", "separated", "never married", "engaged", "in a relationship" ]
+	status: [ "single", "divorced", "widowed", "widower" ],
+	onBehalf: [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ]
 }
 
 export const culturalBackground = {
 	caste: [ "General", "OBC", "SC", "ST", "Other" ]
 }
-export const employment = {
-	employedIn: [ "government", "private", "business", "defence", "self-employed", "not working", "freelancer", "entrepreneur" ]
+
+export const career = {
+	annualIncome: [ "Below 1 Lakh", "1 - 2 Lakh", "2 - 3 Lakh", "3 - 4 Lakh", "4 - 5 Lakh", "5 - 6 Lakh", "6 - 7 Lakh", "7 - 8 Lakh", "8 - 9 Lakh", "9 - 10 Lakh", "10 - 20 Lakh", "20 - 30 Lakh", "30 - 40 Lakh", "40 - 50 Lakh", "50 - 60 Lakh", "60 - 70 Lakh", "70 - 80 Lakh", "80 - 90 Lakh", "90 - 100 Lakh", "1 Crore +" ],
+	employedIn: [ "government", "private", "business", "defence", "self-employed", "freelancer", "entrepreneur", "not working" ]
 }
+
+export const familyInformation = {
+	familyValue: [ "traditional", "modern", "liberal", "conservative" ],
+	familyType: [ "joint", "nuclear", "other" ],
+	familyStatus: [ "poor", "lower middle class", "middle class", "upper middle class", "high class", "rich/affluent" ],
+	number: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+}
+
 export const partnerExpectations = {
+	age: [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, "Doesn't matter" ],
+	height: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
+
 	smokingAcceptable: [ "yes", "no", "occasionally", "social smoker", "non-smoker", "does not matter" ],
 	drinkingAcceptable: [ "yes", "no", "occasionally", "social drinker", "non-drinker", "does not matter" ],
 	dietingAcceptable: [ "vegetarian", "non-vegetarian", "pescatarian", "vegan", "other", "flexitarian" ],
 	bodyType: [ "slim", "athletic", "muscular", "average", "curvy", "full-figured", "petite", "stocky", "obese", "chubby", "tall", "short" ]
 }
-export const familyInformation = {
-	familyValue: [ "traditional", "modern", "liberal", "conservative" ],
-	familyType: [ "joint", "nuclear", "other" ],
-	familyStatus: [ "poor", "lower middle class", "middle class", "upper middle class", "high class", "rich/affluent", "other" ]
-}
-

@@ -16,7 +16,7 @@ export const registerUser = createAsyncThunk("registerUser", async (data, { reje
 		return rejectWithValue(error)
 	}
 })
-console.dir(registerUser);
+// console.dir(registerUser);
 
 const initialState = {
 	currentUser: undefined,

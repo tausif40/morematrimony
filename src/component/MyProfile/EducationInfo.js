@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchEducation } from '../../store/features/profileData-slice';
 
 const EducationInfo = () => {
+	const dispatch = useDispatch();
+	// const { education, loading, error } = useSelector((state) => state.profileData);
+	const { data: education, loading: loading, error: error } = useSelector((state) => state.profileData.education);
+	
+	useEffect(() => {
+		dispatch(fetchEducation());
+	}, [ dispatch ]);
+
 	const [ formData, setFormData ] = useState({
 		highestEducation: '',
 		highestDetails: '',
@@ -68,9 +78,11 @@ const EducationInfo = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Education</option>
-						<option value="course1">Course 1</option>
-						<option value="course2">Course 2</option>
-						<option value="other">Other</option>
+						{education?.education?.map((country) => (
+							<option key={country._id} value={country._id} disabled={country.id == 1} className={`${country.id == 1 && 'bg-[#a6a6a6] text-white'}`}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.highestEducation && <p className="text-red-500 text-xs">{errors.highestEducation}</p>}
 				</div>
@@ -113,8 +125,8 @@ const EducationInfo = () => {
 				<div className="col-span-2 flex justify-end mt-4">
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
 				</div>
-			</form>
-		</div>
+			</form >
+		</div >
 	);
 };
 

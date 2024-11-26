@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { personalInformation } from '../../utils/data/MyProfileData';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCountries } from '../../store/features/profileData-slice';
 
 const ResidencyInformation = () => {
+
+	const dispatch = useDispatch();
+	const { data: countries, loading: loading, error: countriesError } = useSelector((state) => state.profileData.countries);
+
+	useEffect(() => {
+		dispatch(fetchCountries());
+	}, [ dispatch ]);
+
 	const [ formData, setFormData ] = useState({
 		birthCountry: '',
 		growUpCountry: '',
@@ -75,9 +85,12 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Birth Country</option>
-						<option value="country1">Country 1</option>
-						<option value="country2">Country 2</option>
-						<option value="country3">Country 3</option>
+						{loading && !countries.length && <option>Loading countries...</option>}
+						{countries?.country?.map((country) => (
+							<option key={country.id} value={country._id}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.birthCountry && <p className="text-red-500 text-xs">{errors.birthCountry}</p>}
 				</div>
@@ -94,9 +107,12 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Grow Up Country</option>
-						<option value="country1">Country 1</option>
-						<option value="country2">Country 2</option>
-						<option value="country3">Country 3</option>
+						{loading && !countries.length && <option>Loading countries...</option>}
+						{countries?.country?.map((country) => (
+							<option key={country.id} value={country._id}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.growUpCountry && <p className="text-red-500 text-xs">{errors.growUpCountry}</p>}
 				</div>
@@ -113,9 +129,12 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Residency Country</option>
-						<option value="country1">Country 1</option>
-						<option value="country2">Country 2</option>
-						<option value="country3">Country 3</option>
+						{loading && !countries.length && <option>Loading countries...</option>}
+						{countries?.country?.map((country) => (
+							<option key={country.id} value={country._id}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.residencyCountry && <p className="text-red-500 text-xs">{errors.residencyCountry}</p>}
 				</div>
@@ -134,7 +153,7 @@ const ResidencyInformation = () => {
 						<option value="" disabled>Select Residency Status</option>
 						{personalInformation.residencyStatus.map((status, index) => (
 							<option key={index} value={status}>
-								{status}
+								{status.charAt(0).toUpperCase() + status.slice(1)}
 							</option>
 						))}
 					</select>
@@ -170,7 +189,12 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Citizenship</option>
-						<option value="status1">Citizenship 1</option>
+						{loading && !countries.length && <option>Loading countries...</option>}
+						{countries?.country?.map((country) => (
+							<option key={country.id} value={country._id}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.citizenship && <p className="text-red-500 text-xs">{errors.citizenship}</p>}
 				</div>

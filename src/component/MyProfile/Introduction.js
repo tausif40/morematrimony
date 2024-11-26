@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import apiClient from '../../api/apiClient';
 import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { uploadProfile } from '../../store/features/profileData-slice';
 
 const IntroductionForm = () => {
+	const dispatch = useDispatch();
 	const [ introduction, setIntroduction ] = useState('');
-	const [ error, setError ] = useState();
-
+	const [ errors, setError ] = useState();
+	const { formData, loading, error } = useSelector((state) => state.profileData);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (introduction == '') {
@@ -14,14 +17,17 @@ const IntroductionForm = () => {
 			return;
 		}
 		try {
-			const response = await apiClient.post('/introduction', { introduction });
-			console.log('Form submitted successfully:', response.data);
+			dispatch(uploadProfile(introduction));
+			// const response = await apiClient.post('/introduction', { introduction });
+			// console.log('Form submitted successfully:', response.data);
+
 			toast.success('Introduction update successfully');
 		} catch (error) {
 			console.error('Error submitting form:', error);
 			toast.error('Introduction update failed');
 		}
 	};
+
 
 	return (
 		<form onSubmit={handleSubmit} className="box-shadow bg-white border rounded-md">
@@ -42,7 +48,7 @@ const IntroductionForm = () => {
 					/>
 				</div>
 				<div className="flex justify-between ">
-					<p className="text-red-500 text-xs mt-1 md:pl-40">{error}</p>
+					<p className="text-red-500 text-xs mt-1 md:pl-40">{errors}</p>
 					<button
 						type="submit"
 						className="gradient-btn mt-4 text-white py-2 px-4 rounded-md right text-sm"
@@ -50,7 +56,7 @@ const IntroductionForm = () => {
 						Submit
 					</button>
 				</div>
-				
+
 			</div>
 		</form>
 	);

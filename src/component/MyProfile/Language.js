@@ -2,14 +2,23 @@ import React, { useState, useEffect, useRef } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLanguages } from '../../store/features/profileData-slice';
 
 const Language = () => {
 	const [ isOpen, setIsOpen ] = useState(false);
 	const [ selectedLanguages, setSelectedLanguages ] = useState([]);
 	const [ error, setError ] = useState()
 	const dropdownRef = useRef(null);
+	
+	const dispatch = useDispatch();
+	const { data: languages, loading: langLoading, error: langError } = useSelector((state) => state.profileData.languages);
 
-	const languages = [ 'Hindi', 'English', 'Urdu', 'Kannada', 'Gujarati', 'Malayalam', 'Tamil' ];
+	useEffect(() => {
+		dispatch(fetchLanguages());
+	}, [ dispatch ]);
+
+	// const languages = [ 'Hindi', 'English', 'Urdu', 'Kannada', 'Gujarati', 'Malayalam', 'Tamil' ];
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -87,9 +96,12 @@ const Language = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Mother Tongue</option>
-						<option value="Hindi">Hindi</option>
-						<option value="Gujarati">Gujarati</option>
-						<option value="Gujarati">Gujarati</option>
+						{langLoading && !languages.length && <option>Loading languages...</option>}
+						{languages?.language?.map((language) => (
+							<option key={language._id} value={language._id}>
+								{language.name}
+							</option>
+						))}
 					</select>
 					<p className="text-red-500 text-xs mt-1	">{error}</p>
 				</div>
@@ -100,20 +112,20 @@ const Language = () => {
 						<div className="cursor-pointer flex justify-between items-center mt-1 p-3 w-full rounded-md border border-gray-300 shadow-sm outline-none hover:ring-primary hover:border-primary text-sm text-black"
 							onClick={toggleDropdown}
 						>
-							<span className='text-gray-700'>{selectedLanguages.length > 0 ? selectedLanguages.join(', ') : 'Select Languages'}</span>
+							<span className='text-gray-700'>{selectedLanguages.length > 0 ? selectedLanguages.join(' , ') : 'Select Languages'}</span>
 							<span><IoIosArrowDown /></span>
 						</div>
 
 						{isOpen && (
-							<div className="absolute mt-2 bg-white z-40 border border-gray-300 rounded-md shadow-lg w-full">
-								<div className="flex flex-wrap gap-4 p-4">
-									{languages.map((language, index) => (
+							<div className="absolute mt-2 bg-white z-40 border border-gray-300 rounded-md shadow-lg w-full max-h-96 overflow-y-auto customScroll-bar">
+								<div className="flex flex-wrap gap-3 p-4">
+									{languages?.language?.map((language, index) => (
 										<div
-											key={index}
-											className={`cursor-pointer p-2 text-center px-4 rounded-full ${selectedLanguages.includes(language) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
-											onClick={() => handleSelect(language)}
+											key={language._id}
+											className={`cursor-pointer p-2 text-center px-4 rounded-full text-textGray ${selectedLanguages.includes(language.name) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
+											onClick={() => handleSelect(language.name)}
 										>
-											{language}
+											{language.name}
 										</div>
 									))}
 								</div>

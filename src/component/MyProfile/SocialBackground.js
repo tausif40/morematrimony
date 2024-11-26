@@ -1,11 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	fetchCountries, fetchStates, fetchCities, fetchReligions, fetchCaste, fetchDivision, fetchStars, fetchRashiSigns, fetchZodiac
+} from '../../store/features/profileData-slice';
 
 const SocialBackground = () => {
+
+	const dispatch = useDispatch();
+	const [ isChristian, setIsChristian ] = useState(false)
+	const [ isHindu, setIsHindu ] = useState(false)
+
+	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
+	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
+	const { data: cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.profileData.cities);
+	const { data: religions, loading: religionLoading, error: religionError } = useSelector((state) => state.profileData.religions);
+	const { data: casteList, loading: casteLoading, error: casteError } = useSelector((state) => state.profileData.caste);
+	const { data: division, loading: divisionLoading, error: divisionError } = useSelector((state) => state.profileData.division);
+	const { data: stars, loading: starsLoading, error: starsError } = useSelector((state) => state.profileData.stars);
+	const { data: rashiSigns, loading: rashiSignsLoading, error: rashiSignsError } = useSelector((state) => state.profileData.rashiSigns);
+	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
+
+
+	useEffect(() => {
+		dispatch(fetchCountries());
+		dispatch(fetchReligions());	
+		dispatch(fetchDivision());
+		dispatch(fetchStars());
+		dispatch(fetchZodiac());
+	}, [ dispatch ]);
+
 	const [ formData, setFormData ] = useState({
 		religion: '',
 		caste: '',
+		division: '',
 		subCaste: '',
 		ethnicity: '',
 		star: '',
@@ -23,10 +52,11 @@ const SocialBackground = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		console.log(formData);
 		const newErrors = {};
 
 		Object.keys(formData).forEach((key) => {
-			if (!formData[ key ] && key !== 'gothra' && key !== 'kundli' && key !== 'dosh' && key !== 'doshName') {
+			if (!formData[ key ] && key !== 'gothra' && key !== 'kundli' && key !== 'dosh' && key !== 'doshName' && key !== 'division') {
 				const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
 				newErrors[ key ] = `${formattedKey} is required`;
 			}
@@ -35,13 +65,15 @@ const SocialBackground = () => {
 		if (!formData.birthPlace.state) newErrors.birthPlaceState = 'State is required';
 		if (!formData.birthPlace.city) newErrors.birthPlaceCity = 'City is required';
 
-		if (formData.religion === 'hindu') {
+		if (isHindu) {
 			if (!formData.gothra) newErrors.gothra = 'Gothra is required';
 			if (!formData.kundli) newErrors.kundli = 'Kundli is required';
 			if (!formData.dosh) newErrors.dosh = 'Dosh is required';
 			if (formData.dosh === 'yes' && !formData.doshName) {
 				newErrors.doshName = 'Dosh Name is required';
 			}
+		} else if (isChristian) {
+			if (!formData.division) newErrors.division = 'division is required';
 		}
 
 		if (Object.keys(newErrors).length > 0) {
@@ -52,14 +84,18 @@ const SocialBackground = () => {
 
 		let cleanedFormData = { ...formData };
 
-		if (formData.religion !== 'hindu') {
+		if (!isHindu) {
 			delete cleanedFormData.gothra;
 			delete cleanedFormData.kundli;
 			delete cleanedFormData.dosh;
 			delete cleanedFormData.doshName;
 		}
+		if (!isChristian) {
+			delete cleanedFormData.division;
+			console.log("isChristian - ", isChristian);
+		}
 
-		if (formData.religion === 'hindu' && formData.dosh === 'no') {
+		if (isHindu && formData.dosh === 'no') {
 			delete cleanedFormData.doshName;
 		}
 		console.log('Form submitted:', cleanedFormData);
@@ -71,7 +107,16 @@ const SocialBackground = () => {
 			...prevFormData,
 			[ name ]: value,
 		}));
-		if (name === 'kundli') {
+		if (name === 'religion') {
+			dispatch(fetchCaste(value));
+			formData.caste = ''
+			formData.division = ''
+			value == '674033b756c5bb792ea58b6b' ? setIsChristian(true) : setIsChristian(false)
+			value == '674033b756c5bb792ea58b6d' ? setIsHindu(true) : setIsHindu(false)
+		} else if (name == 'star') {
+			dispatch(fetchRashiSigns(value));
+			formData.moon = ''
+		} else if (name === 'kundli') {
 			setFormData((prevFormData) => ({
 				...prevFormData,
 				[ name ]: files[ 0 ],
@@ -80,22 +125,35 @@ const SocialBackground = () => {
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
+
 	const handleBirthPlaceChange = (e, field) => {
 		const { value } = e.target;
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			birthPlace: {
-				...prevFormData.birthPlace,
-				[ field ]: value
+
+		setFormData((prevFormData) => {
+			let updatedBirthPlace = { ...prevFormData.birthPlace, [ field ]: value };
+
+			if (field === 'country') {
+				updatedBirthPlace = { ...updatedBirthPlace, state: '', city: '' };
+				dispatch(fetchStates(value));
 			}
+			if (field === 'state') {
+				updatedBirthPlace = { ...updatedBirthPlace, city: '' };
+				dispatch(fetchCities(value));
+			}
+
+			return {
+				...prevFormData,
+				birthPlace: updatedBirthPlace,
+			};
+		});
+
+		setErrors((prevErrors) => ({
+			...prevErrors,
+			[ `birthPlace${field.charAt(0).toUpperCase() + field.slice(1)}` ]: '',
 		}));
-		if (value) {
-			setErrors((prevErrors) => ({
-				...prevErrors,
-				[ `birthPlace${field.charAt(0).toUpperCase() + field.slice(1)}` ]: undefined,
-			}));
-		}
 	};
+
+
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 
@@ -114,12 +172,38 @@ const SocialBackground = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Religion</option>
-						<option value="hindu">Hindu</option>
-						<option value="muslim">Muslim</option>
-						<option value="christian">Christian</option>
+						{religionLoading && !religions.length && <option value="" disabled> Loading religion...</option>}
+						{religions?.religion?.map((religion) => (
+							<option key={religion._id} value={religion._id}>
+								{religion.name}
+							</option>
+						))}
 					</select>
 					{errors.religion && <p className="text-red-500 text-xs">{errors.religion}</p>}
 				</div>
+				{/* division */}
+				{isChristian &&
+					(<div>
+						<label htmlFor="division" className="block font-medium mb-1 mt-1 text-headingGray">Division <span className="text-red-500">*</span></label>
+						<select
+							id="division"
+							className={getInputClasses('division')}
+							name="division"
+							value={formData.division}
+							onChange={handleChange}
+						>
+							<option value="" disabled>Select Caste</option>
+							{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
+							{divisionLoading && !division?.length && <option value="" disabled> Loading division...</option>}
+							{division?.division?.map((division) => (
+								<option key={division._id} value={division._id}>
+									{division.name}
+								</option>
+							))}
+						</select>
+						{errors.division && <p className="text-red-500 text-xs">{errors.division}</p>}
+					</div>
+					)}
 				{/* Caste */}
 				<div>
 					<label htmlFor="caste" className="block font-medium mb-1 mt-1 text-headingGray">Caste <span className="text-red-500">*</span></label>
@@ -131,26 +215,28 @@ const SocialBackground = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Caste</option>
-						<option value="caste1">Caste 1</option>
-						<option value="caste2">Caste 2</option>
+						{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
+						{casteLoading && !casteList?.length && <option value="" disabled>Loading cast...</option>}
+						{casteList?.cast?.map((caste) => (
+							<option key={caste._id} value={caste._id}>
+								{caste.name}
+							</option>
+						))}
 					</select>
 					{errors.caste && <p className="text-red-500 text-xs">{errors.caste}</p>}
 				</div>
 				{/* Sub Caste */}
 				<div>
 					<label htmlFor="subCaste" className="block font-medium mb-1 mt-1 text-headingGray">Sub Caste <span className="text-red-500">*</span></label>
-					<select
+					<input
+						type="text"
 						id="subCaste"
 						className={getInputClasses('subCaste')}
+						placeholder="SubCast"
 						name="subCaste"
 						value={formData.subCaste}
 						onChange={handleChange}
-
-					>
-						<option value="" disabled>Select Sub Caste</option>
-						<option value="subCaste1">Sub Caste 1</option>
-						<option value="subCaste2">Sub Caste 2</option>
-					</select>
+					/>
 					{errors.subCaste && <p className="text-red-500 text-xs">{errors.subCaste}</p>}
 				</div>
 				{/* Ethnicity */}
@@ -182,8 +268,12 @@ const SocialBackground = () => {
 
 					>
 						<option value="" disabled>Select Star</option>
-						<option value="star1">Star 1</option>
-						<option value="star2">Star 2</option>
+						{starsLoading && !stars.length && <option value="" disabled> Loading stars...</option>}
+						{stars?.star?.map((stars) => (
+							<option key={stars._id} value={stars._id}>
+								{stars.name}
+							</option>
+						))}
 					</select>
 					{errors.star && <p className="text-red-500 text-xs">{errors.star}</p>}
 				</div>
@@ -196,11 +286,15 @@ const SocialBackground = () => {
 						name="moon"
 						value={formData.moon}
 						onChange={handleChange}
-
 					>
 						<option value="" disabled>Select Moon</option>
-						<option value="moon1">Moon 1</option>
-						<option value="moon2">Moon 2</option>
+						{formData.star == '' && <option value="" disabled>Select star fist</option>}
+						{rashiSignsLoading && !rashiSigns?.length && <option value="" disabled> Loading rashi...</option>}
+						{rashiSigns?.rashiSign?.map((rashi) => (
+							<option key={rashi._id} value={rashi._id}>
+								{rashi.name}
+							</option>
+						))}
 					</select>
 					{errors.moon && <p className="text-red-500 text-xs">{errors.moon}</p>}
 				</div>
@@ -216,8 +310,12 @@ const SocialBackground = () => {
 
 					>
 						<option value="" disabled>Select Zodiac</option>
-						<option value="zodiac1">Zodiac 1</option>
-						<option value="zodiac2">Zodiac 2</option>
+						{zodiacLoading && !zodiac?.length && <option value="" disabled> Loading zodiac...</option>}
+						{zodiac?.zodiac?.map((zodiac) => (
+							<option key={zodiac._id} value={zodiac._id}>
+								{zodiac.name}
+							</option>
+						))}
 					</select>
 					{errors.zodiac && <p className="text-red-500 text-xs">{errors.zodiac}</p>}
 				</div>
@@ -250,8 +348,12 @@ const SocialBackground = () => {
 								onChange={(e) => handleBirthPlaceChange(e, 'country')}
 							>
 								<option value="" disabled>Country</option>
-								<option value="Country 1">Country 1</option>
-								<option value="Country 2">Country 2</option>
+								{countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>}
+								{countries?.country?.map((country, index) => (
+									<option key={country._id} value={country._id}>
+										{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+									</option>
+								))}
 							</select>
 							{errors.birthPlaceCountry && <p className="text-red-500 text-xs">{errors.birthPlaceCountry}</p>}
 						</div>
@@ -266,8 +368,13 @@ const SocialBackground = () => {
 								onChange={(e) => handleBirthPlaceChange(e, 'state')}
 							>
 								<option value="" disabled>State</option>
-								<option value="State 1">State 1</option>
-								<option value="State 2">State 2</option>
+								{formData.country == '' && <option value="" disabled>Please Select country</option>}
+								{statesLoading && !states?.length && <option value="" disabled>Loading states...</option>}
+								{states?.state?.map((state) => (
+									<option key={state._id} value={state._id}>
+										{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
+									</option>
+								))}
 							</select>
 							{errors.birthPlaceState && <p className="text-red-500 text-xs">{errors.birthPlaceState}</p>}
 						</div>
@@ -282,8 +389,13 @@ const SocialBackground = () => {
 								onChange={(e) => handleBirthPlaceChange(e, 'city')}
 							>
 								<option value="" disabled>City</option>
-								<option value="City 1">City 1</option>
-								<option value="City 2">City 2</option>
+								{formData.state == '' && <option value="" disabled>Please Select state</option>}
+								{citiesLoading && !cities?.length && <option value="" disabled> Loading cities...</option>}
+								{cities?.city?.map((city) => (
+									<option key={city._id} value={city._id}>
+										{city.name.charAt(0).toUpperCase() + city.name.slice(1)}
+									</option>
+								))}
 							</select>
 							{errors.birthPlaceCity && <p className="text-red-500 text-xs">{errors.birthPlaceCity}</p>}
 						</div>
@@ -291,7 +403,7 @@ const SocialBackground = () => {
 					{errors.birthPlace && <p className="text-red-500 text-xs">{errors.birthPlace}</p>}
 				</div>
 
-				{formData.religion === 'hindu' && (
+				{isHindu && (
 					<>
 						<div>
 							<label htmlFor="gothra" className="block font-medium mb-1 mt-1 text-headingGray">

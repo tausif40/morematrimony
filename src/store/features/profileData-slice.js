@@ -1,0 +1,322 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import apiClient from '../../api/apiClient';
+
+export const uploadProfile = createAsyncThunk('data/uploadProfile', async (formdata, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get('/user/myProfile', formdata);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to upload formData');
+  }
+});
+export const fetchCountries = createAsyncThunk('data/fetchCountries', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get('/country');
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch countries');
+  }
+});
+
+export const fetchStates = createAsyncThunk('data/fetchStates', async (countryId, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`/state?countryId=${countryId}`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch states');
+  }
+});
+
+export const fetchCities = createAsyncThunk('data/fetchCities', async (stateId, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`/city?stateId=${stateId}`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch cities');
+  }
+});
+
+export const fetchOccupations = createAsyncThunk('data/fetchOccupations', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get('/occupation');
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch occupations');
+  }
+});
+
+export const fetchLanguages = createAsyncThunk('data/fetchLanguages', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get('/language');
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch languages');
+  }
+});
+export const fetchEducation = createAsyncThunk('data/fetchEducation', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get('/education');
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch education');
+  }
+});
+export const fetchReligions = createAsyncThunk('data/fetchReligions', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get('/religion');
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch religion');
+  }
+});
+export const fetchCaste = createAsyncThunk('data/fetchCaste', async (religionId, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`/cast?religionId=${religionId}`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch religion');
+  }
+});
+export const fetchDivision = createAsyncThunk('data/fetchDivision', async (religionId, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`/division`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch division');
+  }
+});
+export const fetchStars = createAsyncThunk('data/fetchStars', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`/star`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch star');
+  }
+});
+export const fetchRashiSigns = createAsyncThunk('data/fetchRashiSigns', async (starId, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`/rashiSign?starId=${starId}`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch rashiSign');
+  }
+});
+export const fetchZodiac = createAsyncThunk('data/fetchZodiac', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`zodiac`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch zodiac');
+  }
+});
+
+
+const profileData = createSlice({
+  name: 'data',
+  initialState: {
+    formData: { data: null, loading: false, error: null },
+    countries: { data: [], loading: false, error: null },
+    states: { data: [], loading: false, error: null },
+    cities: { data: [], loading: false, error: null },
+    occupations: { data: [], loading: false, error: null },
+    languages: { data: [], loading: false, error: null },
+    education: { data: [], loading: false, error: null },
+    religions: { data: [], loading: false, error: null },
+    caste: { data: [], loading: false, error: null },
+    division: { data: [], loading: false, error: null },
+    stars: { data: [], loading: false, error: null },
+    rashiSigns: { data: [], loading: false, error: null },
+    zodiac: { data: [], loading: false, error: null },
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      // Upload Profile
+      .addCase(uploadProfile.pending, (state) => {
+        state.formData = { loading: true, error: null };
+      })
+      .addCase(uploadProfile.fulfilled, (state, action) => {
+        state.formData = { data: action.payload, loading: false, error: null };
+      })
+      .addCase(uploadProfile.rejected, (state, action) => {
+        state.formData = { loading: false, error: action.payload || action.error.message };
+      })
+
+      // Fetch Countries
+      .addCase(fetchCountries.pending, (state) => {
+        state.countries.loading = true;
+        state.countries.error = null;
+      })
+      .addCase(fetchCountries.fulfilled, (state, action) => {
+        state.countries.data = action.payload;
+        state.countries.loading = false;
+      })
+      .addCase(fetchCountries.rejected, (state, action) => {
+        state.countries.loading = false;
+        state.countries.error = action.payload || action.error.message;
+      })
+
+      // Fetch States
+      .addCase(fetchStates.pending, (state, action) => {
+        state.states.data = action.payload;
+        state.states.loading = true;
+        state.states.error = null;
+      })
+      .addCase(fetchStates.fulfilled, (state, action) => {
+        state.states.data = action.payload;
+        state.states.loading = false;
+      })
+      .addCase(fetchStates.rejected, (state, action) => {
+        state.states.loading = false;
+        state.states.error = action.payload || action.error.message;
+      })
+
+      // Fetch Cities
+      .addCase(fetchCities.pending, (state, action) => {
+        state.cities.data = action.payload;
+        state.cities.loading = true;
+        state.cities.error = null;
+      })
+      .addCase(fetchCities.fulfilled, (state, action) => {
+        state.cities.data = action.payload;
+        state.cities.loading = false;
+      })
+      .addCase(fetchCities.rejected, (state, action) => {
+        state.cities.loading = false;
+        state.cities.error = action.payload || action.error.message;
+      })
+
+      // Fetch Occupations
+      .addCase(fetchOccupations.pending, (state) => {
+        state.occupations.loading = true;
+        state.occupations.error = null;
+      })
+      .addCase(fetchOccupations.fulfilled, (state, action) => {
+        state.occupations.data = action.payload;
+        state.occupations.loading = false;
+      })
+      .addCase(fetchOccupations.rejected, (state, action) => {
+        state.occupations.loading = false;
+        state.occupations.error = action.payload || action.error.message;
+      })
+
+      // Fetch Languages
+      .addCase(fetchLanguages.pending, (state) => {
+        state.languages.loading = true;
+        state.languages.error = null;
+      })
+      .addCase(fetchLanguages.fulfilled, (state, action) => {
+        state.languages.data = action.payload;
+        state.languages.loading = false;
+      })
+      .addCase(fetchLanguages.rejected, (state, action) => {
+        state.languages.loading = false;
+        state.languages.error = action.payload || action.error.message;
+      })
+
+      // Fetch Education
+      .addCase(fetchEducation.pending, (state) => {
+        state.education.loading = true;
+        state.education.error = null;
+      })
+      .addCase(fetchEducation.fulfilled, (state, action) => {
+        state.education.data = action.payload;
+        state.education.loading = false;
+      })
+      .addCase(fetchEducation.rejected, (state, action) => {
+        state.education.loading = false;
+        state.education.error = action.payload || action.error.message;
+      })
+
+      // Fetch Religions
+      .addCase(fetchReligions.pending, (state) => {
+        state.religions.loading = true;
+        state.religions.error = null;
+      })
+      .addCase(fetchReligions.fulfilled, (state, action) => {
+        state.religions.data = action.payload;
+        state.religions.loading = false;
+      })
+      .addCase(fetchReligions.rejected, (state, action) => {
+        state.religions.loading = false;
+        state.religions.error = action.payload || action.error.message;
+      })
+
+      // Fetch Caste
+      .addCase(fetchCaste.pending, (state, action) => {
+        state.caste.data = action.payload;
+        state.caste.loading = true;
+        state.caste.error = null;
+      })
+      .addCase(fetchCaste.fulfilled, (state, action) => {
+        state.caste.data = action.payload;
+        state.caste.loading = false;
+      })
+      .addCase(fetchCaste.rejected, (state, action) => {
+        state.caste.loading = false;
+        state.caste.error = action.payload || action.error.message;
+      })
+
+      // Fetch division
+      .addCase(fetchDivision.pending, (state, action) => {
+        state.division.data = action.payload;
+        state.division.loading = true;
+        state.division.error = null;
+      })
+      .addCase(fetchDivision.fulfilled, (state, action) => {
+        state.division.data = action.payload;
+        state.division.loading = false;
+      })
+      .addCase(fetchDivision.rejected, (state, action) => {
+        state.division.loading = false;
+        state.division.error = action.payload || action.error.message;
+      })
+
+      // Fetch Stars
+      .addCase(fetchStars.pending, (state) => {
+        state.stars.loading = true;
+        state.stars.error = null;
+      })
+      .addCase(fetchStars.fulfilled, (state, action) => {
+        state.stars.data = action.payload;
+        state.stars.loading = false;
+      })
+      .addCase(fetchStars.rejected, (state, action) => {
+        state.stars.loading = false;
+        state.stars.error = action.payload || action.error.message;
+      })
+
+      // Fetch Rashi Signs
+      .addCase(fetchRashiSigns.pending, (state, action) => {
+        state.rashiSigns.data = action.payload;
+        state.rashiSigns.loading = true;
+        state.rashiSigns.error = null;
+      })
+      .addCase(fetchRashiSigns.fulfilled, (state, action) => {
+        state.rashiSigns.data = action.payload;
+        state.rashiSigns.loading = false;
+      })
+      .addCase(fetchRashiSigns.rejected, (state, action) => {
+        state.rashiSigns.loading = false;
+        state.rashiSigns.error = action.payload || action.error.message;
+      })
+
+      // Fetch Stars
+      .addCase(fetchZodiac.pending, (state) => {
+        state.zodiac.loading = true;
+        state.zodiac.error = null;
+      })
+      .addCase(fetchZodiac.fulfilled, (state, action) => {
+        state.zodiac.data = action.payload;
+        state.zodiac.loading = false;
+      })
+      .addCase(fetchZodiac.rejected, (state, action) => {
+        state.zodiac.loading = false;
+        state.zodiac.error = action.payload || action.error.message;
+      });
+  },
+});
+
+
+
+export default profileData.reducer;

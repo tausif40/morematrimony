@@ -220,8 +220,11 @@ const BasicInformationForm = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select</option>
-						<option value="myself">Myself</option>
-						<option value="someoneElse">Someone Else</option>
+						{maritalStatus?.onBehalf?.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.onBehalf && <p className="text-red-500 text-xs mt-1">{errors.onBehalf}</p>}
 				</div>
