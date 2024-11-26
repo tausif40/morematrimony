@@ -4,9 +4,9 @@ import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 import Cookies from 'js-cookie';
-import { useDispatch } from "react-redux";
-import { registerUser } from "../../store/auth/userRegister-slicer2";
-import { useSelector } from "react-redux";
+// import { useDispatch } from "react-redux";
+// import { registerUser } from "../../store/auth/userRegister-slicer2";
+// import { useSelector } from "react-redux";
 
 const RegistrationForm = () => {
 	const dropdownRef = useRef(null);
@@ -15,9 +15,10 @@ const RegistrationForm = () => {
 	const [ agreement, setAgreement ] = useState(false);
 	const [ confirmPassword, setConfirmPassword ] = useState('');
 	const [ selectedProfile, setSelectedProfile ] = useState('');
-	const dispatch = useDispatch();
-	const url = process.env.REACT_APP_API_URL;
-	const { currentUser, loading, error } = useSelector((state) => state.registerUser);
+	// const dispatch = useDispatch();
+	const BASE_URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
+
+	// const { currentUser, loading, error } = useSelector((state) => state.registerUser);
 
 	const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
 
@@ -68,13 +69,13 @@ const RegistrationForm = () => {
 			});
 			return;
 		}
-		
+
 		const userData = { ...formData, onBehalf: selectedProfile, }
 		// console.log(userData);
 		const loadingToast = toast.loading('Logging.....');
 
 		// dispatch(registerUser(userData));
-		await axios.post(`${url}/auth/signUp`, userData)
+		await axios.post(`${BASE_URL}/auth/signUp`, userData)
 			.then((response) => {
 				console.log(response);
 				Cookies.set('access_token', response.data.tokens.access.token);
@@ -268,7 +269,7 @@ const RegistrationForm = () => {
 						className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
 						id="termAndCondition"
 					/>
-					<label for="termAndCondition" className="ml-2 text-sm text-gray-600 cursor-pointer">
+					<label htmlFor="termAndCondition" className="ml-2 text-sm text-gray-600 cursor-pointer">
 						By signing up you agree to our{" "}
 						<a href="#" className="text-primary hover:underline">
 							terms and conditions

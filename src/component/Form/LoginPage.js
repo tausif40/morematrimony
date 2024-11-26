@@ -9,15 +9,19 @@ const LoginPage = () => {
 	const [ emailError, setEmailError ] = useState('');
 	const [ error, setError ] = useState('');
 	const navigate = useNavigate();
-	const url = process.env.REACT_APP_API_URL;
+
+	const BASE_URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
+
+
 	const handleLogin = async (e) => {
+		console.log(email, password);
 		e.preventDefault();
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(email)) {
 			setEmailError("Invalid email format")
 		}
 		try {
-			const response = await axios.post(`${url}/auth/logIn`, {
+			await axios.post(`${BASE_URL}/auth/logIn`, {
 				email,
 				password,
 			}).then((response) => {
@@ -28,6 +32,7 @@ const LoginPage = () => {
 				// console.log(response.data);
 			});
 		} catch (err) {
+			console.log(err);
 			setError("Email password does't match");
 			toast.error("Email password does't match");
 		}
@@ -47,6 +52,7 @@ const LoginPage = () => {
 						<label className="block text-sm text-gold text-semibold">Email</label>
 						<input
 							type="text"
+							name='email'
 							value={email}
 							onChange={(e) => {
 								setEmail(e.target.value)
@@ -65,6 +71,7 @@ const LoginPage = () => {
 						<label className="block text-sm text-gold text-semibold">Password</label>
 						<input
 							type="password"
+							name='password'
 							value={password}
 							onChange={(e) => {
 								setPassword(e.target.value)
