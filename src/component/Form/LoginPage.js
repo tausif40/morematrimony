@@ -21,9 +21,10 @@ const LoginPage = () => {
 			setEmailError("Invalid email format")
 		}
 		try {
-			await axios.post(`${BASE_URL}/auth/logIn`, {
-				email,
-				password,
+			await axios.post(`${BASE_URL}/auth/logIn`, { email, password }, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			}).then((response) => {
 				toast.success("Login successfully");
 				Cookies.set('access_token', response.data.tokens.access.token);

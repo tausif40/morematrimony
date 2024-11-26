@@ -75,7 +75,11 @@ const RegistrationForm = () => {
 		const loadingToast = toast.loading('Logging.....');
 
 		// dispatch(registerUser(userData));
-		await axios.post(`${BASE_URL}/auth/signUp`, userData)
+		await axios.post(`${BASE_URL}/auth/signUp`, userData, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
 			.then((response) => {
 				console.log(response);
 				Cookies.set('access_token', response.data.tokens.access.token);
