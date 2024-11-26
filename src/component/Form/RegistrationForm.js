@@ -16,7 +16,7 @@ const RegistrationForm = () => {
 	const [ confirmPassword, setConfirmPassword ] = useState('');
 	const [ selectedProfile, setSelectedProfile ] = useState('');
 	// const dispatch = useDispatch();
-	const URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
+	const BASE_URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
 
 	// const { currentUser, loading, error } = useSelector((state) => state.registerUser);
 
@@ -75,7 +75,7 @@ const RegistrationForm = () => {
 		const loadingToast = toast.loading('Logging.....');
 
 		// dispatch(registerUser(userData));
-		await axios.post(`${URL}/auth/signUp`, userData)
+		await axios.post(`${BASE_URL}/auth/signUp`, userData)
 			.then((response) => {
 				console.log(response);
 				Cookies.set('access_token', response.data.tokens.access.token);
