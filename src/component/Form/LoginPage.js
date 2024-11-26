@@ -10,7 +10,7 @@ const LoginPage = () => {
 	const [ error, setError ] = useState('');
 	const navigate = useNavigate();
 
-	const BASE_URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
+	const URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
 
 
 	const handleLogin = async (e) => {
@@ -21,7 +21,7 @@ const LoginPage = () => {
 			setEmailError("Invalid email format")
 		}
 		try {
-			await axios.post(`${BASE_URL}/auth/logIn`, {
+			await axios.post(`${URL}/auth/logIn`, {
 				email,
 				password,
 			}).then((response) => {
