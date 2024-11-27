@@ -11,10 +11,12 @@ import Cookies from 'js-cookie';
 const RegistrationForm = () => {
 	const dropdownRef = useRef(null);
 	const navigate = useNavigate();
-	const [ isOpen, setIsOpen ] = useState(false);
+	// const [ isOpen, setIsOpen ] = useState(false);
+	const [ errors, setErrors ] = useState({});
 	const [ agreement, setAgreement ] = useState(false);
 	const [ confirmPassword, setConfirmPassword ] = useState('');
 	const [ selectedProfile, setSelectedProfile ] = useState('');
+	const [ profileError, setProfileError ] = useState('');
 	// const dispatch = useDispatch();
 	const BASE_URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
 
@@ -22,17 +24,18 @@ const RegistrationForm = () => {
 
 	const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
 
-	const toggleDropdown = () => setIsOpen(!isOpen);
+	// const toggleDropdown = () => setIsOpen(!isOpen);
 
-	const handleSelect = (profile) => {
-		setSelectedProfile(profile);
-		setIsOpen(false);
-	};
+	// const handleSelect = (profile) => {
+	// 	setSelectedProfile(profile);
+	// 	setIsOpen(false);
+	// 	setProfileError('')
+	// };
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-				setIsOpen(false);
+				// setIsOpen(false);
 			}
 		};
 		document.addEventListener("mousedown", handleClickOutside);
@@ -42,6 +45,7 @@ const RegistrationForm = () => {
 	}, []);
 
 	const [ formData, setFormData ] = useState({
+		onBehalf: "",
 		firstName: "",
 		lastName: "",
 		gender: "",
@@ -56,12 +60,51 @@ const RegistrationForm = () => {
 			...formData,
 			[ name ]: value,
 		});
+
+		if (errors[ name ]) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				[ name ]: '',
+			}));
+		}
+
+		if (formData.password.length > 7) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				psdLength: '',
+			}));
+		}
+	};
+
+	const validateForm = () => {
+		const newErrors = {};
+		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
+		if (!formData.firstName) newErrors.firstName = 'FirstName is required';
+		if (!formData.lastName) newErrors.lastName = 'LastName is required';
+		if (!formData.gender) newErrors.gender = 'Gender is required';
+		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
+		if (!formData.email) newErrors.email = 'Email is required';
+		if (!formData.password) newErrors.password = 'Password is required';
+		// if (formData.password.length > 7) newErrors.password = 'Password min 8 characters';
+		return newErrors;
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (formData.password !== confirmPassword) {
-			toast.error("Passwords do not match!");
+		const newErrors = validateForm();
+		setErrors(newErrors);
+
+		if (formData.password.length < 7) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				psdLength: "Password min 8 characters",
+			}));
+			return;
+		} else if (formData.password !== confirmPassword) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				conformPsd: "Passwords does't match!",
+			}));
 			return;
 		} else if (!agreement) {
 			toast('Please accept agreement!', {
@@ -70,45 +113,53 @@ const RegistrationForm = () => {
 			return;
 		}
 
-		const userData = { ...formData, onBehalf: selectedProfile, }
-		// console.log(userData);
-		const loadingToast = toast.loading('Logging.....');
 
+		// const userData = { ...formData, onBehalf: selectedProfile, }
 		// dispatch(registerUser(userData));
-		await axios.post(`${BASE_URL}/auth/signUp`, userData, {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-			.then((response) => {
-				console.log(response);
-				Cookies.set('access_token', response.data.tokens.access.token);
-				Cookies.set('refresh_token', response.data.tokens.refresh.token);
-				navigate('/dashboard')
-				new Promise((resolve) => setTimeout(resolve, 2000));
-				toast.success(("Registration successful!"), { id: loadingToast })
-
-				setFormData({
-					firstName: "",
-					lastName: "",
-					gender: "",
-					dateOfBirth: "",
-					email: "",
-					password: "",
-					confirmPassword: "",
-				});
-
-			}).catch((error) => {
-				console.log(error);
-				new Promise((resolve) => setTimeout(resolve, 2000));
-				toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
+		if (Object.keys(newErrors).length == 0) {
+			const loadingToast = toast.loading('Logging.....');
+			setErrors({});
+			console.log(formData);
+			await axios.post(`${BASE_URL}/auth/signUp`, formData, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			})
+				.then((response) => {
+					console.log(response);
+					Cookies.set('access_token', response.data.tokens.access.token);
+					Cookies.set('refresh_token', response.data.tokens.refresh.token);
+					navigate('/dashboard')
+					new Promise((resolve) => setTimeout(resolve, 2000));
+					toast.success(("Registration successful!"), { id: loadingToast })
+
+					setFormData({
+						firstName: "",
+						lastName: "",
+						gender: "",
+						dateOfBirth: "",
+						email: "",
+						password: "",
+						confirmPassword: "",
+					});
+
+				}).catch((error) => {
+					console.log(error);
+					new Promise((resolve) => setTimeout(resolve, 2000));
+					toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
+				})
+		} else {
+			setErrors(newErrors);
+			toast.error('Please correct all highlighted errors!');
+		}
 	};
 
 	const handleLoginPage = () => {
 		navigate('/')
 		window.scrollTo(0, 0)
 	}
+
+	const getInputClasses = (fieldName) => `cursor-pointer flex justify-between items-center mt-1 p-3  w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ fieldName ] && 'border-red-500'}`;
 
 	return (
 		<div className="flex justify-center items-center w-full min-h-screen py-10 px-2 md:px-4">
@@ -122,37 +173,60 @@ const RegistrationForm = () => {
 				<p className="text-sm text-center text-headingGray mb-6">
 					Fill out the form to get started.
 				</p>
-
-				<div className="mb-4">
+				{/* On Behalf */}
+				{/* <div className="mb-4">
 					<label className="block text-sm font-medium text-headingGray">
 						On Behalf
 					</label>
 					<div className="relative inline-block w-full">
-						<div className="cursor-pointer flex justify-between items-center mt-1 p-3  w-full rounded-md border border-gray-300 shadow-sm outline-none hover:ring-primary hover:border-primary text-sm"
+						<div className="cursor-pointer flex justify-between items-center mt-1 p-3  w-full rounded-md border border-gray-300 shadow-sm outline-none hover:ring-gold hover:border-gold text-sm"
 							onClick={toggleDropdown}
 						>
 							<span>{selectedProfile || 'Select Profile'}</span>
 							<span><IoIosArrowDown /></span>
 						</div>
-
+						{profileError && <p className="text-red-500 text-xs">{profileError}</p>}
 						{isOpen && (
-							<div className="absolute mt-2 bg-white border border-gray-300 rounded-md shadow-lg w-full hover:ring-primary hover:border-primary">
+							<div className="absolute mt-2 bg-white border border-gray-300 rounded-md shadow-lg w-full hover:ring-gold hover:border-gold">
 								<div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4" ref={dropdownRef}>
-									{profiles.map((profile, index) => (
+									{profiles?.map((profile, index) => (
 										<div
 											key={index}
 											className="cursor-pointer hover:bg-gray-100 p-2 text-center"
 											onClick={() => handleSelect(profile)}
 										>
-											{profile}
+											{profile.charAt(0).toUpperCase() + profile.slice(1)}
 										</div>
 									))}
 								</div>
 							</div>
 						)}
 					</div>
+				</div> */}
+				{/* On Behalf */}
+
+				<div className="mb-4">
+					<label htmlFor="onBehalf" className="block text-sm font-medium text-headingGray">
+						Country <span className="text-red-500">*</span>
+					</label>
+					<select
+						id="onBehalf"
+						className={getInputClasses('onBehalf')}
+						name="onBehalf"
+						value={formData.onBehalf}
+						onChange={handleChange}
+					>
+						<option value="" disabled>On Behalf</option>
+						{profiles?.map((profile, index) => (
+							<option key={index} value={profile}>
+								{profile.charAt(0).toUpperCase() + profile.slice(1)}
+							</option>
+						))}
+					</select>
+					{errors.onBehalf && <p className="text-red-500 text-xs">{errors.onBehalf}</p>}
 				</div>
 
+				{/* fist name */}
 				<div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
 					<div className="mb-4">
 						<label className="block text-sm font-medium">
@@ -163,12 +237,13 @@ const RegistrationForm = () => {
 							name="firstName"
 							value={formData.firstName}
 							onChange={handleChange}
-							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
+							className={getInputClasses('firstName')}
 							placeholder="First Name"
-							required
 						/>
+						{errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>}
 					</div>
 
+					{/* Last Name */}
 					<div className="mb-4">
 						<label className="block text-sm font-medium">
 							Last Name
@@ -178,13 +253,13 @@ const RegistrationForm = () => {
 							name="lastName"
 							value={formData.lastName}
 							onChange={handleChange}
-							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
+							className={getInputClasses('lastName')}
 							placeholder="Last Name"
-							required
 						/>
+						{errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
 					</div>
 				</div>
-
+				{/* Gender */}
 				<div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
 					<div className="mb-4">
 						<label className="block text-sm font-medium">
@@ -194,12 +269,13 @@ const RegistrationForm = () => {
 							name="gender"
 							value={formData.gender}
 							onChange={handleChange}
-							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
+							className={getInputClasses('gender')}
 						>
 							<option>Select Gender</option>
 							<option value="male">Male</option>
 							<option value="female">Female</option>
 						</select>
+						{errors.gender && <p className="text-red-500 text-xs">{errors.gender}</p>}
 					</div>
 
 					<div className="mb-4">
@@ -211,12 +287,13 @@ const RegistrationForm = () => {
 							name="dateOfBirth"
 							value={formData.dateOfBirth}
 							onChange={handleChange}
-							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
-							required
+							className={getInputClasses('dateOfBirth')}
 						/>
+						{errors.dateOfBirth && <p className="text-red-500 text-xs">{errors.dateOfBirth}</p>}
 					</div>
 				</div>
 
+				{/* Email address */}
 				<div className="mb-4">
 					<label className="block text-sm font-medium">
 						Email address
@@ -226,12 +303,13 @@ const RegistrationForm = () => {
 						name="email"
 						value={formData.email}
 						onChange={handleChange}
-						className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
+						className={getInputClasses('email')}
 						placeholder="admin@gmail.com"
-						required
 					/>
+					{errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
 				</div>
 
+				{/* Password */}
 				<div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
 					<div className="mb-4">
 						<label className="block text-sm font-medium">
@@ -242,11 +320,12 @@ const RegistrationForm = () => {
 							name="password"
 							value={formData.password}
 							onChange={handleChange}
-							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
+							className={getInputClasses('password')}
 							placeholder="********"
-							required
 						/>
-						<p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+						{/* <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p> */}
+						{errors.psdLength && <p className="text-red-500 text-xs">{errors.psdLength}</p>}
+						{errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
 					</div>
 
 					<div className="mb-4">
@@ -258,14 +337,15 @@ const RegistrationForm = () => {
 							name="confirmPassword"
 							value={confirmPassword}
 							onChange={(e) => setConfirmPassword(e.target.value)}
-							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-primary focus:border-primary text-sm"
+							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm"
 							placeholder="********"
-							required
 						/>
-						<p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+						{/* <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p> */}
+						{errors.conformPsd && <p className="text-red-500 text-xs">{errors.conformPsd}</p>}
 					</div>
 				</div>
 
+				{/* term */}
 				<div className="flex items-center mb-6 mt-4">
 					<input
 						type="checkbox"

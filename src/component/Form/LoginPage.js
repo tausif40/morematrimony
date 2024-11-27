@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 const LoginPage = () => {
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
+	const [ passwordError, setPasswordError ] = useState('');
 	const [ emailError, setEmailError ] = useState('');
 	const [ error, setError ] = useState('');
 	const navigate = useNavigate();
@@ -19,6 +20,10 @@ const LoginPage = () => {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(email)) {
 			setEmailError("Invalid email format")
+			return;
+		} else if (!password) {
+			setPasswordError("Please enter Password")
+			return;
 		}
 		try {
 			await axios.post(`${BASE_URL}/auth/logIn`, { email, password }, {
@@ -77,8 +82,8 @@ const LoginPage = () => {
 							onChange={(e) => {
 								setPassword(e.target.value)
 								setError("")
+								setPasswordError('')
 							}}
-							required
 							placeholder='Enter Password'
 							className="mt-1 p-3 block w-full border border-slate-400 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-slate-700 bg-gray-300/30 rounded-md"
 						/>
@@ -87,6 +92,7 @@ const LoginPage = () => {
 								Forgot Password?
 							</a>
 						</div>
+						{passwordError && <p className="text-red-500 text-sm pt-2">{passwordError}</p>}
 						{error && <p className="text-red-500 text-sm pt-2">{error}</p>}
 					</div>
 
