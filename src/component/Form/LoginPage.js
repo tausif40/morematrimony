@@ -15,7 +15,7 @@ const LoginPage = () => {
 
 
 	const handleLogin = async (e) => {
-		console.log(email, password);
+		// console.log(email, password);
 		e.preventDefault();
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(email)) {
@@ -25,22 +25,27 @@ const LoginPage = () => {
 			setPasswordError("Please enter Password")
 			return;
 		}
+		const loadingToast = toast.loading('Logging.....');
 		try {
 			await axios.post(`${BASE_URL}/auth/logIn`, { email, password }, {
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			}).then((response) => {
-				toast.success("Login successfully");
+		
 				Cookies.set('access_token', response.data.tokens.access.token);
 				Cookies.set('refresh_token', response.data.tokens.refresh.token);
 				navigate('/dashboard')
+				new Promise((resolve) => setTimeout(resolve, 2000));
+				toast.success(("Login successful!"), { id: loadingToast })
 				// console.log(response.data);
 			});
-		} catch (err) {
-			console.log(err);
-			setError("Email password does't match");
-			toast.error("Email password does't match");
+		} catch (error) {
+			console.log(error);
+			setError(error?.response?.data?.message || error?.message || "Registration failed");
+			// toast.error("Email password does't match");
+			new Promise((resolve) => setTimeout(resolve, 2000));
+			toast.error(("Registration failed."), { id: loadingToast })
 		}
 	};
 
@@ -65,11 +70,10 @@ const LoginPage = () => {
 								setError("")
 								setEmailError("")
 							}}
-							required
 							placeholder='Enter Email'
 							className="mt-1 p-3 block w-full border border-slate-400 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-slate-700 bg-gray-300/30 rounded-md"
 						/>
-						{emailError && <p className="text-red-500 text-sm pt-2">{emailError}</p>}
+						{emailError && <p className="text-red-400 text-sm pt-2">{emailError}</p>}
 					</div>
 
 					{/* Password Input */}
@@ -87,13 +91,13 @@ const LoginPage = () => {
 							placeholder='Enter Password'
 							className="mt-1 p-3 block w-full border border-slate-400 outline-none focus:ring-primary focus:border-primary sm:text-sm placeholder:text-slate-700 bg-gray-300/30 rounded-md"
 						/>
+						{passwordError && <p className="text-red-400 text-sm pt-2">{passwordError}</p>}
 						<div className="text-right mt-2">
 							<a href="#" className="text-sm text-gold hover:underline">
 								Forgot Password?
 							</a>
 						</div>
-						{passwordError && <p className="text-red-500 text-sm pt-2">{passwordError}</p>}
-						{error && <p className="text-red-500 text-sm pt-2">{error}</p>}
+						{error && <p className="text-red-400 text-sm pt-2">{error}</p>}
 					</div>
 
 					{/* Error Message */}

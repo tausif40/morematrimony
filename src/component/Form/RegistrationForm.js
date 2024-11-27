@@ -117,7 +117,7 @@ const RegistrationForm = () => {
 		// const userData = { ...formData, onBehalf: selectedProfile, }
 		// dispatch(registerUser(userData));
 		if (Object.keys(newErrors).length == 0) {
-			const loadingToast = toast.loading('Logging.....');
+			const loadingToast = toast.loading('Registering.....');
 			setErrors({});
 			console.log(formData);
 			await axios.post(`${BASE_URL}/auth/signUp`, formData, {

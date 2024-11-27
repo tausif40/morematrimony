@@ -2,8 +2,11 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { maritalStatus } from '../../utils/data/MyProfileData';
+import { useDispatch } from 'react-redux';
+import { uploadFileData } from '../../store/features/profileData-slice';
 
 const BasicInformationForm = () => {
+	const dispatch = useDispatch();
 	const [ numberOfChildren, setNumberOfChildren ] = useState('');
 	const [ formData, setFormData ] = useState({
 		firstName: '',
@@ -31,21 +34,25 @@ const BasicInformationForm = () => {
 				delete formData.numberOfChildren;
 			}
 
-			// console.log('Form submitted:', formData);
-			await axios.patch('/user/myProfile', formData)
-				.then((response) => {
-					console.log(response);
-					toast.success('Basic information updated successfully');
-				}).catch((error) => {
-					console.log(error);
-					toast.error('Basic information update failed!');
-				});
-
+			const loadingToast = toast.loading('Uploading.....');
+			try {
+				const resultAction = await dispatch(uploadFileData({ basicInformation: formData }));
+				console.log(resultAction);
+				if (uploadFileData.fulfilled.match(resultAction)) {
+					toast.success('Upload successful!', { id: loadingToast });
+				} else if (uploadFileData.rejected.match(resultAction)) {
+					toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
+				}
+			} catch (error) {
+				toast.error('Upload failed.', { id: loadingToast });
+				console.log('Error submitting form:', error);
+			}
 		} else {
 			setErrors(newErrors);
 			toast.error('Please correct all highlighted errors!');
 		}
 	};
+
 
 	const handleChange = (e) => {
 		const { name, value, files } = e.target;

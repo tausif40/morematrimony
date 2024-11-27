@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { personalInformation } from '../../utils/data/MyProfileData';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCountries } from '../../store/features/profileData-slice';
+import { useDispatch, fetchStates, useSelector } from 'react-redux';
+import { fetchCountries, uploadFileData } from '../../store/features/profileData-slice';
 
 const ResidencyInformation = () => {
 
 	const dispatch = useDispatch();
 	const { data: countries, loading: loading, error: countriesError } = useSelector((state) => state.profileData.countries);
+	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
 
 	useEffect(() => {
 		dispatch(fetchCountries());
@@ -19,8 +20,10 @@ const ResidencyInformation = () => {
 		growUpCountry: '',
 		residencyCountry: '',
 		residencyStatus: '',
-		immigrationStatus: '',
 		citizenship: '',
+		ancestralOrigin: {
+			state: ''
+		},
 	});
 	const [ errors, setErrors ] = useState({});
 
@@ -32,32 +35,54 @@ const ResidencyInformation = () => {
 		if (!formData.growUpCountry) validationErrors.growUpCountry = 'Grow Up Country is required';
 		if (!formData.residencyCountry) validationErrors.residencyCountry = 'Residency Country is required';
 		if (!formData.residencyStatus) validationErrors.residencyStatus = 'Residency Status is required';
-		if (!formData.immigrationStatus) validationErrors.immigrationStatus = 'Immigration Status is required';
+		if (!formData.ancestralOrigin) validationErrors.ancestralOrigin = 'Ancestral Origin is required';
 		if (!formData.citizenship) validationErrors.citizenship = 'Citizenship is required';
 
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors);
+			console.log(formData);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			console.log(formData);
+			const loadingToast = toast.loading('Uploading.....');
 			try {
-				const response = await axios.post('/api/residency-information', formData);
-				toast.success('Residency Information uploaded');
-				console.log('Form submitted:', response.data);
-				setErrors({});
+				const resultAction = await dispatch(uploadFileData({ residencyInformation: formData }));
+
+				if (uploadFileData.fulfilled.match(resultAction)) {
+					toast.success('Upload successful!', { id: loadingToast });
+				} else if (uploadFileData.rejected.match(resultAction)) {
+					toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
+				}
 			} catch (error) {
-				toast.error('Residency Information upload failed!');
-				console.error('Error submitting form:', error);
+				toast.error('Upload failed.', { id: loadingToast });
+				console.log('Error submitting form:', error);
 			}
 		}
 	};
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			[ name ]: value,
-		}));
+		// setFormData((prevFormData) => ({
+		// 	...prevFormData,
+		// 	[ name ]: value,
+		// }));
+
+		setFormData((prevFormData) => {
+			if (name === 'ancestralOrigin') {
+				return {
+					...prevFormData,
+					ancestralOrigin: {
+						...prevFormData.ancestralOrigin,
+						state: value, // Update the nested state field
+					},
+				};
+			}
+
+			return {
+				...prevFormData,
+				[ name ]: value, // Handle other form fields
+			};
+		});
+
 		if (errors[ name ]) {
 			setErrors((prevErrors) => ({
 				...prevErrors,
@@ -159,23 +184,29 @@ const ResidencyInformation = () => {
 					</select>
 					{errors.residencyStatus && <p className="text-red-500 text-xs">{errors.residencyStatus}</p>}
 				</div>
-				{/* Immigration Status */}
-				{/* <div>
-					<label htmlFor="immigrationStatus" className="block font-medium mb-1 mt-1 text-headingGray">
-						Immigration Status <span className="text-red-500">*</span>
+
+				{/* Ancestral Origin */}
+				<div>
+					<label htmlFor="ancestralOrigin" className="block font-medium mb-1 mt-1 text-headingGray">
+						Ancestral Origin (Only India) <span className="text-red-500">*</span>
 					</label>
 					<select
-						id="immigrationStatus"
-						className={getInputClasses('immigrationStatus')}
-						name="immigrationStatus"
-						value={formData.immigrationStatus}
+						id="ancestralOrigin"
+						className={getInputClasses('ancestralOrigin')}
+						name="ancestralOrigin"
+						value={formData.ancestralOrigin.state}
 						onChange={handleChange}
 					>
-						<option value="" disabled>Select Immigration Status</option>
-						<option value="status1">Status 1</option>
+						<option value="" disabled>Select Ancestral Origin Status</option>
+						{loading && !countries.length && <option>Loading countries...</option>}
+						{countries?.country?.map((country) => (
+							<option key={country.id} value={country._id}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
-					{errors.immigrationStatus && <p className="text-red-500 text-xs">{errors.immigrationStatus}</p>}
-				</div> */}
+					{errors.ancestralOrigin && <p className="text-red-500 text-xs">{errors.ancestralOrigin}</p>}
+				</div>
 				{/* Citizenship */}
 				<div>
 					<label htmlFor="citizenship" className="block font-medium mb-1 mt-1 text-headingGray">

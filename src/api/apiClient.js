@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const getToken = () => Cookies.get('access_token');
-const BASE_URL = process.env.REACT_APP_API_URL;
+const BASE_URL = process.env.REACT_APP_API_URL || "https://morematrimony.onrender.com";
 
 const apiClient = axios.create({
 	baseURL: BASE_URL,

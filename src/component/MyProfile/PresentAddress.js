@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCountries, fetchStates, fetchCities } from '../../store/features/profileData-slice';
+import { fetchCountries, fetchStates, fetchCities, uploadFileData } from '../../store/features/profileData-slice';
 
 const PresentAddress = () => {
 	const dispatch = useDispatch();
@@ -28,15 +28,18 @@ const PresentAddress = () => {
 		const newErrors = validateForm();
 
 		if (Object.keys(newErrors).length === 0) {
-			console.log(formData);
+			const loadingToast = toast.loading('Uploading.....');
 			try {
-				const response = await axios.post('/api/present-address', formData);
-				toast.success('Present Address update successfully!');
-				console.log('Form submitted:', response.data);
-				setErrors({});
+				const resultAction = await dispatch(uploadFileData({ presentAddress: formData }));
+
+				if (uploadFileData.fulfilled.match(resultAction)) {
+					toast.success('Upload successful!', { id: loadingToast });
+				} else if (uploadFileData.rejected.match(resultAction)) {
+					toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
+				}
 			} catch (error) {
-				toast.error('Present Address update failed!');
-				console.error('Error submitting form:', error);
+				toast.error('Upload failed.', { id: loadingToast });
+				console.log('Error submitting form:', error);
 			}
 		} else {
 			setErrors(newErrors);

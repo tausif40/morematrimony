@@ -1,14 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
 
-export const uploadProfile = createAsyncThunk('data/uploadProfile', async (formdata, { rejectWithValue }) => {
+export const uploadFileData = createAsyncThunk('data/uploadFileData', async (formdata, { rejectWithValue }) => {
   try {
-    const response = await apiClient.get('/user/myProfile', formdata);
+    console.log(formdata);
+    const response = await apiClient.patch('/user/myProfile', formdata);
+    console.log(response);
     return response.data;
   } catch (error) {
-    return rejectWithValue(error.response?.data || 'Failed to upload formData');
+    console.log(error)
+    return rejectWithValue(error?.response?.data?.message || 'Failed to upload formData');
   }
 });
+
 export const fetchCountries = createAsyncThunk('data/fetchCountries', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get('/country');
@@ -132,15 +136,30 @@ const profileData = createSlice({
   extraReducers: (builder) => {
     builder
       // Upload Profile
-      .addCase(uploadProfile.pending, (state) => {
-        state.formData = { loading: true, error: null };
+      .addCase(uploadFileData.pending, (state) => {
+        state.formData.loading = true
+        state.formData.error = true
       })
-      .addCase(uploadProfile.fulfilled, (state, action) => {
-        state.formData = { data: action.payload, loading: false, error: null };
+      .addCase(uploadFileData.fulfilled, (state, action) => {
+        state.formData.data = action.payload;
+        state.formData.loading = false;
       })
-      .addCase(uploadProfile.rejected, (state, action) => {
-        state.formData = { loading: false, error: action.payload || action.error.message };
+      .addCase(uploadFileData.rejected, (state, action) => {
+        state.formData.loading = false;
+        state.formData.error = action.payload || action.error.message;
       })
+
+      // .addCase(uploadFileData.pending, (state) => {
+      //   state.formData = { loading: true, error: null };
+      // })
+      // .addCase(uploadFileData.fulfilled, (state, action) => {
+      //   state.formData = { data: action.payload, loading: false, error: null };
+      //   console.log(action.payload);
+      // })
+      // .addCase(uploadFileData.rejected, (state, action) => {
+      //   state.formData = { loading: false, error: action.payload || action.error.message };
+      //   console.log(action.payload);
+      // })
 
       // Fetch Countries
       .addCase(fetchCountries.pending, (state) => {

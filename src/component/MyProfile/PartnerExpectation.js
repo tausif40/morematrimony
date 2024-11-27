@@ -3,11 +3,21 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { partnerExpectations, maritalStatus, career } from '../../utils/data/MyProfileData';
-import { fetchCountries } from '../../store/features/profileData-slice';
+import {
+	fetchCountries, fetchStates, fetchCities, fetchReligions, fetchCaste, fetchDivision, fetchStars, fetchRashiSigns, fetchZodiac
+} from '../../store/features/profileData-slice';
 
 const PartnerExpectation = () => {
 	const dispatch = useDispatch();
 	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
+	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
+	const { data: cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.profileData.cities);
+	const { data: religions, loading: religionLoading, error: religionError } = useSelector((state) => state.profileData.religions);
+	const { data: casteList, loading: casteLoading, error: casteError } = useSelector((state) => state.profileData.caste);
+	const { data: division, loading: divisionLoading, error: divisionError } = useSelector((state) => state.profileData.division);
+	const { data: stars, loading: starsLoading, error: starsError } = useSelector((state) => state.profileData.stars);
+	const { data: rashiSigns, loading: rashiSignsLoading, error: rashiSignsError } = useSelector((state) => state.profileData.rashiSigns);
+	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
 
 	useEffect(() => {
 		dispatch(fetchCountries());

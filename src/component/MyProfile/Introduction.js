@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
-import apiClient from '../../api/apiClient';
 import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { uploadProfile } from '../../store/features/profileData-slice';
+import { useDispatch } from 'react-redux';
+import { uploadFileData } from '../../store/features/profileData-slice';
 
 const IntroductionForm = () => {
 	const dispatch = useDispatch();
 	const [ introduction, setIntroduction ] = useState('');
 	const [ errors, setError ] = useState();
-	const { formData, loading, error } = useSelector((state) => state.profileData);
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (introduction == '') {
+		if (introduction.trim() === '') {
 			setError('Introduction is required')
 			toast.error('Please correct all highlighted errors!');
 			return;
 		}
+		const loadingToast = toast.loading('Uploading.....');
 		try {
-			dispatch(uploadProfile(introduction));
-			// const response = await apiClient.post('/introduction', { introduction });
-			// console.log('Form submitted successfully:', response.data);
+			const resultAction = await dispatch(uploadFileData({ introduction }));
 
-			toast.success('Introduction update successfully');
+			if (uploadFileData.fulfilled.match(resultAction)) {
+				toast.success('Registration successful!', { id: loadingToast });
+			} else if (uploadFileData.rejected.match(resultAction)) {
+				toast.error(`Registration failed: ${resultAction.error.message}`, { id: loadingToast });
+			}
 		} catch (error) {
-			console.error('Error submitting form:', error);
-			toast.error('Introduction update failed');
+			toast.error('Introduction update failed.', { id: loadingToast });
+			console.log('Error submitting form:', error);
 		}
 	};
 
