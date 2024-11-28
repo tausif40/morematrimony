@@ -18,7 +18,7 @@ const Career = () => {
 	const [ formData, setFormData ] = useState({
 		employedIn: '',
 		occupation: '',
-		occupationDetail: '',
+		occupationDetails: '',
 		organizationName: '',
 		jobLocation: '',
 		annualIncome: '',
@@ -30,7 +30,7 @@ const Career = () => {
 		let validationErrors = {};
 		if (!formData.employedIn) validationErrors.employedIn = 'Employed in is required';
 		if (!formData.occupation) validationErrors.occupation = 'Occupation is required';
-		if (!formData.occupationDetail) validationErrors.occupationDetail = 'Occupation details are required';
+		if (!formData.occupationDetails) validationErrors.occupationDetails = 'Occupation details are required';
 		if (!formData.organizationName) validationErrors.organizationName = 'organization Name is required';
 		if (!formData.jobLocation) validationErrors.jobLocation = 'Job location is required';
 		if (!formData.annualIncome) validationErrors.annualIncome = 'Annual income is required';
@@ -39,19 +39,7 @@ const Career = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			const loadingToast = toast.loading('Uploading.....');
-			try {
-				const resultAction = await dispatch(uploadFileData({ career: formData }));
-
-				if (uploadFileData.fulfilled.match(resultAction)) {
-					toast.success('Upload successful!', { id: loadingToast });
-				} else if (uploadFileData.rejected.match(resultAction)) {
-					toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
-				}
-			} catch (error) {
-				toast.error('Upload failed.', { id: loadingToast });
-				console.log('Error submitting form:', error);
-			}
+			dispatch(uploadFileData({ career: formData }));
 		}
 	};
 
@@ -132,19 +120,19 @@ const Career = () => {
 				</div>
 
 				<div>
-					<label htmlFor="occupationDetail" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label htmlFor="occupationDetails" className="block font-medium mb-1 mt-1 text-headingGray">
 						Occupation in Detail <span className="text-red-500">*</span>
 					</label>
 					<input
 						type="text"
-						id="occupationDetail"
-						className={getInputClasses('occupationDetail')}
+						id="occupationDetails"
+						className={getInputClasses('occupationDetails')}
 						placeholder="Occupation Details"
-						name="occupationDetail"
-						value={formData.occupationDetail}
+						name="occupationDetails"
+						value={formData.occupationDetails}
 						onChange={handleChange}
 					/>
-					{errors.occupationDetail && <p className="text-red-500 text-xs">{errors.occupationDetail}</p>}
+					{errors.occupationDetails && <p className="text-red-500 text-xs">{errors.occupationDetails}</p>}
 				</div>
 
 				<div>

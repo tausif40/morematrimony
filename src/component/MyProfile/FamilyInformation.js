@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { familyInformation } from '../../utils/data/MyProfileData';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchOccupations, uploadFileData } from '../../store/features/profileData-slice';
 
 const FamilyInformation = () => {
+	const dispatch = useDispatch();
+	const { data: occupations, loading: occupationLoading, error: occupationError } = useSelector((state) => state.profileData.occupations);
+
+	useEffect(() => {
+		dispatch(fetchOccupations());
+	}, [ dispatch ]);
+
 	const [ formData, setFormData ] = useState({
 		familyValue: '',
 		familyType: '',
@@ -52,13 +60,8 @@ const FamilyInformation = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (validateForm()) {
-			console.log(formData);
-			try {
-				await axios.post('/api/family-information', formData);
-				toast.success('Family information updated successfully');
-			} catch (error) {
-				toast.error('Error updating family information');
-			}
+			// console.log(formData);
+			dispatch(uploadFileData({ familyDetails: formData }));
 		} else {
 			toast.error('Please correct all highlighted errors!');
 		}
@@ -112,7 +115,6 @@ const FamilyInformation = () => {
 						<option value="" disabled>
 							Choose Family Type
 						</option>
-						<option value="jointFamily">Joint Family</option>
 						{familyInformation.familyType.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
@@ -138,8 +140,6 @@ const FamilyInformation = () => {
 						<option value="" disabled>
 							Choose Family Status
 						</option>
-						<option value="middleClass">Middle Class</option>
-						<option value="upperMiddleClass">Upper Middle Class</option>
 						{familyInformation.familyStatus.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}

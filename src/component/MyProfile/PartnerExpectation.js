@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { partnerExpectations, maritalStatus, career } from '../../utils/data/MyProfileData';
+import { partnerExpectations, maritalStatus, career, PhysicalAttributesData } from '../../utils/data/MyProfileData';
 import {
-	fetchCountries, fetchStates, fetchCities, fetchReligions, fetchCaste, fetchDivision, fetchStars, fetchRashiSigns, fetchZodiac
+	fetchCountries, fetchStates, fetchCities, fetchReligions, fetchCaste, fetchDivision, fetchStars, fetchRashiSigns, fetchZodiac, fetchLanguages, fetchEducation
 } from '../../store/features/profileData-slice';
 
 const PartnerExpectation = () => {
@@ -18,9 +18,14 @@ const PartnerExpectation = () => {
 	const { data: stars, loading: starsLoading, error: starsError } = useSelector((state) => state.profileData.stars);
 	const { data: rashiSigns, loading: rashiSignsLoading, error: rashiSignsError } = useSelector((state) => state.profileData.rashiSigns);
 	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
+	const { data: languages, loading: langLoading, error: langError } = useSelector((state) => state.profileData.languages);
+	const { data: education, loading: loading, error: error } = useSelector((state) => state.profileData.education);
 
 	useEffect(() => {
 		dispatch(fetchCountries());
+		dispatch(fetchReligions());
+		dispatch(fetchLanguages());
+		dispatch(fetchEducation());
 	}, [ dispatch ]);
 
 	const [ formData, setFormData ] = useState({
@@ -101,8 +106,8 @@ const PartnerExpectation = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log("isChildrenFieldsVisible - ", isChildrenFieldsVisible());
-		console.log("isNotEmployed - ", isNotEmployed());
+		// console.log("isChildrenFieldsVisible - ", isChildrenFieldsVisible());
+		// console.log("isNotEmployed - ", isNotEmployed());
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
 			return;
@@ -120,7 +125,10 @@ const PartnerExpectation = () => {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[ name ]: value,
+		}));
 		if (name.includes('brideAge') || name.includes('height')) {
 			const [ group, field ] = name.split('.');
 			setFormData((prevFormData) => ({
@@ -134,6 +142,11 @@ const PartnerExpectation = () => {
 			}));
 		}
 
+		if (name === 'religion') {
+			console.log("select - ", name, " - ", value);
+			dispatch(fetchCaste(value));
+			formData.caste = ''
+		}
 		// Remove error once the field is corrected
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
@@ -307,9 +320,12 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Religion</option>
-						<option value="hindu">Hindu</option>
-						<option value="muslim">Muslim</option>
-						<option value="christian">Christian</option>
+						{religionLoading && !religions?.length && <option value="" disabled> Loading religion...</option>}
+						{religions?.religion?.map((religion) => (
+							<option key={religion._id} value={religion._id}>
+								{religion.name}
+							</option>
+						))}
 					</select>
 					{errors.religion && <p className="text-red-500 text-xs">{errors.religion}</p>}
 				</div>
@@ -325,8 +341,13 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Caste</option>
-						<option value="caste1">Caste 1</option>
-						<option value="caste2">Caste 2</option>
+						{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
+						{casteLoading && !casteList?.length && <option value="" disabled>Loading cast...</option>}
+						{casteList?.cast?.map((caste) => (
+							<option key={caste._id} value={caste._id}>
+								{caste.name}
+							</option>
+						))}
 					</select>
 					{errors.caste && <p className="text-red-500 text-xs">{errors.caste}</p>}
 				</div>
@@ -334,18 +355,15 @@ const PartnerExpectation = () => {
 				{/* Sub Caste */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Sub Caste <span className="text-red-500">*</span></label>
-					<select
+					<input
+						type="text"
 						id="subCaste"
 						className={getInputClasses('subCaste')}
+						placeholder="SubCast"
 						name="subCaste"
 						value={formData.subCaste}
 						onChange={handleChange}
-
-					>
-						<option value="" disabled>Select Sub Caste</option>
-						<option value="subCaste1">Sub Caste 1</option>
-						<option value="subCaste2">Sub Caste 2</option>
-					</select>
+					/>
 					{errors.subCaste && <p className="text-red-500 text-xs">{errors.subCaste}</p>}
 				</div>
 
@@ -360,9 +378,12 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Mother Tongue</option>
-						<option value="Hindi">Hindi</option>
-						<option value="Gujarati">Gujarati</option>
-						<option value="Gujarati">Gujarati</option>
+						{langLoading && !languages.length && <option>Loading languages...</option>}
+						{languages?.language?.map((language) => (
+							<option key={language._id} value={language._id}>
+								{language.name}
+							</option>
+						))}
 					</select>
 					{errors.motherTongue && <p className="text-red-500 text-xs">{errors.motherTongue}</p>}
 				</div>
@@ -380,9 +401,11 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Education</option>
-						<option value="course1">Course 1</option>
-						<option value="course2">Course 2</option>
-						<option value="other">Other</option>
+						{education?.education?.map((country) => (
+							<option key={country._id} value={country._id} disabled={country.id == 1} className={`${country.id == 1 && 'bg-[#a6a6a6] text-white'}`}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.highestEducation && <p className="text-red-500 text-xs">{errors.highestEducation}</p>}
 				</div>
@@ -524,9 +547,11 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Body Type</option>
-						<option value="Slim">Slim</option>
-						<option value="Fat">Fat</option>
-						<option value="Average">Average</option>
+						{partnerExpectations.bodyType.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.bodyType && <p className="text-red-500 text-xs">{errors.bodyType}</p>}
 				</div>
@@ -544,10 +569,12 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select preferred country</option>
-						<option value="country1">Country 1</option>
-						<option value="country2">Country 2</option>
-						<option value="country3">Country 3</option>
-						<option value="country4">Country 4</option>
+						{countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>}
+						{countries?.country?.map((country, index) => (
+							<option key={country._id} value={country._id}>
+								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.preferredCountry && <p className="text-red-500 text-xs">{errors.preferredCountry}</p>}
 				</div>
@@ -564,10 +591,13 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select preferred state</option>
-						<option value="state1">State 1</option>
-						<option value="state2">State 2</option>
-						<option value="state3">State 3</option>
-						<option value="state4">State 4</option>
+						{formData.country == '' && <option value="" disabled>Please Select country</option>}
+						{statesLoading && !states?.length && <option value="" disabled>Loading states...</option>}
+						{states?.state?.map((state) => (
+							<option key={state._id} value={state._id}>
+								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.preferredState && <p className="text-red-500 text-xs">{errors.preferredState}</p>}
 				</div>
@@ -585,9 +615,11 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Complexion</option>
-						<option value="Fair Skin">Fair Skin</option>
-						<option value="Medium Skin">Medium Skin</option>
-						<option value="Black Skin">Black Skin</option>
+						{PhysicalAttributesData.bodyType.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
 					</select>
 					{errors.complexion && <p className="text-red-500 text-xs">{errors.complexion}</p>}
 				</div>

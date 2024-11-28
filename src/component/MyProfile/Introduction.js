@@ -15,19 +15,7 @@ const IntroductionForm = () => {
 			toast.error('Please correct all highlighted errors!');
 			return;
 		}
-		const loadingToast = toast.loading('Uploading.....');
-		try {
-			const resultAction = await dispatch(uploadFileData({ introduction }));
-
-			if (uploadFileData.fulfilled.match(resultAction)) {
-				toast.success('Registration successful!', { id: loadingToast });
-			} else if (uploadFileData.rejected.match(resultAction)) {
-				toast.error(`Registration failed: ${resultAction.error.message}`, { id: loadingToast });
-			}
-		} catch (error) {
-			toast.error('Introduction update failed.', { id: loadingToast });
-			console.log('Error submitting form:', error);
-		}
+		dispatch(uploadFileData({ introduction }));
 	};
 
 

@@ -2,39 +2,34 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { lifestyle } from '../../utils/data/MyProfileData'
+import { uploadFileData } from '../../store/features/profileData-slice';
+import { useDispatch } from 'react-redux';
 
 const Lifestyle = () => {
+	const dispatch = useDispatch();
 	const [ formData, setFormData ] = useState({
 		diet: '',
 		drink: '',
 		smoke: '',
-		livingWith: '',
 	});
 	const [ errors, setErrors ] = useState({});
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
+		console.log(formData);
 		const validationErrors = {};
 		if (!formData.diet) validationErrors.diet = 'Diet is required';
 		if (!formData.drink) validationErrors.drink = 'Drink preference is required';
 		if (!formData.smoke) validationErrors.smoke = 'Smoking preference is required';
-		if (!formData.livingWith) validationErrors.livingWith = 'Living With is required';
 
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			console.log(formData);
-			try {
-				const response = await axios.post('/api/lifestyle-info', formData);
-				toast.success('Lifestyle details update successfully!');
-				console.log('Form submitted:', response.data);
-				setErrors({});
-			} catch (error) {
-				toast.error('Lifestyle details update successfully!');
-				console.error('Error submitting form:', error);
-			}
+			// const loadingToast = toast.loading('Uploading.....');
+
+			dispatch(uploadFileData({ lifestyle: formData }));
+
 		}
 	};
 
@@ -117,21 +112,6 @@ const Lifestyle = () => {
 					</select>
 					{errors.smoke && <p className="text-red-500 text-xs mt-1">{errors.smoke}</p>}
 				</div>
-
-				{/* Living With */}
-				{/* <div>
-					<label htmlFor="livingWith" className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Living With<span className="text-red-500"> *</span></label>
-					<input
-						type="text"
-						id="livingWith"
-						className={getInputClasses('livingWith')}
-						placeholder="Living With"
-						name="livingWith"
-						value={formData.livingWith}
-						onChange={handleChange}
-					/>
-					{errors.livingWith && <p className="text-red-500 text-xs mt-1">{errors.livingWith}</p>}
-				</div> */}
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">

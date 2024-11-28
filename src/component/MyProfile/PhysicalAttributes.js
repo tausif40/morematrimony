@@ -55,17 +55,7 @@ const PhysicalAttributes = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			const loadingToast = toast.loading('Uploading...');
-			try {
-				const resultAction = await dispatch(uploadFileData({ physicalAttributes: formData }));
-				if (uploadFileData.fulfilled.match(resultAction)) {
-					toast.success('Upload successful!', { id: loadingToast });
-				} else {
-					toast.error('Upload failed!', { id: loadingToast });
-				}
-			} catch (error) {
-				toast.error('Upload failed.', { id: loadingToast });
-			}
+			dispatch(uploadFileData({ physicalAttributes: formData }));
 		}
 	};
 

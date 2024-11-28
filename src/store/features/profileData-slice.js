@@ -1,14 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
+import { toast } from 'react-hot-toast';
 
 export const uploadFileData = createAsyncThunk('data/uploadFileData', async (formdata, { rejectWithValue }) => {
+  const loadingToast = toast.loading('Uploading.....');
   try {
     console.log(formdata);
     const response = await apiClient.patch('/user/myProfile', formdata);
+    toast.success('Upload successful!', { id: loadingToast });
     console.log(response);
     return response.data;
   } catch (error) {
     console.log(error)
+    toast.error(error?.response?.data?.message || 'Upload failed', { id: loadingToast });
     return rejectWithValue(error?.response?.data?.message || 'Failed to upload formData');
   }
 });

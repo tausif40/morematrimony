@@ -44,19 +44,7 @@ const ResidencyInformation = () => {
 			console.log(formData);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			const loadingToast = toast.loading('Uploading.....');
-			try {
-				const resultAction = await dispatch(uploadFileData({ residencyInformation: formData }));
-
-				if (uploadFileData.fulfilled.match(resultAction)) {
-					toast.success('Upload successful!', { id: loadingToast });
-				} else if (uploadFileData.rejected.match(resultAction)) {
-					toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
-				}
-			} catch (error) {
-				toast.error('Upload failed.', { id: loadingToast });
-				console.log('Error submitting form:', error);
-			}
+			dispatch(uploadFileData({ residencyInformation: formData }));
 		}
 	};
 

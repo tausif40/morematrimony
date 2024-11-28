@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { socialBackground } from '../../utils/data/MyProfileData';
 import {
@@ -69,7 +68,7 @@ const SocialBackground = () => {
 
 		if (isHindu) {
 			if (!formData.gothra) newErrors.gothra = 'Gothra is required';
-			if (!formData.kundli) newErrors.kundli = 'Kundli is required';
+			// if (!formData.kundli) newErrors.kundli = 'Kundli is required';
 			if (!formData.dosh) newErrors.dosh = 'Dosh is required';
 			if (formData.dosh === 'yes' && !formData.doshName) {
 				newErrors.doshName = 'Dosh Name is required';
@@ -102,19 +101,8 @@ const SocialBackground = () => {
 		}
 		// console.log('Form submitted:', cleanedFormData);
 
-		const loadingToast = toast.loading('Uploading.....');
-		try {
-			const resultAction = await dispatch(uploadFileData({ spiritualAndSocialBackground: cleanedFormData }));
+		dispatch(uploadFileData({ spiritualAndSocialBackground: cleanedFormData }));
 
-			if (uploadFileData.fulfilled.match(resultAction)) {
-				toast.success('Upload successful!', { id: loadingToast });
-			} else if (uploadFileData.rejected.match(resultAction)) {
-				toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
-			}
-		} catch (error) {
-			toast.error('Upload failed.', { id: loadingToast });
-			console.log('Error submitting form:', error);
-		}
 	};
 
 	const handleChange = (e) => {
@@ -123,7 +111,7 @@ const SocialBackground = () => {
 			...prevFormData,
 			[ name ]: value,
 		}));
-		if (name === 'religion') {
+		if (name === 'religion') {	
 			dispatch(fetchCaste(value));
 			formData.caste = ''
 			formData.division = ''
@@ -439,7 +427,8 @@ const SocialBackground = () => {
 
 						<div>
 							<label htmlFor="kundli" className="block font-medium mb-1 mt-1 text-headingGray">
-								Upload Kundli <span className="text-red-500">*</span>
+								Upload Kundli
+								{/* <span className="text-red-500">*</span> */}
 							</label>
 							<input
 								type="file"
@@ -448,7 +437,7 @@ const SocialBackground = () => {
 								name="kundli"
 								onChange={handleChange}
 							/>
-							{errors.kundli && <p className="text-red-500 text-xs">{errors.kundli}</p>}
+							{/* {errors.kundli && <p className="text-red-500 text-xs">{errors.kundli}</p>} */}
 						</div>
 
 						<div>
