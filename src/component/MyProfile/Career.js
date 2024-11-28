@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { career } from '../../utils/data/MyProfileData';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOccupations } from '../../store/features/profileData-slice';
+import { fetchOccupations, uploadFileData } from '../../store/features/profileData-slice';
 
 const Career = () => {
 	const dispatch = useDispatch();
@@ -39,15 +39,18 @@ const Career = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			console.log(formData);
+			const loadingToast = toast.loading('Uploading.....');
 			try {
-				const response = await axios.post('/api/career-info', formData);
-				toast.success('Career information updated successfully');
-				console.log('Form submitted:', response.data);
-				setErrors({});
+				const resultAction = await dispatch(uploadFileData({ career: formData }));
+
+				if (uploadFileData.fulfilled.match(resultAction)) {
+					toast.success('Upload successful!', { id: loadingToast });
+				} else if (uploadFileData.rejected.match(resultAction)) {
+					toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
+				}
 			} catch (error) {
-				toast.error('Career information updated failed!');
-				console.error('Error submitting form:', error);
+				toast.error('Upload failed.', { id: loadingToast });
+				console.log('Error submitting form:', error);
 			}
 		}
 	};

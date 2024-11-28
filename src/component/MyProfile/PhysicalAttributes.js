@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { PhysicalAttributesData } from '../../utils/data/MyProfileData';
+import { useDispatch } from 'react-redux';
+import { uploadFileData } from '../../store/features/profileData-slice';
 
 const PhysicalAttributes = () => {
+	const dispatch = useDispatch();
+
 	const [ formData, setFormData ] = useState({
 		height: { feet: '', inches: '' },
 		weight: '',
@@ -13,9 +17,11 @@ const PhysicalAttributes = () => {
 		bloodGroup: '',
 		bodyType: '',
 		tattoo: '',
-		anyDisability: '',
-		disabilityType: '',
-		disabilityDetails: ''
+		disability: {
+			disability: '',
+			type: '',
+			details: ''
+		}
 	});
 	const [ errors, setErrors ] = useState({});
 
@@ -25,7 +31,7 @@ const PhysicalAttributes = () => {
 		e.preventDefault();
 
 		let validationErrors = {};
-		if (!formData.height.feet) validationErrors.height = 'Height is required';
+		if (!formData.height.feet) validationErrors.height = 'Height (feet) is required';
 		if (!formData.weight) validationErrors.weight = 'Weight is required';
 		if (!formData.eyeColor) validationErrors.eyeColor = 'Eye Color is required';
 		if (!formData.hairColor) validationErrors.hairColor = 'Hair Color is required';
@@ -33,55 +39,105 @@ const PhysicalAttributes = () => {
 		if (!formData.bloodGroup) validationErrors.bloodGroup = 'Blood Group is required';
 		if (!formData.bodyType) validationErrors.bodyType = 'Body Type is required';
 		if (!formData.tattoo) validationErrors.tattoo = 'Tattoo details are required';
-		if (!formData.anyDisability) validationErrors.anyDisability = 'Disability details are required';
-		if (formData.anyDisability === 'yes' && !formData.disabilityType) {
-			validationErrors.disabilityType = 'disability Type is required';
-		}
-		if (formData.anyDisability === 'yes' && !formData.disabilityDetails) {
-			validationErrors.disabilityDetails = 'Disability Details is required';
-		}
+		if (!formData.disability.disability) validationErrors.disability = 'Disability status is required';
+		if (formData.disability.disability === 'yes' && !formData.disability.type) validationErrors.type = 'Disability Type is required';
+		if (formData.disability.type === 'other' && !formData.disability.details) validationErrors.details = 'Disability Details are required';
 
+		const cleanedData = { ...formData };
+		if (cleanedData.disability.disability === 'no') {
+			delete cleanedData.disability.type;
+			delete cleanedData.disability.details;
+		} else if (cleanedData.disability.type != 'other') {
+			delete cleanedData.disability.details;
+		}
 
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			console.log(formData);
+			const loadingToast = toast.loading('Uploading...');
 			try {
-				const response = await axios.post('/api/physical-attributes', formData);
-				toast.success('Form submitted successfully!');
-				console.log('Form submitted:', response.data);
-				setErrors({});
+				const resultAction = await dispatch(uploadFileData({ physicalAttributes: formData }));
+				if (uploadFileData.fulfilled.match(resultAction)) {
+					toast.success('Upload successful!', { id: loadingToast });
+				} else {
+					toast.error('Upload failed!', { id: loadingToast });
+				}
 			} catch (error) {
-				toast.error('Failed to submit form!');
-				console.error('Error submitting form:', error);
+				toast.error('Upload failed.', { id: loadingToast });
 			}
 		}
 	};
 
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 
-		if (name.includes('height') || name.includes('inch')) {
+		if (name.includes('height')) {
 			const [ group, field ] = name.split('.');
-			setFormData((prevFormData) => ({
-				...prevFormData,
-				[ group ]: { ...prevFormData[ group ], [ field ]: value }
+			setFormData((prev) => ({
+				...prev,
+				[ group ]: { ...prev[ group ], [ field ]: value },
 			}));
-		} else {
-			setFormData((prevFormData) => ({
-				...prevFormData,
-				[ name ]: value
-			}));
-		}
 
-		if (errors[ name ]) {
-			setErrors((prevErrors) => ({
-				...prevErrors,
-				[ name ]: '',
+			if (errors.height) {
+				setErrors((prev) => ({ ...prev, height: '' }));
+			}
+		} else if (name === 'disability') {
+			setFormData((prev) => ({
+				...prev,
+				disability: {
+					disability: value,
+					type: value === 'yes' ? prev.disability.type : null,
+					details: value === 'yes' ? prev.disability.details : '',
+				},
 			}));
+
+			if (value === 'no') {
+				setFormData((prev) => ({
+					...prev,
+					disability: { disability: 'no', type: '', details: '' },
+				}));
+			}
+
+			if (errors.disability || errors.type || errors.details) {
+				setErrors((prev) => ({
+					...prev,
+					disability: '',
+					type: '',
+					details: '',
+				}));
+			}
+		} else if (name === 'type') {
+			setFormData((prev) => ({
+				...prev,
+				disability: {
+					...prev.disability,
+					type: value,
+					details: value === 'other' ? prev.disability.details : '',
+				},
+			}));
+
+			if (errors.type || errors.details) {
+				setErrors((prev) => ({ ...prev, type: '', details: '' }));
+			}
+		} else if (name === 'details') {
+			setFormData((prev) => ({
+				...prev,
+				disability: { ...prev.disability, details: value },
+			}));
+			if (errors.details) {
+				setErrors((prev) => ({ ...prev, details: '' }));
+			}
+		} else {
+			setFormData((prev) => ({ ...prev, [ name ]: value }));
+
+			if (errors[ name ]) {
+				setErrors((prev) => ({ ...prev, [ name ]: '' }));
+			}
 		}
 	};
+
 
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
@@ -262,57 +318,57 @@ const PhysicalAttributes = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Tattoo Option</option>
-						<option value="Yes">Yes</option>
-						<option value="No">No</option>
+						<option value='true'>Yes</option>
+						<option value='false'>No</option>
 					</select>
 					{errors.tattoo && <p className="text-red-500 text-xs">{errors.tattoo}</p>}
 				</div>
 
 				{/* Any Disability */}
 				<div>
-					<label htmlFor="anyDisability" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label htmlFor="disability" className="block font-medium mb-1 mt-1 text-headingGray">
 						Any Disability <span className="text-red-500">*</span>
 					</label>
 					<select
-						id="anyDisability"
-						className={getInputClasses('anyDisability')}
-						name="anyDisability"
-						value={formData.anyDisability}
+						id="disability"
+						className={getInputClasses('disability')}
+						name="disability"
+						value={formData.disability.disability}
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Option</option>
 						<option value="yes">Yes</option>
 						<option value="no">No</option>
 					</select>
-					{errors.anyDisability && <p className="text-red-500 text-xs">{errors.anyDisability}</p>}
+					{errors.disability && <p className="text-red-500 text-xs">{errors.disability}</p>}
 				</div>
 
 				{/* disability Type */}
-				{formData.anyDisability === 'yes' && (
+				{formData.disability.disability === 'yes' && (
 					<div>
-						<label htmlFor="disabilityType" className="block font-medium mb-1 mt-1 text-headingGray">
+						<label htmlFor="type" className="block font-medium mb-1 mt-1 text-headingGray">
 							Select Disability Type <span className="text-red-500">*</span>
 						</label>
 						<select
 							id="disabilityType"
 							className={getInputClasses('disabilityType')}
-							name="disabilityType"
-							value={formData.disabilityType}
+							name="type"
+							value={formData.disability.type}
 							onChange={handleChange}
 						>
 							<option value="" disabled>Select Option</option>
-							{PhysicalAttributesData.disabilityType.map((value, index) => (
+							{PhysicalAttributesData?.disabilityType?.map((value, index) => (
 								<option key={index} value={value}>
 									{value.charAt(0).toUpperCase() + value.slice(1)}
 								</option>
 							))}
 						</select>
-						{errors.disabilityType && <p className="text-red-500 text-xs">{errors.disabilityType}</p>}
+						{errors.type && <p className="text-red-500 text-xs">{errors.type}</p>}
 					</div>
 				)}
 
 				{/* Disability Details */}
-				{formData.anyDisability === 'yes' && formData.disabilityType === 'other' && (
+				{formData.disability.disability === 'yes' && formData.disability.type === 'other' && (
 					<div>
 						<label htmlFor="disabilityDetails" className="block font-medium mb-1 mt-1 text-headingGray">
 							Disability Details <span className="text-red-500">*</span>
@@ -322,11 +378,11 @@ const PhysicalAttributes = () => {
 							id="disabilityDetails"
 							className={getInputClasses('disabilityDetails')}
 							placeholder="Disability Details"
-							name="disabilityDetails"
-							value={formData.disabilityDetails}
+							name="details"
+							value={formData.disability.details}
 							onChange={handleChange}
 						/>
-						{errors.disabilityDetails && <p className="text-red-500 text-xs">{errors.disabilityDetails}</p>}
+						{errors.details && <p className="text-red-500 text-xs">{errors.details}</p>}
 					</div>
 				)}
 

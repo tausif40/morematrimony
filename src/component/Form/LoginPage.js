@@ -11,8 +11,8 @@ const LoginPage = () => {
 	const [ error, setError ] = useState('');
 	const navigate = useNavigate();
 
-	const BASE_URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
-
+	const BASE_URL = process.env.REACT_APP_API_URL;
+	BASE_URL == undefined && console.log('Base url not found');
 
 	const handleLogin = async (e) => {
 		// console.log(email, password);
@@ -32,7 +32,7 @@ const LoginPage = () => {
 					'Content-Type': 'application/json',
 				},
 			}).then((response) => {
-		
+
 				Cookies.set('access_token', response.data.tokens.access.token);
 				Cookies.set('refresh_token', response.data.tokens.refresh.token);
 				navigate('/dashboard')

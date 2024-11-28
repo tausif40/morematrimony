@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { personalInformation } from '../../utils/data/MyProfileData';
-import { useDispatch, fetchStates, useSelector } from 'react-redux';
-import { fetchCountries, uploadFileData } from '../../store/features/profileData-slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCountries, uploadFileData, fetchStates } from '../../store/features/profileData-slice';
 
 const ResidencyInformation = () => {
 
@@ -13,6 +13,7 @@ const ResidencyInformation = () => {
 
 	useEffect(() => {
 		dispatch(fetchCountries());
+		dispatch(fetchStates('673ed3300c6e7fb2cd934089'));
 	}, [ dispatch ]);
 
 	const [ formData, setFormData ] = useState({
@@ -35,7 +36,7 @@ const ResidencyInformation = () => {
 		if (!formData.growUpCountry) validationErrors.growUpCountry = 'Grow Up Country is required';
 		if (!formData.residencyCountry) validationErrors.residencyCountry = 'Residency Country is required';
 		if (!formData.residencyStatus) validationErrors.residencyStatus = 'Residency Status is required';
-		if (!formData.ancestralOrigin) validationErrors.ancestralOrigin = 'Ancestral Origin is required';
+		if (!formData.ancestralOrigin.state) validationErrors.ancestralOrigin = 'Ancestral Origin is required';
 		if (!formData.citizenship) validationErrors.citizenship = 'Citizenship is required';
 
 		if (Object.keys(validationErrors).length > 0) {
@@ -197,11 +198,11 @@ const ResidencyInformation = () => {
 						value={formData.ancestralOrigin.state}
 						onChange={handleChange}
 					>
-						<option value="" disabled>Select Ancestral Origin Status</option>
-						{loading && !countries.length && <option>Loading countries...</option>}
-						{countries?.country?.map((country) => (
-							<option key={country.id} value={country._id}>
-								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+						<option value="" disabled>Select Ancestral Origin</option>
+						{statesLoading && !states?.length && <option>Loading countries...</option>}
+						{states?.state?.map((state) => (
+							<option key={state.id} value={state._id}>
+								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
 							</option>
 						))}
 					</select>

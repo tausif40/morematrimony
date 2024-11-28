@@ -3,14 +3,15 @@ import { IoIosArrowDown } from "react-icons/io";
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLanguages } from '../../store/features/profileData-slice';
+import { fetchLanguages, uploadFileData } from '../../store/features/profileData-slice';
 
 const Language = () => {
 	const [ isOpen, setIsOpen ] = useState(false);
 	const [ selectedLanguages, setSelectedLanguages ] = useState([]);
+	const [ selectedLangId, setSelectedLangId ] = useState([]);
 	const [ error, setError ] = useState()
 	const dropdownRef = useRef(null);
-	
+
 	const dispatch = useDispatch();
 	const { data: languages, loading: langLoading, error: langError } = useSelector((state) => state.profileData.languages);
 
@@ -22,11 +23,13 @@ const Language = () => {
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
-	const handleSelect = (language) => {
+	const handleSelect = (language, LangId) => {
 		if (selectedLanguages.includes(language)) {
 			setSelectedLanguages(selectedLanguages.filter((lang) => lang !== language));
+			setSelectedLangId(selectedLangId.filter((id) => id !== LangId));
 		} else {
 			setSelectedLanguages([ ...selectedLanguages, language ]);
+			setSelectedLangId([ ...selectedLangId, LangId ]);
 		}
 	};
 
@@ -58,19 +61,23 @@ const Language = () => {
 
 		const dataToSubmit = {
 			motherTongue: formData.motherTongue,
-			knownLanguages: selectedLanguages,
+			knownLanguages: selectedLangId,
 		};
-		console.log('Form submitted:', dataToSubmit);
 
+		const loadingToast = toast.loading('Uploading.....');
 		try {
-			const response = await axios.post('', dataToSubmit);
-			console.log('Response:', response.data);
-			toast.success('Language update successfully')
+			const resultAction = await dispatch(uploadFileData({ language: dataToSubmit }));
+
+			if (uploadFileData.fulfilled.match(resultAction)) {
+				toast.success('Upload successful!', { id: loadingToast });
+			} else if (uploadFileData.rejected.match(resultAction)) {
+				toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
+			}
 		} catch (error) {
-			console.error('Error submitting data:', error);
-			toast.error('Language update failed!')
+			toast.error('Upload failed.', { id: loadingToast });
+			console.log('Error submitting form:', error);
 		}
-	};
+	}
 
 
 	const handleChange = (e) => {
@@ -123,7 +130,7 @@ const Language = () => {
 										<div
 											key={language._id}
 											className={`cursor-pointer p-2 text-center px-4 rounded-full text-textGray ${selectedLanguages.includes(language.name) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
-											onClick={() => handleSelect(language.name)}
+											onClick={() => handleSelect(language.name, language._id)}
 										>
 											{language.name}
 										</div>

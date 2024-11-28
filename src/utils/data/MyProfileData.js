@@ -50,3 +50,8 @@ export const partnerExpectations = {
 	dietingAcceptable: [ "vegetarian", "non-vegetarian", "pescatarian", "vegan", "other", "flexitarian" ],
 	bodyType: [ "slim", "athletic", "muscular", "average", "curvy", "full-figured", "petite", "stocky", "obese", "chubby", "tall", "short" ]
 }
+
+export const socialBackground = {
+	// doshName: [ "Manglik", "Sarpa", "Dosh Kala Sarpa Dosh", "Rahu Dosh", "Kethu Dosh", "Kalathra Dosh" ]
+	doshName: [ "mangal dosha", "kaal sarp dosha", "pitru dosha", "guru chandal dosh", "gandmool dosh", "shani dosh", "chandra dosh", "kemadruma dosh", "nadi dosha", "shrapit dosh", "grahan dosh", "ghatak dosha", "anant kaal sarp dosh", "pitra dosh", "pitta", "vata", "remedies for kundli dosha", "shankchood kaal sarp dosh", "takshak kaal sarp dosh" ]
+}

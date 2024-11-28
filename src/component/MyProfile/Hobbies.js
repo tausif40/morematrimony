@@ -3,9 +3,12 @@ import { IoIosArrowDown } from "react-icons/io";
 import axios from 'axios';
 import { RxCross2 } from "react-icons/rx";
 import { toast } from 'react-hot-toast';
+import { uploadFileData } from '../../store/features/profileData-slice';
+import { useDispatch } from 'react-redux';
 
 
 const Hobbies = () => {
+	const dispatch = useDispatch();
 	const [ isOpen, setIsOpen ] = useState(false);
 	const [ selectedHobbies, setSelectedHobbies ] = useState([]);
 	const [ error, setError ] = useState();
@@ -52,7 +55,7 @@ const Hobbies = () => {
 		e.preventDefault();
 
 		const dataToSubmit = {
-			hobbies: selectedHobbies,
+			hobbiesList: selectedHobbies,
 		};
 
 		if (selectedHobbies.length < 5) {
@@ -61,15 +64,18 @@ const Hobbies = () => {
 			return;
 		}
 
-		console.log('Form submitted:', dataToSubmit);
-
+		const loadingToast = toast.loading('Uploading.....');
 		try {
-			const response = await axios.post('', dataToSubmit);
-			console.log('Response:', response.data);
-			toast.success('Hobbies update successfully');
+			const resultAction = await dispatch(uploadFileData({ hobbies: dataToSubmit }));
+
+			if (uploadFileData.fulfilled.match(resultAction)) {
+				toast.success('Upload successful!', { id: loadingToast });
+			} else if (uploadFileData.rejected.match(resultAction)) {
+				toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
+			}
 		} catch (error) {
-			console.error('Error submitting data:', error);
-			toast.error('Hobbies updated failed!');
+			toast.error('Upload failed.', { id: loadingToast });
+			console.log('Error submitting form:', error);
 		}
 	};
 

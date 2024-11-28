@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { socialBackground } from '../../utils/data/MyProfileData';
 import {
-	fetchCountries, fetchStates, fetchCities, fetchReligions, fetchCaste, fetchDivision, fetchStars, fetchRashiSigns, fetchZodiac
+	fetchCountries, fetchStates, fetchCities, fetchReligions, fetchCaste, fetchDivision, fetchStars, fetchRashiSigns, fetchZodiac,
+	uploadFileData
 } from '../../store/features/profileData-slice';
 
 const SocialBackground = () => {
@@ -25,7 +27,7 @@ const SocialBackground = () => {
 
 	useEffect(() => {
 		dispatch(fetchCountries());
-		dispatch(fetchReligions());	
+		dispatch(fetchReligions());
 		dispatch(fetchDivision());
 		dispatch(fetchStars());
 		dispatch(fetchZodiac());
@@ -38,9 +40,9 @@ const SocialBackground = () => {
 		subCaste: '',
 		ethnicity: '',
 		star: '',
-		moon: '',
+		rashi: '',
 		zodiac: '',
-		birthTime: '',
+		timeOfBirth: '',
 		birthPlace: { country: '', state: '', city: '' },
 		gothra: '',
 		kundli: null,
@@ -50,7 +52,7 @@ const SocialBackground = () => {
 
 	const [ errors, setErrors ] = useState({});
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(formData);
 		const newErrors = {};
@@ -98,7 +100,21 @@ const SocialBackground = () => {
 		if (isHindu && formData.dosh === 'no') {
 			delete cleanedFormData.doshName;
 		}
-		console.log('Form submitted:', cleanedFormData);
+		// console.log('Form submitted:', cleanedFormData);
+
+		const loadingToast = toast.loading('Uploading.....');
+		try {
+			const resultAction = await dispatch(uploadFileData({ spiritualAndSocialBackground: cleanedFormData }));
+
+			if (uploadFileData.fulfilled.match(resultAction)) {
+				toast.success('Upload successful!', { id: loadingToast });
+			} else if (uploadFileData.rejected.match(resultAction)) {
+				toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
+			}
+		} catch (error) {
+			toast.error('Upload failed.', { id: loadingToast });
+			console.log('Error submitting form:', error);
+		}
 	};
 
 	const handleChange = (e) => {
@@ -115,7 +131,7 @@ const SocialBackground = () => {
 			value == '674033b756c5bb792ea58b6d' ? setIsHindu(true) : setIsHindu(false)
 		} else if (name == 'star') {
 			dispatch(fetchRashiSigns(value));
-			formData.moon = ''
+			formData.rashi = ''
 		} else if (name === 'kundli') {
 			setFormData((prevFormData) => ({
 				...prevFormData,
@@ -279,15 +295,15 @@ const SocialBackground = () => {
 				</div>
 				{/* Moon */}
 				<div>
-					<label htmlFor="moon" className="block font-medium mb-1 mt-1 text-headingGray">Raasi / Moon Sign <span className="text-red-500">*</span></label>
+					<label htmlFor="rashi" className="block font-medium mb-1 mt-1 text-headingGray">rashi  / Moon Sign <span className="text-red-500">*</span></label>
 					<select
-						id="moon"
-						className={getInputClasses('moon')}
-						name="moon"
-						value={formData.moon}
+						id="rashi"
+						className={getInputClasses('rashi')}
+						name="rashi"
+						value={formData.rashi}
 						onChange={handleChange}
 					>
-						<option value="" disabled>Select Moon</option>
+						<option value="" disabled>Select Rashi</option>
 						{formData.star == '' && <option value="" disabled>Select star fist</option>}
 						{rashiSignsLoading && !rashiSigns?.length && <option value="" disabled> Loading rashi...</option>}
 						{rashiSigns?.rashiSign?.map((rashi) => (
@@ -296,7 +312,7 @@ const SocialBackground = () => {
 							</option>
 						))}
 					</select>
-					{errors.moon && <p className="text-red-500 text-xs">{errors.moon}</p>}
+					{errors.rashi && <p className="text-red-500 text-xs">{errors.rashi}</p>}
 				</div>
 				{/* Zodiac */}
 				<div>
@@ -321,18 +337,18 @@ const SocialBackground = () => {
 				</div>
 				{/* Birth Time */}
 				<div>
-					<label htmlFor="birthTime" className="block font-medium mb-1 mt-1 text-headingGray">Time Of Birth <span className="text-red-500">*</span></label>
+					<label htmlFor="timeOfBirth" className="block font-medium mb-1 mt-1 text-headingGray">Time Of Birth <span className="text-red-500">*</span></label>
 					<input
 						type="time"
-						id="birthTime"
-						className={getInputClasses('birthTime')}
-						name="birthTime"
-						value={formData.birthTime}
+						id="timeOfBirth"
+						className={getInputClasses('timeOfBirth')}
+						name="timeOfBirth"
+						value={formData.timeOfBirth}
 						onChange={handleChange}
 						placeholder="Time of birth"
 
 					/>
-					{errors.birthTime && <p className="text-red-500 text-xs">{errors.birthTime}</p>}
+					{errors.timeOfBirth && <p className="text-red-500 text-xs">{errors.timeOfBirth}</p>}
 				</div>
 
 				{/* Place Of Birth */}
@@ -449,6 +465,7 @@ const SocialBackground = () => {
 								<option value="" disabled>Select</option>
 								<option value="yes">Yes</option>
 								<option value="no">No</option>
+								<option value="Don't Know">Don't Know</option>
 							</select>
 							{errors.dosh && <p className="text-red-500 text-xs">{errors.dosh}</p>}
 						</div>
@@ -466,8 +483,11 @@ const SocialBackground = () => {
 									onChange={handleChange}
 								>
 									<option value="" disabled>Select Dosh Name</option>
-									<option value="doshName1">Dosh Name 1</option>
-									<option value="doshName2">Dosh Name 2</option>
+									{socialBackground?.doshName?.map((doshName, index) => (
+										<option key={index} value={doshName}>
+											{doshName.charAt(0).toUpperCase() + doshName.slice(1)}
+										</option>
+									))}
 								</select>
 								{errors.doshName && <p className="text-red-500 text-xs">{errors.doshName}</p>}
 							</div>

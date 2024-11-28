@@ -18,7 +18,8 @@ const RegistrationForm = () => {
 	const [ selectedProfile, setSelectedProfile ] = useState('');
 	const [ profileError, setProfileError ] = useState('');
 	// const dispatch = useDispatch();
-	const BASE_URL = process.env.REACT_APP_BASE_URL || "https://morematrimony.onrender.com";
+	const BASE_URL = process.env.REACT_APP_API_URL;
+	BASE_URL == undefined && console.log('Base url not found');
 
 	// const { currentUser, loading, error } = useSelector((state) => state.registerUser);
 

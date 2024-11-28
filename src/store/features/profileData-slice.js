@@ -25,8 +25,10 @@ export const fetchCountries = createAsyncThunk('data/fetchCountries', async (_, 
 export const fetchStates = createAsyncThunk('data/fetchStates', async (countryId, { rejectWithValue }) => {
   try {
     const response = await apiClient.get(`/state?countryId=${countryId}`);
+    // console.log(response);
     return response.data;
   } catch (error) {
+    // console.log(error);
     return rejectWithValue(error.response?.data || 'Failed to fetch states');
   }
 });

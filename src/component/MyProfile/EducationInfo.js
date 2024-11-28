@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchEducation } from '../../store/features/profileData-slice';
+import { fetchEducation, uploadFileData } from '../../store/features/profileData-slice';
 
 const EducationInfo = () => {
 	const dispatch = useDispatch();
@@ -15,8 +15,8 @@ const EducationInfo = () => {
 
 	const [ formData, setFormData ] = useState({
 		highestEducation: '',
-		highestDetails: '',
-		college: '',
+		educationDetail: '',
+		institution: '',
 	});
 	const [ errors, setErrors ] = useState({});
 
@@ -25,22 +25,25 @@ const EducationInfo = () => {
 
 		const validationErrors = {};
 		if (!formData.highestEducation) validationErrors.highestEducation = 'Highest Education is required';
-		if (!formData.highestDetails) validationErrors.highestDetails = 'Education Details are required';
-		if (!formData.college) validationErrors.college = 'College / Institution is required';
+		if (!formData.educationDetail) validationErrors.educationDetail = 'Education Details are required';
+		if (!formData.institution) validationErrors.institution = 'College / Institution is required';
 
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			console.log(formData);
+			const loadingToast = toast.loading('Uploading.....');
 			try {
-				const response = await axios.post('/api/education-info', formData);
-				toast.success('Education Info submitted successfully!');
-				console.log('Form submitted:', response.data);
-				setErrors({});
+				const resultAction = await dispatch(uploadFileData({ educationalDetails: formData }));
+
+				if (uploadFileData.fulfilled.match(resultAction)) {
+					toast.success('Upload successful!', { id: loadingToast });
+				} else if (uploadFileData.rejected.match(resultAction)) {
+					toast.error(`${resultAction.payload || 'Upload failed:'}  `, { id: loadingToast });
+				}
 			} catch (error) {
-				toast.error('Failed to submit Education Info!');
-				console.error('Error submitting form:', error);
+				toast.error('Upload failed.', { id: loadingToast });
+				console.log('Error submitting form:', error);
 			}
 		}
 	};
@@ -89,36 +92,36 @@ const EducationInfo = () => {
 
 				{/* Education in Detail */}
 				<div>
-					<label htmlFor="highestDetails" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label htmlFor="educationDetail" className="block font-medium mb-1 mt-1 text-headingGray">
 						Education in Detail <span className="text-red-500">*</span>
 					</label>
 					<input
 						type="text"
-						id="highestDetails"
-						className={getInputClasses('highestDetails')}
+						id="educationDetail"
+						className={getInputClasses('educationDetail')}
 						placeholder="Education in Detail"
-						name="highestDetails"
-						value={formData.highestDetails}
+						name="educationDetail"
+						value={formData.educationDetail}
 						onChange={handleChange}
 					/>
-					{errors.highestDetails && <p className="text-red-500 text-xs">{errors.highestDetails}</p>}
+					{errors.educationDetail && <p className="text-red-500 text-xs">{errors.educationDetail}</p>}
 				</div>
 
 				{/* College / Institution */}
 				<div className="col-span-2">
-					<label htmlFor="college" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label htmlFor="institution" className="block font-medium mb-1 mt-1 text-headingGray">
 						College / Institution <span className="text-red-500">*</span>
 					</label>
 					<input
 						type="text"
-						id="college"
-						className={getInputClasses('college')}
+						id="institution"
+						className={getInputClasses('institution')}
 						placeholder="College / Institution"
-						name="college"
-						value={formData.college}
+						name="institution"
+						value={formData.institution}
 						onChange={handleChange}
 					/>
-					{errors.college && <p className="text-red-500 text-xs">{errors.college}</p>}
+					{errors.institution && <p className="text-red-500 text-xs">{errors.institution}</p>}
 				</div>
 
 				{/* Submit Button */}
