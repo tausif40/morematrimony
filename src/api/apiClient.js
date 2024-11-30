@@ -13,7 +13,7 @@ const apiClient = axios.create({
 		'Content-Type': 'application/json',
 	},
 });
-
+// 'Content-Type': 'multipart/form-data'
 
 apiClient.interceptors.request.use((config) => {
 	const token = getToken();

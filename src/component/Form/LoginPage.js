@@ -18,10 +18,13 @@ const LoginPage = () => {
 		// console.log(email, password);
 		e.preventDefault();
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(email)) {
+		if (!email) {
+			setEmailError("Please enter email")
+		} else if (!emailRegex.test(email)) {
 			setEmailError("Invalid email format")
 			return;
-		} else if (!password) {
+		}
+		if (!password) {
 			setPasswordError("Please enter Password")
 			return;
 		}

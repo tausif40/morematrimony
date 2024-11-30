@@ -2,34 +2,31 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { partnerExpectations, maritalStatus, career, PhysicalAttributesData } from '../../utils/data/MyProfileData';
+import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lifestyle } from '../../utils/data/MyProfileData';
 import {
-	fetchCountries, fetchStates, fetchCities, fetchReligions, fetchCaste, fetchDivision, fetchStars, fetchRashiSigns, fetchZodiac, fetchLanguages, fetchEducation
+	fetchCountries, fetchStates, fetchReligions, fetchCaste, fetchLanguages, fetchEducation, fetchOccupations, uploadFileData
 } from '../../store/features/profileData-slice';
 
 const PartnerExpectation = () => {
 	const dispatch = useDispatch();
 	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
 	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
-	const { data: cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.profileData.cities);
 	const { data: religions, loading: religionLoading, error: religionError } = useSelector((state) => state.profileData.religions);
 	const { data: casteList, loading: casteLoading, error: casteError } = useSelector((state) => state.profileData.caste);
-	const { data: division, loading: divisionLoading, error: divisionError } = useSelector((state) => state.profileData.division);
-	const { data: stars, loading: starsLoading, error: starsError } = useSelector((state) => state.profileData.stars);
-	const { data: rashiSigns, loading: rashiSignsLoading, error: rashiSignsError } = useSelector((state) => state.profileData.rashiSigns);
-	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
 	const { data: languages, loading: langLoading, error: langError } = useSelector((state) => state.profileData.languages);
 	const { data: education, loading: loading, error: error } = useSelector((state) => state.profileData.education);
+	const { data: occupations, loading: occupationLoading, error: occupationError } = useSelector((state) => state.profileData.occupations);
 
 	useEffect(() => {
 		dispatch(fetchCountries());
 		dispatch(fetchReligions());
 		dispatch(fetchLanguages());
 		dispatch(fetchEducation());
+		dispatch(fetchOccupations());
 	}, [ dispatch ]);
 
 	const [ formData, setFormData ] = useState({
-		brideAge: { minAge: '', maxAge: '' },
+		age: { min: '', max: '' },
 		height: { feet: '', inches: '' },
 		maritalStatus: '',
 		numberOfChildren: '',
@@ -65,10 +62,11 @@ const PartnerExpectation = () => {
 			}
 		});
 
-		if (!formData.brideAge.minAge || !formData.brideAge.maxAge) {
-			formErrors.brideAge = 'Bride age (min and max) is required';
-		} else if (parseInt(formData.brideAge.minAge) >= parseInt(formData.brideAge.maxAge)) {
-			formErrors.brideAge = 'Min age should be less than max age';
+		if (!formData.age.min || !formData.age.max) {
+			formErrors[ 'age.min' ] = 'Age (min and max) is required';
+			formErrors[ 'age.max' ] = 'Age (min and max) is required';
+		} else if (parseInt(formData.age.min) >= parseInt(formData.age.max)) {
+			formErrors.age = 'Min age should be less than max age';
 		}
 
 		if (!formData.height.feet) {
@@ -106,30 +104,25 @@ const PartnerExpectation = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		if (!formData.height.inches) delete formData.height.inches;
+		// console.log(formData);
 		// console.log("isChildrenFieldsVisible - ", isChildrenFieldsVisible());
 		// console.log("isNotEmployed - ", isNotEmployed());
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
 			return;
 		}
-		console.log(formData);
-		try {
-			const response = await axios.post('/api/partner-expectation', formData);
-			if (response.status === 200) {
-				toast.success('Partner Expectation updated successfully');
-			}
-		} catch (error) {
-			toast.error('Something went wrong, please try again');
-		}
+		dispatch(uploadFileData({ partnerExpectation: formData }));
 	};
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
+
 		setFormData((prevFormData) => ({
 			...prevFormData,
 			[ name ]: value,
 		}));
-		if (name.includes('brideAge') || name.includes('height')) {
+		if (name.includes('age') || name.includes('height')) {
 			const [ group, field ] = name.split('.');
 			setFormData((prevFormData) => ({
 				...prevFormData,
@@ -142,12 +135,19 @@ const PartnerExpectation = () => {
 			}));
 		}
 
+		if (name === 'preferredCountry') {
+			dispatch(fetchStates(value));
+			formData.preferredState = ''
+		}
+
+
 		if (name === 'religion') {
-			console.log("select - ", name, " - ", value);
+			// console.log("select - ", name, " - ", value);
 			dispatch(fetchCaste(value));
 			formData.caste = ''
 		}
-		// Remove error once the field is corrected
+
+
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
@@ -158,7 +158,7 @@ const PartnerExpectation = () => {
 		<div className="box-shadow bg-white border rounded-md mx-auto">
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Partner Expectation</p>
 			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
-				{/* {brideAge} */}
+				{/* {age} */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Partner's Age <span className="text-red-500">*</span>
@@ -166,21 +166,22 @@ const PartnerExpectation = () => {
 					<div className="rounded-md flex gap-4">
 						<select
 							className={`input-field text-gray-700 p-1 outline-none border`}
-							name="brideAge.minAge"
-							value={formData.brideAge.minAge}
+							name="age.min"
+							value={formData.age.min}
 							onChange={handleChange}
 						>
 							<option value="" disabled>Min</option>
-							{partnerExpectations.age.map((value, index) => (
+							{partnerExpectations?.age.map((value, index) => (
 								<option key={index} value={value}>
 									{value}
 								</option>
 							))}
+							{/* <option value="123123">Doesn't matter</option> */}
 						</select>
 						<select
 							className={`input-field text-gray-700 p-1 outline-none border`}
-							name="brideAge.maxAge"
-							value={formData.brideAge.maxAge}
+							name="age.max"
+							value={formData.age.max}
 							onChange={handleChange}
 						>
 							<option value="" disabled>Max</option>
@@ -191,7 +192,8 @@ const PartnerExpectation = () => {
 							))}
 						</select>
 					</div>
-					{errors.brideAge && <p className="text-red-500 text-xs">{errors.brideAge}</p>}
+					{errors[ 'age.min' ] && <p className="text-red-500 text-xs">{errors[ 'age.min' ]}</p> || errors[ 'age.max' ] && <p className="text-red-500 text-xs">{errors[ 'age.max' ]}</p>}
+					{errors.age && <p className="text-red-500 text-xs mt-1">{errors.age}</p>}
 				</div>
 
 				{/* height */}
@@ -288,7 +290,7 @@ const PartnerExpectation = () => {
 
 				{/* Residence Country */}
 				<div>
-					<label htmlFor="residencyCountry" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Residency Country <span className="text-red-500">*</span>
 					</label>
 					<select
@@ -343,7 +345,7 @@ const PartnerExpectation = () => {
 						<option value="" disabled>Select Caste</option>
 						{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
 						{casteLoading && !casteList?.length && <option value="" disabled>Loading cast...</option>}
-						{casteList?.cast?.map((caste) => (
+						{casteList?.caste?.map((caste) => (
 							<option key={caste._id} value={caste._id}>
 								{caste.name}
 							</option>
@@ -390,7 +392,7 @@ const PartnerExpectation = () => {
 
 				{/* Highest Education */}
 				<div>
-					<label htmlFor="highestEducation" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Highest Education <span className="text-red-500">*</span>
 					</label>
 					<select
@@ -412,7 +414,7 @@ const PartnerExpectation = () => {
 
 				{/* Employed In */}
 				<div>
-					<label htmlFor="EmployedIn" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Employed In <span className="text-red-500">*</span>
 					</label>
 					<select
@@ -436,7 +438,7 @@ const PartnerExpectation = () => {
 				{isNotEmployed() &&
 					<>
 						<div>
-							<label htmlFor="occupation" className="block font-medium mb-1 mt-1 text-headingGray">
+							<label className="block font-medium mb-1 mt-1 text-headingGray">
 								Occupation <span className="text-red-500">*</span>
 							</label>
 							<select
@@ -447,15 +449,24 @@ const PartnerExpectation = () => {
 								onChange={handleChange}
 							>
 								<option value="" disabled>Select Occupation</option>
-								<option value="Engineer">Engineer</option>
-								<option value="Doctor">Doctor</option>
-								<option value="Teacher">Teacher</option>
+								{occupations?.occupation?.map((occupation) => (
+									<optgroup
+										label={occupation.occupationName}
+										key={occupation.occupationName}
+									>
+										{occupation.roles.map((role) => (
+											<option key={role.id} value={role.id}>
+												{role.role}
+											</option>
+										))}
+									</optgroup>
+								))}
 							</select>
 							{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
 						</div>
 						{/* Annual Income */}
 						<div>
-							<label htmlFor="annualIncome" className="block font-medium mb-1 mt-1 text-headingGray">
+							<label className="block font-medium mb-1 mt-1 text-headingGray">
 								Annual Income <span className="text-red-500">*</span>
 							</label>
 							<select
@@ -489,9 +500,12 @@ const PartnerExpectation = () => {
 
 					>
 						<option value="" disabled>Select</option>
-						<option value="yes">Yes</option>
-						<option value="no">No</option>
-						<option value="maybe">Maybe</option>
+						{lifestyle.smoke.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
+						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.smokingAcceptable && <p className="text-red-500 text-xs">{errors.smokingAcceptable}</p>}
 				</div>
@@ -508,35 +522,40 @@ const PartnerExpectation = () => {
 
 					>
 						<option value="" disabled>Select</option>
-						<option value="yes">Yes</option>
-						<option value="no">No</option>
-						<option value="maybe">Maybe</option>
+						{lifestyle.drink.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
+						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.drinkingAcceptable && <p className="text-red-500 text-xs">{errors.drinkingAcceptable}</p>}
 				</div>
 
 				{/* Dieting Acceptable */}
 				<div>
-					<label className="block font-medium mb-1 mt-1 text-headingGray">Dieting Acceptable <span className="text-red-500">*</span></label>
+					<label className="block font-medium mb-1 mt-1 text-headingGray">Diet <span className="text-red-500">*</span></label>
 					<select
 						id="dietingAcceptable"
 						className={getInputClasses('dietingAcceptable')}
 						name="dietingAcceptable"
 						value={formData.dietingAcceptable}
 						onChange={handleChange}
-
 					>
 						<option value="" disabled>Select</option>
-						<option value="yes">Yes</option>
-						<option value="no">No</option>
-						<option value="maybe">Maybe</option>
+						{lifestyle.diet.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
+						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.dietingAcceptable && <p className="text-red-500 text-xs">{errors.dietingAcceptable}</p>}
 				</div>
 
 				{/* Body Type */}
 				<div>
-					<label htmlFor="bodyType" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Body Type <span className="text-red-500">*</span>
 					</label>
 					<select
@@ -547,18 +566,19 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Body Type</option>
-						{partnerExpectations.bodyType.map((value, index) => (
+						{PhysicalAttributesData.bodyType.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
+						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.bodyType && <p className="text-red-500 text-xs">{errors.bodyType}</p>}
 				</div>
 
 				{/* {preferredCountry} */}
 				<div>
-					<label htmlFor="preferredCountry" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Preferred Country <span className="text-red-500">*</span>
 					</label>
 					<select
@@ -580,7 +600,7 @@ const PartnerExpectation = () => {
 				</div>
 				{/* State */}
 				<div>
-					<label htmlFor="preferredState" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Prefer redState <span className="text-red-500">*</span>
 					</label>
 					<select
@@ -604,7 +624,7 @@ const PartnerExpectation = () => {
 
 				{/* Complexion */}
 				<div>
-					<label htmlFor="complexion" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Complexion <span className="text-red-500">*</span>
 					</label>
 					<select
@@ -615,11 +635,12 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Complexion</option>
-						{PhysicalAttributesData.bodyType.map((value, index) => (
+						{PhysicalAttributesData.complexion.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
+						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.complexion && <p className="text-red-500 text-xs">{errors.complexion}</p>}
 				</div>

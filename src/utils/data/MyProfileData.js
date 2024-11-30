@@ -16,8 +16,8 @@ export const PhysicalAttributesData = {
 
 export const lifestyle = {
 	diet: [ "vegetarian", "non-vegetarian", "Eggetarian", "pescatarian", "vegan", "other" ],
-	drink: [ "social", "regular", "none", "occasional", "other" ],
-	smoke: [ "social", "regular", "none", "occasional", "other" ]
+	drink: [ "social", "regular", "occasional", "none", "other" ],
+	smoke: [ "social", "regular", "occasional", "none", "other" ]
 }
 
 export const maritalStatus = {
@@ -42,16 +42,13 @@ export const familyInformation = {
 }
 
 export const partnerExpectations = {
-	age: [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, "Doesn't matter" ],
+	age: [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50 ],
 	height: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
-
 	smokingAcceptable: [ "yes", "no", "occasionally", "social smoker", "non-smoker", "does not matter" ],
 	drinkingAcceptable: [ "yes", "no", "occasionally", "social drinker", "non-drinker", "does not matter" ],
-	dietingAcceptable: [ "vegetarian", "non-vegetarian", "pescatarian", "vegan", "other", "flexitarian" ],
-	bodyType: [ "slim", "athletic", "muscular", "average", "curvy", "full-figured", "petite", "stocky", "obese", "chubby", "tall", "short" ]
+	// dietingAcceptable: [ "vegetarian", "non-vegetarian", "pescatarian", "vegan", "other", "flexitarian" ],
 }
 
 export const socialBackground = {
-	// doshName: [ "Manglik", "Sarpa", "Dosh Kala Sarpa Dosh", "Rahu Dosh", "Kethu Dosh", "Kalathra Dosh" ]
 	doshName: [ "mangal dosha", "kaal sarp dosha", "pitru dosha", "guru chandal dosh", "gandmool dosh", "shani dosh", "chandra dosh", "kemadruma dosh", "nadi dosha", "shrapit dosh", "grahan dosh", "ghatak dosha", "anant kaal sarp dosh", "pitra dosh", "pitta", "vata", "remedies for kundli dosha", "shankchood kaal sarp dosh", "takshak kaal sarp dosh" ]
 }

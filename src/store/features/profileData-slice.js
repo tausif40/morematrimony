@@ -63,6 +63,14 @@ export const fetchLanguages = createAsyncThunk('data/fetchLanguages', async (_, 
     return rejectWithValue(error.response?.data || 'Failed to fetch languages');
   }
 });
+export const fetchHobbies = createAsyncThunk('data/fetchHobbies', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get('/hobby');
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch hobby');
+  }
+});
 export const fetchEducation = createAsyncThunk('data/fetchEducation', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get('/education');
@@ -81,7 +89,7 @@ export const fetchReligions = createAsyncThunk('data/fetchReligions', async (_, 
 });
 export const fetchCaste = createAsyncThunk('data/fetchCaste', async (religionId, { rejectWithValue }) => {
   try {
-    const response = await apiClient.get(`/cast?religionId=${religionId}`);
+    const response = await apiClient.get(`/caste?religionId=${religionId}`);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to fetch religion');
@@ -130,6 +138,7 @@ const profileData = createSlice({
     cities: { data: [], loading: false, error: null },
     occupations: { data: [], loading: false, error: null },
     languages: { data: [], loading: false, error: null },
+    hobbies: { data: [], loading: false, error: null },
     education: { data: [], loading: false, error: null },
     religions: { data: [], loading: false, error: null },
     caste: { data: [], loading: false, error: null },
@@ -237,6 +246,20 @@ const profileData = createSlice({
       .addCase(fetchLanguages.rejected, (state, action) => {
         state.languages.loading = false;
         state.languages.error = action.payload || action.error.message;
+      })
+
+      // Fetch hobbies
+      .addCase(fetchHobbies.pending, (state) => {
+        state.hobbies.loading = true;
+        state.hobbies.error = null;
+      })
+      .addCase(fetchHobbies.fulfilled, (state, action) => {
+        state.hobbies.data = action.payload;
+        state.hobbies.loading = false;
+      })
+      .addCase(fetchHobbies.rejected, (state, action) => {
+        state.hobbies.loading = false;
+        state.hobbies.error = action.payload || action.error.message;
       })
 
       // Fetch Education

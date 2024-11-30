@@ -15,7 +15,10 @@ const IntroductionForm = () => {
 			toast.error('Please correct all highlighted errors!');
 			return;
 		}
-		dispatch(uploadFileData({ introduction }));
+		const EncryptIntroduction = btoa(JSON.stringify(introduction));
+		dispatch(uploadFileData({ introduction: EncryptIntroduction }));
+
+		// dispatch(uploadFileData({ introduction }));
 	};
 
 

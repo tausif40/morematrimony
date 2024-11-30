@@ -53,7 +53,7 @@ const SocialBackground = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(formData);
+		// console.log(formData);
 		const newErrors = {};
 
 		Object.keys(formData).forEach((key) => {
@@ -93,7 +93,7 @@ const SocialBackground = () => {
 		}
 		if (!isChristian) {
 			delete cleanedFormData.division;
-			console.log("isChristian - ", isChristian);
+			// console.log("isChristian - ", isChristian);
 		}
 
 		if (isHindu && formData.dosh === 'no') {
@@ -111,7 +111,7 @@ const SocialBackground = () => {
 			...prevFormData,
 			[ name ]: value,
 		}));
-		if (name === 'religion') {	
+		if (name === 'religion') {
 			dispatch(fetchCaste(value));
 			formData.caste = ''
 			formData.division = ''
@@ -121,10 +121,14 @@ const SocialBackground = () => {
 			dispatch(fetchRashiSigns(value));
 			formData.rashi = ''
 		} else if (name === 'kundli') {
+			const file = files[ 0 ];
 			setFormData((prevFormData) => ({
 				...prevFormData,
-				[ name ]: files[ 0 ],
+				[ name ]: file,
 			}));
+			const formData = new FormData();
+			formData.append('kundli', file);
+
 		}
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
@@ -221,7 +225,7 @@ const SocialBackground = () => {
 						<option value="" disabled>Select Caste</option>
 						{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
 						{casteLoading && !casteList?.length && <option value="" disabled>Loading cast...</option>}
-						{casteList?.cast?.map((caste) => (
+						{casteList?.caste?.map((caste) => (
 							<option key={caste._id} value={caste._id}>
 								{caste.name}
 							</option>

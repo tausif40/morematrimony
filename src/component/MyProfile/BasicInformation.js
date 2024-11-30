@@ -7,7 +7,7 @@ import { uploadFileData } from '../../store/features/profileData-slice';
 
 const BasicInformationForm = () => {
 	const dispatch = useDispatch();
-	const [ numberOfChildren, setNumberOfChildren ] = useState('');
+	const [ numberOfChildren, setNumberOfChildren ] = useState();
 	const [ formData, setFormData ] = useState({
 		firstName: '',
 		lastName: '',
@@ -15,6 +15,7 @@ const BasicInformationForm = () => {
 		gender: '',
 		onBehalf: '',
 		maritalStatus: '',
+		numberOfChildren: ''
 		// ProfilePhoto: null,
 	});
 
@@ -24,7 +25,7 @@ const BasicInformationForm = () => {
 		e.preventDefault();
 		const newErrors = validateForm();
 		if (Object.keys(newErrors).length === 0) {
-
+			setErrors({})
 			if (formData.maritalStatus !== 'single') {
 				setFormData((previousData) => ({
 					...previousData,
@@ -71,10 +72,9 @@ const BasicInformationForm = () => {
 		if (!formData.maritalStatus) newErrors.maritalStatus = 'Marital Status is required';
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
 		// if (formData.ProfilePhoto == null) newErrors.ProfilePhoto = 'Profile Photo is required';
-		if (formData.maritalStatus !== 'single' && !numberOfChildren) {
+		if (formData.maritalStatus != 'single' && !numberOfChildren) {
 			newErrors.numberOfChildren = 'Number of Children is required';
 		}
-
 		return newErrors;
 	};
 
