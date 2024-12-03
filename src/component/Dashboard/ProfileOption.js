@@ -12,7 +12,8 @@ import { LuKeyRound } from "react-icons/lu";
 import { RiHome4Line } from "react-icons/ri";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiMaleFemale } from "react-icons/bi";
-
+import { LuView } from "react-icons/lu";
+import { FaUsersViewfinder } from "react-icons/fa6";
 
 function ProfileOption() {
 	const location = useLocation();
@@ -27,9 +28,11 @@ function ProfileOption() {
 		// { name: 'Message', path: '/message', icon: HiOutlineMail },
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
+		{ name: 'Viewed', path: '/viewed', icon: LuView },
+		{ name: 'Viewed By You', path: '/viewed-by-you', icon: FaUsersViewfinder },
+		{ name: 'Manage Profile', path: '/profile-setting', icon: AiOutlineUser },
 		{ name: 'Ignored User List', path: '/ignored-list', icon: MdOutlineBlock },
 		{ name: 'Change Password', path: '/change-password', icon: LuKeyRound },
-		{ name: 'Manage Profile', path: '/profile-setting', icon: AiOutlineUser },
 		// { name: 'Partner Preferences', path: '/partner-Preferences', icon: BiMaleFemale },
 		{ name: 'Deactivate Account', path: '/deactivate-account', icon: HiOutlineLockClosed },
 		{ name: 'Delete Account', path: '/delete-account', icon: HiOutlineTrash },
@@ -51,7 +54,7 @@ function ProfileOption() {
 
 				<div className='flex flex-col text-headingGray text-sm mt-6'>
 					{navOption.map((value, index) => (
-						<Link to={value.path} >
+						<Link to={value.path} key={index}>
 							<p className={`cursor-pointer px-8 py-[10px] flex items-center gap-2 border-l-[3px] hover:bg-[#fbcbcfd4] hover:border-l-[3px] hover:border-hotRed ${value.path == currentPath ? 'bg-[#fbcbcfd4] border-hotRed' : 'border-transparent'}`}><value.icon size={13} />{value.name}</p>
 						</Link>
 					))}

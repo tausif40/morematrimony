@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { PhysicalAttributesData } from '../../utils/data/MyProfileData';
-import { useDispatch } from 'react-redux';
-import { uploadFileData } from '../../store/features/profileData-slice';
 
-const PhysicalAttributes = () => {
-	const dispatch = useDispatch();
+const PhysicalAttributes = ({ onFormSubmit }) => {
 
 	const [ formData, setFormData ] = useState({
 		height: { feet: '', inches: '' },
@@ -55,7 +51,7 @@ const PhysicalAttributes = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			dispatch(uploadFileData({ physicalAttributes: formData }));
+			onFormSubmit({ physicalAttributes: formData });
 		}
 	};
 

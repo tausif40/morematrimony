@@ -1,36 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
 import { socialBackground } from '../../utils/data/MyProfileData';
-import {
-	fetchCountries, fetchStates, fetchCities, fetchReligions, fetchCaste, fetchDivision, fetchStars, fetchRashiSigns, fetchZodiac,
-	uploadFileData
-} from '../../store/features/profileData-slice';
+import { hinduId, christianId } from '../../utils/data/config';
+import apiClient from '../../api/apiClient';
 
-const SocialBackground = () => {
+const SocialBackground = ({ onFormSubmit, data }) => {
 
-	const dispatch = useDispatch();
+	const { religions, divisions, stars, zodiac, languages, countries } = data;
+
 	const [ isChristian, setIsChristian ] = useState(false)
 	const [ isHindu, setIsHindu ] = useState(false)
-
-	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
-	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
-	const { data: cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.profileData.cities);
-	const { data: religions, loading: religionLoading, error: religionError } = useSelector((state) => state.profileData.religions);
-	const { data: casteList, loading: casteLoading, error: casteError } = useSelector((state) => state.profileData.caste);
-	const { data: division, loading: divisionLoading, error: divisionError } = useSelector((state) => state.profileData.division);
-	const { data: stars, loading: starsLoading, error: starsError } = useSelector((state) => state.profileData.stars);
-	const { data: rashiSigns, loading: rashiSignsLoading, error: rashiSignsError } = useSelector((state) => state.profileData.rashiSigns);
-	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
-
-
-	useEffect(() => {
-		dispatch(fetchCountries());
-		dispatch(fetchReligions());
-		dispatch(fetchDivision());
-		dispatch(fetchStars());
-		dispatch(fetchZodiac());
-	}, [ dispatch ]);
+	const [ stateList, setStateList ] = useState([])
+	const [ cityList, setCityList ] = useState([])
+	const [ casteList, setCasteList ] = useState([])
+	const [ rashiSignsList, setRashiSignsList ] = useState([])
+	const [ loading, setLoading ] = useState({ state: false, city: false, caste: false, rashi: false, });
 
 	const [ formData, setFormData ] = useState({
 		religion: '',
@@ -49,6 +33,23 @@ const SocialBackground = () => {
 		doshName: ''
 	});
 
+	const fetchData = async (url, setData, type) => {
+		setLoading((prev) => ({ ...prev, [ type ]: true }));
+		try {
+			const response = await apiClient.get(url);
+			setData(response.data);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoading((prev) => ({ ...prev, [ type ]: false }));
+		}
+	};
+	const fetchState = (countryId) => fetchData(`/state?countryId=${countryId}`, setStateList, 'state');
+	const fetchCity = (stateId) => fetchData(`/city?stateId=${stateId}`, setCityList, 'city');
+	const fetchCaste = (religionId) => fetchData(`/caste?religionId=${religionId}`, setCasteList, 'caste');
+	const fetchRashi = (starId) => fetchData(`/rashiSign?starId=${starId}`, setRashiSignsList, 'rashi');
+
+
 	const [ errors, setErrors ] = useState({});
 
 	const handleSubmit = async (e) => {
@@ -56,20 +57,23 @@ const SocialBackground = () => {
 		// console.log(formData);
 		const newErrors = {};
 
-		Object.keys(formData).forEach((key) => {
-			if (!formData[ key ] && key !== 'gothra' && key !== 'kundli' && key !== 'dosh' && key !== 'doshName' && key !== 'division') {
-				const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
-				newErrors[ key ] = `${formattedKey} is required`;
-			}
-		});
+		// Object.keys(formData).forEach((key) => {
+		// 	if (!formData[ key ] && key !== 'gothra' && key !== 'kundli' && key !== 'dosh' && key !== 'doshName' && key !== 'division' && key !== 'subCaste' && key !== 'subCaste' && key !== 'ethnicity' && key !== 'star' && key !== 'rashi' && key !== 'zodiac' && key !== 'timeOfBirth') {
+		// 		const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
+		// 		newErrors[ key ] = `${formattedKey} is required`;
+		// 	}
+		// });
+
+		if (!formData.religion) newErrors.religion = 'Religion is required';
+		if (!formData.caste) newErrors.caste = 'Caste is required';
 		if (!formData.birthPlace.country) newErrors.birthPlaceCountry = 'Country is required';
 		if (!formData.birthPlace.state) newErrors.birthPlaceState = 'State is required';
 		if (!formData.birthPlace.city) newErrors.birthPlaceCity = 'City is required';
 
 		if (isHindu) {
-			if (!formData.gothra) newErrors.gothra = 'Gothra is required';
+			// if (!formData.gothra) newErrors.gothra = 'Gothra is required';
 			// if (!formData.kundli) newErrors.kundli = 'Kundli is required';
-			if (!formData.dosh) newErrors.dosh = 'Dosh is required';
+			// if (!formData.dosh) newErrors.dosh = 'Dosh is required';
 			if (formData.dosh === 'yes' && !formData.doshName) {
 				newErrors.doshName = 'Dosh Name is required';
 			}
@@ -91,17 +95,15 @@ const SocialBackground = () => {
 			delete cleanedFormData.dosh;
 			delete cleanedFormData.doshName;
 		}
-		if (!isChristian) {
-			delete cleanedFormData.division;
-			// console.log("isChristian - ", isChristian);
-		}
+		if (!isChristian) delete cleanedFormData.division;
+		if (!formData.gothra) delete cleanedFormData.gothra;
 
 		if (isHindu && formData.dosh === 'no') {
 			delete cleanedFormData.doshName;
 		}
 		// console.log('Form submitted:', cleanedFormData);
 
-		dispatch(uploadFileData({ spiritualAndSocialBackground: cleanedFormData }));
+		onFormSubmit({ spiritualAndSocialBackground: cleanedFormData });
 
 	};
 
@@ -112,14 +114,14 @@ const SocialBackground = () => {
 			[ name ]: value,
 		}));
 		if (name === 'religion') {
-			dispatch(fetchCaste(value));
-			formData.caste = ''
+			fetchCaste(value);
+			setCasteList('')
 			formData.division = ''
-			value == '674033b756c5bb792ea58b6b' ? setIsChristian(true) : setIsChristian(false)
-			value == '674033b756c5bb792ea58b6d' ? setIsHindu(true) : setIsHindu(false)
+			value == christianId ? setIsChristian(true) : setIsChristian(false)
+			value == hinduId ? setIsHindu(true) : setIsHindu(false)
 		} else if (name == 'star') {
-			dispatch(fetchRashiSigns(value));
-			formData.rashi = ''
+			fetchRashi(value);
+			setRashiSignsList('')
 		} else if (name === 'kundli') {
 			const file = files[ 0 ];
 			setFormData((prevFormData) => ({
@@ -142,11 +144,11 @@ const SocialBackground = () => {
 
 			if (field === 'country') {
 				updatedBirthPlace = { ...updatedBirthPlace, state: '', city: '' };
-				dispatch(fetchStates(value));
+				fetchState(value);
 			}
 			if (field === 'state') {
 				updatedBirthPlace = { ...updatedBirthPlace, city: '' };
-				dispatch(fetchCities(value));
+				fetchCity(value);
 			}
 
 			return {
@@ -160,7 +162,6 @@ const SocialBackground = () => {
 			[ `birthPlace${field.charAt(0).toUpperCase() + field.slice(1)}` ]: '',
 		}));
 	};
-
 
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
@@ -180,7 +181,7 @@ const SocialBackground = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Religion</option>
-						{religionLoading && !religions.length && <option value="" disabled> Loading religion...</option>}
+						{/* {religionLoading && !religions.length && <option value="" disabled> Loading religion...</option>} */}
 						{religions?.religion?.map((religion) => (
 							<option key={religion._id} value={religion._id}>
 								{religion.name}
@@ -201,9 +202,9 @@ const SocialBackground = () => {
 							onChange={handleChange}
 						>
 							<option value="" disabled>Select Caste</option>
-							{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
-							{divisionLoading && !division?.length && <option value="" disabled> Loading division...</option>}
-							{division?.division?.map((division) => (
+							{/* {formData.religion == '' && <option value="" disabled>Fist Select religion</option>} */}
+							{/* {divisionLoading && !division?.length && <option value="" disabled> Loading division...</option>} */}
+							{divisions?.division?.map((division) => (
 								<option key={division._id} value={division._id}>
 									{division.name}
 								</option>
@@ -224,7 +225,7 @@ const SocialBackground = () => {
 					>
 						<option value="" disabled>Select Caste</option>
 						{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
-						{casteLoading && !casteList?.length && <option value="" disabled>Loading cast...</option>}
+						{loading.caste && !casteList?.length && <option value="" disabled>Loading cast...</option>}
 						{casteList?.caste?.map((caste) => (
 							<option key={caste._id} value={caste._id}>
 								{caste.name}
@@ -235,7 +236,7 @@ const SocialBackground = () => {
 				</div>
 				{/* Sub Caste */}
 				<div>
-					<label htmlFor="subCaste" className="block font-medium mb-1 mt-1 text-headingGray">Sub Caste <span className="text-red-500">*</span></label>
+					<label htmlFor="subCaste" className="block font-medium mb-1 mt-1 text-headingGray">Sub Caste</label>
 					<input
 						type="text"
 						id="subCaste"
@@ -249,24 +250,27 @@ const SocialBackground = () => {
 				</div>
 				{/* Ethnicity */}
 				<div>
-					<label htmlFor="ethnicity" className="block font-medium mb-1 mt-1 text-headingGray">Ethnicity <span className="text-red-500">*</span></label>
+					<label htmlFor="ethnicity" className="block font-medium mb-1 mt-1 text-headingGray">Ethnicity</label>
 					<select
 						id="ethnicity"
 						className={getInputClasses('ethnicity')}
 						name="ethnicity"
 						value={formData.ethnicity}
 						onChange={handleChange}
-
 					>
 						<option value="" disabled>Select Ethnicity</option>
-						<option value="ethnicity1">Ethnicity 1</option>
-						<option value="ethnicity2">Ethnicity 2</option>
+						{/* {languagesLoading && !languages?.length && <option value="" disabled> Loading languages...</option>} */}
+						{languages?.language?.map((language) => (
+							<option key={languages._id} value={language._id}>
+								{language.name}
+							</option>
+						))}
 					</select>
 					{errors.ethnicity && <p className="text-red-500 text-xs">{errors.ethnicity}</p>}
 				</div>
 				{/* Star */}
 				<div>
-					<label htmlFor="star" className="block font-medium mb-1 mt-1 text-headingGray">Star <span className="text-red-500">*</span></label>
+					<label htmlFor="star" className="block font-medium mb-1 mt-1 text-headingGray">Star</label>
 					<select
 						id="star"
 						className={getInputClasses('star')}
@@ -276,7 +280,7 @@ const SocialBackground = () => {
 
 					>
 						<option value="" disabled>Select Star</option>
-						{starsLoading && !stars.length && <option value="" disabled> Loading stars...</option>}
+						{/* {starsLoading && !stars.length && <option value="" disabled> Loading stars...</option>} */}
 						{stars?.star?.map((stars) => (
 							<option key={stars._id} value={stars._id}>
 								{stars.name}
@@ -287,7 +291,7 @@ const SocialBackground = () => {
 				</div>
 				{/* Moon */}
 				<div>
-					<label htmlFor="rashi" className="block font-medium mb-1 mt-1 text-headingGray">rashi  / Moon Sign <span className="text-red-500">*</span></label>
+					<label htmlFor="rashi" className="block font-medium mb-1 mt-1 text-headingGray">rashi  / Moon Sign</label>
 					<select
 						id="rashi"
 						className={getInputClasses('rashi')}
@@ -297,8 +301,8 @@ const SocialBackground = () => {
 					>
 						<option value="" disabled>Select Rashi</option>
 						{formData.star == '' && <option value="" disabled>Select star fist</option>}
-						{rashiSignsLoading && !rashiSigns?.length && <option value="" disabled> Loading rashi...</option>}
-						{rashiSigns?.rashiSign?.map((rashi) => (
+						{loading.rashi && !rashiSignsList?.length && <option value="" disabled> Loading rashi...</option>}
+						{rashiSignsList?.rashiSign?.map((rashi) => (
 							<option key={rashi._id} value={rashi._id}>
 								{rashi.name}
 							</option>
@@ -308,7 +312,7 @@ const SocialBackground = () => {
 				</div>
 				{/* Zodiac */}
 				<div>
-					<label htmlFor="zodiac" className="block font-medium mb-1 mt-1 text-headingGray">Zodiac/Star Sign <span className="text-red-500">*</span></label>
+					<label htmlFor="zodiac" className="block font-medium mb-1 mt-1 text-headingGray">Zodiac/Star Sign</label>
 					<select
 						id="zodiac"
 						className={getInputClasses('zodiac')}
@@ -318,7 +322,7 @@ const SocialBackground = () => {
 
 					>
 						<option value="" disabled>Select Zodiac</option>
-						{zodiacLoading && !zodiac?.length && <option value="" disabled> Loading zodiac...</option>}
+						{/* {zodiacLoading && !zodiac?.length && <option value="" disabled> Loading zodiac...</option>} */}
 						{zodiac?.zodiac?.map((zodiac) => (
 							<option key={zodiac._id} value={zodiac._id}>
 								{zodiac.name}
@@ -329,7 +333,7 @@ const SocialBackground = () => {
 				</div>
 				{/* Birth Time */}
 				<div>
-					<label htmlFor="timeOfBirth" className="block font-medium mb-1 mt-1 text-headingGray">Time Of Birth <span className="text-red-500">*</span></label>
+					<label htmlFor="timeOfBirth" className="block font-medium mb-1 mt-1 text-headingGray">Time Of Birth</label>
 					<input
 						type="time"
 						id="timeOfBirth"
@@ -356,7 +360,7 @@ const SocialBackground = () => {
 								onChange={(e) => handleBirthPlaceChange(e, 'country')}
 							>
 								<option value="" disabled>Country</option>
-								{countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>}
+								{/* {countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>} */}
 								{countries?.country?.map((country, index) => (
 									<option key={country._id} value={country._id}>
 										{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
@@ -376,9 +380,9 @@ const SocialBackground = () => {
 								onChange={(e) => handleBirthPlaceChange(e, 'state')}
 							>
 								<option value="" disabled>State</option>
-								{formData.country == '' && <option value="" disabled>Please Select country</option>}
-								{statesLoading && !states?.length && <option value="" disabled>Loading states...</option>}
-								{states?.state?.map((state) => (
+								{formData.birthPlace.country == '' && <option value="" disabled>Please Select country</option>}
+								{loading.state && !stateList?.length && <option value="" disabled>Loading states...</option>}
+								{stateList?.state?.map((state) => (
 									<option key={state._id} value={state._id}>
 										{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
 									</option>
@@ -397,9 +401,9 @@ const SocialBackground = () => {
 								onChange={(e) => handleBirthPlaceChange(e, 'city')}
 							>
 								<option value="" disabled>City</option>
-								{formData.state == '' && <option value="" disabled>Please Select state</option>}
-								{citiesLoading && !cities?.length && <option value="" disabled> Loading cities...</option>}
-								{cities?.city?.map((city) => (
+								{formData.birthPlace.state == '' && <option value="" disabled>Please Select state</option>}
+								{loading.city && !cityList?.length && <option value="" disabled> Loading cities...</option>}
+								{cityList?.city?.map((city) => (
 									<option key={city._id} value={city._id}>
 										{city.name.charAt(0).toUpperCase() + city.name.slice(1)}
 									</option>
@@ -415,7 +419,7 @@ const SocialBackground = () => {
 					<>
 						<div>
 							<label htmlFor="gothra" className="block font-medium mb-1 mt-1 text-headingGray">
-								Gothra <span className="text-red-500">*</span>
+								Gothra
 							</label>
 							<input
 								type="text"
@@ -432,7 +436,6 @@ const SocialBackground = () => {
 						<div>
 							<label htmlFor="kundli" className="block font-medium mb-1 mt-1 text-headingGray">
 								Upload Kundli
-								{/* <span className="text-red-500">*</span> */}
 							</label>
 							<input
 								type="file"
@@ -446,7 +449,7 @@ const SocialBackground = () => {
 
 						<div>
 							<label htmlFor="dosh" className="block font-medium mb-1 mt-1 text-headingGray">
-								Have Dosh? <span className="text-red-500">*</span>
+								Have Dosh?
 							</label>
 							<select
 								id="dosh"

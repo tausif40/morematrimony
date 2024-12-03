@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchEducation, uploadFileData } from '../../store/features/profileData-slice';
 
-const EducationInfo = () => {
-	const dispatch = useDispatch();
-	// const { education, loading, error } = useSelector((state) => state.profileData);
-	const { data: education, loading: loading, error: error } = useSelector((state) => state.profileData.education);
-	
-	useEffect(() => {
-		dispatch(fetchEducation());
-	}, [ dispatch ]);
+const EducationInfo = ({ onFormSubmit, data }) => {
+
+	const { education } = data;
 
 	const [ formData, setFormData ] = useState({
 		highestEducation: '',
@@ -32,7 +24,7 @@ const EducationInfo = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			dispatch(uploadFileData({ educationalDetails: formData }));
+			onFormSubmit({ educationalDetails: formData });
 		}
 	};
 

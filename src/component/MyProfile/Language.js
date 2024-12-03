@@ -1,29 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchLanguages, uploadFileData } from '../../store/features/profileData-slice';
 
-const Language = () => {
+const Language = ({ onFormSubmit, data }) => {
 	const [ isOpen, setIsOpen ] = useState(false);
 	const [ selectedLanguages, setSelectedLanguages ] = useState([]);
 	const [ selectedLangId, setSelectedLangId ] = useState([]);
 	const [ error, setError ] = useState()
+	const [ knownLanguagesError, setKnownLanguagesError ] = useState()
 	const dropdownRef = useRef(null);
-
-	const dispatch = useDispatch();
-	const { data: languages, loading: langLoading, error: langError } = useSelector((state) => state.profileData.languages);
-
-	useEffect(() => {
-		dispatch(fetchLanguages());
-	}, [ dispatch ]);
-
-	// const languages = [ 'Hindi', 'English', 'Urdu', 'Kannada', 'Gujarati', 'Malayalam', 'Tamil' ];
+	const { languages, languageLoading } = data;
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
 	const handleSelect = (language, LangId) => {
+		setKnownLanguagesError('')
 		if (selectedLanguages.includes(language)) {
 			setSelectedLanguages(selectedLanguages.filter((lang) => lang !== language));
 			setSelectedLangId(selectedLangId.filter((id) => id !== LangId));
@@ -47,23 +38,22 @@ const Language = () => {
 
 	const [ formData, setFormData ] = useState({
 		motherTongue: '',
-		knownLanguages: [],
 	});
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		if (formData.motherTongue == '') {
+		if (!formData.motherTongue) {
 			setError('Mother Tongue is required')
-			toast.error('Please correct all highlighted errors!');
+			return;
+		} else if (!selectedLangId.length) {
+			setKnownLanguagesError('Minimum 1 known language required')
 			return;
 		}
-
 		const dataToSubmit = {
 			motherTongue: formData.motherTongue,
 			knownLanguages: selectedLangId,
 		};
-		dispatch(uploadFileData({ language: dataToSubmit }));
+		onFormSubmit({ language: dataToSubmit });
 	}
 
 
@@ -90,7 +80,7 @@ const Language = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Mother Tongue</option>
-						{langLoading && !languages.length && <option>Loading languages...</option>}
+						{languageLoading && !languages.length && <option>Loading languages...</option>}
 						{languages?.language?.map((language) => (
 							<option key={language._id} value={language._id}>
 								{language.name}
@@ -126,24 +116,8 @@ const Language = () => {
 							</div>
 						)}
 					</div>
+					{<p className="text-red-500 text-xs mt-1	">{knownLanguagesError}</p>}
 				</div>
-
-				{/* Selected Languages Box */}
-				{/* <div className="col-span-2 mt-4">
-					{selectedLanguages.length > 0 && (
-						<div className="p-3 bg-gray-100 border border-gray-300 rounded-md">
-							<span className="font-medium">Selected Languages:</span>
-							<div className="mt-2 flex flex-wrap gap-2">
-								{selectedLanguages.map((language, index) => (
-									<div key={index} className="bg-blue-200 px-3 py-1 rounded-full">
-										{language}
-									</div>
-								))}
-							</div>
-						</div>
-					)}
-				</div> */}
-
 				<div className="col-span-2 flex justify-end mt-4">
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
 				</div>

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { lifestyle } from '../../utils/data/MyProfileData'
-import { uploadFileData } from '../../store/features/profileData-slice';
-import { useDispatch } from 'react-redux';
 
-const Lifestyle = () => {
-	const dispatch = useDispatch();
+const Lifestyle = ({ onFormSubmit }) => {
 	const [ formData, setFormData ] = useState({
 		diet: '',
 		drink: '',
@@ -28,7 +24,7 @@ const Lifestyle = () => {
 		} else {
 			// const loadingToast = toast.loading('Uploading.....');
 
-			dispatch(uploadFileData({ lifestyle: formData }));
+			onFormSubmit({ lifestyle: formData });
 
 		}
 	};

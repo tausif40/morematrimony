@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { career } from '../../utils/data/MyProfileData';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchOccupations, uploadFileData } from '../../store/features/profileData-slice';
 
-const Career = () => {
-	const dispatch = useDispatch();
-	// const { occupations, loading, error } = useSelector((state) => state.profileData);
-	const { data: occupations, loading: occupationLoading, error: occupationError } = useSelector((state) => state.profileData.occupations);
-	const { data: countries, loading: countryLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
+const Career = ({ data, onFormSubmit }) => {
 
-	useEffect(() => {
-		dispatch(fetchOccupations());
-	}, [ dispatch ]);
+	const { countries, countriesLoading, occupations } = data;
 
 	const [ formData, setFormData ] = useState({
 		employedIn: '',
@@ -39,7 +30,7 @@ const Career = () => {
 			setErrors(validationErrors);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			dispatch(uploadFileData({ career: formData }));
+			onFormSubmit({ career: formData });
 		}
 	};
 
@@ -64,6 +55,7 @@ const Career = () => {
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Career</p>
 			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
 
+				{/* career */}
 				<div className="col-span-2">
 					<label htmlFor="employedIn" className="block font-medium mb-1 mt-1 text-headingGray">
 						Employed in <span className="text-red-500">*</span>
@@ -85,6 +77,7 @@ const Career = () => {
 					{errors.employedIn && <p className="text-red-500 text-xs">{errors.employedIn}</p>}
 				</div>
 
+				{/* Occupation */}
 				<div>
 					<label htmlFor="occupation" className="block font-medium mb-1 mt-1 text-headingGray">
 						Occupation <span className="text-red-500">*</span>
@@ -97,13 +90,7 @@ const Career = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Occupation</option>
-						{/* {occupations?.occupation?.map((occupation) => (
-							<option key={occupation.id} value={occupation.id}>
-								{occupation.occupationName}
-							</option>
-							
-						))} */}
-						{occupations?.occupation?.map((occupation) => (
+						{occupations?.occupation?.map((occupation,) => (
 							<optgroup
 								label={occupation.occupationName}
 								key={occupation.occupationName}
@@ -119,6 +106,7 @@ const Career = () => {
 					{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
 				</div>
 
+				{/* Occupation in Detail */}
 				<div>
 					<label htmlFor="occupationDetails" className="block font-medium mb-1 mt-1 text-headingGray">
 						Occupation in Detail <span className="text-red-500">*</span>
@@ -135,6 +123,7 @@ const Career = () => {
 					{errors.occupationDetails && <p className="text-red-500 text-xs">{errors.occupationDetails}</p>}
 				</div>
 
+				{/* organization */}
 				<div>
 					<label htmlFor="organizationName" className="block font-medium mb-1 mt-1 text-headingGray">
 						organization Name <span className="text-red-500">*</span>
@@ -151,6 +140,7 @@ const Career = () => {
 					{errors.organizationName && <p className="text-red-500 text-xs">{errors.organizationName}</p>}
 				</div>
 
+				{/* Job Location  */}
 				<div>
 					<label htmlFor="jobLocation" className="block font-medium mb-1 mt-1 text-headingGray">
 						Job Location <span className="text-red-500">*</span>
@@ -163,7 +153,7 @@ const Career = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Country</option>
-						{countryLoading && !countries.length && <option>Loading countries...</option>}
+						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
 							<option key={country.id} value={country._id}>
 								{country.name}
@@ -173,6 +163,7 @@ const Career = () => {
 					{errors.jobLocation && <p className="text-red-500 text-xs">{errors.jobLocation}</p>}
 				</div>
 
+				{/* Annual Income */}
 				<div>
 					<label htmlFor="annualIncome" className="block font-medium mb-1 mt-1 text-headingGray">
 						Annual Income <span className="text-red-500">*</span>

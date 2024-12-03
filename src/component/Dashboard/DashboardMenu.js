@@ -7,6 +7,8 @@ import { MdOutlineBlock } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { FaPeopleArrows } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
+import { LuView } from "react-icons/lu";
+import { FaUsersViewfinder } from "react-icons/fa6";
 
 
 function DashboardMenu() {
@@ -19,6 +21,8 @@ function DashboardMenu() {
 		{ name: 'My Profile', path: '/profile-setting', icon: AiOutlineUser },
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
+		{ name: 'Viewed', path: '/viewed', icon: LuView },
+		{ name: 'Viewed By You', path: '/viewed-by-you', icon: FaUsersViewfinder },
 		// { name: 'Messaging', path: '/message', icon: HiOutlineMail },
 		// { name: 'Notification', path: '/notification', icon: IoIosNotificationsOutline },
 	]
@@ -33,7 +37,7 @@ function DashboardMenu() {
 			< section className='bg-white border-t shadow-md'>
 				<div className='container flex text-headingGray font-medium text-sm gap-4'>
 					{navOption.map((value, index) => (
-						<Link to={value.path} >
+						<Link to={value.path} key={index}>
 							<div className={`cursor-pointer px-4 py-4 flex items-center gap-2 ${value.path == currentPath && 'text-gradient'}`}><value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} />{value.name}</div>
 						</Link>
 					))}

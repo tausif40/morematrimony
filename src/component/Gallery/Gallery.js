@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import apiClient from '../../api/apiClient';
+import Cookies from 'js-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileImages } from '../../store/features/userDetails-slice';
+import { toast } from 'react-hot-toast';
 
 const Gallery = () => {
+	const dispatch = useDispatch({})
 	const [ uploadProgress, setUploadProgress ] = useState(0);
 	const [ isUploading, setIsUploading ] = useState(false);
 	const [ uploadedImages, setUploadedImages ] = useState([]);
+
+	const profileImages = useSelector((state) => state.userDetails.profileImages);
+
+	useEffect(() => {
+		dispatch(getProfileImages());
+
+		profileImages?.data?.gallery?.map((image, ind) => {
+			setUploadedImages((prevImages) => [ ...prevImages, image.name ]);
+			console.log(image.name);
+		})
+	}, [ dispatch ])
 
 	const handleImageChange = (e) => {
 		const file = e.target.files[ 0 ];
@@ -17,10 +33,13 @@ const Gallery = () => {
 
 	const uploadImage = async (file) => {
 		const formData = new FormData();
-		formData.append('image', file);
+		formData.append('file', file);
 
 		try {
-			const response = await axios.post('YOUR_API_ENDPOINT', formData, {
+			console.log(formData);
+
+			// dispatch(uploadImages(formData))
+			const response = await apiClient.post(`/gallery`, formData, {
 				onUploadProgress: (progressEvent) => {
 					const percentage = Math.round(
 						(progressEvent.loaded * 100) / progressEvent.total
@@ -28,8 +47,10 @@ const Gallery = () => {
 					setUploadProgress(percentage);
 				}
 			});
+			toast.success('Image upload successfully')
+			// console.log("response - ", response);
 
-			const imageUrl = URL.createObjectURL(file); // Replace this with `response.data.imageUrl` when working with a real API
+			const imageUrl = URL.createObjectURL(file);
 
 			setUploadedImages((prevImages) => [ ...prevImages, imageUrl ]);
 		} catch (error) {
@@ -44,7 +65,7 @@ const Gallery = () => {
 			<div className='grid grid-cols-4 justify-center border w-full p-4 rounded-md shadow-sm h-80'>
 				<div className=" flex flex-col items-center justify-center p-4 shadow-sm bg-gray-100 rounded-sm">
 					<label className="flex flex-col items-center justify-center w-20 h-20 bg-hotRed text-white rounded-full cursor-pointer text-center">
-						<input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
+						<input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} disabled={isUploading} />
 
 						{isUploading ? (
 							<div className="flex flex-col items-center">
@@ -75,15 +96,16 @@ const Gallery = () => {
 							</>
 						)}
 					</label>
-					<p className="text-sm mt-1">Add New Image</p>
+					<p className="text-sm mt-3 h-5">{isUploading ? 'Uploading....' : 'Add New Image'}</p>
 					{/* Upload Progress Bar */}
 					{isUploading && (
 						<>
-							<div className="px-8 w-full bg-hotRed rounded-full mt-8">
+							<div className="w-full bg-hotRed rounded-full mt-8">
 								<div
-									className="h-1 bg-pink-500 rounded-full"
+									className="h-1 bg-hotRed rounded-full"
 									style={{ width: `${uploadProgress}%` }}
-								></div>
+								>
+								</div>
 							</div>
 							<p className="mt-1 text-hotRed">{uploadProgress}%</p>
 						</>

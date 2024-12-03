@@ -118,14 +118,14 @@ const NavMain = () => {
 							<div className='flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 text-sm'>
 								{isUserRegister
 									? navOption.map((value, inx) => (
-										<Link to={value.path}>
+										<Link to={value.path} key={inx}>
 											<div className={`text-md px-2 cursor-pointer ${path == value.path ? 'text-gradient' : 'text-headingGray'} flex items-center gap-1`}>
 												<value.icon className={`${value.path == path && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
 											</div>
 										</Link>
 									))
 									: VisitorNav.map((value, inx) => (
-										<Link to={value.path}>
+										<Link to={value.path} key={inx}>
 											<div className={`text-md px-2 cursor-pointer ${path == value.path ? 'text-gradient' : 'text-headingGray'} flex items-center gap-1`}>
 												<value.icon className={`${value.path == path && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
 											</div>
@@ -188,13 +188,13 @@ const NavMain = () => {
 
 							{deviceType === 'Mobile'
 								? MobileProfileOption.map((value, ind) => (
-									<Link to={value.path} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
+									<Link to={value.path} key={ind} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
 										onClick={() => setIsOpen(false)}>
 										<value.icon className={`${value.path == path && 'text-[#6d6e6f]'}`} /><p className='min-w-max'>{value.name}</p>
 									</Link>
 								))
 								: ProfileOption.map((value, ind) => (
-									<Link to={value.path} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
+									<Link to={value.path} key={ind} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
 										onClick={() => setIsOpen(false)}>
 										<value.icon className={`${value.path == path && 'text-[#6d6e6f]'}`} /><p className='min-w-max'>{value.name}</p>
 									</Link>

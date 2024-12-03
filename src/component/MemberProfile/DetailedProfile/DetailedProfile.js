@@ -267,7 +267,8 @@ const DetailedProfile = () => {
 							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Hobbies</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<p className='flex gap-2 flex-wrap'>
-									{profileData.hobbies.map((res) => (<p className="bg-gray-200 rounded-full px-3 py-1 text-headingGray">{res}</p>))}
+									{profileData.hobbies.map((res, ind) => (<p
+										key={ind} className="bg-gray-200 rounded-full px-3 py-1 text-headingGray">{res}</p>))}
 								</p>
 							</div>
 						</div>

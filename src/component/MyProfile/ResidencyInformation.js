@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { personalInformation } from '../../utils/data/MyProfileData';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCountries, uploadFileData, fetchStates } from '../../store/features/profileData-slice';
+import apiClient from '../../api/apiClient';
+import { indiaId } from '../../utils/data/config';
 
-const ResidencyInformation = () => {
+const ResidencyInformation = ({ data, onFormSubmit }) => {
+	const [ stateList, setStateList ] = useState([]);
 
-	const dispatch = useDispatch();
-	const { data: countries, loading: loading, error: countriesError } = useSelector((state) => state.profileData.countries);
-	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
+	const { countries, countriesLoading } = data;
 
 	useEffect(() => {
-		dispatch(fetchCountries());
-		dispatch(fetchStates('673ed3300c6e7fb2cd934089'));
-	}, [ dispatch ]);
+		const fetchStates = async () => {
+			try {
+				const response = await apiClient.get(`/state?countryId=${indiaId}`);
+				setStateList(response.data);
+			} catch (error) {
+				console.error('Error fetching states:', error);
+			}
+		};
+		fetchStates();
+	}, [ indiaId ]);
+
 
 	const [ formData, setFormData ] = useState({
 		birthCountry: '',
@@ -44,16 +50,12 @@ const ResidencyInformation = () => {
 			console.log(formData);
 			toast.error('Please correct all highlighted errors!');
 		} else {
-			dispatch(uploadFileData({ residencyInformation: formData }));
+			onFormSubmit({ residencyInformation: formData });
 		}
 	};
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		// setFormData((prevFormData) => ({
-		// 	...prevFormData,
-		// 	[ name ]: value,
-		// }));
 
 		setFormData((prevFormData) => {
 			if (name === 'ancestralOrigin') {
@@ -61,14 +63,14 @@ const ResidencyInformation = () => {
 					...prevFormData,
 					ancestralOrigin: {
 						...prevFormData.ancestralOrigin,
-						state: value, // Update the nested state field
+						state: value,
 					},
 				};
 			}
 
 			return {
 				...prevFormData,
-				[ name ]: value, // Handle other form fields
+				[ name ]: value,
 			};
 		});
 
@@ -99,7 +101,7 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Birth Country</option>
-						{loading && !countries.length && <option>Loading countries...</option>}
+						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
 							<option key={country.id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
@@ -121,7 +123,7 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Grow Up Country</option>
-						{loading && !countries.length && <option>Loading countries...</option>}
+						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
 							<option key={country.id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
@@ -143,7 +145,7 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Residency Country</option>
-						{loading && !countries.length && <option>Loading countries...</option>}
+						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
 							<option key={country.id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
@@ -187,8 +189,8 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Ancestral Origin</option>
-						{statesLoading && !states?.length && <option>Loading countries...</option>}
-						{states?.state?.map((state) => (
+						{/* {!stateList?.length && <option value="" disabled>Loading states...</option>} */}
+						{stateList?.state?.map((state) => (
 							<option key={state.id} value={state._id}>
 								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
 							</option>
@@ -209,7 +211,7 @@ const ResidencyInformation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Citizenship</option>
-						{loading && !countries.length && <option>Loading countries...</option>}
+						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
 							<option key={country.id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}

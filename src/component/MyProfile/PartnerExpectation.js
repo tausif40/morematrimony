@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { indiaId } from '../../utils/data/config';
 import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lifestyle } from '../../utils/data/MyProfileData';
-import {
-	fetchCountries, fetchStates, fetchReligions, fetchCaste, fetchLanguages, fetchEducation, fetchOccupations, uploadFileData
-} from '../../store/features/profileData-slice';
+import apiClient from '../../api/apiClient';
 
-const PartnerExpectation = () => {
-	const dispatch = useDispatch();
-	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
-	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
-	const { data: religions, loading: religionLoading, error: religionError } = useSelector((state) => state.profileData.religions);
-	const { data: casteList, loading: casteLoading, error: casteError } = useSelector((state) => state.profileData.caste);
-	const { data: languages, loading: langLoading, error: langError } = useSelector((state) => state.profileData.languages);
-	const { data: education, loading: loading, error: error } = useSelector((state) => state.profileData.education);
-	const { data: occupations, loading: occupationLoading, error: occupationError } = useSelector((state) => state.profileData.occupations);
+const PartnerExpectation = ({ data, onFormSubmit }) => {
+	const { countriesWithDoesNotMatter, religions, occupations, education, languages } = data
 
-	useEffect(() => {
-		dispatch(fetchCountries());
-		dispatch(fetchReligions());
-		dispatch(fetchLanguages());
-		dispatch(fetchEducation());
-		dispatch(fetchOccupations());
-	}, [ dispatch ]);
+	const [ stateList, setStateList ] = useState([])
+	const [ casteList, setCasteList ] = useState([])
+	const [ loading, setLoading ] = useState({ state: false, caste: false });
+
+	const fetchData = async (url, setData, type) => {
+		setLoading((prev) => ({ ...prev, [ type ]: true }));
+		try {
+			const response = await apiClient.get(url);
+			setData(response.data);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoading((prev) => ({ ...prev, [ type ]: false }));
+		}
+	};
+	useEffect(() => { fetchData(`/state?countryId=${indiaId}`, setStateList, 'state'); }, [ indiaId ])
+	const fetchCaste = (religionId) => fetchData(`/caste?religionId=${religionId}`, setCasteList, 'caste');
 
 	const [ formData, setFormData ] = useState({
 		age: { min: '', max: '' },
@@ -35,7 +35,7 @@ const PartnerExpectation = () => {
 		residencyCountry: '',
 		religion: '',
 		caste: '',
-		subCaste: '',
+		// subCaste: '',
 		highestEducation: '',
 		employedIn: '',
 		occupation: '',
@@ -94,13 +94,13 @@ const PartnerExpectation = () => {
 
 		return (formData.maritalStatus !== 'single' && formData.maritalStatus !== '')
 	};
-	const isNotEmployed = () => {
-		if (formData.employedIn == 'not working' || formData.employedIn == "doesn't matter") {
-			delete formData.occupation;
-			delete formData.annualIncome;
-		}
-		return (formData.employedIn !== 'not working' && formData.employedIn !== "doesn't matter" && formData.employedIn !== "")
-	};
+	// const isNotEmployed = () => {
+	// 	if (formData.employedIn == 'not working' || formData.employedIn == "doesn't matter") {
+	// 		delete formData.occupation;
+	// 		delete formData.annualIncome;
+	// 	}
+	// 	return (formData.employedIn !== 'not working' && formData.employedIn !== "doesn't matter" && formData.employedIn !== "")
+	// };
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -112,7 +112,7 @@ const PartnerExpectation = () => {
 			toast.error('Please fill in all required fields');
 			return;
 		}
-		dispatch(uploadFileData({ partnerExpectation: formData }));
+		onFormSubmit({ partnerExpectation: formData });
 	};
 
 	const handleChange = (e) => {
@@ -135,16 +135,15 @@ const PartnerExpectation = () => {
 			}));
 		}
 
-		if (name === 'preferredCountry') {
-			dispatch(fetchStates(value));
-			formData.preferredState = ''
-		}
+		// if (name === 'preferredCountry') {
+		// 	dispatch(fetchStates(value));
+		// 	formData.preferredState = ''
+		// }
 
 
 		if (name === 'religion') {
-			// console.log("select - ", name, " - ", value);
-			dispatch(fetchCaste(value));
-			formData.caste = ''
+			setCasteList('')
+			fetchCaste(value);
 		}
 
 
@@ -301,8 +300,8 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Residency Country</option>
-						{countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>}
-						{countries?.country?.map((country, index) => (
+						{/* {countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>} */}
+						{countriesWithDoesNotMatter?.country?.map((country, index) => (
 							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
@@ -322,7 +321,7 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Religion</option>
-						{religionLoading && !religions?.length && <option value="" disabled> Loading religion...</option>}
+						{/* {religionLoading && !religions?.length && <option value="" disabled> Loading religion...</option>} */}
 						{religions?.religion?.map((religion) => (
 							<option key={religion._id} value={religion._id}>
 								{religion.name}
@@ -344,7 +343,7 @@ const PartnerExpectation = () => {
 					>
 						<option value="" disabled>Select Caste</option>
 						{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
-						{casteLoading && !casteList?.length && <option value="" disabled>Loading cast...</option>}
+						{loading.caste && !casteList?.length && <option value="" disabled>Loading cast...</option>}
 						{casteList?.caste?.map((caste) => (
 							<option key={caste._id} value={caste._id}>
 								{caste.name}
@@ -355,7 +354,7 @@ const PartnerExpectation = () => {
 				</div>
 
 				{/* Sub Caste */}
-				<div>
+				{/* <div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Sub Caste <span className="text-red-500">*</span></label>
 					<input
 						type="text"
@@ -367,7 +366,7 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					/>
 					{errors.subCaste && <p className="text-red-500 text-xs">{errors.subCaste}</p>}
-				</div>
+				</div> */}
 
 				{/* Mother Tongue */}
 				<div>
@@ -380,7 +379,7 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Mother Tongue</option>
-						{langLoading && !languages.length && <option>Loading languages...</option>}
+						{/* {langLoading && !languages.length && <option>Loading languages...</option>} */}
 						{languages?.language?.map((language) => (
 							<option key={language._id} value={language._id}>
 								{language.name}
@@ -425,69 +424,69 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Education</option>
+						<option value="doesn't matter">Doesn't matter</option>
 						{career.employedIn.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
-						<option value="doesn't matter">Doesn't matter</option>
 					</select>
 					{errors.employedIn && <p className="text-red-500 text-xs">{errors.employedIn}</p>}
 				</div>
 				{/* Occupation */}
-				{isNotEmployed() &&
-					<>
-						<div>
-							<label className="block font-medium mb-1 mt-1 text-headingGray">
-								Occupation <span className="text-red-500">*</span>
-							</label>
-							<select
-								id="occupation"
-								className={getInputClasses('occupation')}
-								name="occupation"
-								value={formData.occupation}
-								onChange={handleChange}
+				{/* {isNotEmployed() &&
+					<> */}
+				<div>
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
+						Occupation <span className="text-red-500">*</span>
+					</label>
+					<select
+						id="occupation"
+						className={getInputClasses('occupation')}
+						name="occupation"
+						value={formData.occupation}
+						onChange={handleChange}
+					>
+						<option value="" disabled>Select Occupation</option>
+						{occupations?.occupation?.map((occupation) => (
+							<optgroup
+								label={occupation.occupationName}
+								key={occupation.occupationName}
 							>
-								<option value="" disabled>Select Occupation</option>
-								{occupations?.occupation?.map((occupation) => (
-									<optgroup
-										label={occupation.occupationName}
-										key={occupation.occupationName}
-									>
-										{occupation.roles.map((role) => (
-											<option key={role.id} value={role.id}>
-												{role.role}
-											</option>
-										))}
-									</optgroup>
-								))}
-							</select>
-							{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
-						</div>
-						{/* Annual Income */}
-						<div>
-							<label className="block font-medium mb-1 mt-1 text-headingGray">
-								Annual Income <span className="text-red-500">*</span>
-							</label>
-							<select
-								id="annualIncome"
-								className={getInputClasses('annualIncome')}
-								name="annualIncome"
-								value={formData.annualIncome}
-								onChange={handleChange}
-							>
-								<option value="" disabled>Select Annual Income</option>
-								{career.annualIncome.map((value, index) => (
-									<option key={index} value={value}>
-										{value.charAt(0).toUpperCase() + value.slice(1)}
+								{occupation.roles.map((role) => (
+									<option key={role.id} value={role.id}>
+										{role.role}
 									</option>
 								))}
-								<option value="doesn't matter">Doesn't matter</option>
-							</select>
-							{errors.annualIncome && <p className="text-red-500 text-xs">{errors.annualIncome}</p>}
-						</div>
-					</>
-				}
+							</optgroup>
+						))}
+					</select>
+					{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
+				</div>
+				{/* Annual Income */}
+				<div>
+					<label className="block font-medium mb-1 mt-1 text-headingGray">
+						Annual Income <span className="text-red-500">*</span>
+					</label>
+					<select
+						id="annualIncome"
+						className={getInputClasses('annualIncome')}
+						name="annualIncome"
+						value={formData.annualIncome}
+						onChange={handleChange}
+					>
+						<option value="" disabled>Select Annual Income</option>
+						<option value="doesn't matter">Doesn't matter</option>
+						{career.annualIncome.map((value, index) => (
+							<option key={index} value={value}>
+								{value.charAt(0).toUpperCase() + value.slice(1)}
+							</option>
+						))}
+					</select>
+					{errors.annualIncome && <p className="text-red-500 text-xs">{errors.annualIncome}</p>}
+				</div>
+				{/* </>
+				} */}
 				{/* Smoking Acceptable */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Smoking Acceptable <span className="text-red-500">*</span></label>
@@ -500,12 +499,12 @@ const PartnerExpectation = () => {
 
 					>
 						<option value="" disabled>Select</option>
+						<option value="doesn't matter">Doesn't matter</option>
 						{lifestyle.smoke.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
-						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.smokingAcceptable && <p className="text-red-500 text-xs">{errors.smokingAcceptable}</p>}
 				</div>
@@ -522,12 +521,12 @@ const PartnerExpectation = () => {
 
 					>
 						<option value="" disabled>Select</option>
+						<option value="doesn't matter">Doesn't matter</option>
 						{lifestyle.drink.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
-						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.drinkingAcceptable && <p className="text-red-500 text-xs">{errors.drinkingAcceptable}</p>}
 				</div>
@@ -543,12 +542,12 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select</option>
+						<option value="doesn't matter">Doesn't matter</option>
 						{lifestyle.diet.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
-						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.dietingAcceptable && <p className="text-red-500 text-xs">{errors.dietingAcceptable}</p>}
 				</div>
@@ -566,12 +565,12 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Body Type</option>
+						<option value="doesn't matter">Doesn't matter</option>
 						{PhysicalAttributesData.bodyType.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
-						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.bodyType && <p className="text-red-500 text-xs">{errors.bodyType}</p>}
 				</div>
@@ -589,8 +588,8 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select preferred country</option>
-						{countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>}
-						{countries?.country?.map((country, index) => (
+						{/* {countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>} */}
+						{countriesWithDoesNotMatter?.country?.map((country, index) => (
 							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
@@ -612,8 +611,8 @@ const PartnerExpectation = () => {
 					>
 						<option value="" disabled>Select preferred state</option>
 						{formData.country == '' && <option value="" disabled>Please Select country</option>}
-						{statesLoading && !states?.length && <option value="" disabled>Loading states...</option>}
-						{states?.state?.map((state) => (
+						{/* {statesLoading && !states?.length && <option value="" disabled>Loading states...</option>} */}
+						{stateList?.state?.map((state) => (
 							<option key={state._id} value={state._id}>
 								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
 							</option>
@@ -635,12 +634,12 @@ const PartnerExpectation = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Complexion</option>
+						<option value="doesn't matter">Doesn't matter</option>
 						{PhysicalAttributesData.complexion.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
-						<option value='does not matter'>Doesn't matter</option>
 					</select>
 					{errors.complexion && <p className="text-red-500 text-xs">{errors.complexion}</p>}
 				</div>

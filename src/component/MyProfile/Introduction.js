@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-import { uploadFileData } from '../../store/features/profileData-slice';
 
-const IntroductionForm = () => {
+const IntroductionForm = ({ data, onFormSubmit }) => {
 	const dispatch = useDispatch();
 	const [ introduction, setIntroduction ] = useState('');
 	const [ errors, setError ] = useState();
@@ -15,12 +14,11 @@ const IntroductionForm = () => {
 			toast.error('Please correct all highlighted errors!');
 			return;
 		}
-		const EncryptIntroduction = btoa(JSON.stringify(introduction));
-		dispatch(uploadFileData({ introduction: EncryptIntroduction }));
-
-		// dispatch(uploadFileData({ introduction }));
+		onFormSubmit({ introduction });
 	};
-
+	useEffect(() => {
+		setIntroduction(data)
+	}, [ data ])
 
 	return (
 		<form onSubmit={handleSubmit} className="box-shadow bg-white border rounded-md">

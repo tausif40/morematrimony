@@ -14,6 +14,8 @@ import IgnoreList from '../IgnoreList/IgnoreList';
 import VerificationForm from '../Form/VerificationForm';
 import ChangePassword from '../Form/ChangePassword';
 import Gallery from '../Gallery/Gallery';
+import Viewed from '../Viewed/Viewed';
+import ViewedByYou from '../ViewedByYou/ViewedByYou';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -57,6 +59,10 @@ function DashboardLayout() {
 				return <MyInterest />;
 			case '/shortlist':
 				return <ShortList />;
+			case '/viewed':
+				return <Viewed />;
+			case '/viewed-by-you':
+				return <ViewedByYou />;
 			case '/message':
 				return <Chat />;
 			case '/ignored-list':
@@ -79,8 +85,8 @@ function DashboardLayout() {
 					<DashboardMenu />
 				</div>
 
-				<div className="container flex gap-8 my-10 ">
-					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[690px]">
+				<div className="container flex justify-between gap-8 my-10 ">
+					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[730px]">
 						<ProfileOption />
 					</div>
 

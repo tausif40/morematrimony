@@ -1,12 +1,8 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { maritalStatus } from '../../utils/data/MyProfileData';
-import { useDispatch } from 'react-redux';
-import { uploadFileData } from '../../store/features/profileData-slice';
 
-const BasicInformationForm = () => {
-	const dispatch = useDispatch();
+const BasicInformationForm = ({ data, onFormSubmit }) => {
 	const [ numberOfChildren, setNumberOfChildren ] = useState();
 	const [ formData, setFormData ] = useState({
 		firstName: '',
@@ -19,7 +15,54 @@ const BasicInformationForm = () => {
 		// ProfilePhoto: null,
 	});
 
+	const validateDOB = (dob) => {
+		const today = new Date();
+		const selectedDate = new Date(dob);
+		const minAgeDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
+		return selectedDate <= minAgeDate;
+	};
+
+
 	const [ errors, setErrors ] = useState({});
+
+	const handleChange = (e) => {
+		const { name, value, files } = e.target;
+		setErrors((prevErrors) => ({
+			...prevErrors,
+			[ name ]: '',
+		}));
+
+		if (name === 'dateOfBirth') {
+			if (!validateDOB(value)) {
+				setErrors((prev) => ({ ...prev, [ name ]: 'You must be at least 18 years old.' }));
+			} else {
+				setErrors((prev) => ({ ...prev, [ name ]: '' }));
+			}
+		}
+
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[ name ]: value,
+		}));
+
+	};
+
+	const validateForm = () => {
+		const newErrors = {};
+		if (!formData.firstName) newErrors.firstName = 'First Name is required';
+		if (!formData.lastName) newErrors.lastName = 'Last Name is required';
+		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
+		if (!validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
+		if (!formData.gender) newErrors.gender = 'Gender is required';
+		if (!formData.maritalStatus) newErrors.maritalStatus = 'Marital Status is required';
+		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
+		// if (formData.ProfilePhoto == null) newErrors.ProfilePhoto = 'Profile Photo is required';
+		if (formData.maritalStatus != 'single' && !numberOfChildren) {
+			newErrors.numberOfChildren = 'Number of Children is required';
+		}
+		return newErrors;
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -34,48 +77,11 @@ const BasicInformationForm = () => {
 			} else {
 				delete formData.numberOfChildren;
 			}
-			dispatch(uploadFileData({ basicInformation: formData }));
-
+			onFormSubmit({ basicInformation: formData });
 		} else {
 			setErrors(newErrors);
 			toast.error('Please correct all highlighted errors!');
 		}
-	};
-
-
-	const handleChange = (e) => {
-		const { name, value, files } = e.target;
-		setErrors((prevErrors) => ({
-			...prevErrors,
-			[ name ]: '',
-		}));
-
-		// if (name === 'ProfilePhoto') {
-		// 	setFormData((prevFormData) => ({
-		// 		...prevFormData,
-		// 		[ name ]: files[ 0 ],
-		// 	}));
-		// } else {
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			[ name ]: value,
-		}));
-		// }
-	};
-
-	const validateForm = () => {
-		const newErrors = {};
-		if (!formData.firstName) newErrors.firstName = 'First Name is required';
-		if (!formData.lastName) newErrors.lastName = 'Last Name is required';
-		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
-		if (!formData.gender) newErrors.gender = 'Gender is required';
-		if (!formData.maritalStatus) newErrors.maritalStatus = 'Marital Status is required';
-		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
-		// if (formData.ProfilePhoto == null) newErrors.ProfilePhoto = 'Profile Photo is required';
-		if (formData.maritalStatus != 'single' && !numberOfChildren) {
-			newErrors.numberOfChildren = 'Number of Children is required';
-		}
-		return newErrors;
 	};
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;

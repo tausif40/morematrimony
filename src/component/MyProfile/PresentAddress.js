@@ -1,26 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCountries, fetchStates, fetchCities, uploadFileData } from '../../store/features/profileData-slice';
+import apiClient from '../../api/apiClient';
 
-const PresentAddress = () => {
-	const dispatch = useDispatch();
-	// const { countries, states, cities, loading, error } = useSelector((state) => state.profileData);
-
-	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
-	const { data: states, loading: statesLoading, error: statesError } = useSelector((state) => state.profileData.states);
-	const { data: cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.profileData.cities);
-
-	useEffect(() => {
-		dispatch(fetchCountries());
-	}, [ dispatch ]);
+const PresentAddress = ({ onFormSubmit, data }) => {
+	const [ stateList, setStateList ] = useState([]);
+	const [ cityList, setCityList ] = useState([]);
+	const [ stateLoading, setStateLoading ] = useState(false)
+	const [ cityLoading, setCityLoading ] = useState(false)
+	const { countries } = data;
 
 	const [ formData, setFormData ] = useState({
-		country: '', state: '', city: '', postalCode: '',
+		country: '',
+		state: '',
+		city: '',
+		postalCode: '',
 	});
-	const [ errors, setErrors ] = useState({});
 
+
+	const fetchState = async (countryId) => {
+		setStateLoading(true)
+		try {
+			const response = await apiClient.get(`/state?countryId=${countryId}`);
+			setStateList(response.data)
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setStateLoading(false)
+		}
+	}
+
+	const fetchCity = async (stateId) => {
+		setCityLoading(true)
+		try {
+			const response = await apiClient.get(`/city?stateId=${stateId}`);
+			setCityList(response.data)
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setCityLoading(false)
+		}
+	}
+
+
+	const [ errors, setErrors ] = useState({});
 	// Function to handle form submission 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -28,7 +50,7 @@ const PresentAddress = () => {
 		const newErrors = validateForm();
 
 		if (Object.keys(newErrors).length === 0) {
-			dispatch(uploadFileData({ presentAddress: formData }));
+			onFormSubmit({ presentAddress: formData });
 		} else {
 			setErrors(newErrors);
 			toast.error('Please correct all highlighted errors!');
@@ -44,21 +66,15 @@ const PresentAddress = () => {
 		}));
 
 		if (name === 'country') {
-			dispatch(fetchStates(value));
-			formData.state = ''
-			formData.city = ''
-		}
-		if (name === 'state') {
-			dispatch(fetchCities(value));
-			formData.city = ''
+			fetchState(value)
+			setStateList('');
+			setCityList('');
+		} else if (name === 'state') {
+			fetchCity(value);
+			setCityList('')
 		}
 
-		if (errors[ name ]) {
-			setErrors((prevErrors) => ({
-				...prevErrors,
-				[ name ]: '',
-			}));
-		}
+		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
 	// Validation function
@@ -73,9 +89,6 @@ const PresentAddress = () => {
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 
-	// loading && console.log('loading start', loading);
-	// !loading && console.log('loading start', loading);
-	// console.log('countries - ', countries);
 
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
@@ -97,7 +110,7 @@ const PresentAddress = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Country</option>
-						{countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>}
+						{/* {countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>} */}
 						{countries?.country?.map((country, index) => (
 							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
@@ -121,8 +134,8 @@ const PresentAddress = () => {
 					>
 						<option value="" disabled>Select State</option>
 						{formData.country == '' && <option value="" disabled>Please Select country</option>}
-						{statesLoading && !states?.length && <option value="" disabled>Loading states...</option>}
-						{states?.state?.map((state) => (
+						{stateLoading && !stateList?.length && <option value="" disabled>Loading states...</option>}
+						{stateList?.state?.map((state) => (
 							<option key={state._id} value={state._id}>
 								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
 							</option>
@@ -144,8 +157,8 @@ const PresentAddress = () => {
 					>
 						<option value="" disabled>Select State</option>
 						{formData.state == '' && <option value="" disabled>Please Select state</option>}
-						{citiesLoading && !cities?.length && <option value="" disabled> Loading cities...</option>}
-						{cities?.city?.map((city) => (
+						{cityLoading && !cityList?.length && <option value="" disabled> Loading cities...</option>}
+						{cityList?.city?.map((city) => (
 							<option key={city._id} value={city._id}>
 								{city.name.charAt(0).toUpperCase() + city.name.slice(1)}
 							</option>

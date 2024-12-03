@@ -3,11 +3,11 @@ import apiClient from '../../api/apiClient';
 import { toast } from 'react-hot-toast';
 
 export const uploadFileData = createAsyncThunk('data/uploadFileData', async (formdata, { rejectWithValue }) => {
-  const loadingToast = toast.loading('Uploading.....');
+  const loadingToast = toast.loading('Updating.....');
   try {
     console.log(formdata);
     const response = await apiClient.patch('/user/myProfile', formdata);
-    toast.success('Upload successful!', { id: loadingToast });
+    toast.success('Update successful!', { id: loadingToast });
     console.log(response);
     return response.data;
   } catch (error) {
@@ -19,32 +19,43 @@ export const uploadFileData = createAsyncThunk('data/uploadFileData', async (for
 
 export const fetchCountries = createAsyncThunk('data/fetchCountries', async (_, { rejectWithValue }) => {
   try {
-    const response = await apiClient.get('/country');
+    const response = await apiClient.get(`/country`);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to fetch countries');
   }
 });
 
-export const fetchStates = createAsyncThunk('data/fetchStates', async (countryId, { rejectWithValue }) => {
+export const fetchCountriesWithDoesNotMatter = createAsyncThunk('data/countriesWithDoesNotMatter', async (doesNotMatter, { rejectWithValue }) => {
   try {
-    const response = await apiClient.get(`/state?countryId=${countryId}`);
-    // console.log(response);
+    // console.log(`/country?doesNotMatter=${doesNotMatter}`);
+    const response = await apiClient.get(`/country?doesNotMatter=${doesNotMatter}`);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
-    // console.log(error);
-    return rejectWithValue(error.response?.data || 'Failed to fetch states');
+    return rejectWithValue(error.response?.data || 'Failed to fetch countries');
   }
 });
 
-export const fetchCities = createAsyncThunk('data/fetchCities', async (stateId, { rejectWithValue }) => {
-  try {
-    const response = await apiClient.get(`/city?stateId=${stateId}`);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || 'Failed to fetch cities');
-  }
-});
+// export const fetchStates = createAsyncThunk('data/fetchStates', async (countryId, { rejectWithValue }) => {
+//   try {
+//     const response = await apiClient.get(`/state?countryId=${countryId}`);
+//     // console.log(response);
+//     return response.data;
+//   } catch (error) {
+//     // console.log(error);
+//     return rejectWithValue(error.response?.data || 'Failed to fetch states');
+//   }
+// });
+
+// export const fetchCities = createAsyncThunk('data/fetchCities', async (stateId, { rejectWithValue }) => {
+//   try {
+//     const response = await apiClient.get(`/city?stateId=${stateId}`);
+//     return response.data;
+//   } catch (error) {
+//     return rejectWithValue(error.response?.data || 'Failed to fetch cities');
+//   }
+// });
 
 export const fetchOccupations = createAsyncThunk('data/fetchOccupations', async (_, { rejectWithValue }) => {
   try {
@@ -82,24 +93,29 @@ export const fetchEducation = createAsyncThunk('data/fetchEducation', async (_, 
 export const fetchReligions = createAsyncThunk('data/fetchReligions', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get('/religion');
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to fetch religion');
   }
 });
-export const fetchCaste = createAsyncThunk('data/fetchCaste', async (religionId, { rejectWithValue }) => {
+
+// export const fetchCaste = createAsyncThunk('data/fetchCaste', async (religionId, { rejectWithValue }) => {
+//   try {
+//     const response = await apiClient.get(`/caste?religionId=${religionId}`);
+//     return response.data;
+//   } catch (error) {
+//     return rejectWithValue(error.response?.data || 'Failed to fetch religion');
+//   }
+// });
+
+export const fetchDivision = createAsyncThunk('data/fetchDivision', async ({ rejectWithValue }) => {
   try {
-    const response = await apiClient.get(`/caste?religionId=${religionId}`);
+    const response = await apiClient.get('/division');
+    console.log('division slice - ', response.data);
     return response.data;
   } catch (error) {
-    return rejectWithValue(error.response?.data || 'Failed to fetch religion');
-  }
-});
-export const fetchDivision = createAsyncThunk('data/fetchDivision', async (religionId, { rejectWithValue }) => {
-  try {
-    const response = await apiClient.get(`/division`);
-    return response.data;
-  } catch (error) {
+    // console.log('division - ', error);
     return rejectWithValue(error.response?.data || 'Failed to fetch division');
   }
 });
@@ -111,14 +127,16 @@ export const fetchStars = createAsyncThunk('data/fetchStars', async (_, { reject
     return rejectWithValue(error.response?.data || 'Failed to fetch star');
   }
 });
-export const fetchRashiSigns = createAsyncThunk('data/fetchRashiSigns', async (starId, { rejectWithValue }) => {
-  try {
-    const response = await apiClient.get(`/rashiSign?starId=${starId}`);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || 'Failed to fetch rashiSign');
-  }
-});
+
+// export const fetchRashiSigns = createAsyncThunk('data/fetchRashiSigns', async (starId, { rejectWithValue }) => {
+//   try {
+//     const response = await apiClient.get(`/rashiSign?starId=${starId}`);
+//     return response.data;
+//   } catch (error) {
+//     return rejectWithValue(error.response?.data || 'Failed to fetch rashiSign');
+//   }
+// });
+
 export const fetchZodiac = createAsyncThunk('data/fetchZodiac', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get(`zodiac`);
@@ -134,17 +152,18 @@ const profileData = createSlice({
   initialState: {
     formData: { data: null, loading: false, error: null },
     countries: { data: [], loading: false, error: null },
-    states: { data: [], loading: false, error: null },
-    cities: { data: [], loading: false, error: null },
+    countriesWithDoesNotMatter: { data: [], loading: false, error: null },
+    // states: { data: [], loading: false, error: null },
+    // cities: { data: [], loading: false, error: null },
     occupations: { data: [], loading: false, error: null },
     languages: { data: [], loading: false, error: null },
     hobbies: { data: [], loading: false, error: null },
     education: { data: [], loading: false, error: null },
     religions: { data: [], loading: false, error: null },
-    caste: { data: [], loading: false, error: null },
-    division: { data: [], loading: false, error: null },
+    // caste: { data: [], loading: false, error: null },
+    divisions: { data: [], loading: false, error: null },
     stars: { data: [], loading: false, error: null },
-    rashiSigns: { data: [], loading: false, error: null },
+    // rashiSigns: { data: [], loading: false, error: null },
     zodiac: { data: [], loading: false, error: null },
   },
   reducers: {},
@@ -189,36 +208,49 @@ const profileData = createSlice({
         state.countries.loading = false;
         state.countries.error = action.payload || action.error.message;
       })
+      // Fetch fetchCountriesWithDoesNotMatter
+      .addCase(fetchCountriesWithDoesNotMatter.pending, (state) => {
+        state.countriesWithDoesNotMatter.loading = true;
+        state.countriesWithDoesNotMatter.error = null;
+      })
+      .addCase(fetchCountriesWithDoesNotMatter.fulfilled, (state, action) => {
+        state.countriesWithDoesNotMatter.data = action.payload;
+        state.countriesWithDoesNotMatter.loading = false;
+      })
+      .addCase(fetchCountriesWithDoesNotMatter.rejected, (state, action) => {
+        state.countriesWithDoesNotMatter.loading = false;
+        state.countriesWithDoesNotMatter.error = action.payload || action.error.message;
+      })
 
       // Fetch States
-      .addCase(fetchStates.pending, (state, action) => {
-        state.states.data = action.payload;
-        state.states.loading = true;
-        state.states.error = null;
-      })
-      .addCase(fetchStates.fulfilled, (state, action) => {
-        state.states.data = action.payload;
-        state.states.loading = false;
-      })
-      .addCase(fetchStates.rejected, (state, action) => {
-        state.states.loading = false;
-        state.states.error = action.payload || action.error.message;
-      })
+      // .addCase(fetchStates.pending, (state, action) => {
+      //   state.states.data = action.payload;
+      //   state.states.loading = true;
+      //   state.states.error = null;
+      // })
+      // .addCase(fetchStates.fulfilled, (state, action) => {
+      //   state.states.data = action.payload;
+      //   state.states.loading = false;
+      // })
+      // .addCase(fetchStates.rejected, (state, action) => {
+      //   state.states.loading = false;
+      //   state.states.error = action.payload || action.error.message;
+      // })
 
       // Fetch Cities
-      .addCase(fetchCities.pending, (state, action) => {
-        state.cities.data = action.payload;
-        state.cities.loading = true;
-        state.cities.error = null;
-      })
-      .addCase(fetchCities.fulfilled, (state, action) => {
-        state.cities.data = action.payload;
-        state.cities.loading = false;
-      })
-      .addCase(fetchCities.rejected, (state, action) => {
-        state.cities.loading = false;
-        state.cities.error = action.payload || action.error.message;
-      })
+      // .addCase(fetchCities.pending, (state, action) => {
+      //   state.cities.data = action.payload;
+      //   state.cities.loading = true;
+      //   state.cities.error = null;
+      // })
+      // .addCase(fetchCities.fulfilled, (state, action) => {
+      //   state.cities.data = action.payload;
+      //   state.cities.loading = false;
+      // })
+      // .addCase(fetchCities.rejected, (state, action) => {
+      //   state.cities.loading = false;
+      //   state.cities.error = action.payload || action.error.message;
+      // })
 
       // Fetch Occupations
       .addCase(fetchOccupations.pending, (state) => {
@@ -291,33 +323,33 @@ const profileData = createSlice({
       })
 
       // Fetch Caste
-      .addCase(fetchCaste.pending, (state, action) => {
-        state.caste.data = action.payload;
-        state.caste.loading = true;
-        state.caste.error = null;
-      })
-      .addCase(fetchCaste.fulfilled, (state, action) => {
-        state.caste.data = action.payload;
-        state.caste.loading = false;
-      })
-      .addCase(fetchCaste.rejected, (state, action) => {
-        state.caste.loading = false;
-        state.caste.error = action.payload || action.error.message;
-      })
+      // .addCase(fetchCaste.pending, (state, action) => {
+      //   state.caste.data = action.payload;
+      //   state.caste.loading = true;
+      //   state.caste.error = null;
+      // })
+      // .addCase(fetchCaste.fulfilled, (state, action) => {
+      //   state.caste.data = action.payload;
+      //   state.caste.loading = false;
+      // })
+      // .addCase(fetchCaste.rejected, (state, action) => {
+      //   state.caste.loading = false;
+      //   state.caste.error = action.payload || action.error.message;
+      // })
 
       // Fetch division
       .addCase(fetchDivision.pending, (state, action) => {
-        state.division.data = action.payload;
-        state.division.loading = true;
-        state.division.error = null;
+        state.divisions.data = action.payload;
+        state.divisions.loading = true;
+        state.divisions.error = null;
       })
       .addCase(fetchDivision.fulfilled, (state, action) => {
-        state.division.data = action.payload;
-        state.division.loading = false;
+        state.divisions.data = action.payload;
+        state.divisions.loading = false;
       })
       .addCase(fetchDivision.rejected, (state, action) => {
-        state.division.loading = false;
-        state.division.error = action.payload || action.error.message;
+        state.divisions.loading = false;
+        state.divisions.error = action.payload || action.error.message;
       })
 
       // Fetch Stars
@@ -335,19 +367,19 @@ const profileData = createSlice({
       })
 
       // Fetch Rashi Signs
-      .addCase(fetchRashiSigns.pending, (state, action) => {
-        state.rashiSigns.data = action.payload;
-        state.rashiSigns.loading = true;
-        state.rashiSigns.error = null;
-      })
-      .addCase(fetchRashiSigns.fulfilled, (state, action) => {
-        state.rashiSigns.data = action.payload;
-        state.rashiSigns.loading = false;
-      })
-      .addCase(fetchRashiSigns.rejected, (state, action) => {
-        state.rashiSigns.loading = false;
-        state.rashiSigns.error = action.payload || action.error.message;
-      })
+      // .addCase(fetchRashiSigns.pending, (state, action) => {
+      //   state.rashiSigns.data = action.payload;
+      //   state.rashiSigns.loading = true;
+      //   state.rashiSigns.error = null;
+      // })
+      // .addCase(fetchRashiSigns.fulfilled, (state, action) => {
+      //   state.rashiSigns.data = action.payload;
+      //   state.rashiSigns.loading = false;
+      // })
+      // .addCase(fetchRashiSigns.rejected, (state, action) => {
+      //   state.rashiSigns.loading = false;
+      //   state.rashiSigns.error = action.payload || action.error.message;
+      // })
 
       // Fetch Stars
       .addCase(fetchZodiac.pending, (state) => {

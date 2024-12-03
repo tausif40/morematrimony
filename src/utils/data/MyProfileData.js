@@ -7,17 +7,22 @@ export const PhysicalAttributesData = {
 	foot: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
 	inch: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
 	weight: [ "5-10", "10-15", "15-20", "20-25", "25-30", "30-35", "35-40", "40-45", "45-50", "50-55", "55-60", "60-65", "65-70", "70-75", "75-80", "80-85", "85-90", "90-95", "95-100", "100-110", "110-120", "120-130", "130-140", "140-150", "150-160", "160-170", "170-180", "180-190", "190-200" ],
-	eyeColor: [ "amber", "blue", "brown", "gray", "green", "hazel", "red", "violet", "heterochromia" ],
-	complexion: [ "fair", "wheatish", "dark", "medium", "dusky", "brown", "light brown" ],
-	bodyType: [ "slim", "athletic", "muscular", "average", "curvy", "full-figured", "petite", "stocky", "tall", "short", "obese" ],
+	eyeColor: [ "black", "amber", "blue", "brown", "gray", "green", "hazel", "red", "violet", "heterochromia" ],
+	complexion: [ "fair", "wheatish", "white", "dark", "medium", "dusky", "brown", "light brown" ],
+	bodyType: [ "slim", "athletic", "muscular", "average", "curvy", "heavy", "full-figured", "petite", "stocky", "tall", "short", "obese" ],
 	bloodGroup: [ "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "A1+", "A1-", "A2+", "A2-" ],
-	disabilityType: [ "visual impairment", "hearing impairment", "locomotor disability", "other" ]
+	disabilityType: [ 'visual impairment', 'hearing impairment', 'locomotor disability', 'speech and language disability',
+		'intellectual disability', 'mental illness', 'somatosensory impairment', 'thalassemia', 'hemophilia',
+		'sickle cell disease', 'leprosy cured', 'acid attack victim', 'fetal alcohol spectrum disorders (fasd)',
+		'fragile x syndrome', 'cerebral palsy', 'muscular dystrophy', 'multiple sclerosis', 'autism spectrum disorder',
+		'specific learning disabilities', 'down syndrome', 'dwarfism', 'chronic neurological conditions',
+		'multiple disabilities', 'deaf-blindness', 'parkinson\'s disease', 'other' ]
 }
 
 export const lifestyle = {
-	diet: [ "vegetarian", "non-vegetarian", "Eggetarian", "pescatarian", "vegan", "other" ],
-	drink: [ "social", "regular", "occasional", "none", "other" ],
-	smoke: [ "social", "regular", "occasional", "none", "other" ]
+	diet: [ "vegetarian", "non-vegetarian", "Eggetarian", "fishetarian", "vegan", "other" ],
+	drink: [ "social", "regular", "occasional", "none" ],
+	smoke: [ "social", "regular", "occasional", "none" ]
 }
 
 export const maritalStatus = {

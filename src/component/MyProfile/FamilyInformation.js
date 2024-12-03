@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { familyInformation } from '../../utils/data/MyProfileData';
-import { useDispatch } from 'react-redux';
-import { uploadFileData } from '../../store/features/profileData-slice';
 
-const FamilyInformation = () => {
-	const dispatch = useDispatch();
+const FamilyInformation = ({ onFormSubmit }) => {
 
 	const [ formData, setFormData ] = useState({
 		familyValue: '',
@@ -68,7 +65,7 @@ const FamilyInformation = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (validateForm()) {
-			dispatch(uploadFileData({ familyDetails: formData }));
+			onFormSubmit({ familyDetails: formData });
 		} else {
 			toast.error('Please correct all highlighted errors!');
 		}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './component/ScrollToTop/ScrollToTop';
@@ -23,13 +23,19 @@ import MatchesLayout from './component/Layout/MatchesLayout';
 import Plans from './component/Plans/Plans';
 import Help from './component/Help/Help';
 
+import { getUserDetails } from './store/features/userDetails-slice';
+import { useDispatch } from 'react-redux';
+
 const App = () => {
+  const dispatch = useDispatch();
   const dashboardPaths = [
     '/dashboard',
     '/matches',
     '/profile-setting',
     '/my-interest',
     '/shortlist',
+    '/viewed',
+    '/viewed-by-you',
     '/message',
     '/ignored-list',
     '/notification',
@@ -48,6 +54,9 @@ const App = () => {
   //   }
   // });
 
+  useEffect(() => {
+    dispatch(getUserDetails());
+  }, [ dispatch ]);
 
   return (
     <>

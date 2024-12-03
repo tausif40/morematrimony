@@ -2,26 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { uploadFileData, fetchHobbies } from '../../store/features/profileData-slice';
 
-const Hobbies = () => {
-	const dispatch = useDispatch();
+const Hobbies = ({ onFormSubmit, data }) => {
 	const [ isOpen, setIsOpen ] = useState(false);
 	const [ selectedHobbies, setSelectedHobbies ] = useState([]);
 	const [ error, setError ] = useState('');
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const dropdownRef = useRef(null);
 
-	const { data: hobbies, loading: hobbiesLoading, error: hobbiesError } = useSelector((state) => state.profileData.hobbies);
-
-	useEffect(() => {
-		dispatch(fetchHobbies());
-	}, [ dispatch ]);
+	const { hobbies } = data;
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
 	const handleSelect = (hobbyName) => {
+		setError('')
 		const hobby = hobbies.hobby.find((h) => h.name === hobbyName);
 		if (selectedHobbies.some((h) => h._id === hobby._id)) {
 			setSelectedHobbies(selectedHobbies.filter((h) => h._id !== hobby._id));
@@ -49,14 +43,18 @@ const Hobbies = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (selectedHobbies.length < 5) {
-			setError('Minimum 5 hobbies are required');
-			toast.error('Minimum 5 hobbies are required');
+		if (selectedHobbies.length < 1) {
+			toast.error('Minimum 1 hobby is required');
+			setError('Minimum 1 hobby is required');
+			return;
+		} else if (selectedHobbies.length > 6) {
+			setError('Hobbies must contain less than or equal to 5');
+			toast.error('Hobbies must contain less than or equal to 5');
 			return;
 		}
 		setError('')
 		const hobbyIds = selectedHobbies.map((h) => h._id);
-		dispatch(uploadFileData({ hobbies: { hobbiesList: hobbyIds } }));
+		onFormSubmit({ hobbies: { hobbiesList: hobbyIds } });
 	};
 
 	const filteredHobbies = hobbies?.hobby?.filter((hobby) =>
@@ -114,7 +112,7 @@ const Hobbies = () => {
 
 								{/* Render hobbies in the dropdown */}
 								<div className="flex flex-wrap gap-3 justify-between p-4 max-h-72 overflow-y-auto customScroll-bar">
-									{filteredHobbies.map((hobby) => (
+									{filteredHobbies?.map((hobby) => (
 										<div
 											key={hobby._id}
 											className={`cursor-pointer p-2 text-center px-4 rounded-full ${selectedHobbies.some((h) => h._id === hobby._id) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
