@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 import { indiaId } from '../../utils/data/config';
 import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lifestyle } from '../../utils/data/MyProfileData';
 import apiClient from '../../api/apiClient';
+import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
 
 const PartnerExpectation = ({ data, onFormSubmit }) => {
 	const { countriesWithDoesNotMatter, religions, occupations, education, languages } = data

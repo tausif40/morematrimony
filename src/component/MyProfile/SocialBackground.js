@@ -70,7 +70,6 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 				cleanedData[ key ] = data[ key ];
 			}
 		}
-
 		return cleanedData;
 	};
 
@@ -109,13 +108,15 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 			return;
 		}
 
-		let cleanedFormData = cleanFormData(formData);
+
+		let cleanedFormData = { ...formData };
 
 		if (!isHindu) {
 			delete cleanedFormData.gothra;
 			delete cleanedFormData.kundli;
 			delete cleanedFormData.dosh;
 			delete cleanedFormData.doshName;
+			console.log("cleanedFormData - ", cleanedFormData);
 		}
 		if (!isChristian) delete cleanedFormData.division;
 		if (!formData.gothra) delete cleanedFormData.gothra;
@@ -123,27 +124,28 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 		if (isHindu && formData.dosh === 'no' || formData.dosh === "don't know") {
 			delete cleanedFormData.doshName;
 		}
-		// console.log('Form submitted:', cleanedFormData);
+		// let cleanedFormData2 = cleanFormData(formData);
 
-		// onFormSubmit({ spiritualAndSocialBackground: cleanedFormData });
-
-		// const data = { spiritualAndSocialBackground: cleanedFormData }
 		const loadingToast = toast.loading('Updating.....');
 		try {
-			console.log(formData);
 			const formDataObj = new FormData();
-			Object.keys(formData).forEach((key) => {
+			console.log("formDataObj - ", formDataObj);
+			console.log("formData - ", formData);
+			Object.keys(cleanedFormData).forEach((key) => {
 				if (key === 'birthPlace') {
-					if (formData.birthPlace.country) formDataObj.append('birthPlace[country]', formData.birthPlace.country);
-					if (formData.birthPlace.state) formDataObj.append('birthPlace[state]', formData.birthPlace.state);
-					if (formData.birthPlace.city) formDataObj.append('birthPlace[city]', formData.birthPlace.city);
-					console.log("Appended birthPlace:", formData.birthPlace);
-				} else if (key === 'kundli' && formData.kundli) {
-					formDataObj.append('kundli', formData.kundli);
-					console.log("Appended kundli:", formData.kundli);
-				} else if (formData[ key ]) {
-					formDataObj.append(key, formData[ key ]);
-					console.log(`Appended ${key}:`, formData[ key ]);
+					if (cleanedFormData.birthPlace.country) {
+						formDataObj.append('spiritualAndSocialBackground[birthPlace][country]', cleanedFormData.birthPlace.country);
+					}
+					if (cleanedFormData.birthPlace.state) {
+						formDataObj.append('spiritualAndSocialBackground[birthPlace][state]', cleanedFormData.birthPlace.state);
+					}
+					if (cleanedFormData.birthPlace.city) {
+						formDataObj.append('spiritualAndSocialBackground[birthPlace][city]', cleanedFormData.birthPlace.city);
+					}
+				} else if (key === 'kundli' && cleanedFormData.kundli) {
+					formDataObj.append("kundli", cleanedFormData.kundli);
+				} else if (cleanedFormData[ key ]) {
+					formDataObj.append(`spiritualAndSocialBackground[${key}]`, cleanedFormData[ key ]);
 				}
 			});
 
@@ -151,11 +153,10 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 			for (const [ key, value ] of formDataObj.entries()) {
 				console.log(`${key}:`, value);
 			}
-			const data = { spiritualAndSocialBackground: formDataObj }
 
-			console.log(formDataObj);
-			const response = await axios.patch(`${BASE_URL}/user/spiritualAndSocialBackground`, data, {
+			const response = await axios.patch(`${BASE_URL}/user/spiritualAndSocialBackground`, formDataObj, {
 				headers: {
+					'Content-Type': 'multipart/form-data',
 					Authorization: `Bearer ${token}`
 				},
 			})
