@@ -1,9 +1,8 @@
 import React from "react";
-import moment from 'moment';
 
 const DetailedProfile = ({ userDetails }) => {
 
-	console.log(userDetails?.data?.user);
+	// console.log(userDetails?.data?.user);
 
 	const data = userDetails?.data?.user
 
@@ -43,6 +42,7 @@ const DetailedProfile = ({ userDetails }) => {
 			jobLocation: data?.career?.jobLocation || "",
 			annualIncome: data?.career?.annualIncome || "",
 		},
+
 		physicalAttributes: {
 			height: `${data?.physicalAttributes?.height?.feet || 0} feet ${data?.physicalAttributes?.height?.inches || 0} inches`,
 			weight: data?.physicalAttributes?.weight || "",
@@ -54,14 +54,17 @@ const DetailedProfile = ({ userDetails }) => {
 			tattoo: data?.physicalAttributes?.tattoo ? "Yes" : "No",
 			disability: data?.physicalAttributes?.disability?.disability || "",
 		},
+
 		language: {
 			motherTongue: data?.language?.motherTongue?.name || "",
 			knownLanguages: data?.language?.knownLanguages?.map((lang) => lang.name).join(", ") || "",
 		},
+
 		hobbies: {
-			hobbiesList: data?.hobbies?.hobbiesList
+			hobbiesList: data?.hobbies?.hobbiesList?.map((hobby) => hobby.name).join(", ") || "",
 		},
-		spiritualSocial: {
+
+		spiritualAndSocialBackground: {
 			birthPlace: {
 				country: data?.spiritualAndSocialBackground?.birthPlace?.country?.name || "",
 				state: data?.spiritualAndSocialBackground?.birthPlace?.state?.name || "",
@@ -76,6 +79,7 @@ const DetailedProfile = ({ userDetails }) => {
 			zodiac: data?.spiritualAndSocialBackground?.zodiac?.name || "",
 			timeOfBirth: data?.spiritualAndSocialBackground?.timeOfBirth || "",
 		},
+
 		lifestyle: {
 			diet: data?.lifestyle?.diet || "",
 			drink: data?.lifestyle?.drink || "",
@@ -91,6 +95,7 @@ const DetailedProfile = ({ userDetails }) => {
 			brothersMarried: data?.familyDetails?.brothersMarried || "",
 			sisters: data?.familyDetails?.sisters || "",
 		},
+
 		partnerExpectation: {
 			age: {
 				min: data?.partnerExpectation?.age?.min || "",
@@ -116,6 +121,7 @@ const DetailedProfile = ({ userDetails }) => {
 			complexion: data?.partnerExpectation?.complexion || "",
 			generalRequirement: "Looking for a well-educated and family-oriented partner. Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.Lorem ipsum may be used as a placeholder before the final copy is available."
 		}
+
 	};
 
 	return (
@@ -124,7 +130,7 @@ const DetailedProfile = ({ userDetails }) => {
 				{/* Introduction */}
 				<div className="p-4">
 					<p className="text-gradient text-xl font-medium mb-2">About Me</p>
-					<p className='flex gap-2 font-light'>{profileData?.introduction}</p>
+					<p className="flex gap-2 font-light">{profileData?.introduction}</p>
 				</div>
 
 				<div className="px-1 sm:px-4 md:px-0 grid grid-cols-1 md:grid-cols-2">
@@ -138,7 +144,7 @@ const DetailedProfile = ({ userDetails }) => {
 								{Object.entries(profileData?.profileInfo).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>{key == 'dateOfBirth' ? moment(value).format('DD-MM-YYYY') : value}</dd>
+										<dd>{value}</dd>
 									</div>
 								))}
 							</div>
@@ -146,9 +152,11 @@ const DetailedProfile = ({ userDetails }) => {
 
 						{/* Present Address */}
 						<div className="md:border-b pb-6 md:pr-6">
-							<p className="w-44 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Present Address</p>
+							<p className="w-44 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Present Address
+							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<dl className="grid grid-cols-2 gap-y-2">
+								<dl className="grid grid-cols-2 gap-y-4 mt-6">
 									{Object.entries(profileData?.presentAddress).map(([ key, value ]) => (
 										<React.Fragment key={key}>
 											<dt className="text-md font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
@@ -161,9 +169,11 @@ const DetailedProfile = ({ userDetails }) => {
 
 						{/* Residency Information */}
 						<div className="md:border-b pb-6 md:pr-6">
-							<p className="w-60 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Residency Information</p>
+							<p className="w-60 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Residency Information
+							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<dl className="grid grid-cols-2 gap-y-2 mt-6">
+								<dl className="grid grid-cols-2 gap-y-4 mt-6">
 									{Object.entries(profileData?.residencyInformation).map(([ key, value ]) => (
 										<React.Fragment key={key}>
 											<dt className="text-md font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
@@ -176,7 +186,9 @@ const DetailedProfile = ({ userDetails }) => {
 
 						{/* Education Details */}
 						<div className="md:border-b pb-6 md:pr-6">
-							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Education Details</p>
+							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Education Details
+							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.educationalDetails).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
@@ -187,9 +199,12 @@ const DetailedProfile = ({ userDetails }) => {
 							</div>
 						</div>
 
+
 						{/* Career */}
 						<div className="md:border-b pb-6 md:pr-6">
-							<p className="w-20 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Career</p>
+							<p className="w-20 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Career
+							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.career).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
@@ -202,27 +217,32 @@ const DetailedProfile = ({ userDetails }) => {
 
 						{/* Physical Attributes */}
 						<div className="md:border-b pb-6 md:pr-6">
-							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Physical Attributes</p>
+							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Physical Attributes
+							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Height:</p> {profileData?.physicalAttributes.height}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Weight:</p> {profileData?.physicalAttributes.weight}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Eye Color:</p> {profileData?.physicalAttributes.eyeColor}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Hair Color:</p> {profileData?.physicalAttributes.hairColor}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Complexion:</p> {profileData?.physicalAttributes.complexion}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Blood Group:</p> {profileData?.physicalAttributes.bloodGroup}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Body Type:</p> {profileData?.physicalAttributes.bodyType}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Tattoo:</p> {profileData?.physicalAttributes.tattoo}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Disability:</p> {profileData?.physicalAttributes.disability}</p>
+								{Object.entries(profileData?.physicalAttributes).map(([ key, value ]) => (
+									<p className="flex gap-2" key={key}>
+										<p className="text-md font-medium w-56 mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</p>
+										{value}
+									</p>
+								))}
 							</div>
 						</div>
 
 						{/* Hobbies */}
 						<div className="pb-6 md:pr-6">
-							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Hobbies</p>
+							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Hobbies
+							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2 flex-wrap'>
-									{profileData?.hobbies?.hobbiesList?.map((res, ind) => (<p
-										key={ind} className="bg-gray-200 rounded-full px-3 py-1 text-headingGray">{res.name}</p>))}
+								<p className="flex gap-2 flex-wrap">
+									{/* {profileData?.hobbies.map((res, ind) => ( */}
+									<p className="bg-gray-200 rounded-full px-3 py-1 text-headingGray">
+										{/* {res} */}
+										{profileData?.hobbies?.hobbiesList}
+									</p>
+									{/* ))} */}
 								</p>
 							</div>
 						</div>
@@ -232,30 +252,33 @@ const DetailedProfile = ({ userDetails }) => {
 					<div className="md:border-l">
 						{/* language */}
 						<div className="md:border-b pb-6 md:pl-6">
-							<p className="w-28 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Language</p>
+							<p className="w-28 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Language
+							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<div className="grid grid-cols-2">
-									<dt className="text-md font-medium mb-2">Mother Tongue:</dt>
-									<dd>{profileData?.language.MotherTongue}</dd>
-								</div>
-								<div className="grid grid-cols-2">
-									<dt className="text-md font-medium mb-2">Known Languages:</dt>
-									<dd>{profileData?.language.KnownLanguages}</dd>
-								</div>
+								{Object.entries(profileData?.language).map(([ key, value ]) => (
+									<div className="grid grid-cols-2" key={key}>
+										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
+										<dd>{value}</dd>
+									</div>
+								))}
 							</div>
 						</div>
 
 
 						{/* Spiritual and Social Background */}
 						<div className="md:border-b pb-6 md:pl-6">
-							<p className="w-24 bg-white text-primary  flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Spiritual</p>
-							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Religion:</p> {profileData?.spiritualSocial.religion}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Caste:</p> {profileData?.spiritualSocial.caste}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Ethnicity:</p> {profileData?.spiritualSocial.ethnicity}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Personal Value:</p> {profileData?.spiritualSocial.personalValue}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Family Value:</p> {profileData?.spiritualSocial.familyValue}</p>
-							</div>
+							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Spiritual & Social Background
+							</p>
+							{/* <div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
+								{Object.entries(profileData?.spiritualAndSocialBackground).map(([ key, value ]) => (
+									<p className="flex gap-2" key={key}>
+										<p className="text-md font-medium w-56 mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</p>
+										{value}
+									</p>
+								))}
+							</div> */}
 						</div>
 
 						{/* Lifestyle */}
@@ -268,142 +291,129 @@ const DetailedProfile = ({ userDetails }) => {
 							</div>
 						</div>
 
+
 						{/* Family Details */}
-						<div className="md:border-b pb-6 md:pl-6">
-							<p className="w-36 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Family Details</p>
+						<div className="mt-6 pb-6 md:pl-6">
+							<p className="w-28 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Family Details
+							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Family Value:</span> {profileData?.familyDetails.familyValue}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Family Type:</span> {profileData?.familyDetails.familyType}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Family Status:</span> {profileData?.familyDetails.familyStatus}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Father's Occupation:</span> {profileData?.familyDetails.fatherOccupation}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Mother's Occupation:</span> {profileData?.familyDetails.motherOccupation}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>No. of Brothers:</span> {profileData?.familyDetails.noOfBrothers}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>No. of Sisters:</span> {profileData?.familyDetails.noOfSisters}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Brothers Married:</span> {profileData?.familyDetails.brothersMarried}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Sisters Married:</span> {profileData?.familyDetails.sistersMarried}
-								</p>
+								{Object.entries(profileData.familyDetails).map(([ key, value ]) => (
+									<div className="grid grid-cols-2" key={key}>
+										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
+										<dd>{value}</dd>
+									</div>
+								))}
 							</div>
 						</div>
 
 						{/* Partner Expectation */}
-						<div className="pb-6 md:pl-6">
+						{/* <div className="pb-6 md:pl-6">
 							<p className="bg-white text-primary w-52 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
 								Partner Expectation
 							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Partner's Age:</span>
-									{profileData?.partnerExpectation.age.min} to {profileData?.partnerExpectation.age.max}
+									<span className='text-md font-medium w-56 mb-2'>Bride's Age:</span>
+									{profiledata?.partnerExpectation.bridesAge.min} - {profiledata?.partnerExpectation.bridesAge.max}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Height:</span>
-									{profileData?.partnerExpectation.height.feet} feet {profileData?.partnerExpectation.height.inches} inches
+									{profiledata?.partnerExpectation.height.feet} feet {profiledata?.partnerExpectation.height.inches} inches
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Marital Status:</span>
-									{profileData?.partnerExpectation.maritalStatus}
+									{profiledata?.partnerExpectation.maritalStatus}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Residency Country:</span>
-									{profileData?.partnerExpectation.residencyCountry}
+									{profiledata?.partnerExpectation.residencyCountry}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Religion:</span>
-									{profileData?.partnerExpectation.religion}
+									{profiledata?.partnerExpectation.religion}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Caste:</span>
-									{profileData?.partnerExpectation.caste}
+									{profiledata?.partnerExpectation.caste}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Sub Caste:</span>
-									{profileData?.partnerExpectation.subCaste}
+									{profiledata?.partnerExpectation.subCaste}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Mother Tongue:</span>
-									{profileData?.partnerExpectation.motherTongue}
+									{profiledata?.partnerExpectation.motherTongue}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Highest Education:</span>
-									{profileData?.partnerExpectation.highestEducation}
+									{profiledata?.partnerExpectation.highestEducation}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Employed In:</span>
-									{profileData?.partnerExpectation.employedIn}
+									{profiledata?.partnerExpectation.employedIn}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Occupation:</span>
-									{profileData?.partnerExpectation.occupation}
+									{profiledata?.partnerExpectation.occupation}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Annual Income:</span>
-									{profileData?.partnerExpectation.annualIncome}
+									{profiledata?.partnerExpectation.annualIncome}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Smoking Acceptable:</span>
-									{profileData?.partnerExpectation.smokingAcceptable}
+									{profiledata?.partnerExpectation.smokingAcceptable}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Drinking Acceptable:</span>
-									{profileData?.partnerExpectation.drinkingAcceptable}
+									{profiledata?.partnerExpectation.drinkingAcceptable}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Dieting Acceptable:</span>
-									{profileData?.partnerExpectation.dietingAcceptable}
+									{profiledata?.partnerExpectation.dietingAcceptable}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Body Type:</span>
-									{profileData?.partnerExpectation.bodyType}
+									{profiledata?.partnerExpectation.bodyType}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Preferred Country:</span>
-									{profileData?.partnerExpectation.preferredCountry}
+									{profiledata?.partnerExpectation.preferredCountry}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Preferred State:</span>
-									{profileData?.partnerExpectation.preferredState}
+									{profiledata?.partnerExpectation.preferredState}
 								</p>
 								<p className='flex gap-2'>
 									<span className='text-md font-medium w-56 mb-2'>Complexion:</span>
-									{profileData?.partnerExpectation.complexion}
+									{profiledata?.partnerExpectation.complexion}
 								</p>
 								<p className=''>
 									<span className='text-md font-medium w-52 mb-2'>General Requirement:</span>
-									<p className="text-sm font-light">{profileData?.partnerExpectation.generalRequirement}</p>
+									<p className="text-sm font-light">{profiledata?.partnerExpectation.generalRequirement}</p>
 								</p>
 							</div>
+						</div> */}
+						<div className="mt-6 pb-6 md:pl-6">
+							<p className="w-48 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+								Partner Expectation
+							</p>
+							{/* <div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
+								{Object.entries(profileData.partnerExpectation).map(([ key, value ]) => (
+									<div className="grid grid-cols-2" key={key}>
+										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
+										<dd>{value}</dd>
+									</div>
+								))}
+							</div> */}
 						</div>
+
 					</div>
 				</div>
 
 			</div>
-		</div>
+		</div >
 	);
 };
 

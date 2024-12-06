@@ -73,7 +73,7 @@ const MyProfilePage = () => {
 	const presentAddress = userData?.presentAddress;
 
 	const handleFormSubmit = (data) => {
-		// console.log("data-", data);
+		console.log("data before submit -", data);
 		dispatch(uploadFileData(data));
 	};
 	// console.log(userData);

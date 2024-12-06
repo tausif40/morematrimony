@@ -1,11 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DetailedProfile from './DetailedProfile/DetailedProfile';
 import PartnerPreference from './PartnerPreference/PartnerPreference';
 import PhotoGallery from './PhotoGallery/PhotoGallery';
 import DashboardMenu from '../Dashboard/DashboardMenu';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileImages, getUserDetails } from '../../store/features/userDetails-slice';
+
 
 function MemberProfile() {
+	const dispatch = useDispatch({})
 	const [ activeTab, setActiveTab ] = useState('DetailedProfile');
+
+	const userDetails = useSelector((state) => state.userDetails.userDetails);
+	const profileImages = useSelector((state) => state.userDetails.profileImages);
+
+	useEffect(() => {
+		dispatch(getUserDetails())
+		dispatch(getProfileImages())
+	}, [ dispatch ])
+
+	// console.log("use -/", userDetails.data.user);
+	// console.log("image - ", profileImages);
 
 	return (
 		<>
@@ -57,8 +72,8 @@ function MemberProfile() {
 				</div>
 
 				<div className="my-10 px-4 sm:px-8 md:px-16 lg:px-32 xl:px-40 flex gap-6 justify-center">
-					{activeTab === 'DetailedProfile' && <DetailedProfile />}
-					{activeTab === 'PartnerPreference' && <PartnerPreference />}
+					{activeTab === 'DetailedProfile' && <DetailedProfile userDetails={userDetails} />}
+					{activeTab === 'PartnerPreference' && <PartnerPreference uploadImages={profileImages} />}
 					{activeTab === 'PhotoGallery' && <PhotoGallery />}
 				</div>
 			</div>

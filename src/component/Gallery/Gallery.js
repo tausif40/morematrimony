@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import apiClient from '../../api/apiClient';
-import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileImages } from '../../store/features/userDetails-slice';
 import { toast } from 'react-hot-toast';
@@ -20,7 +19,7 @@ const Gallery = () => {
 			setUploadedImages((prevImages) => [ ...prevImages, image.name ]);
 			console.log(image.name);
 		})
-	}, [ dispatch ])
+	}, [ dispatch, profileImages?.data?.gallery ])
 
 	const handleImageChange = (e) => {
 		const file = e.target.files[ 0 ];
@@ -36,10 +35,8 @@ const Gallery = () => {
 		formData.append('file', file);
 
 		try {
-			console.log(formData);
-
 			// dispatch(uploadImages(formData))
-			const response = await apiClient.post(`/gallery`, formData, {
+			await apiClient.post(`/gallery`, formData, {
 				onUploadProgress: (progressEvent) => {
 					const percentage = Math.round(
 						(progressEvent.loaded * 100) / progressEvent.total

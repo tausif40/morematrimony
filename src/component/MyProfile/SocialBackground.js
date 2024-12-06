@@ -3,9 +3,10 @@ import { toast } from 'react-hot-toast';
 import { socialBackground } from '../../utils/data/MyProfileData';
 import { hinduId, christianId } from '../../utils/data/config';
 import apiClient from '../../api/apiClient';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const SocialBackground = ({ onFormSubmit, data }) => {
-
 	const { religions, divisions, stars, zodiac, languages, countries } = data;
 
 	const [ isChristian, setIsChristian ] = useState(false)
@@ -15,6 +16,9 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 	const [ casteList, setCasteList ] = useState([])
 	const [ rashiSignsList, setRashiSignsList ] = useState([])
 	const [ loading, setLoading ] = useState({ state: false, city: false, caste: false, rashi: false, });
+
+	const token = Cookies.get('access_token');
+	const BASE_URL = process.env.REACT_APP_API_URL;
 
 	const [ formData, setFormData ] = useState({
 		religion: '',
@@ -52,6 +56,24 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 
 	const [ errors, setErrors ] = useState({});
 
+
+	const cleanFormData = (data) => {
+		const cleanedData = {};
+
+		for (const key in data) {
+			if (data[ key ] && typeof data[ key ] === 'object' && !Array.isArray(data[ key ])) {
+				const nestedData = cleanFormData(data[ key ]);
+				if (Object.keys(nestedData).length > 0) {
+					cleanedData[ key ] = nestedData;
+				}
+			} else if (data[ key ] !== '' && data[ key ] !== null && data[ key ] !== undefined) {
+				cleanedData[ key ] = data[ key ];
+			}
+		}
+
+		return cleanedData;
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// console.log(formData);
@@ -87,7 +109,7 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 			return;
 		}
 
-		let cleanedFormData = { ...formData };
+		let cleanedFormData = cleanFormData(formData);
 
 		if (!isHindu) {
 			delete cleanedFormData.gothra;
@@ -98,40 +120,71 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 		if (!isChristian) delete cleanedFormData.division;
 		if (!formData.gothra) delete cleanedFormData.gothra;
 
-		if (isHindu && formData.dosh === 'no') {
+		if (isHindu && formData.dosh === 'no' || formData.dosh === "don't know") {
 			delete cleanedFormData.doshName;
 		}
 		// console.log('Form submitted:', cleanedFormData);
 
-		onFormSubmit({ spiritualAndSocialBackground: cleanedFormData });
+		// onFormSubmit({ spiritualAndSocialBackground: cleanedFormData });
 
+		// const data = { spiritualAndSocialBackground: cleanedFormData }
+		const loadingToast = toast.loading('Updating.....');
+		try {
+			console.log(formData);
+			const formDataObj = new FormData();
+			Object.keys(formData).forEach((key) => {
+				if (key === 'birthPlace') {
+					if (formData.birthPlace.country) formDataObj.append('birthPlace[country]', formData.birthPlace.country);
+					if (formData.birthPlace.state) formDataObj.append('birthPlace[state]', formData.birthPlace.state);
+					if (formData.birthPlace.city) formDataObj.append('birthPlace[city]', formData.birthPlace.city);
+					console.log("Appended birthPlace:", formData.birthPlace);
+				} else if (key === 'kundli' && formData.kundli) {
+					formDataObj.append('kundli', formData.kundli);
+					console.log("Appended kundli:", formData.kundli);
+				} else if (formData[ key ]) {
+					formDataObj.append(key, formData[ key ]);
+					console.log(`Appended ${key}:`, formData[ key ]);
+				}
+			});
+
+			// Log final FormData contents
+			for (const [ key, value ] of formDataObj.entries()) {
+				console.log(`${key}:`, value);
+			}
+			const data = { spiritualAndSocialBackground: formDataObj }
+
+			console.log(formDataObj);
+			const response = await axios.patch(`${BASE_URL}/user/spiritualAndSocialBackground`, data, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				},
+			})
+			console.log(response);
+			response.status === 200 && toast.success('Update successful!', { id: loadingToast });
+		} catch (error) {
+			console.log(error);
+			toast.error(error?.response?.data?.message || error?.response?.message || 'Upload failed', { id: loadingToast });
+		}
 	};
 
 	const handleChange = (e) => {
 		const { name, value, files } = e.target;
 		setFormData((prevFormData) => ({
 			...prevFormData,
-			[ name ]: value,
+			[ name ]: name === 'kundli' ? files[ 0 ] : value,
 		}));
+
 		if (name === 'religion') {
 			fetchCaste(value);
-			setCasteList('')
-			formData.division = ''
-			value == christianId ? setIsChristian(true) : setIsChristian(false)
-			value == hinduId ? setIsHindu(true) : setIsHindu(false)
-		} else if (name == 'star') {
+			setCasteList('');
+			setFormData((prev) => ({ ...prev, division: '' }));
+			value == christianId ? setIsChristian(true) : setIsChristian(false);
+			value == hinduId ? setIsHindu(true) : setIsHindu(false);
+		} else if (name === 'star') {
 			fetchRashi(value);
-			setRashiSignsList('')
-		} else if (name === 'kundli') {
-			const file = files[ 0 ];
-			setFormData((prevFormData) => ({
-				...prevFormData,
-				[ name ]: file,
-			}));
-			const formData = new FormData();
-			formData.append('kundli', file);
-
+			setRashiSignsList('');
 		}
+
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
@@ -461,7 +514,7 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 								<option value="" disabled>Select</option>
 								<option value="yes">Yes</option>
 								<option value="no">No</option>
-								<option value="Don't Know">Don't Know</option>
+								<option value="don't know">Don't Know</option>
 							</select>
 							{errors.dosh && <p className="text-red-500 text-xs">{errors.dosh}</p>}
 						</div>

@@ -11,7 +11,6 @@ const apiClient = axios.create({
 	baseURL: BASE_URL,
 	headers: {
 		'Content-Type': 'application/json',
-		'Content-Type': 'multipart/form-data',
 	},
 });
 // 'Content-Type': 'multipart/form-data'

@@ -6,7 +6,9 @@ import DashboardMenu from '../Dashboard/DashboardMenu';
 import MemberProfile from '../MemberProfile/MemberProfile';
 
 function MemberProfileLayout() {
+
 	const [ activeTab, setActiveTab ] = useState('DetailedProfile');
+
 
 	return (
 		<>
@@ -14,8 +16,8 @@ function MemberProfileLayout() {
 				<div className='hidden lg:block'>
 					<DashboardMenu />
 				</div>
-				<MemberProfile />
-			</div>
+				<MemberProfile />	
+			</div>	
 		</>
 	);
 }
