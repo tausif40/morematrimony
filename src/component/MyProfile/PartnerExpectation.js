@@ -3,13 +3,14 @@ import { toast } from 'react-hot-toast';
 import { indiaId } from '../../utils/data/config';
 import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lifestyle } from '../../utils/data/MyProfileData';
 import apiClient from '../../api/apiClient';
-import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
+// import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
 
 const PartnerExpectation = ({ data, onFormSubmit }) => {
 	const { countriesWithDoesNotMatter, religions, occupations, education, languages } = data
 
 	const [ stateList, setStateList ] = useState([])
 	const [ casteList, setCasteList ] = useState([])
+	// const [ selectedCountryIds, setSelectedCountryIds ] = useState([]);
 	const [ loading, setLoading ] = useState({ state: false, caste: false });
 
 	const fetchData = async (url, setData, type) => {
@@ -23,6 +24,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 			setLoading((prev) => ({ ...prev, [ type ]: false }));
 		}
 	};
+
 	useEffect(() => { fetchData(`/state?countryId=${indiaId}`, setStateList, 'state'); }, [ indiaId ])
 	const fetchCaste = (religionId) => fetchData(`/caste?religionId=${religionId}`, setCasteList, 'caste');
 
@@ -95,20 +97,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 		return (formData.maritalStatus !== 'single' && formData.maritalStatus !== '')
 	};
-	// const isNotEmployed = () => {
-	// 	if (formData.employedIn == 'not working' || formData.employedIn == "doesn't matter") {
-	// 		delete formData.occupation;
-	// 		delete formData.annualIncome;
-	// 	}
-	// 	return (formData.employedIn !== 'not working' && formData.employedIn !== "doesn't matter" && formData.employedIn !== "")
-	// };
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!formData.height.inches) delete formData.height.inches;
-		// console.log(formData);
-		// console.log("isChildrenFieldsVisible - ", isChildrenFieldsVisible());
-		// console.log("isNotEmployed - ", isNotEmployed());
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
 			return;
@@ -136,12 +128,6 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 			}));
 		}
 
-		// if (name === 'preferredCountry') {
-		// 	dispatch(fetchStates(value));
-		// 	formData.preferredState = ''
-		// }
-
-
 		if (name === 'religion') {
 			setCasteList('')
 			fetchCaste(value);
@@ -151,13 +137,15 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
-	// Get input classes for error styling
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
-
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Partner Expectation</p>
 			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
+
+				{/* <MultiSelectDropdown dataList={countriesWithDoesNotMatter?.country} onSelectionChange={handleSelectionChange} />
+				<MultiSelectDropdown dataList={casteList?.caste} onSelectionChange={handleSelectionChange} /> */}
+
 				{/* {age} */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
@@ -434,9 +422,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</select>
 					{errors.employedIn && <p className="text-red-500 text-xs">{errors.employedIn}</p>}
 				</div>
-				{/* Occupation */}
-				{/* {isNotEmployed() &&
-					<> */}
+
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Occupation <span className="text-red-500">*</span>
@@ -464,6 +450,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</select>
 					{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
 				</div>
+
 				{/* Annual Income */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
@@ -486,8 +473,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</select>
 					{errors.annualIncome && <p className="text-red-500 text-xs">{errors.annualIncome}</p>}
 				</div>
-				{/* </>
-				} */}
+
 				{/* Smoking Acceptable */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Smoking Acceptable <span className="text-red-500">*</span></label>

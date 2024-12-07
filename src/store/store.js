@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { registerUser } from './auth/userRegister-slicer2'
-import userReducer from './auth/user-slice';
+import authSlice from './auth/auth-slice';
 import profileData from './features/profileData-slice'
 import userDataSlice from './features/userDetails-slice';
 import userUploadImages from './features/uploadImages-slice';
@@ -8,8 +7,7 @@ import userUploadImages from './features/uploadImages-slice';
 
 export const store = configureStore({
 	reducer: {
-		registerUser: registerUser,
-		user: userReducer,
+		auth: authSlice,
 		profileData: profileData,
 		userDetails: userDataSlice,
 		uploadImages: userUploadImages,

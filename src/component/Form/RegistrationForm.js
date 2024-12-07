@@ -2,41 +2,26 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { IoIosArrowDown } from "react-icons/io";
 import Cookies from 'js-cookie';
-// import { useDispatch } from "react-redux";
-// import { registerUser } from "../../store/auth/userRegister-slicer2";
-// import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from "../../store/auth/auth-slice";
+import { encryptData } from "../../utils/encryption";
 
 const RegistrationForm = () => {
 	const dropdownRef = useRef(null);
 	const navigate = useNavigate();
-	// const [ isOpen, setIsOpen ] = useState(false);
+	const dispatch = useDispatch();
 	const [ errors, setErrors ] = useState({});
 	const [ agreement, setAgreement ] = useState(false);
-	const [ confirmPassword, setConfirmPassword ] = useState('');
-	const [ selectedProfile, setSelectedProfile ] = useState('');
-	const [ profileError, setProfileError ] = useState('');
-	// const dispatch = useDispatch();
-	const BASE_URL = process.env.REACT_APP_API_URL;
-	BASE_URL == undefined && console.log('Base url not found');
+	const [ confirmPassword, setConfirmPassword ] = useState();
 
-	// const { currentUser, loading, error } = useSelector((state) => state.registerUser);
+	const { isLoading, error } = useSelector((state) => state.auth);
 
 	const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
-
-	// const toggleDropdown = () => setIsOpen(!isOpen);
-
-	// const handleSelect = (profile) => {
-	// 	setSelectedProfile(profile);
-	// 	setIsOpen(false);
-	// 	setProfileError('')
-	// };
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-				// setIsOpen(false);
 			}
 		};
 		document.addEventListener("mousedown", handleClickOutside);
@@ -75,6 +60,14 @@ const RegistrationForm = () => {
 				psdLength: '',
 			}));
 		}
+	}
+
+
+	const validateDOB = (dob) => {
+		const today = new Date();
+		const selectedDate = new Date(dob);
+		const minAgeDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+		return selectedDate <= minAgeDate;
 	};
 
 	const validateForm = () => {
@@ -84,7 +77,7 @@ const RegistrationForm = () => {
 		if (!formData.lastName) newErrors.lastName = 'LastName is required';
 		if (!formData.gender) newErrors.gender = 'Gender is required';
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
-		// if (!validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
+		if (formData.onBehalf == 'mySelf' && !validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
 		if (!formData.email) newErrors.email = 'Email is required';
 		if (!formData.password) newErrors.password = 'Password is required';
 		// if (formData.password.length > 7) newErrors.password = 'Password min 8 characters';
@@ -93,68 +86,69 @@ const RegistrationForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		// Validate form fields
 		const newErrors = validateForm();
 		setErrors(newErrors);
 
-		if (formData.password.length < 7) {
+		if (formData.password.length < 8) {
 			setErrors((prevErrors) => ({
 				...prevErrors,
-				psdLength: "Password min 8 characters",
+				psdLength: 'Password must be at least 8 characters',
 			}));
-			return;
-		} else if (formData.password !== confirmPassword) {
-			setErrors((prevErrors) => ({
-				...prevErrors,
-				conformPsd: "Passwords does't match!",
-			}));
-			return;
-		} else if (!agreement) {
-			toast('Please accept agreement!', {
-				icon: '⚠️'
-			});
 			return;
 		}
-
-
-		// const userData = { ...formData, onBehalf: selectedProfile, }
-		// dispatch(registerUser(userData));
-		if (Object.keys(newErrors).length == 0) {
-			const loadingToast = toast.loading('Registering.....');
-			setErrors({});
-			console.log(formData);
-			await axios.post(`${BASE_URL}/auth/signUp`, formData, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			})
-				.then((response) => {
-					console.log(response);
-					Cookies.set('access_token', response.data.tokens.access.token);
-					Cookies.set('refresh_token', response.data.tokens.refresh.token);
-					navigate('/dashboard')
-					new Promise((resolve) => setTimeout(resolve, 2000));
-					toast.success(("Registration successful!"), { id: loadingToast })
-
-					setFormData({
-						firstName: "",
-						lastName: "",
-						gender: "",
-						dateOfBirth: "",
-						email: "",
-						password: "",
-						confirmPassword: "",
-					});
-
-				}).catch((error) => {
-					console.log(error);
-					new Promise((resolve) => setTimeout(resolve, 2000));
-					toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
-				})
-		} else {
+		if (formData.password !== confirmPassword) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				conformPsd: "Passwords don't match!",
+			}));
+			return;
+		}
+		if (!agreement) {
+			toast('Please accept the agreement!', { icon: '⚠️' });
+			return;
+		}
+		if (Object.keys(newErrors).length > 0) {
 			setErrors(newErrors);
 			toast.error('Please correct all highlighted errors!');
+			return;
+		}
+		setErrors({});
+		try {
+			// const encryptFormData = encryptData(formData)
+			// console.log(encryptFormData);
+
+			const result = await dispatch(registerUser(formData));
+
+			if (registerUser.fulfilled.match(result)) {
+				const tokens = result?.payload?.tokens;
+				console.log(tokens);
+				Cookies.set('access_token', tokens.access.token, { expires: 1 });
+				Cookies.set('refresh_token', tokens.refresh.token, { expires: 7 });
+
+				toast.success('Registration successful! Redirecting to dashboard...');
+				navigate('/dashboard');
+			} else {
+				const errorMessage = result.error?.message || 'Registration failed. Please try again.';
+				toast.error(errorMessage);
+			}
+		} catch (error) {
+			toast.error('An unexpected error occurred. Please try again later.');
+			console.error('Registration error:', error);
 		}
 	};
+
+
+	const handelConformPassword = (e) => {
+		setConfirmPassword(e.target.value)
+		if (formData.password === e.target.value) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				conformPsd: '',
+			}));
+		}
+	}
 
 	const handleLoginPage = () => {
 		navigate('/')
@@ -340,7 +334,7 @@ const RegistrationForm = () => {
 							type="password"
 							name="confirmPassword"
 							value={confirmPassword}
-							onChange={(e) => setConfirmPassword(e.target.value)}
+							onChange={handelConformPassword}
 							className="mt-1 p-3 block w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm"
 							placeholder="********"
 						/>

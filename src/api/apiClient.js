@@ -9,6 +9,7 @@ BASE_URL == undefined && console.log('Base url not found');
 
 const apiClient = axios.create({
 	baseURL: BASE_URL,
+	timeout: 30000,
 	headers: {
 		'Content-Type': 'application/json',
 	},
