@@ -77,6 +77,15 @@ const RegistrationForm = () => {
 		}
 	};
 
+
+	const validateDOB = (dob) => {
+		const today = new Date();
+		const selectedDate = new Date(dob);
+		const minAgeDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
+		return selectedDate <= minAgeDate;
+	};
+
 	const validateForm = () => {
 		const newErrors = {};
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
@@ -84,6 +93,7 @@ const RegistrationForm = () => {
 		if (!formData.lastName) newErrors.lastName = 'LastName is required';
 		if (!formData.gender) newErrors.gender = 'Gender is required';
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
+		if (!validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
 		if (!formData.email) newErrors.email = 'Email is required';
 		if (!formData.password) newErrors.password = 'Password is required';
 		// if (formData.password.length > 7) newErrors.password = 'Password min 8 characters';
@@ -208,7 +218,7 @@ const RegistrationForm = () => {
 
 				<div className="mb-4">
 					<label htmlFor="onBehalf" className="block text-sm font-medium text-headingGray">
-						Country <span className="text-red-500">*</span>
+						On Behalf <span className="text-red-500">*</span>
 					</label>
 					<select
 						id="onBehalf"
@@ -241,6 +251,7 @@ const RegistrationForm = () => {
 							className={getInputClasses('firstName')}
 							placeholder="First Name"
 						/>
+
 						{errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>}
 					</div>
 
@@ -285,10 +296,11 @@ const RegistrationForm = () => {
 						</label>
 						<input
 							type="date"
+							id="dateOfBirth"
+							className={getInputClasses('dateOfBirth')}
 							name="dateOfBirth"
 							value={formData.dateOfBirth}
 							onChange={handleChange}
-							className={getInputClasses('dateOfBirth')}
 						/>
 						{errors.dateOfBirth && <p className="text-red-500 text-xs">{errors.dateOfBirth}</p>}
 					</div>
