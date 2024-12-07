@@ -93,7 +93,7 @@ const RegistrationForm = () => {
 		if (!formData.lastName) newErrors.lastName = 'LastName is required';
 		if (!formData.gender) newErrors.gender = 'Gender is required';
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
-		if (!validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
+		// if (!validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
 		if (!formData.email) newErrors.email = 'Email is required';
 		if (!formData.password) newErrors.password = 'Password is required';
 		// if (formData.password.length > 7) newErrors.password = 'Password min 8 characters';
