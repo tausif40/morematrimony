@@ -8,113 +8,110 @@ const DetailedProfile = ({ userDetails }) => {
 	const data = userDetails?.data?.user
 
 	const profileData = {
-		introduction: data?.introduction || "",
+		introduction: data?.introduction || "_",
 		profileInfo: {
-			firstName: data?.basicInformation?.firstName || "",
-			lastName: data?.basicInformation?.lastName || "",
-			dateOfBirth: data?.basicInformation?.dateOfBirth || "",
-			gender: data?.basicInformation?.gender || "",
-			maritalStatus: data?.agentId?.onBehalf || "",
-			profileCreatedBy: data?.agentId?.onBehalf || "",
+			firstName: data?.basicInformation?.firstName || "_",
+			lastName: data?.basicInformation?.lastName || "_",
+			dateOfBirth: data?.basicInformation?.dateOfBirth || "_",
+			gender: data?.basicInformation?.gender || "_",
+			maritalStatus: data?.agentId?.onBehalf || "_",
+			profileCreatedBy: data?.agentId?.onBehalf || "_",
 		},
 		presentAddress: {
-			country: data?.presentAddress?.country?.name || "",
-			state: data?.presentAddress?.state?.name || "",
-			city: data?.presentAddress?.city?.name || "",
-			postalCode: data?.presentAddress?.postalCode || "",
+			country: data?.presentAddress?.country?.name || "_",
+			state: data?.presentAddress?.state?.name || "_",
+			city: data?.presentAddress?.city?.name || "_",
+			postalCode: data?.presentAddress?.postalCode || "_",
 		},
 		residencyInformation: {
-			birthCountry: data?.residencyInformation?.birthCountry?.name || "",
-			growUpCountry: data?.residencyInformation?.growUpCountry?.name || "",
-			residencyCountry: data?.residencyInformation?.residencyCountry?.name || "",
-			residencyStatus: data?.residencyInformation?.residencyStatus || "",
-			citizenship: data?.residencyInformation?.citizenship?.name || "",
+			birthCountry: data?.residencyInformation?.birthCountry?.name || "_",
+			growUpCountry: data?.residencyInformation?.growUpCountry?.name || "_",
+			residencyCountry: data?.residencyInformation?.residencyCountry?.name || "_",
+			residencyStatus: data?.residencyInformation?.residencyStatus || "_",
+			citizenship: data?.residencyInformation?.citizenship?.name || "_",
 		},
 		educationalDetails: {
-			highestEducation: data?.educationalDetails?.highestEducation?._id || "",
-			educationDetail: data?.educationalDetails?.educationDetail || "",
-			institution: data?.educationalDetails?.institution || "",
+			highestEducation: data?.educationalDetails?.highestEducation?._id || "_",
+			educationDetail: data?.educationalDetails?.educationDetail || "_",
+			institution: data?.educationalDetails?.institution || "_",
 		},
 		career: {
-			employedIn: data?.career?.employedIn || "",
-			occupation: data?.career?.occupation?._id || "",
-			occupationDetails: data?.career?.occupationDetails || "",
-			organizationName: data?.career?.organizationName || "",
-			jobLocation: data?.career?.jobLocation || "",
-			annualIncome: data?.career?.annualIncome || "",
+			employedIn: data?.career?.employedIn || "_",
+			occupation: data?.career?.occupation?._id || "_",
+			occupationDetails: data?.career?.occupationDetails || "_",
+			organizationName: data?.career?.organizationName || "_",
+			jobLocation: data?.career?.jobLocation || "_",
+			annualIncome: data?.career?.annualIncome || "_",
 		},
 		physicalAttributes: {
 			height: `${data?.physicalAttributes?.height?.feet || 0} feet ${data?.physicalAttributes?.height?.inches || 0} inches`,
-			weight: data?.physicalAttributes?.weight || "",
-			eyeColor: data?.physicalAttributes?.eyeColor || "",
-			hairColor: data?.physicalAttributes?.hairColor || "",
-			bodyType: data?.physicalAttributes?.bodyType || "",
-			complexion: data?.physicalAttributes?.complexion || "",
-			bloodGroup: data?.physicalAttributes?.bloodGroup || "",
+			weight: data?.physicalAttributes?.weight || "_",
+			eyeColor: data?.physicalAttributes?.eyeColor || "_",
+			hairColor: data?.physicalAttributes?.hairColor || "_",
+			bodyType: data?.physicalAttributes?.bodyType || "_",
+			complexion: data?.physicalAttributes?.complexion || "_",
+			bloodGroup: data?.physicalAttributes?.bloodGroup || "_",
 			tattoo: data?.physicalAttributes?.tattoo ? "Yes" : "No",
-			disability: data?.physicalAttributes?.disability?.disability || "",
+			disability: data?.physicalAttributes?.disability?.disability || "_",
 		},
 		language: {
-			motherTongue: data?.language?.motherTongue?.name || "",
-			knownLanguages: data?.language?.knownLanguages?.map((lang) => lang.name).join(", ") || "",
+			motherTongue: data?.language?.motherTongue?.name || "_",
+			knownLanguages: data?.language?.knownLanguages?.map((lang) => lang.name).join(", ") || "_",
 		},
 		hobbies: {
 			hobbiesList: data?.hobbies?.hobbiesList
 		},
 		spiritualSocial: {
 			birthPlace: {
-				country: data?.spiritualAndSocialBackground?.birthPlace?.country?.name || "",
-				state: data?.spiritualAndSocialBackground?.birthPlace?.state?.name || "",
-				city: data?.spiritualAndSocialBackground?.birthPlace?.city?.name || "",
+				country: data?.spiritualAndSocialBackground?.birthPlace?.country?.name || "_",
+				state: data?.spiritualAndSocialBackground?.birthPlace?.state?.name || "_",
+				city: data?.spiritualAndSocialBackground?.birthPlace?.city?.name || "_",
 			},
-			religion: data?.spiritualAndSocialBackground?.religion?.name || "",
-			caste: data?.spiritualAndSocialBackground?.caste?.name || "",
-			subCaste: data?.spiritualAndSocialBackground?.subCaste || "",
-			ethnicity: data?.spiritualAndSocialBackground?.ethnicity?.name || "",
-			star: data?.spiritualAndSocialBackground?.star?.name || "",
-			rashi: data?.spiritualAndSocialBackground?.rashi?.name || "",
-			zodiac: data?.spiritualAndSocialBackground?.zodiac?.name || "",
-			timeOfBirth: data?.spiritualAndSocialBackground?.timeOfBirth || "",
+			religion: data?.spiritualAndSocialBackground?.religion?.name || "_",
+			caste: data?.spiritualAndSocialBackground?.caste?.name || "_",
+			subCaste: data?.spiritualAndSocialBackground?.subCaste || "_",
+			ethnicity: data?.spiritualAndSocialBackground?.ethnicity?.name || "_",
+			star: data?.spiritualAndSocialBackground?.star?.name || "_",
+			rashi: data?.spiritualAndSocialBackground?.rashi?.name || "_",
+			zodiac: data?.spiritualAndSocialBackground?.zodiac?.name || "_",
+			timeOfBirth: data?.spiritualAndSocialBackground?.timeOfBirth || "_",
 		},
 		lifestyle: {
-			diet: data?.lifestyle?.diet || "",
-			drink: data?.lifestyle?.drink || "",
-			smoke: data?.lifestyle?.smoke || "",
+			diet: data?.lifestyle?.diet || "_",
+			drink: data?.lifestyle?.drink || "_",
+			smoke: data?.lifestyle?.smoke || "_",
 		},
 		familyDetails: {
-			familyValue: data?.familyDetails?.familyValue || "",
-			familyType: data?.familyDetails?.familyType || "",
-			familyStatus: data?.familyDetails?.familyStatus || "",
-			fatherOccupation: data?.familyDetails?.fatherOccupation || "",
-			motherOccupation: data?.familyDetails?.motherOccupation || "",
-			brothers: data?.familyDetails?.brothers || "",
-			brothersMarried: data?.familyDetails?.brothersMarried || "",
-			sisters: data?.familyDetails?.sisters || "",
+			familyValue: data?.familyDetails?.familyValue || "_",
+			familyType: data?.familyDetails?.familyType || "_",
+			familyStatus: data?.familyDetails?.familyStatus || "_",
+			fatherOccupation: data?.familyDetails?.fatherOccupation || "_",
+			motherOccupation: data?.familyDetails?.motherOccupation || "_",
+			brothers: data?.familyDetails?.brothers || "_",
+			sisters: data?.familyDetails?.sisters || "_",
+			brothersMarried: data?.familyDetails?.brothersMarried || "_",
+			sistersMarried: data?.familyDetails?.brothersMarried || "_",
 		},
 		partnerExpectation: {
-			age: {
-				min: data?.partnerExpectation?.age?.min || "",
-				max: data?.partnerExpectation?.age?.max || "",
-			},
+			age: `${data?.partnerExpectation?.age?.min || "_"} to ${data?.partnerExpectation?.age?.max || "_"}`,
 			height: `${data?.partnerExpectation?.height?.feet || 0} feet ${data?.partnerExpectation?.height?.inches || 0} inches`,
-
-			maritalStatus: data?.partnerExpectation?.maritalStatus || "",
-			residencyCountry: data?.partnerExpectation?.residencyCountry?.name || "",
-			religion: data?.partnerExpectation?.religion?.name || "",
-			caste: data?.partnerExpectation?.caste?.name || "",
-			occupation: data?.partnerExpectation?.occupation?.map((occ) => `${occ.occupationName} (${occ.role})`).join(", ") || "",
-			motherTongue: data?.partnerExpectation?.motherTongue?.name || "",
-			highestEducation: data?.partnerExpectation?.highestEducation?.name || "",
-			employedIn: data?.partnerExpectation?.employedIn || "",
-			annualIncome: data?.partnerExpectation?.annualIncome || "",
-			smokingAcceptable: data?.partnerExpectation?.smokingAcceptable || "",
-			drinkingAcceptable: data?.partnerExpectation?.drinkingAcceptable || "",
-			dietingAcceptable: data?.partnerExpectation?.dietingAcceptable || "",
-			bodyType: data?.partnerExpectation?.bodyType || "",
-			preferredCountry: data?.partnerExpectation?.preferredCountry?.name || "",
-			preferredState: data?.partnerExpectation?.preferredState?.name || "",
-			complexion: data?.partnerExpectation?.complexion || "",
-			generalRequirement: "Looking for a well-educated and family-oriented partner. Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.Lorem ipsum may be used as a placeholder before the final copy is available."
+			maritalStatus: data?.partnerExpectation?.maritalStatus || "_",
+			residencyCountry: data?.partnerExpectation?.residencyCountry?.name || "_",
+			religion: data?.partnerExpectation?.religion?.name || "_",
+			caste: data?.partnerExpectation?.caste?.name || "_",
+			occupation: data?.partnerExpectation?.occupation?.map((occ) => `${occ.occupationName} (${occ.role})`).join(", ") || "_",
+			motherTongue: data?.partnerExpectation?.motherTongue?.name || "_",
+			highestEducation: data?.partnerExpectation?.highestEducation?.name || "_",
+			employedIn: data?.partnerExpectation?.employedIn || "_",
+			annualIncome: data?.partnerExpectation?.annualIncome || "_",
+			smokingAcceptable: data?.partnerExpectation?.smokingAcceptable || "_",
+			drinkingAcceptable: data?.partnerExpectation?.drinkingAcceptable || "_",
+			dietingAcceptable: data?.partnerExpectation?.dietingAcceptable || "_",
+			bodyType: data?.partnerExpectation?.bodyType || "_",
+			preferredCountry: data?.partnerExpectation?.preferredCountry?.name || "_",
+			preferredState: data?.partnerExpectation?.preferredState?.name || "_",
+			complexion: data?.partnerExpectation?.complexion || "_",
+			generalRequirement: data?.partnerExpectation?.lookingFor || "_"
 		}
 	};
 
@@ -138,7 +135,7 @@ const DetailedProfile = ({ userDetails }) => {
 								{Object.entries(profileData?.profileInfo).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>{key == 'dateOfBirth' ? moment(value).format('DD-MM-YYYY') : value}</dd>
+										<dd>{key == 'dateOfBirth' ? moment(value).format('DD-MM-YYYY') == 'Invalid date' && '_' : value}</dd>
 									</div>
 								))}
 							</div>
@@ -204,15 +201,27 @@ const DetailedProfile = ({ userDetails }) => {
 						<div className="md:border-b pb-6 md:pr-6">
 							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Physical Attributes</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Height:</p> {profileData?.physicalAttributes.height}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Weight:</p> {profileData?.physicalAttributes.weight}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Eye Color:</p> {profileData?.physicalAttributes.eyeColor}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Hair Color:</p> {profileData?.physicalAttributes.hairColor}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Complexion:</p> {profileData?.physicalAttributes.complexion}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Blood Group:</p> {profileData?.physicalAttributes.bloodGroup}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Body Type:</p> {profileData?.physicalAttributes.bodyType}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Tattoo:</p> {profileData?.physicalAttributes.tattoo}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Disability:</p> {profileData?.physicalAttributes.disability}</p>
+								{Object.entries(profileData?.physicalAttributes).map(([ key, value ]) => (
+									<p className="flex gap-2" key={key}>
+										<p className="text-md font-medium w-56 mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</p>
+										{value}
+									</p>
+								))}
+							</div>
+						</div>
+
+						{/* language */}
+						<div className="md:border-b pb-6 md:pr-6">
+							<p className="w-28 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Language</p>
+							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Mother Tongue:</dt>
+									<dd>{profileData?.language.motherTongue}</dd>
+								</div>
+								<div className="grid grid-cols-2">
+									<dt className="text-md font-medium mb-2">Known Languages:</dt>
+									<dd>{profileData?.language.knownLanguages}</dd>
+								</div>
 							</div>
 						</div>
 
@@ -230,31 +239,39 @@ const DetailedProfile = ({ userDetails }) => {
 					{/* end */}
 
 					<div className="md:border-l">
-						{/* language */}
-						<div className="md:border-b pb-6 md:pl-6">
-							<p className="w-28 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Language</p>
-							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<div className="grid grid-cols-2">
-									<dt className="text-md font-medium mb-2">Mother Tongue:</dt>
-									<dd>{profileData?.language.MotherTongue}</dd>
-								</div>
-								<div className="grid grid-cols-2">
-									<dt className="text-md font-medium mb-2">Known Languages:</dt>
-									<dd>{profileData?.language.KnownLanguages}</dd>
-								</div>
-							</div>
-						</div>
-
 
 						{/* Spiritual and Social Background */}
 						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-24 bg-white text-primary  flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Spiritual</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Religion:</p> {profileData?.spiritualSocial.religion}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Caste:</p> {profileData?.spiritualSocial.caste}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Ethnicity:</p> {profileData?.spiritualSocial.ethnicity}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Personal Value:</p> {profileData?.spiritualSocial.personalValue}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Family Value:</p> {profileData?.spiritualSocial.familyValue}</p>
+								{Object.entries(profileData?.spiritualSocial).map(([ key, value ]) => {
+									if (typeof value === 'object' && !Array.isArray(value)) {
+										// If the value is an object, render its key-value pairs
+										return (
+											<div className="flex flex-col gap-2 mb-3" key={key}>
+												<p className="text-md font-medium capitalize">
+													{key.replace(/([A-Z])/g, ' $1')}:
+												</p>
+												<div className="pl-6">
+													{Object.entries(value).map(([ subKey, subValue ]) => (
+														<p className="flex gap-2" key={subKey}>
+															<p className="text-sm font-medium capitalize w-48">{subKey}:</p>
+															<span>{subValue}</span>
+														</p>
+													))}
+												</div>
+											</div>
+										);
+									}
+									return (
+										<p className="flex gap-2" key={key}>
+											<p className="text-md font-medium w-56 mb-2 capitalize">
+												{key.replace(/([A-Z])/g, ' $1')}:
+											</p>
+											<span>{value}</span>
+										</p>
+									);
+								})}
 							</div>
 						</div>
 
@@ -272,42 +289,12 @@ const DetailedProfile = ({ userDetails }) => {
 						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-36 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Family Details</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Family Value:</span> {profileData?.familyDetails.familyValue}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Family Type:</span> {profileData?.familyDetails.familyType}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Family Status:</span> {profileData?.familyDetails.familyStatus}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Father's Occupation:</span> {profileData?.familyDetails.fatherOccupation}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Mother's Occupation:</span> {profileData?.familyDetails.motherOccupation}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>No. of Brothers:</span> {profileData?.familyDetails.noOfBrothers}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>No. of Sisters:</span> {profileData?.familyDetails.noOfSisters}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Brothers Married:</span> {profileData?.familyDetails.brothersMarried}
-								</p>
-
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Sisters Married:</span> {profileData?.familyDetails.sistersMarried}
-								</p>
+								{Object.entries(profileData.familyDetails).map(([ key, value ]) => (
+									<div className="grid grid-cols-2" key={key}>
+										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
+										<dd>{value}</dd>
+									</div>
+								))}
 							</div>
 						</div>
 
@@ -317,93 +304,19 @@ const DetailedProfile = ({ userDetails }) => {
 								Partner Expectation
 							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Partner's Age:</span>
-									{profileData?.partnerExpectation.age.min} to {profileData?.partnerExpectation.age.max}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Height:</span>
-									{profileData?.partnerExpectation.height.feet} feet {profileData?.partnerExpectation.height.inches} inches
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Marital Status:</span>
-									{profileData?.partnerExpectation.maritalStatus}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Residency Country:</span>
-									{profileData?.partnerExpectation.residencyCountry}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Religion:</span>
-									{profileData?.partnerExpectation.religion}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Caste:</span>
-									{profileData?.partnerExpectation.caste}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Sub Caste:</span>
-									{profileData?.partnerExpectation.subCaste}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Mother Tongue:</span>
-									{profileData?.partnerExpectation.motherTongue}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Highest Education:</span>
-									{profileData?.partnerExpectation.highestEducation}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Employed In:</span>
-									{profileData?.partnerExpectation.employedIn}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Occupation:</span>
-									{profileData?.partnerExpectation.occupation}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Annual Income:</span>
-									{profileData?.partnerExpectation.annualIncome}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Smoking Acceptable:</span>
-									{profileData?.partnerExpectation.smokingAcceptable}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Drinking Acceptable:</span>
-									{profileData?.partnerExpectation.drinkingAcceptable}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Dieting Acceptable:</span>
-									{profileData?.partnerExpectation.dietingAcceptable}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Body Type:</span>
-									{profileData?.partnerExpectation.bodyType}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Preferred Country:</span>
-									{profileData?.partnerExpectation.preferredCountry}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Preferred State:</span>
-									{profileData?.partnerExpectation.preferredState}
-								</p>
-								<p className='flex gap-2'>
-									<span className='text-md font-medium w-56 mb-2'>Complexion:</span>
-									{profileData?.partnerExpectation.complexion}
-								</p>
-								<p className=''>
-									<span className='text-md font-medium w-52 mb-2'>General Requirement:</span>
-									<p className="text-sm font-light">{profileData?.partnerExpectation.generalRequirement}</p>
-								</p>
+								{Object.entries(profileData?.partnerExpectation).map(([ key, value ]) => (
+									<div className={`grid gap-2 mb-2 ${key == 'generalRequirement' ? 'grid-cols-1' : 'grid-cols-2'}`} key={key}>
+										<dt className={`text-md font-medium capitalize`}>{key.replace(/([A-Z])/g, ' $1')}:</dt>
+										{key == 'generalRequirement' ? <p className="text-sm font-light">{value}</p> : <dd>{value}</dd>}
+									</div>
+								))}
 							</div>
 						</div>
 					</div>
 				</div>
 
 			</div>
-		</div>
+		</div >
 	);
 };
 

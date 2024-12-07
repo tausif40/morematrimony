@@ -77,15 +77,6 @@ const RegistrationForm = () => {
 		}
 	};
 
-
-	const validateDOB = (dob) => {
-		const today = new Date();
-		const selectedDate = new Date(dob);
-		const minAgeDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-
-		return selectedDate <= minAgeDate;
-	};
-
 	const validateForm = () => {
 		const newErrors = {};
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
