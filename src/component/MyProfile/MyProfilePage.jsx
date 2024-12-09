@@ -19,7 +19,7 @@ import {
 	fetchOccupations, fetchLanguages, fetchHobbies, fetchDivision, fetchCountriesWithDoesNotMatter
 } from '../../store/features/profileData-slice';
 import apiClient from '../../api/apiClient';
-
+import { encryptData, decryptData } from "../../utils/encryption";
 
 const MyProfilePage = () => {
 	const dispatch = useDispatch({});
@@ -36,6 +36,8 @@ const MyProfilePage = () => {
 	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
 	// const { data: divisions, loading: divisionLoading, error: divisionError } = useSelector((state) => state.profileData.divisions);
 	const { data: countriesWithDoesNotMatter, loading: countriesWithDoesNotMatterLoading } = useSelector((state) => state.profileData.countriesWithDoesNotMatter);
+
+	// const secretKey = process.env.REACT_APP_ENCRYPTION_KEY;
 
 	useEffect(() => {
 		dispatch(fetchCountries());
@@ -73,7 +75,12 @@ const MyProfilePage = () => {
 	const presentAddress = userData?.presentAddress;
 
 	const handleFormSubmit = (data) => {
-		// console.log("data before submit -", data);
+		console.log("data before submit -", data);
+		const encryptDataFormate = encryptData(data);
+		console.log("encryptedData - ", encryptDataFormate);
+		// const dData = decryptData(encryptDataFormate);
+		// console.log("decryptData - ", dData)
+
 		dispatch(uploadFileData(data));
 	};
 	// console.log(userData);

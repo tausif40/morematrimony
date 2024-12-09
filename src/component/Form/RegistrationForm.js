@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { toast } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from "../../store/auth/auth-slice";
-import { encryptData } from "../../utils/encryption";
+import { encryptData, decryptData } from "../../utils/encryption";
 
 const RegistrationForm = () => {
 	const dropdownRef = useRef(null);
@@ -14,7 +13,7 @@ const RegistrationForm = () => {
 	const [ errors, setErrors ] = useState({});
 	const [ agreement, setAgreement ] = useState(false);
 	const [ confirmPassword, setConfirmPassword ] = useState();
-
+	const secretKey = process.env.REACT_APP_ENCRYPTION_KEY;
 	const { isLoading, error } = useSelector((state) => state.auth);
 
 	const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
@@ -116,9 +115,12 @@ const RegistrationForm = () => {
 		}
 		setErrors({});
 		try {
-			// const encryptFormData = encryptData(formData)
-			// console.log(encryptFormData);
 
+			// console.log(formData, "\n", secretKey);
+			// const encryptedData = encryptData(formData, secretKey);
+			// console.log("encryptedData - ", encryptedData);
+			// const dData = decryptData(encryptedData, secretKey);
+			// console.log("decryptData - ", dData);
 			const result = await dispatch(registerUser(formData));
 
 			if (registerUser.fulfilled.match(result)) {
@@ -138,7 +140,6 @@ const RegistrationForm = () => {
 			console.error('Registration error:', error);
 		}
 	};
-
 
 	const handelConformPassword = (e) => {
 		setConfirmPassword(e.target.value)
@@ -169,38 +170,8 @@ const RegistrationForm = () => {
 				<p className="text-sm text-center text-headingGray mb-6">
 					Fill out the form to get started.
 				</p>
-				{/* On Behalf */}
-				{/* <div className="mb-4">
-					<label className="block text-sm font-medium text-headingGray">
-						On Behalf
-					</label>
-					<div className="relative inline-block w-full">
-						<div className="cursor-pointer flex justify-between items-center mt-1 p-3  w-full rounded-md border border-gray-300 shadow-sm outline-none hover:ring-gold hover:border-gold text-sm"
-							onClick={toggleDropdown}
-						>
-							<span>{selectedProfile || 'Select Profile'}</span>
-							<span><IoIosArrowDown /></span>
-						</div>
-						{profileError && <p className="text-red-500 text-xs">{profileError}</p>}
-						{isOpen && (
-							<div className="absolute mt-2 bg-white border border-gray-300 rounded-md shadow-lg w-full hover:ring-gold hover:border-gold">
-								<div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4" ref={dropdownRef}>
-									{profiles?.map((profile, index) => (
-										<div
-											key={index}
-											className="cursor-pointer hover:bg-gray-100 p-2 text-center"
-											onClick={() => handleSelect(profile)}
-										>
-											{profile.charAt(0).toUpperCase() + profile.slice(1)}
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-					</div>
-				</div> */}
-				{/* On Behalf */}
 
+				{/* On Behalf */}
 				<div className="mb-4">
 					<label htmlFor="onBehalf" className="block text-sm font-medium text-headingGray">
 						On Behalf <span className="text-red-500">*</span>
@@ -347,7 +318,8 @@ const RegistrationForm = () => {
 				<div className="flex items-center mb-6 mt-4">
 					<input
 						type="checkbox"
-						onChange={() => setAgreement(true)}
+						checked={agreement}
+						onChange={() => setAgreement(!agreement)}
 						className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
 						id="termAndCondition"
 					/>
@@ -366,24 +338,6 @@ const RegistrationForm = () => {
 				>
 					Create Account
 				</button>
-				{/* 
-				<div className="flex items-center justify-center my-5">
-					<div className="flex-grow h-px bg-gray-300"></div>
-					<div className="mx-3 text-sm text-gray-500">Or Join With</div>
-					<div className="flex-grow h-px bg-gray-300"></div>
-				</div>
-
-				<div className="flex justify-center mt-4 space-x-4">
-					<button className="text-[#3b5998] ">
-						<FaFacebook size={32} />
-					</button>
-					<button className="text-white bg-[#e62833] rounded-full">
-						<TiSocialGooglePlus size={32} />
-					</button>
-					<button className="text-[#1da1f2] ">
-						<AiFillTwitterCircle size={32} />
-					</button>
-				</div> */}
 
 				<div className="text-center mt-8">
 					<p className="text-sm text-gray-500">
