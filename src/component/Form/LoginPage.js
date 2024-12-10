@@ -22,7 +22,7 @@ const LoginPage = () => {
 	const handleLogin = async (e) => {
 		// console.log(email, password);
 		e.preventDefault();
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		if (!email) {
 			setEmailError("Please enter email")
 		} else if (!emailRegex.test(email)) {
@@ -60,7 +60,7 @@ const LoginPage = () => {
 				navigate('/dashboard');
 			} else {
 				const errorMessage = result.error?.message || 'Login failed. Please try again.';
-				toast.error(errorMessage);
+				// toast.error(errorMessage);
 			}
 
 		} catch (error) {

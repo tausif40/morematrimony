@@ -69,6 +69,7 @@ const RegistrationForm = () => {
 	};
 
 	const validateForm = () => {
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		const newErrors = {};
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
 		if (!formData.firstName) newErrors.firstName = 'FirstName is required';
@@ -77,6 +78,7 @@ const RegistrationForm = () => {
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
 		if (formData.onBehalf == 'mySelf' && !validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
 		if (!formData.email) newErrors.email = 'Email is required';
+		if (!emailRegex.test(formData.email)) newErrors.email = "Invalid email format";
 		if (!formData.password) newErrors.password = 'Password is required';
 		// if (formData.password.length > 7) newErrors.password = 'Password min 8 characters';
 		return newErrors;
@@ -262,12 +264,12 @@ const RegistrationForm = () => {
 						Email address
 					</label>
 					<input
-						type="email"
+						type="text"
 						name="email"
 						value={formData.email}
 						onChange={handleChange}
 						className={getInputClasses('email')}
-						placeholder="admin@gmail.com"
+						placeholder="example@gmail.com"
 					/>
 					{errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
 				</div>

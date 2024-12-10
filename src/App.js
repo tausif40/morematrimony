@@ -23,7 +23,7 @@ import MatchesLayout from './component/Layout/MatchesLayout';
 import Plans from './component/Plans/Plans';
 import Help from './component/Help/Help';
 
-import { getUserDetails } from './store/features/userDetails-slice';
+import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
 
 const App = () => {
@@ -56,6 +56,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getUserDetails());
+    dispatch(getProfileImages());
   }, [ dispatch ]);
 
   return (

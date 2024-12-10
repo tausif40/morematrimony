@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/dist/photoswipe.css';
 import './image.css'
+import { useSelector } from 'react-redux';
 
-
-
-const images = [
-	{ src: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img2_pop07c.jpg' },
-	{ src: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img3_gl05sz.jpg' },
-	{ src: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594306/Tausif/temp/img4_qjhdex.jpg' },
-	{ src: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594306/Tausif/temp/img1_wdcpmj.jpg' },
-	{ src: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1717399015/Tausif/temp/img_rjd4en.png' },
-];
 
 function PhotoGallery() {
+	const [ images, setImages ] = useState([])
+
+	const profileImages = useSelector((state) => state.userDetails.profileImages);
+
+	useEffect(() => {
+		profileImages?.data?.gallery?.map((image, ind) => {
+			setImages((prevImages) => [ ...prevImages, image.image ]);
+			console.log(image.image);
+		})
+	}, [])
+
 	return (
 		<div className="container text-textGray border shadow-md rounded-xl">
 			<div className="px-2 py-8">
@@ -26,8 +29,8 @@ function PhotoGallery() {
 						{images.map((image, index) => (
 							<Item
 								key={index}
-								original={image.src}
-								thumbnail={image.src}
+								original={image}
+								thumbnail={image}
 								width='1200'
 								height='800'
 							>
@@ -35,7 +38,7 @@ function PhotoGallery() {
 									<img
 										ref={ref}
 										onClick={open}
-										src={image.src}
+										src={image}
 										alt=""
 										className="h-80 md:h-72 object-cover cursor-pointer w-full"
 									/>

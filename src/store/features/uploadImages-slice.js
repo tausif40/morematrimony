@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
+import { getProfileImages } from './userDetails-slice';
 
-
-export const uploadImages = createAsyncThunk('data/uploadImages', async (_, { rejectWithValue }) => {
+export const uploadImages = createAsyncThunk('data/uploadImages', async (_, { rejectWithValue, dispatch }) => {
 	try {
 		const response = await apiClient.get(`/gallery`);
 		console.log(response.data);
+		dispatch(getProfileImages());
 		return response.data;
 	} catch (error) {
 		console.log(error);

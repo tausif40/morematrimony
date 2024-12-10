@@ -12,11 +12,9 @@ function MemberProfile() {
 	const [ activeTab, setActiveTab ] = useState('DetailedProfile');
 
 	const userDetails = useSelector((state) => state.userDetails.userDetails);
-	const profileImages = useSelector((state) => state.userDetails.profileImages);
 
 	useEffect(() => {
 		dispatch(getUserDetails())
-		dispatch(getProfileImages())
 	}, [ dispatch ])
 
 	// console.log("use -/", userDetails.data.user);
@@ -73,7 +71,7 @@ function MemberProfile() {
 
 				<div className="my-10 px-2 sm:px-8 lg:px-16 xl:px-20 flex gap-6 justify-center">
 					{activeTab === 'DetailedProfile' && <DetailedProfile userDetails={userDetails} />}
-					{activeTab === 'PartnerPreference' && <PartnerPreference profileImages={profileImages} />}
+					{activeTab === 'PartnerPreference' && <PartnerPreference />}
 					{activeTab === 'PhotoGallery' && <PhotoGallery />}
 				</div>
 			</div>

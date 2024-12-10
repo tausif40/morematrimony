@@ -94,7 +94,6 @@ const FamilyInformation = ({ onFormSubmit }) => {
 						<option value="" disabled>
 							Choose Family Value
 						</option>
-						<option value="orthodox">Orthodox</option>
 						{familyInformation.familyValue.map((value, index) => (
 							<option key={index} value={value}>
 								{value.charAt(0).toUpperCase() + value.slice(1)}

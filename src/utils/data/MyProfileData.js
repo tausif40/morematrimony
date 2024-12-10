@@ -40,7 +40,7 @@ export const career = {
 }
 
 export const familyInformation = {
-	familyValue: [ "traditional", "modern", "liberal", "conservative" ],
+	familyValue: [ "orthodox", "traditional", "modern", "liberal", "conservative" ],
 	familyType: [ "joint", "nuclear", "other" ],
 	familyStatus: [ "poor", "lower middle class", "middle class", "upper middle class", "high class", "rich/affluent" ],
 	number: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
@@ -49,9 +49,10 @@ export const familyInformation = {
 export const partnerExpectations = {
 	age: [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50 ],
 	height: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
-	smokingAcceptable: [ "yes", "no", "occasionally", "social smoker", "non-smoker", "does not matter" ],
-	drinkingAcceptable: [ "yes", "no", "occasionally", "social drinker", "non-drinker", "does not matter" ],
+	smokingAcceptable: [ "yes", "no", "occasionally", "social smoker", "non-smoker" ],
+	drinkingAcceptable: [ "yes", "no", "occasionally", "social drinker", "non-drinker" ],
 	// dietingAcceptable: [ "vegetarian", "non-vegetarian", "pescatarian", "vegan", "other", "flexitarian" ],
+	employedIn: [ "government", "private", "business", "defence", "self-employed", "freelancer", "entrepreneur", "not working" ]
 }
 
 export const socialBackground = {

@@ -115,6 +115,8 @@ const DetailedProfile = ({ userDetails }) => {
 		}
 	};
 
+	// console.log(profileData);
+
 	return (
 		<div className="container text-textGray border shadow-md rounded-xl ">
 			<div className="space-y-6 md:space-y-8 pt-2 md:pt-4 pb-12 lg:px-6">
@@ -135,11 +137,12 @@ const DetailedProfile = ({ userDetails }) => {
 								{Object.entries(profileData?.profileInfo).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>{key == 'dateOfBirth' ? moment(value).format('DD-MM-YYYY') == 'Invalid date' && '_' : value}</dd>
+										<dd>{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
 									</div>
 								))}
 							</div>
 						</div>
+
 
 						{/* Present Address */}
 						<div className="md:border-b pb-6 md:pr-6">

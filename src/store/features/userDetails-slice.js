@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
 
-
 export const getUserDetails = createAsyncThunk('data/getUserDetails', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/user`);
@@ -17,7 +16,6 @@ export const getProfileImages = createAsyncThunk('data/getProfileImages', async 
 		const response = await apiClient.get(`/gallery`);
 		return response.data;
 	} catch (error) {
-		console.log(error);
 		console.log(error);
 		return rejectWithValue(error.response?.data || 'Failed to fetch profile images');
 	}
