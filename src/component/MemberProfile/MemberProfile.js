@@ -15,9 +15,9 @@ function MemberProfile() {
 	const profileImages = useSelector((state) => state.userDetails.profileImages);
 
 	useEffect(() => {
-		if (!userDetails) dispatch(getUserDetails())
-		if (!profileImages) dispatch(getProfileImages())
-	}, [ dispatch, userDetails, profileImages ])
+		dispatch(getUserDetails())
+		dispatch(getProfileImages())
+	}, [ dispatch ])
 
 	// console.log("use -/", userDetails.data.user);
 	// console.log("image - ", profileImages);
@@ -71,7 +71,7 @@ function MemberProfile() {
 					</div>
 				</div>
 
-				<div className="my-10 px-4 sm:px-8 md:px-16 lg:px-32 xl:px-40 flex gap-6 justify-center">
+				<div className="my-10 px-2 sm:px-8 lg:px-16 xl:px-20 flex gap-6 justify-center">
 					{activeTab === 'DetailedProfile' && <DetailedProfile userDetails={userDetails} />}
 					{activeTab === 'PartnerPreference' && <PartnerPreference profileImages={profileImages} />}
 					{activeTab === 'PhotoGallery' && <PhotoGallery />}

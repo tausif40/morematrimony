@@ -76,9 +76,9 @@ const MyProfilePage = () => {
 
 	const handleFormSubmit = (data) => {
 		console.log("data before submit -", data);
-		const encryptDataFormate = encryptData(data);
-		console.log("encryptedData - ", encryptDataFormate);
-		// const dData = decryptData(encryptDataFormate);
+		const encryptedData = encryptData(data);
+		// console.log("encryptedData - ", encryptedData);
+		// const dData = decryptData(encryptedData);
 		// console.log("decryptData - ", dData)
 
 		dispatch(uploadFileData(data));

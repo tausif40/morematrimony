@@ -3,7 +3,7 @@ import moment from 'moment';
 
 const DetailedProfile = ({ userDetails }) => {
 
-	console.log(userDetails?.data?.user);
+	// console.log(userDetails?.data?.user);
 
 	const data = userDetails?.data?.user
 

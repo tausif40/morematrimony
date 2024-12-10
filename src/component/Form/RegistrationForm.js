@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from "../../store/auth/auth-slice";
-import { encryptData, decryptData } from "../../utils/encryption";
 
 const RegistrationForm = () => {
 	const dropdownRef = useRef(null);
@@ -116,18 +115,13 @@ const RegistrationForm = () => {
 		setErrors({});
 		try {
 
-			// console.log(formData, "\n", secretKey);
-			// const encryptedData = encryptData(formData, secretKey);
-			// console.log("encryptedData - ", encryptedData);
-			// const dData = decryptData(encryptedData, secretKey);
-			// console.log("decryptData - ", dData);
 			const result = await dispatch(registerUser(formData));
 
 			if (registerUser.fulfilled.match(result)) {
 				const tokens = result?.payload?.tokens;
 				console.log(tokens);
-				Cookies.set('access_token', tokens.access.token, { expires: 1 });
-				Cookies.set('refresh_token', tokens.refresh.token, { expires: 7 });
+				Cookies.set('access_token', tokens.access.token);
+				Cookies.set('refresh_token', tokens.refresh.token);
 
 				toast.success('Registration successful! Redirecting to dashboard...');
 				navigate('/dashboard');

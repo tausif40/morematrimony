@@ -10,6 +10,7 @@ const Gallery = () => {
 	const [ isUploading, setIsUploading ] = useState(false);
 	const [ uploadedImages, setUploadedImages ] = useState([]);
 
+	// const profileImages = useSelector((state) => state.userDetails.profileImages);
 	const profileImages = useSelector((state) => state.userDetails.profileImages);
 
 	useEffect(() => {
@@ -19,8 +20,8 @@ const Gallery = () => {
 			setUploadedImages((prevImages) => [ ...prevImages, image.name ]);
 			console.log(image.name);
 		})
-	}, [ dispatch, profileImages?.data?.gallery ])
-
+	}, [ dispatch ])
+	// profileImages?.data?.gallery
 	const handleImageChange = (e) => {
 		const file = e.target.files[ 0 ];
 		if (file) {
@@ -31,8 +32,10 @@ const Gallery = () => {
 	};
 
 	const uploadImage = async (file) => {
+		console.log(file);
 		const formData = new FormData();
 		formData.append('file', file);
+		console.log("formData - ", formData);
 
 		try {
 			// dispatch(uploadImages(formData))
@@ -57,12 +60,14 @@ const Gallery = () => {
 		setIsUploading(false);
 	};
 
+	// console.log("profileImages - ", profileImages);
+
 	return (
 		<>
 			<div className='grid grid-cols-4 justify-center border w-full p-4 rounded-md shadow-sm h-80'>
 				<div className=" flex flex-col items-center justify-center p-4 shadow-sm bg-gray-100 rounded-sm">
 					<label className="flex flex-col items-center justify-center w-20 h-20 bg-hotRed text-white rounded-full cursor-pointer text-center">
-						<input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} disabled={isUploading} />
+						<input type="file" accept="image/*" className="hidden" onChange={handleImageChange} disabled={isUploading} />
 
 						{isUploading ? (
 							<div className="flex flex-col items-center">

@@ -3,13 +3,18 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import { loginUser } from '../../store/auth/auth-slice';
+import { useDispatch, useSelector } from 'react-redux';
+
+
 const LoginPage = () => {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ passwordError, setPasswordError ] = useState('');
 	const [ emailError, setEmailError ] = useState('');
 	const [ error, setError ] = useState('');
-	const navigate = useNavigate();
 
 	const BASE_URL = process.env.REACT_APP_API_URL;
 	BASE_URL == undefined && console.log('Base url not found');
@@ -28,27 +33,43 @@ const LoginPage = () => {
 			setPasswordError("Please enter Password")
 			return;
 		}
-		const loadingToast = toast.loading('Logging.....');
+		// const loadingToast = toast.loading('Logging.....');
 		try {
-			await axios.post(`${BASE_URL}/auth/logIn`, { email, password }, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}).then((response) => {
+			// await axios.post(`${BASE_URL}/auth/logIn`, { email, password }, {
+			// 	headers: {
+			// 		'Content-Type': 'application/json',
+			// 	},
+			// }).then((response) => {
 
-				Cookies.set('access_token', response.data.tokens.access.token);
-				Cookies.set('refresh_token', response.data.tokens.refresh.token);
-				navigate('/dashboard')
-				new Promise((resolve) => setTimeout(resolve, 2000));
-				toast.success(("Login successful!"), { id: loadingToast })
-				// console.log(response.data);
-			});
+			// 	Cookies.set('access_token', response.data.tokens.access.token);
+			// 	Cookies.set('refresh_token', response.data.tokens.refresh.token);
+			// 	navigate('/dashboard')
+			// 	new Promise((resolve) => setTimeout(resolve, 2000));
+			// 	toast.success(("Login successful!"), { id: loadingToast })
+			// 	// console.log(response.data);
+			// });
+			const result = await dispatch(loginUser({ email, password }));
+
+			if (loginUser.fulfilled.match(result)) {
+				const tokens = result?.payload?.tokens;
+				console.log(tokens);
+				Cookies.set('access_token', tokens.access.token);
+				Cookies.set('refresh_token', tokens.refresh.token);
+
+				// toast.success('Login successful!');
+				navigate('/dashboard');
+			} else {
+				const errorMessage = result.error?.message || 'Login failed. Please try again.';
+				toast.error(errorMessage);
+			}
+
 		} catch (error) {
-			console.log(error);
-			setError(error?.response?.data?.message || error?.message || "Registration failed");
-			// toast.error("Email password does't match");
-			new Promise((resolve) => setTimeout(resolve, 2000));
-			toast.error(("Registration failed."), { id: loadingToast })
+			toast.error('An unexpected error occurred. Please try again later.');
+			console.error('Login error:', error);
+			// console.log(error);
+			// setError(error?.response?.data?.message || error?.message || "Registration failed");
+			// new Promise((resolve) => setTimeout(resolve, 2000));
+			// toast.error(("Registration failed."), { id: loadingToast })
 		}
 	};
 

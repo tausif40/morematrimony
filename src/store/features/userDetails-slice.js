@@ -18,6 +18,7 @@ export const getProfileImages = createAsyncThunk('data/getProfileImages', async 
 		return response.data;
 	} catch (error) {
 		console.log(error);
+		console.log(error);
 		return rejectWithValue(error.response?.data || 'Failed to fetch profile images');
 	}
 });
