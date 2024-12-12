@@ -23,8 +23,7 @@ import { encryptData, decryptData } from "../../utils/encryption";
 
 const MyProfilePage = () => {
 	const dispatch = useDispatch({});
-	// const { userDetails, loading, error } = useSelector((state) => state.userDetails);
-	// const { data: profileImages, loading: profileImagesLoading, error: profileImagesError } = useSelector((state) => state.userDetails.profileImages);
+
 	const { data: userDetails, loading: userDetailsLoading, error: userDetailsError } = useSelector((state) => state.userDetails.userDetails);
 	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
 	const { data: education, loading: educationLoading, error: educationError } = useSelector((state) => state.profileData.education);
@@ -34,10 +33,8 @@ const MyProfilePage = () => {
 	const { data: religions, loading: religionLoading, error: religionError } = useSelector((state) => state.profileData.religions);
 	const { data: stars, loading: starsLoading, error: starsError } = useSelector((state) => state.profileData.stars);
 	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
-	// const { data: divisions, loading: divisionLoading, error: divisionError } = useSelector((state) => state.profileData.divisions);
 	const { data: countriesWithDoesNotMatter, loading: countriesWithDoesNotMatterLoading } = useSelector((state) => state.profileData.countriesWithDoesNotMatter);
 
-	// const secretKey = process.env.REACT_APP_ENCRYPTION_KEY;
 
 	useEffect(() => {
 		dispatch(fetchCountries());
@@ -59,7 +56,7 @@ const MyProfilePage = () => {
 		const DivisionData = async () => {
 			try {
 				const response = await apiClient.get('/division');
-				setDivisions(response.data);
+				// setDivisions(response.data);
 			} catch (error) {
 				console.error(error);
 			};
@@ -75,14 +72,15 @@ const MyProfilePage = () => {
 	const presentAddress = userData?.presentAddress;
 
 	const handleFormSubmit = (data) => {
-		console.log("data before submit -", data);
-		const encryptedData = encryptData(data);
+		// console.log("data before submit -", data);
+		// const encryptedData = encryptData(data);
 		// console.log("encryptedData - ", encryptedData);
 		// const dData = decryptData(encryptedData);
 		// console.log("decryptData - ", dData)
 
 		dispatch(uploadFileData(data));
 	};
+	
 	// console.log(userData);
 	return (
 		<div className='space-y-10'>

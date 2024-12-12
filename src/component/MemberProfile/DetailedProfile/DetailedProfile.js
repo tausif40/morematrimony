@@ -1,11 +1,12 @@
 import React from "react";
 import moment from 'moment';
+import { useSelector } from "react-redux";
 
-const DetailedProfile = ({ userDetails }) => {
+const DetailedProfile = () => {
 
 	// console.log(userDetails?.data?.user);
-
-	const data = userDetails?.data?.user
+	const userDetails = useSelector((state) => state.userDetails.userDetails);
+	const data = userDetails?.data?.user;
 
 	const profileData = {
 		introduction: data?.introduction || "_",

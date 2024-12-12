@@ -3,22 +3,11 @@ import DetailedProfile from './DetailedProfile/DetailedProfile';
 import PartnerPreference from './PartnerPreference/PartnerPreference';
 import PhotoGallery from './PhotoGallery/PhotoGallery';
 import DashboardMenu from '../Dashboard/DashboardMenu';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProfileImages, getUserDetails } from '../../store/features/userDetails-slice';
 
 
 function MemberProfile() {
-	const dispatch = useDispatch({})
 	const [ activeTab, setActiveTab ] = useState('DetailedProfile');
 
-	const userDetails = useSelector((state) => state.userDetails.userDetails);
-
-	useEffect(() => {
-		dispatch(getUserDetails())
-	}, [ dispatch ])
-
-	// console.log("use -/", userDetails.data.user);
-	// console.log("image - ", profileImages);
 
 	return (
 		<>
@@ -70,7 +59,7 @@ function MemberProfile() {
 				</div>
 
 				<div className="my-10 px-2 sm:px-8 lg:px-16 xl:px-20 flex gap-6 justify-center">
-					{activeTab === 'DetailedProfile' && <DetailedProfile userDetails={userDetails} />}
+					{activeTab === 'DetailedProfile' && <DetailedProfile />}
 					{activeTab === 'PartnerPreference' && <PartnerPreference />}
 					{activeTab === 'PhotoGallery' && <PhotoGallery />}
 				</div>

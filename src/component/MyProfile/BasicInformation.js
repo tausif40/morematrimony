@@ -14,6 +14,7 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 		numberOfChildren: ''
 		// ProfilePhoto: null,
 	});
+	// console.log(data);
 
 	const validateDOB = (dob) => {
 		const today = new Date();

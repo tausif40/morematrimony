@@ -7,7 +7,7 @@ const PresentAddress = ({ onFormSubmit, data }) => {
 	const [ cityList, setCityList ] = useState([]);
 	const [ stateLoading, setStateLoading ] = useState(false)
 	const [ cityLoading, setCityLoading ] = useState(false)
-	const { countries } = data;
+	const { countries, presentAddress } = data;
 
 	const [ formData, setFormData ] = useState({
 		country: '',
@@ -16,6 +16,23 @@ const PresentAddress = ({ onFormSubmit, data }) => {
 		postalCode: '',
 	});
 
+	useEffect(() => {
+		if (presentAddress) {
+			setFormData({
+				country: presentAddress.country._id || '',
+				state: presentAddress.state._id || '',
+				city: presentAddress.city._id || '',
+				postalCode: presentAddress.postalCode || '',
+			});
+
+			if (presentAddress.country._id) {
+				fetchState(presentAddress.country._id);
+			}
+			if (presentAddress.state._id) {
+				fetchCity(presentAddress.state._id);
+			}
+		}
+	}, [ presentAddress ]);
 
 	const fetchState = async (countryId) => {
 		setStateLoading(true)

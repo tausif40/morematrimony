@@ -1,30 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { HiOutlinePhotograph, HiOutlineMail, HiOutlineLockClosed, HiOutlineTrash } from "react-icons/hi";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoListOutline } from "react-icons/io5";
 import { MdOutlineBlock } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
-import { LiaHandshakeSolid } from "react-icons/lia";
-import { PiGiftLight } from "react-icons/pi";
-import { TbCurrencyDollar } from "react-icons/tb";
 import { LuKeyRound } from "react-icons/lu";
 import { RiHome4Line } from "react-icons/ri";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiMaleFemale } from "react-icons/bi";
 import { LuView } from "react-icons/lu";
 import { FaUsersViewfinder } from "react-icons/fa6";
+import { useSelector } from 'react-redux';
+import '../../CSS/dashboard.css'
 
 function ProfileOption() {
 	const location = useLocation();
+
 	const currentPath = location.pathname;
+	const [ profileCompletion, setProfileCompletion ] = useState()
+	const [ color, setColor ] = useState('ten')
+
+	const userDetails = useSelector((state) => state.userDetails.userDetails);
+	const percent = userDetails?.data?.user?.profileCompletion;
+
+	useEffect(() => {
+		setProfileCompletion(percent)
+		percent && setColor(percentColor(percent))
+	}, [ userDetails, userDetails?.data?.user?.profileCompletion ])
+
+	const percentColor = (presence) => {
+		const colors = [ 'ten', 'twenty', 'forty', 'fifty', 'sixty', 'eighty', 'hundred' ];
+		const index = Math.min(Math.floor(presence / 10));
+		return colors[ index ];
+	};
+
+
 
 	const navOption = [
 		{ name: 'Dashboard', path: '/dashboard', icon: RiHome4Line },
 		{ name: 'Gallery', path: '/gallery', icon: HiOutlinePhotograph },
-		// { name: 'Happy Story', path: '/happy-story', icon: LiaHandshakeSolid },
 		// { name: 'Packages', path: '/packages', icon: PiGiftLight },
-		// { name: 'My Wallet', path: '/my-wallet', icon: TbCurrencyDollar },
 		// { name: 'Message', path: '/message', icon: HiOutlineMail },
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
@@ -33,22 +49,26 @@ function ProfileOption() {
 		{ name: 'Manage Profile', path: '/profile-setting', icon: AiOutlineUser },
 		{ name: 'Ignored User List', path: '/ignored-list', icon: MdOutlineBlock },
 		{ name: 'Change Password', path: '/change-password', icon: LuKeyRound },
-		// { name: 'Partner Preferences', path: '/partner-Preferences', icon: BiMaleFemale },
 		{ name: 'Deactivate Account', path: '/deactivate-account', icon: HiOutlineLockClosed },
 		{ name: 'Delete Account', path: '/delete-account', icon: HiOutlineTrash },
 	];
 
+	// console.log("pre - ", userDetails?.data?.user?.profileCompletion);
+	// console.log("color - ", color);
 
-	useEffect(() => {
-	})
 	return (
 		<>
 			< section className='bg-white pt-6 min-h-screen'>
-				<div className='px-4 flex flex-col items-center gap-4'>
-					<img src="/assets/img/img0.png" alt="" className='size-20 rounded-full' />
+				<div className='px-4 flex flex-col items-center'>
+					<img src="/assets/img/img0.png" alt="" className='size-24 rounded-full border mb-4' />
 					<p className='font-bold text-2xl text-headingGray'>Mohd. Tausif</p>
+					<div className={`${color} flex text-xs my-1 border px-2 rounded-full`} >
+						<p className='text-[12px]'>Profile completion: </p>
+						<p>&nbsp;{profileCompletion || 0}&nbsp;</p>
+						<p className='text-[10px]'>%</p>
+					</div>
 					<Link to='/member-profile'>
-						<p className='bg-[#fbcbcfd4] cursor-pointer text-hotRed py-2 px-8 rounded-md w-full flex justify-center border border-[#fbcbcfd4] hover:border-hotRed transition-all'>Public Profile</p>
+						<p className='bg-[#fbcbcfd4] cursor-pointer text-hotRed py-2 px-8 rounded-md w-full flex justify-center border border-[#fbcbcfd4] hover:border-hotRed transition-all mt-4'>Public Profile</p>
 					</Link>
 				</div>
 

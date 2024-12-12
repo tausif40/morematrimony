@@ -24,6 +24,8 @@ import Plans from './component/Plans/Plans';
 import Help from './component/Help/Help';
 
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
+import { getMatchProfile } from './store/features/matchProfile-slice';
+
 import { useDispatch } from 'react-redux';
 
 const App = () => {
@@ -57,6 +59,7 @@ const App = () => {
   useEffect(() => {
     dispatch(getUserDetails());
     dispatch(getProfileImages());
+    dispatch(getMatchProfile());
   }, [ dispatch ]);
 
   return (

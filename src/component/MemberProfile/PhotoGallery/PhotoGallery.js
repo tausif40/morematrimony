@@ -12,8 +12,8 @@ function PhotoGallery() {
 
 	useEffect(() => {
 		profileImages?.data?.gallery?.map((image, ind) => {
-			setImages((prevImages) => [ ...prevImages, image.image ]);
-			console.log(image.image);
+			setImages((prevImages) => [ ...prevImages, image?.image ]);
+			// console.log(image.image);
 		})
 	}, [])
 

@@ -3,8 +3,14 @@ import { IoIosStarOutline } from "react-icons/io";
 import { IoMdStar } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import '../ViewProfile/viewProfile.css';
+import { getMatchProfile } from '../../store/features/matchProfile-slice';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const ProfileCard = ({ name, id, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img }) => {
+const token = Cookies.get('access_token');
+
+const ProfileCard = ({ fistName, lastName, id, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img }) => {
 
 	const [ isInterestAccept, setIsInterestAccept ] = useState(false);
 	const [ shortlist, setShortlist ] = useState(false);
@@ -54,14 +60,24 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 			<div className="h-64 w-full flex flex-col justify-between py-2 ">
 				<div>
 					<Link to={'/view-profile'}>
-						<h3 className="text-xl font-semibold text-black">{name}</h3>
+						<h3 className="text-xl font-semibold text-black">{fistName} {lastName}</h3>
 					</Link>
 					<p className="mt-1 text-sm text-gray-500">
-						{id} | Last seen {lastSeen}
+						{id.slice(-8).toUpperCase()} | Last seen {lastSeen}
 					</p>
-					<p className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
+					{/* <div className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
 						{age} yrs • {height} • {religion} - {caste} • {education} • {occupation} • {location}
-					</p>
+					</div> */}
+					<div className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
+						{[
+							age && `${age} yrs`,
+							height && height,
+							religion && caste ? `${religion} - ${caste}` : religion || caste,
+							education && education,
+							occupation && occupation,
+							location && location,
+						].filter(Boolean).join(' • ').replace(/\b\w/g, (char) => char.toUpperCase())}
+					</div>
 				</div>
 
 				{/* Connect Options */}
@@ -92,64 +108,47 @@ const ProfileCard = ({ name, id, age, height, religion, caste, education, occupa
 
 // Main Component
 const ProfileList = () => {
-	const profiles = [
-		{
-			name: 'Priyanka Singh',
-			id: 'H13285375',
-			age: 19,
-			height: "5'4\"",
-			religion: 'Hindu',
-			caste: 'Brahaman',
-			education: 'B.Com.',
-			occupation: 'Not Working',
-			location: 'Bettiah',
-			lastSeen: 'few hour ago',
-			accountCreate: '2024-10-25',
-			img: './assets/img/profileImages/img1.jpg'
-		},
-		{
-			name: 'Saafiya Firoz Shaikh',
-			id: 'H13711773',
-			age: 20,
-			height: "5'3\"",
-			religion: 'Muslim',
-			caste: 'Sheikh',
-			education: 'B.Sc.',
-			occupation: 'Not Working',
-			location: 'Ahmadnagar',
-			lastSeen: '2 days ago',
-			accountCreate: '2024-11-03',
-			img: './assets/img/profileImages/img3.jpg'
-		},
-		{
-			name: 'Mansi jain',
-			id: 'H12904665',
-			age: 21,
-			height: "5'5\"",
-			religion: 'Jain',
-			caste: 'axyz',
-			education: 'Other Bachelor Degree in Arts / Science / Commerce',
-			occupation: 'Teaching / Academician',
-			location: 'Madhubani',
-			lastSeen: 'yesterday',
-			accountCreate: '2024-10-20',
-			img: './assets/img/profileImages/img5.jpg'
-		},
-		{
-			name: 'Mansi jain',
-			id: 'H12904665',
-			age: 21,
-			height: "5'5\"",
-			religion: 'Jain',
-			caste: 'axyz',
-			education: 'Other Bachelor Degree in Arts / Science / Commerce',
-			occupation: 'Teaching / Academician',
-			location: 'Madhubani',
-			lastSeen: 'yesterday',
-			accountCreate: '2024-10-20',
-			img: './assets/img/profileImages/img6.jpg'
-		},
-	];
+	const dispatch = useDispatch()
+	const matchProfile = useSelector((state) => state.matchProfile.matchProfile);
+
+	useEffect(() => {
+		dispatch(getMatchProfile());
+
+	}, [ dispatch ])
+	console.log(matchProfile);
+
+	const mapProfiles = (profiles) => {
+		return profiles.map((profile) => {
+			const {
+				_id,
+				basicInformation,
+				physicalAttributes,
+				createdAt
+			} = profile;
+
+			return {
+				fistName: basicInformation?.firstName,
+				lastName: basicInformation?.lastName,
+				id: _id,
+				age: basicInformation?.dateOfBirth
+					? Math.floor((new Date() - new Date(basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25))
+					: '',
+				height: physicalAttributes?.height
+					? `${physicalAttributes.height.feet}' ${physicalAttributes.height.inches || 0}"`
+					: '',
+				religion: profile.spiritualAndSocialBackground?.religion[ 0 ]?.name,
+				caste: profile.spiritualAndSocialBackground?.caste[ 0 ]?.name,
+				education: profile.educationalDetails?.highestEducation[ 0 ]?.name,
+				occupation: profile.career?.occupation[ 0 ]?.occupationName,
+				location: 'Not Specified',
+				lastSeen: 'Recently Active',
+				accountCreate: createdAt,
+				img: './assets/img/profileImages/default.jpg' || '',
+			};
+		});
+	};
+
+	const profiles = matchProfile?.user ? mapProfiles(matchProfile.user) : [];
 
 	return (
 		<div className="mx-auto md:p-4">

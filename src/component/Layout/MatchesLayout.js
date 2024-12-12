@@ -1,7 +1,7 @@
 import React from 'react'
-import ProfileList from '../ProfileList/ProfileList'
-import FilterProfileList from '../ProfileList/FilterProfileList'
-import FilterMenu from '../ProfileList/FilterMenu'
+import ProfileList from '../Matches/ProfileList'
+import FilterProfileList from '../Matches/FilterProfileList'
+import FilterMenu from '../Matches/FilterMenu'
 
 function MatchesLayout() {
 	return (
