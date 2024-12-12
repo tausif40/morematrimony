@@ -43,7 +43,8 @@ const userDataSlice = createSlice({
 				state.userDetails.error = action.payload || action.error.message;
 			})
 			//get images
-			.addCase(getProfileImages.pending, (state) => {
+			.addCase(getProfileImages.pending, (state, action) => {
+				// state.profileImages.data = action.payload;
 				state.profileImages.loading = true
 				state.profileImages.error = true
 			})

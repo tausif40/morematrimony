@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import authSlice from './auth/auth-slice';
 import profileData from './features/profileData-slice'
 import userDataSlice from './features/userDetails-slice';
-import userUploadImages from './features/uploadImages-slice';
+import userUploadImages from './features/images-slice';
 import matchProfile from './features/matchProfile-slice';
 
 export const store = configureStore({
@@ -10,7 +10,7 @@ export const store = configureStore({
 		auth: authSlice,
 		profileData: profileData,
 		userDetails: userDataSlice,
-		uploadImages: userUploadImages,
+		image: userUploadImages,
 		matchProfile: matchProfile,
 	},
 

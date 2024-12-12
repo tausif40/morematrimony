@@ -9,15 +9,14 @@ function MemberProfileLayout() {
 
 	const [ activeTab, setActiveTab ] = useState('DetailedProfile');
 
-
 	return (
 		<>
 			<div>
 				<div className='hidden lg:block'>
 					<DashboardMenu />
 				</div>
-				<MemberProfile />	
-			</div>	
+				<MemberProfile />
+			</div>
 		</>
 	);
 }

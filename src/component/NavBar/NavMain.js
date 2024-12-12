@@ -53,6 +53,7 @@ const NavMain = () => {
 		{ path: '/matches', name: 'Matches', icon: PiUsers },
 		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
+		{ path: '/notifications', name: 'Notification', icon: IoIosNotificationsOutline },
 	]
 	const ProfileOption = [
 		{ path: '/dashboard', name: 'Dashboard', icon: AiOutlineDashboard },
@@ -151,9 +152,9 @@ const NavMain = () => {
 						</div>
 						 */}
 								{/* <Link to={'/notifications'}> */}
-								<div div className={`text-headingGray text-md px-2 cursor-pointer flex items-center gap-1`} onClick={() => setShowNotification(!showNotification)}>
+								{/* <div div className={`text-headingGray text-md px-2 cursor-pointer flex items-center gap-1`} onClick={() => setShowNotification(!showNotification)}>
 									<IoIosNotificationsOutline size={20} color='#6d6e6f' /><p className='min-w-max text-sm'>Notifications</p>
-								</div>
+								</div> */}
 							</div>
 							{/* </Link> */}
 						</div>

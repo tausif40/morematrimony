@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import apiClient from '../../api/apiClient';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
+import { getProfileImages } from '../../store/features/userDetails-slice';
 
 const Gallery = () => {
+	const dispatch = useDispatch()
 	const [ uploadProgress, setUploadProgress ] = useState(0);
 	const [ isUploading, setIsUploading ] = useState(false);
 	const [ uploadedImages, setUploadedImages ] = useState([]);
 	const [ hasUpdated, setHasUpdated ] = useState(false);
 
 	const profileImages = useSelector((state) => state.userDetails.profileImages);
-
-
 
 	useEffect(() => {
 		if (!hasUpdated && profileImages?.data?.gallery?.length > 0) {
@@ -53,6 +53,7 @@ const Gallery = () => {
 				},
 			});
 			console.log(response);
+			dispatch(getProfileImages())
 			toast.success('Image uploaded successfully');
 			const imageUrl = URL.createObjectURL(file);
 			setUploadedImages((prevImages) => [ ...prevImages, imageUrl ]);

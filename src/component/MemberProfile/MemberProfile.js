@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import DetailedProfile from './DetailedProfile/DetailedProfile';
-import PartnerPreference from './PartnerPreference/PartnerPreference';
 import PhotoGallery from './PhotoGallery/PhotoGallery';
-import DashboardMenu from '../Dashboard/DashboardMenu';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function MemberProfile() {
+	const dispatch = useDispatch()
 	const [ activeTab, setActiveTab ] = useState('DetailedProfile');
+	const [ dpImage, setDpImage ] = useState()
 
+	const userDetails = useSelector((state) => state.userDetails.userDetails);
+
+	useEffect(() => {
+		setDpImage(userDetails?.data?.user?.profileImage)
+	}, [ dispatch, userDetails?.data?.user?.profileImage ])
+	console.log(userDetails?.data?.user);
 
 	return (
 		<>
@@ -15,11 +22,6 @@ function MemberProfile() {
 				<div className="backGroundGradient bg-white md:px-4 flex gap-12">
 
 					<div className='container flex gap-6 items-end'>
-
-						{/* <div className='w-1/3 py-4 object-cover hidden lg:block'>
-							<img src="./assets/img/avatar-place.png" alt="" className='rounded-md shadow-lg absolute w-[320px] top-40' />
-						</div> */}
-
 						<div className="w-full px-4 md:px-6 lg:px-10 xl:px-12">
 							<div className='text-white flex relative'>
 								<div className='w-full pt-16'>
@@ -29,8 +31,8 @@ function MemberProfile() {
 									</div>
 									<p className='py-4'>Age - 23 yrs</p>
 								</div>
-								<div className='absolute object-cover right-0 top-0 pt-8 sm:pt-4'>
-									<img src="./assets/img/avatar-place.png" alt="" className='rounded-full shadow-lg w-[160px] sm:w-[220px]' />
+								<div className='absolute object-cover right-0 top-0 pt-8 sm:pt-3 '>
+									<img src={dpImage || `./assets/img/avatar-place.png`} alt="" className='w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-full shadow-lg bg-slate-100 border-4 border-white' />
 								</div>
 							</div>
 
@@ -41,12 +43,6 @@ function MemberProfile() {
 								>
 									Detailed Profile
 								</button>
-								{/* <button
-									className={`py-2 px-2 md:px-3 transition-all ${activeTab === 'PartnerPreference' ? 'active text-white' : ''}`}
-									onClick={() => setActiveTab('PartnerPreference')}
-								>
-									Partner Preference
-								</button> */}
 								<button
 									className={`py-2 px-2 md:px-3 transition-all ${activeTab === 'PhotoGallery' ? 'active text-white' : ''}`}
 									onClick={() => setActiveTab('PhotoGallery')}
@@ -59,8 +55,7 @@ function MemberProfile() {
 				</div>
 
 				<div className="my-10 px-2 sm:px-8 lg:px-16 xl:px-20 flex gap-6 justify-center">
-					{activeTab === 'DetailedProfile' && <DetailedProfile />}
-					{activeTab === 'PartnerPreference' && <PartnerPreference />}
+					{activeTab === 'DetailedProfile' && <DetailedProfile userDetails={userDetails} />}
 					{activeTab === 'PhotoGallery' && <PhotoGallery />}
 				</div>
 			</div>

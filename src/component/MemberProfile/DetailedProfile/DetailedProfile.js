@@ -2,10 +2,8 @@ import React from "react";
 import moment from 'moment';
 import { useSelector } from "react-redux";
 
-const DetailedProfile = () => {
+const DetailedProfile = ({ userDetails }) => {
 
-	// console.log(userDetails?.data?.user);
-	const userDetails = useSelector((state) => state.userDetails.userDetails);
 	const data = userDetails?.data?.user;
 
 	const profileData = {
@@ -135,15 +133,24 @@ const DetailedProfile = () => {
 								Profile Information
 							</dt>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								{Object.entries(profileData?.profileInfo).map(([ key, value ]) => (
+								{/* {Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
 										<dd>{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
 									</div>
+								))} */}
+
+								{Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => (
+									<div className="grid grid-cols-2" key={key}>
+										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
+										<dd>
+											{/* Check if value is an object */}
+											{typeof value === "object" && value !== null ? value.name || JSON.stringify(value) : value}
+										</dd>
+									</div>
 								))}
 							</div>
 						</div>
-
 
 						{/* Present Address */}
 						<div className="md:border-b pb-6 md:pr-6">
@@ -234,8 +241,11 @@ const DetailedProfile = () => {
 							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Hobbies</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<p className='flex gap-2 flex-wrap'>
-									{profileData?.hobbies?.hobbiesList?.map((res, ind) => (<p
-										key={ind} className="bg-gray-200 rounded-full px-3 py-1 text-headingGray">{res.name}</p>))}
+									{profileData?.hobbies?.hobbiesList?.map((res, ind) => (
+										<p key={ind} className="bg-gray-200 rounded-full px-3 py-1 text-headingGray">
+											{res.name || "_"}
+										</p>
+									))}
 								</p>
 							</div>
 						</div>
@@ -248,7 +258,7 @@ const DetailedProfile = () => {
 						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-24 bg-white text-primary  flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Spiritual</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								{Object.entries(profileData?.spiritualSocial).map(([ key, value ]) => {
+								{Object.entries(profileData?.spiritualSocial || {}).map(([ key, value ]) => {
 									if (typeof value === 'object' && !Array.isArray(value)) {
 										// If the value is an object, render its key-value pairs
 										return (

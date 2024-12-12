@@ -10,8 +10,8 @@ import Cookies from 'js-cookie';
 
 const token = Cookies.get('access_token');
 
-const ProfileCard = ({ fistName, lastName, id, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img }) => {
-
+const ProfileCard = (userData) => {
+	const { fistName, lastName, id, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img } = userData;
 	const [ isInterestAccept, setIsInterestAccept ] = useState(false);
 	const [ shortlist, setShortlist ] = useState(false);
 	const [ newUser, setNewUser ] = useState(false);
@@ -143,7 +143,7 @@ const ProfileList = () => {
 				location: 'Not Specified',
 				lastSeen: 'Recently Active',
 				accountCreate: createdAt,
-				img: './assets/img/profileImages/default.jpg' || '',
+				img: profile.profileImage || '',
 			};
 		});
 	};

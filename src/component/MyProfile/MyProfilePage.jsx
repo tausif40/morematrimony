@@ -80,7 +80,7 @@ const MyProfilePage = () => {
 
 		dispatch(uploadFileData(data));
 	};
-	
+
 	// console.log(userData);
 	return (
 		<div className='space-y-10'>
