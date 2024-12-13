@@ -18,6 +18,14 @@ function ShortProfile() {
 	const [ showMenu, setShowMenu ] = useState(false)
 	const [ contactPopup, setContactPopup ] = useState(false)
 
+	// useEffect(() => {
+	// 	window.scrollTo({
+	// 		top: 0,
+	// 		left: 0,	
+	// 		behavior: 'instant'
+	// 	});
+	// }, []);
+
 	const handelShortlist = () => setShortlist((prev) => !prev);
 	const handelInterest = () => setIsInterestAccept((prev) => !prev);
 	const showSideMenu = () => setShowMenu((prev) => !prev);
