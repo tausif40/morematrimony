@@ -16,9 +16,12 @@ import ChangePassword from '../Form/ChangePassword';
 import Gallery from '../Gallery/Gallery';
 import Viewed from '../Viewed/Viewed';
 import ViewedByYou from '../ViewedByYou/ViewedByYou';
+import { getUserDetails } from '../../store/features/userDetails-slice';
+import { useDispatch } from 'react-redux';
 
 function DashboardLayout() {
 	const location = useLocation();
+	const dispatch = useDispatch()
 	const currentPath = location.pathname;
 	const [ menuOpen, setMenuOpen ] = useState(false);
 	const [ verified, setVerified ] = useState(true);
@@ -31,6 +34,10 @@ function DashboardLayout() {
 			setShowVerification(false);
 		}
 	}, [ currentPath, verified ]);
+
+	useEffect(() => {
+		dispatch(getUserDetails());
+	}, [])
 
 	useEffect(() => {
 		const handleOutsideClick = (event) => {

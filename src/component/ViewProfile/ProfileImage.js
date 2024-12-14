@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -6,10 +6,20 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import './viewProfile.css';
+import { useSelector } from 'react-redux';
 
 const ProfileImage = () => {
 	const [ isPurchased, setIsPurchased ] = useState(true);
+	// const [ images, setImages ] = useState([])
 
+	const ProfileImages = useSelector((state) => state.userDetails.profileImages);
+	console.log(ProfileImages.data.gallery);
+
+	// 	useEffect(() => {
+	// 		ProfileImages?.data?.gallery?.map((val) => {
+	// 			setImages((pre) => { pre, ...val.image })
+	// 	})
+	// }, [])
 	const images = [
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img2_pop07c.jpg' },
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594306/Tausif/temp/img4_qjhdex.jpg' },

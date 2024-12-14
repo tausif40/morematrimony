@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { IoIosStarOutline } from "react-icons/io";
 import { IoMdStar } from "react-icons/io";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../ViewProfile/viewProfile.css';
 import { getMatchProfile } from '../../store/features/matchProfile-slice';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-
-const token = Cookies.get('access_token');
+import male from '../../img/male.png'
+import female from '../../img/female.png'
 
 const ProfileCard = (userData) => {
-	const { fistName, lastName, id, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img } = userData;
+	const navigate = useNavigate();
+	const { fistName, lastName, gender, id, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img, allData } = userData;
 	const [ isInterestAccept, setIsInterestAccept ] = useState(false);
 	const [ shortlist, setShortlist ] = useState(false);
 	const [ newUser, setNewUser ] = useState(false);
-
+	const [ profileData, setProfileData ] = useState(allData)
 	const handelShortlist = () => setShortlist((prev) => !prev);
 	const handelInterest = () => setIsInterestAccept((prev) => !prev);
 
@@ -30,44 +29,40 @@ const ProfileCard = (userData) => {
 		}
 	}, [ accountCreate ]);
 
+	console.log({ profileData: profileData });
+	const showProfileDetails = () => {
+		navigate('/view-profile', { state: profileData });
+	};
+
 	return (
 		<div className="border rounded-lg shadow-sm p-3 md:p-4 mb-10 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 ">
-			{/* <div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl object-cover blur-sm"
-				style={{ backgroundImage: `url(${img})`}}>
-				<Link to={'/view-profile'}>
-					<span className="text-4xl text-gray-400">
-						{newUser && <div className="ribbon"><span>New Join</span></div>}
-					</span>
-					<img src={img} alt="img" className='blur-none	rounded-xl object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64' />
-				</Link>
-			</div> */}
-			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl overflow-hidden">
+			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl overflow-hidden"
+				onClick={showProfileDetails}>
 				<div className="absolute inset-0 bg-cover"
 					style={{ backgroundImage: `url(${img})`, filter: `blur(16px)` }} >
 				</div>
-				<div className="absolute inset-0  rounded-xl "></div>
-				<Link to={'/view-profile'} className="relative z-10">
+				<div className="absolute inset-0 rounded-xl"></div>
+				{/* <Link to={showProfileDetails} className="relative z-10"> */}
+				<div className='relative z-10'>
 					<span className="text-4xl text-gray-400">
 						{newUser && <div className="ribbon"><span>New Join</span></div>}
 					</span>
-					<img src={img} alt="img" className="object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64" />
-				</Link>
+					<img src={img == undefined ? gender === 'male' ? male : female : img} alt="img" className="object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64 mix-blend-multiply contrast-100" />
+				</div>
+				{/* </Link> */}
 			</div>
-
-
 
 			{/* Profile Details */}
 			<div className="h-64 w-full flex flex-col justify-between py-2 ">
 				<div>
-					<Link to={'/view-profile'}>
+					{/* <Link to={'/view-profile'}> */}
+					<div onClick={showProfileDetails}>
 						<h3 className="text-xl font-semibold text-black">{fistName} {lastName}</h3>
-					</Link>
+					</div>
+					{/* </Link> */}
 					<p className="mt-1 text-sm text-gray-500">
 						{id.slice(-8).toUpperCase()} | Last seen {lastSeen}
 					</p>
-					{/* <div className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
-						{age} yrs • {height} • {religion} - {caste} • {education} • {occupation} • {location}
-					</div> */}
 					<div className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
 						{[
 							age && `${age} yrs`,
@@ -109,13 +104,12 @@ const ProfileCard = (userData) => {
 // Main Component
 const ProfileList = () => {
 	const dispatch = useDispatch()
+
 	const matchProfile = useSelector((state) => state.matchProfile.matchProfile);
 
 	useEffect(() => {
 		dispatch(getMatchProfile());
-
 	}, [ dispatch ])
-	console.log(matchProfile);
 
 	const mapProfiles = (profiles) => {
 		return profiles.map((profile) => {
@@ -129,6 +123,7 @@ const ProfileList = () => {
 			return {
 				fistName: basicInformation?.firstName,
 				lastName: basicInformation?.lastName,
+				gender: basicInformation?.gender,
 				id: _id,
 				age: basicInformation?.dateOfBirth
 					? Math.floor((new Date() - new Date(basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25))
@@ -143,7 +138,8 @@ const ProfileList = () => {
 				location: 'Not Specified',
 				lastSeen: 'Recently Active',
 				accountCreate: createdAt,
-				img: profile.profileImage || '',
+				img: profile.profileImage,
+				allData: profile
 			};
 		});
 	};

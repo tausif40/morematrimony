@@ -31,6 +31,7 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, 
 		const response = await apiClient.post('/auth/logIn', { encryptedData: encryptedUserData });
 		toast.success(("Login successful!"), { id: loadingToast })
 		const decryptedData = decryptData(response.data.encryptedData)
+		// window.location.reload(false);
 		return decryptedData;
 	} catch (error) {
 		toast.error((error.response.data.message || error.message || "Login failed."), { id: loadingToast })
@@ -43,7 +44,7 @@ export const logOut = createAsyncThunk('auth/logOut', async (_, thunkAPI) => {
 	try {
 		console.log({ refreshToken: refreshToken });
 		const response = await apiClient.post('/auth/logout', { refreshToken: refreshToken });
-		console.log(response.data);
+		console.log(response);
 		return response.data;
 	} catch (error) {
 		return thunkAPI.rejectWithValue(error.response.data);

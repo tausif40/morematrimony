@@ -35,7 +35,8 @@ function ProfileOption() {
 		return colors[ index ];
 	};
 
-
+	console.log(userDetails);
+	console.log(percent);
 
 	const navOption = [
 		{ name: 'Dashboard', path: '/dashboard', icon: RiHome4Line },

@@ -19,16 +19,18 @@ import DashboardLayout from './component/Layout/DashboardLayout';
 import MemberProfileLayout from './component/Layout/MemberProfileLayout';
 // import ViewProfile from './component/ViewProfile/ViewProfile';
 import ViewProfileLayout from './component/Layout/ViewProfileLayout';
+import ProfileDetails from './component/ViewProfile/ProfileDetails';
 import MatchesLayout from './component/Layout/MatchesLayout';
 import Plans from './component/Plans/Plans';
 import Help from './component/Help/Help';
 
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
 import { getMatchProfile } from './store/features/matchProfile-slice';
-
 import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
 
 const App = () => {
+  const token = Cookies.get('access_token');
   const dispatch = useDispatch();
   const dashboardPaths = [
     '/dashboard',
@@ -84,7 +86,7 @@ const App = () => {
           ))}
 
           <Route path="/member-profile" element={<MemberProfileLayout />} />
-          <Route path="/view-profile" element={<ViewProfileLayout />} />
+          <Route path="/view-profile" element={<ProfileDetails />} />
           <Route path="/plans" element={<Plans />} />
           <Route path="/help" element={<Help />} />
         </Routes>

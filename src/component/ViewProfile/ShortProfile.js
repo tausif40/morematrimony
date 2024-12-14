@@ -11,7 +11,7 @@ import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import ContactDetails from './ContactDetails';
 import { MdKeyboardBackspace } from "react-icons/md";
 
-function ShortProfile() {
+function ShortProfile({ data }) {
 	const hideSideMenu = useRef(null);
 	const [ isInterestAccept, setIsInterestAccept ] = useState(false)
 	const [ shortlist, setShortlist ] = useState(false)
@@ -25,6 +25,7 @@ function ShortProfile() {
 	// 		behavior: 'instant'
 	// 	});
 	// }, []);
+	console.log(data);
 
 	const handelShortlist = () => setShortlist((prev) => !prev);
 	const handelInterest = () => setIsInterestAccept((prev) => !prev);
@@ -85,37 +86,32 @@ function ShortProfile() {
 									}
 
 								</div>
-								<p className='font-medium text-xl md:text-2xl'>Name surname</p>
+								<p className='font-medium text-xl md:text-2xl'>{data?.firstName} {data?.lastName}</p>
 								<div className='flex items-center text-sm font-light text-headingGray py-2 tracking-wide'>
-									<p className=''>H32YD1R454F</p>
+									<p className=''>{data?.id.slice(-8).toUpperCase()} </p>
 									<span className='text-text'>&nbsp;|&nbsp;</span>
-									<p> Last seen </p>
+									<p>Last seen {data?.lastSeen}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className=' tracking-wider'>20 Yrs, 4'11"</p>
+									<p className=' tracking-wider'>{data?.age} Yrs, {data?.height}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><RiStackshareLine /></p>
-									<p className=''>Hindu - Brahman (Caste _)</p>
+									<p className=''>{data?.religion} - {data?.cast} - {data?.subCaste}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className=''>BCA, Human Resources Professional</p>
+									<p className=''>{data?.highestEducation}, {data?.occupation}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className=''>Pratapgarh City, Uttar Pradesh</p>
+									<p className=''>{data.city}, {data.state}, {data.country}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><MdOutlineWorkOutline /></p>
-									<p className=''>Employed in (Job Location), Annual Income</p>
+									<p className=''>{data.occupation} ({data.jobLocation}), {data.annualIncome}</p>
 								</div>
-								{/* <div className='flex mt-4	 mb-3'>
-									<p className=''><p className='text-sm min-w-max bg-gray-200 rounded-md px-2 h-auto'>Looking for - </p></p>&nbsp;
-									<p className='text-sm max-w-2xl font-light'>
-										In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.</p>
-								</div> */}
 							</div>
 
 							<div>

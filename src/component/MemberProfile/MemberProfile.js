@@ -14,7 +14,7 @@ function MemberProfile() {
 	useEffect(() => {
 		setDpImage(userDetails?.data?.user?.profileImage)
 	}, [ dispatch, userDetails?.data?.user?.profileImage ])
-	console.log(userDetails?.data?.user);
+	// console.log(userDetails?.data?.user);
 
 	return (
 		<>
@@ -32,7 +32,7 @@ function MemberProfile() {
 									<p className='py-4'>Age - 23 yrs</p>
 								</div>
 								<div className='absolute object-cover right-0 top-0 pt-8 sm:pt-3 '>
-									<img src={dpImage || `./assets/img/avatar-place.png`} alt="" className='w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-full shadow-lg bg-slate-100 border-4 border-white' />
+									<img src={dpImage || `./assets/img/avatar-place.png`} alt="" className='w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-full shadow-lg bg-gray-50 border-4 border-white' />
 								</div>
 							</div>
 

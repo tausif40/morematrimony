@@ -1,16 +1,19 @@
 import React, { useEffect } from 'react'
 import ShortProfile from '../ViewProfile/ShortProfile'
-import UserDetails from '../ViewProfile/UserDetails'
+import ProfileDetails from '../ViewProfile/ProfileDetails'
+import { useLocation } from 'react-router-dom';
 
 function ViewProfileLayout() {
+	// const location = useLocation();
+	// const receivedData = location.state;
 
-	useEffect(() => {
-		window.scrollTo({
-			top: 0,
-			left: 0,
-			behavior: 'instant'
-		});
-	}, []);
+	// useEffect(() => {
+	// 	window.scrollTo({
+	// 		top: 0,
+	// 		left: 0,
+	// 		behavior: 'instant'
+	// 	});
+	// }, []);
 
 	return (
 		<>
@@ -19,7 +22,7 @@ function ViewProfileLayout() {
 					<ShortProfile />
 				</div>
 				<div className='mt-12'>
-					<UserDetails />
+					<ProfileDetails />
 				</div>
 			</div>
 		</>

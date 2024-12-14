@@ -23,19 +23,19 @@ const useLogout = () => {
 	const handleLogout = async () => {
 		const loadingToast = toast.loading('wait for LogOut...');
 		try {
-			// const resultAction = await dispatch(logOut());
-			// console.log(logoutSuccess);
-			const response = await apiClient.post('/auth/logout', { refreshToken: refreshToken });
-			console.log(response.data);
+			const resultAction = await dispatch(logOut());
+			console.log(resultAction);
+			// const response = await apiClient.post('/auth/logout', { refreshToken: refreshToken });
+			// console.log(response);
 
-			// if (logOut.fulfilled.match(resultAction)) {
-			toast.success('Logged out successfully.', { id: loadingToast });
-			ClearAllCookies();
-			// 	// window.location.reload(false);
-			// 	navigate('/')
-			// } else {
-			// 	toast.error('Failed to log out.', { id: loadingToast });
-			// }
+			if (logOut.fulfilled.match(resultAction)) {
+				toast.success('Logged out successfully.', { id: loadingToast });
+				ClearAllCookies();
+				// window.location.reload(false);
+				navigate('/')
+			} else {
+				toast.error('Failed to log out.', { id: loadingToast });
+			}
 		} catch (error) {
 			console.error('Logout error:', error);
 			toast.error(

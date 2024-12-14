@@ -30,16 +30,16 @@ const DetailedProfile = ({ userDetails }) => {
 			citizenship: data?.residencyInformation?.citizenship?.name || "_",
 		},
 		educationalDetails: {
-			highestEducation: data?.educationalDetails?.highestEducation?._id || "_",
+			highestEducation: data?.educationalDetails?.highestEducation?.name || "_",
 			educationDetail: data?.educationalDetails?.educationDetail || "_",
 			institution: data?.educationalDetails?.institution || "_",
 		},
 		career: {
 			employedIn: data?.career?.employedIn || "_",
-			occupation: data?.career?.occupation?._id || "_",
+			occupation: data?.career?.occupation?.name || "_",
 			occupationDetails: data?.career?.occupationDetails || "_",
 			organizationName: data?.career?.organizationName || "_",
-			jobLocation: data?.career?.jobLocation || "_",
+			jobLocation: data?.career?.jobLocation?.name || "_",
 			annualIncome: data?.career?.annualIncome || "_",
 		},
 		physicalAttributes: {
@@ -114,7 +114,7 @@ const DetailedProfile = ({ userDetails }) => {
 		}
 	};
 
-	// console.log(profileData);
+	// console.log(profileData.career);
 
 	return (
 		<div className="container text-textGray border shadow-md rounded-xl ">
@@ -133,20 +133,10 @@ const DetailedProfile = ({ userDetails }) => {
 								Profile Information
 							</dt>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								{/* {Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => (
-									<div className="grid grid-cols-2" key={key}>
-										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
-									</div>
-								))} */}
-
 								{Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>
-											{/* Check if value is an object */}
-											{typeof value === "object" && value !== null ? value.name || JSON.stringify(value) : value}
-										</dd>
+										<dd>{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
 									</div>
 								))}
 							</div>
@@ -187,7 +177,7 @@ const DetailedProfile = ({ userDetails }) => {
 							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Education Details</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.educationalDetails).map(([ key, value ]) => (
-									<div className="grid grid-cols-2" key={key}>
+									<div className="grid grid-cols-2 gap-1" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
 										<dd>{value}</dd>
 									</div>
@@ -213,8 +203,8 @@ const DetailedProfile = ({ userDetails }) => {
 							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Physical Attributes</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.physicalAttributes).map(([ key, value ]) => (
-									<p className="flex gap-2" key={key}>
-										<p className="text-md font-medium w-56 mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</p>
+									<p className="grid grid-cols-2" key={key}>
+										<p className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</p>
 										{value}
 									</p>
 								))}
@@ -268,7 +258,7 @@ const DetailedProfile = ({ userDetails }) => {
 												</p>
 												<div className="pl-6">
 													{Object.entries(value).map(([ subKey, subValue ]) => (
-														<p className="flex gap-2" key={subKey}>
+														<p className="grid grid-cols-2" key={subKey}>
 															<p className="text-sm font-medium capitalize w-48">{subKey}:</p>
 															<span>{subValue}</span>
 														</p>
@@ -278,8 +268,8 @@ const DetailedProfile = ({ userDetails }) => {
 										);
 									}
 									return (
-										<p className="flex gap-2" key={key}>
-											<p className="text-md font-medium w-56 mb-2 capitalize">
+										<p className="grid grid-cols-2" key={key}>
+											<p className="text-md font-medium mb-2 capitalize">
 												{key.replace(/([A-Z])/g, ' $1')}:
 											</p>
 											<span>{value}</span>
@@ -293,9 +283,9 @@ const DetailedProfile = ({ userDetails }) => {
 						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Lifestyle</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Diet:</p> {profileData?.lifestyle.diet}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Drink:</p> {profileData?.lifestyle.drink}</p>
-								<p className='flex gap-2'><p className='text-md font-medium w-56 mb-2'>Smoke:</p> {profileData?.lifestyle.smoke}</p>
+								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Diet:</p> {profileData?.lifestyle.diet}</p>
+								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Drink:</p> {profileData?.lifestyle.drink}</p>
+								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Smoke:</p> {profileData?.lifestyle.smoke}</p>
 							</div>
 						</div>
 

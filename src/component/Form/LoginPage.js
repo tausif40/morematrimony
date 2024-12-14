@@ -33,21 +33,9 @@ const LoginPage = () => {
 			setPasswordError("Please enter Password")
 			return;
 		}
-		// const loadingToast = toast.loading('Logging.....');
-		try {
-			// await axios.post(`${BASE_URL}/auth/logIn`, { email, password }, {
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	},
-			// }).then((response) => {
 
-			// 	Cookies.set('access_token', response.data.tokens.access.token);
-			// 	Cookies.set('refresh_token', response.data.tokens.refresh.token);
-			// 	navigate('/dashboard')
-			// 	new Promise((resolve) => setTimeout(resolve, 2000));
-			// 	toast.success(("Login successful!"), { id: loadingToast })
-			// 	// console.log(response.data);
-			// });
+		try {
+
 			const result = await dispatch(loginUser({ email, password }));
 
 			if (loginUser.fulfilled.match(result)) {
@@ -66,10 +54,6 @@ const LoginPage = () => {
 		} catch (error) {
 			toast.error('An unexpected error occurred. Please try again later.');
 			console.error('Login error:', error);
-			// console.log(error);
-			// setError(error?.response?.data?.message || error?.message || "Registration failed");
-			// new Promise((resolve) => setTimeout(resolve, 2000));
-			// toast.error(("Registration failed."), { id: loadingToast })
 		}
 	};
 
