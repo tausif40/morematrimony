@@ -126,7 +126,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(formData);
+		// console.log(formData);
 		if (!formData.height.inches) delete formData.height.inches;
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
@@ -168,7 +168,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 	// 	console.log("Selected IDs:", selectedIds);
 	// 	// setSelectedCountryIds(selectedIds);
 	// };
-	console.log(employedIn);
+	// console.log(employedIn);
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 

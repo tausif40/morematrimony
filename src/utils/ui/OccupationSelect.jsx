@@ -11,7 +11,7 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 	const containerRef = useRef(null);
 
 	const flattenDataList = () => {
-		return dataList.flatMap((group) =>
+		return dataList?.flatMap((group) =>
 			group.roles.map((role) => ({
 				...role,
 				occupationName: group.occupationName,
@@ -60,7 +60,7 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 	// Filter items based on search query
 	useEffect(() => {
 		const flattenedList = flattenDataList();
-		const filtered = flattenedList.filter((item) =>
+		const filtered = flattenedList?.filter((item) =>
 			item.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			item.occupationName.toLowerCase().includes(searchQuery.toLowerCase())
 		);
