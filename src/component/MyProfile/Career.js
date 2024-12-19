@@ -4,7 +4,7 @@ import { career } from '../../utils/data/MyProfileData';
 
 const Career = ({ data, onFormSubmit }) => {
 
-	const { countries, countriesLoading, occupations } = data;
+	const { countries, countriesLoading, occupations, careerData } = data;
 
 	const [ formData, setFormData ] = useState({
 		employedIn: '',
@@ -14,6 +14,20 @@ const Career = ({ data, onFormSubmit }) => {
 		jobLocation: '',
 		annualIncome: '',
 	});
+
+	useEffect(() => {
+		if (careerData) {
+			setFormData({
+				employedIn: careerData?.employedIn || '',
+				occupation: careerData?.occupation?._id || '',
+				occupationDetails: careerData?.occupationDetails || '',
+				organizationName: careerData?.organizationName || '',
+				jobLocation: careerData?.jobLocation?._id || '',
+				annualIncome: careerData?.annualIncome || '',
+			});
+		}
+	}, [ careerData ]);
+
 	const [ errors, setErrors ] = useState({});
 
 	const handleSubmit = async (e) => {
@@ -61,7 +75,7 @@ const Career = ({ data, onFormSubmit }) => {
 						Employed in <span className="text-red-500">*</span>
 					</label>
 					<div className="flex flex-wrap gap-8 items-center border rounded-md p-3 text-gray-700">
-						{career.employedIn.map((option) => (
+						{career?.employedIn?.map((option) => (
 							<label key={option} className="flex items-center gap-1">
 								<input
 									type="radio"

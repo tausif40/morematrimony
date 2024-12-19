@@ -7,7 +7,8 @@ import { indiaId } from '../../utils/data/config';
 const ResidencyInformation = ({ data, onFormSubmit }) => {
 	const [ stateList, setStateList ] = useState([]);
 
-	const { countries, countriesLoading } = data;
+	const { countries, countriesLoading, residency } = data;
+	// console.log(residency);
 
 	useEffect(() => {
 		const fetchStates = async () => {
@@ -32,6 +33,22 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 			state: ''
 		},
 	});
+
+	useEffect(() => {
+		if (residency) {
+			setFormData({
+				birthCountry: residency.birthCountry?._id || '',
+				growUpCountry: residency.growUpCountry?._id || '',
+				residencyCountry: residency.residencyCountry?._id || '',
+				residencyStatus: residency.residencyStatus || '',
+				citizenship: residency.citizenship?._id || '',
+				ancestralOrigin: {
+					state: residency.ancestralOrigin?.state || '',
+				},
+			});
+		}
+	}, [ residency ]);
+
 	const [ errors, setErrors ] = useState({});
 
 	const handleSubmit = async (e) => {

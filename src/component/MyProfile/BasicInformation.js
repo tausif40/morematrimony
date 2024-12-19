@@ -12,9 +12,21 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 		onBehalf: '',
 		maritalStatus: '',
 		numberOfChildren: ''
-		// ProfilePhoto: null,
 	});
-	// console.log(data);
+
+	useEffect(() => {
+		if (data) {
+			setFormData({
+				firstName: data.firstName || '',
+				lastName: data.lastName || '',
+				dateOfBirth: data.dateOfBirth ? data.dateOfBirth.split('T')[ 0 ] : '',
+				gender: data.gender || '',
+				onBehalf: data.onBehalf || '',
+				maritalStatus: data.maritalStatus || '',
+				numberOfChildren: data.numberOfChildren || ''
+			});
+		}
+	}, [ data ]);
 
 	const validateDOB = (dob) => {
 		const today = new Date();
@@ -23,7 +35,6 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 
 		return selectedDate <= minAgeDate;
 	};
-
 
 	const [ errors, setErrors ] = useState({});
 
@@ -230,21 +241,6 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 					</select>
 					{errors.onBehalf && <p className="text-red-500 text-xs mt-1">{errors.onBehalf}</p>}
 				</div>
-
-				{/* Profile Photo */}
-				{/* <div>
-					<label htmlFor="ProfilePhoto" className="block font-medium mb-1 mt-1 text-headingGray">
-						Profile Photo<span className="text-red-500"> *</span>
-					</label>
-					<input
-						type="file"
-						id="ProfilePhoto"
-						name="ProfilePhoto"
-						className={getInputClasses('ProfilePhoto')}
-						onChange={handleChange}
-					/>
-					{errors.ProfilePhoto && <p className="text-red-500 text-xs mt-1">{errors.ProfilePhoto}</p>}
-				</div> */}
 
 				<div className="col-span-2 flex justify-end mt-4">
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>

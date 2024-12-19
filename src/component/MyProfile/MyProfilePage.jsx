@@ -69,9 +69,14 @@ const MyProfilePage = () => {
 	const introduction = userData?.introduction;
 	const basicInfo = userData?.basicInformation;
 	const presentAddress = userData?.presentAddress;
+	const residency = userData?.residencyInformation;
+	const educationInfo = userData?.educationalDetails;
+	const careerData = userData?.career;
+	const physicalAttributes = userData?.physicalAttributes;
+	const languageData = userData?.language;
 
 	const handleFormSubmit = (data) => {
-		// console.log("data before submit -", data);
+		console.log("data before submit -", data);
 		// const encryptedData = encryptData(data);
 		// console.log("encryptedData - ", encryptedData);
 		// const dData = decryptData(encryptedData);
@@ -86,11 +91,11 @@ const MyProfilePage = () => {
 			<Introduction onFormSubmit={handleFormSubmit} data={introduction} />
 			<BasicInformation onFormSubmit={handleFormSubmit} data={basicInfo} />
 			<PresentAddress onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, presentAddress }} />
-			<ResidencyInformation onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading }} />
-			<EducationInfo onFormSubmit={handleFormSubmit} data={{ education }} />
-			<Career onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, occupations }} />
-			<PhysicalAttributes onFormSubmit={handleFormSubmit} />
-			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading }} />
+			<ResidencyInformation onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, residency }} />
+			<EducationInfo onFormSubmit={handleFormSubmit} data={{ education, educationInfo }} />
+			<Career onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, occupations, careerData }} />
+			<PhysicalAttributes onFormSubmit={handleFormSubmit} data={physicalAttributes} />
+			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading, languageData }} />
 			<Hobbies onFormSubmit={handleFormSubmit} data={{ hobbies, hobbiesError }} />
 			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries }} />
 			<Lifestyle onFormSubmit={handleFormSubmit} />

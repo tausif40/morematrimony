@@ -9,7 +9,7 @@ const Language = ({ onFormSubmit, data }) => {
 	const [ error, setError ] = useState()
 	const [ knownLanguagesError, setKnownLanguagesError ] = useState()
 	const dropdownRef = useRef(null);
-	const { languages, languageLoading } = data;
+	const { languages, languageLoading, languageData } = data;
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -106,7 +106,7 @@ const Language = ({ onFormSubmit, data }) => {
 									{languages?.language?.map((language, index) => (
 										<div
 											key={language._id}
-											className={`cursor-pointer p-2 text-center px-4 rounded-full text-textGray ${selectedLanguages.includes(language.name) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
+											className={`cursor-pointer py-1 text-center px-3 rounded-full text-textGray text-xs font-light ${selectedLanguages.includes(language.name) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
 											onClick={() => handleSelect(language.name, language._id)}
 										>
 											{language.name}

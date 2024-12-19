@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { PhysicalAttributesData } from '../../utils/data/MyProfileData';
 
-const PhysicalAttributes = ({ onFormSubmit }) => {
+const PhysicalAttributes = ({ onFormSubmit, data }) => {
 
 	const [ formData, setFormData ] = useState({
 		height: { feet: '', inches: '' },
@@ -19,6 +19,27 @@ const PhysicalAttributes = ({ onFormSubmit }) => {
 			details: ''
 		}
 	});
+
+	useEffect(() => {
+		if (data) {
+			setFormData({
+				height: data.height || { feet: '', inches: '' },
+				weight: data.weight || '',
+				eyeColor: data.eyeColor || '',
+				hairColor: data.hairColor || '',
+				complexion: data.complexion || '',
+				bloodGroup: data.bloodGroup || '',
+				bodyType: data.bodyType || '',
+				tattoo: data.tattoo !== undefined ? data.tattoo : '',
+				disability: {
+					disability: data.disability?.disability || '',
+					type: data.disability?.type || '',
+					details: data.disability?.details || ''
+				}
+			});
+		}
+	}, [ data ]);
+
 	const [ errors, setErrors ] = useState({});
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] ? 'border-red-500' : ''} text-gray-700`;

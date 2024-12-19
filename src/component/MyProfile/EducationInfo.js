@@ -3,13 +3,26 @@ import { toast } from 'react-hot-toast';
 
 const EducationInfo = ({ onFormSubmit, data }) => {
 
-	const { education } = data;
+	const { education, educationInfo } = data;
 
 	const [ formData, setFormData ] = useState({
 		highestEducation: '',
 		educationDetail: '',
 		institution: '',
 	});
+
+
+	useEffect(() => {
+		if (educationInfo) {
+			setFormData({
+				highestEducation: educationInfo?.highestEducation?._id || '',
+				educationDetail: educationInfo?.educationDetail || '',
+				institution: educationInfo?.institution || '',
+			});
+		}
+	}, [ educationInfo ]);
+
+
 	const [ errors, setErrors ] = useState({});
 
 	const handleSubmit = async (e) => {
