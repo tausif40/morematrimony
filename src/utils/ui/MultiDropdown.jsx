@@ -2,39 +2,39 @@ import React, { useState, useEffect, useRef } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 
-const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
+const MultiDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 	const [ selectedItems, setSelectedItems ] = useState([]);
 	const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ filteredItems, setFilteredItems ] = useState(dataList);
 	const dropdownRef = useRef(null);
 	const containerRef = useRef(null);
+
 	// Toggle Dropdown
 	const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
 	// Handle Selection
 	const handleSelect = (item) => {
-		if (item.id === 1) return;
-		const alreadySelected = selectedItems?.some((selected) => selected._id === item._id);
+		const alreadySelected = selectedItems.includes(item);
 		let updatedSelection;
 		if (alreadySelected) {
-			updatedSelection = selectedItems?.filter((selected) => selected._id !== item._id);
+			updatedSelection = selectedItems.filter((selected) => selected !== item);
 		} else {
 			updatedSelection = [ ...selectedItems, item ];
 		}
 		setSelectedItems(updatedSelection);
 
-		// Pass only `_id` to the parent component
-		onSelectionChange(updatedSelection?.map((selected) => selected._id));
+		// Pass selected names to the parent component
+		onSelectionChange(updatedSelection);
 	};
 
 	// Remove Selected Tag
 	const handleRemoveTag = (item) => {
-		const updatedSelection = selectedItems?.filter((selected) => selected._id !== item._id);
+		const updatedSelection = selectedItems.filter((selected) => selected !== item);
 		setSelectedItems(updatedSelection);
 
-		// Pass updated `_id` list to the parent component
-		onSelectionChange(updatedSelection?.map((selected) => selected._id));
+		// Pass updated list to the parent component
+		onSelectionChange(updatedSelection);
 	};
 
 	// Close dropdown when clicking outside
@@ -53,7 +53,7 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 	// Filter items based on search query
 	useEffect(() => {
 		const filtered = dataList?.filter((item) =>
-			item?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+			item.toLowerCase().includes(searchQuery.toLowerCase())
 		);
 		setFilteredItems(filtered);
 	}, [ searchQuery, dataList ]);
@@ -69,15 +69,16 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 			{/* Selected Tags */}
 			<div
 				className="flex items-center border border-gray-300 rounded-md px-2 h-[46px] cursor-pointer gap-2 overflow-hidden hover:overflow-x-auto customHorizontalScroll transition duration-0 hover:duration-300"
-				onClick={toggleDropdown} ref={containerRef}
+				onClick={toggleDropdown}
+				ref={containerRef}
 			>
 				{selectedItems?.map((item) => (
 					<div
-						key={item._id}
+						key={item}
 						className="flex items-center bg-gray-100 text-gray-600 rounded px-2 py-1 min-w-max"
 					>
-						{item.name}
-						<button
+						{item}
+						<button	
 							className="ml-1 text-red-500"
 							onClick={(e) => {
 								e.stopPropagation();
@@ -88,15 +89,15 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 						</button>
 					</div>
 				))}
-				{selectedItems.length == 0 && <p className="text-[#374151]">{fieldName}</p>}
-				<div className="ml-auto py-4 px-1">
+				{selectedItems.length === 0 && <p className="text-[#374151]">{fieldName}</p>}
+				<div className="ml-auto py-4 px-2">
 					<IoIosArrowDown className="text-gray-700" />
 				</div>
 			</div>
 
 			{/* Dropdown Options */}
 			{isDropdownOpen && (
-				<div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg">
+				<div className="absolute z-50 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg">
 					{/* Search Bar */}
 					<div className="p-2">
 						<input
@@ -109,22 +110,23 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 					</div>
 
 					{/* Dropdown Options */}
-					<div
-						className="max-h-[50vh] overflow-y-auto shadow-xl text-black">
+					<div className="max-h-[50vh] overflow-y-auto shadow-xl text-black">
 						{filteredItems?.map((item) => (
 							<div
-								key={item._id}
+								key={item}
 								onClick={() => handleSelect(item)}
-								className={`flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-blue-100 ${item.id === 1 && 'bg-gray-400 hover:bg-gray-400 cursor-default text-white'} ${selectedItems.some((selected) => (selected._id || selected.name) === (item._id || item.name)) ? "bg-blue-50" : ""}`}
+								className={`flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-blue-100 ${selectedItems.includes(item) ? "bg-blue-50" : ""
+									}`}
 							>
-								<span>{item.name}</span>
-								{selectedItems?.some((selected) => selected._id === item._id) && (
+								<span>{item}</span>
+								{selectedItems.includes(item) && (
 									<span className="text-blue-600">✔</span>
 								)}
 							</div>
 						))}
-						{filteredItems == undefined && <p className="px-4 py-2">Wait ...</p>}
-						{dataList?.length === 0 && <p className="px-4 py-2">List is Empty</p>}
+						{filteredItems?.length === 0 && (
+							<p className="px-4 py-2">No matches found</p>
+						)}
 					</div>
 				</div>
 			)}
@@ -132,4 +134,4 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 	);
 };
 
-export default MultiSelectDropdown;
+export default MultiDropdown;

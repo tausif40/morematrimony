@@ -3,14 +3,25 @@ import { toast } from 'react-hot-toast';
 import { indiaId } from '../../utils/data/config';
 import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lifestyle } from '../../utils/data/MyProfileData';
 import apiClient from '../../api/apiClient';
-// import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
+import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
+import MultiDropdown from '../../utils/ui/MultiDropdown';
+import OccupationSelect from '../../utils/ui/OccupationSelect';
 
 const PartnerExpectation = ({ data, onFormSubmit }) => {
 	const { countriesWithDoesNotMatter, religions, occupations, education, languages } = data
 
 	const [ stateList, setStateList ] = useState([])
 	const [ casteList, setCasteList ] = useState([])
-	// const [ selectedCountryIds, setSelectedCountryIds ] = useState([]);
+	const [ residencyCountryIds, setResidencyCountryIds ] = useState([]);
+	const [ selectedCast, setSelectedCast ] = useState([]);
+	const [ motherTongue, setMotherTongue ] = useState([]);
+	const [ educationIds, setEducationIds ] = useState([]);
+	const [ employedIn, setEmployedIn ] = useState([]);
+	const [ occupation, setOccupation ] = useState([]);
+	const [ preferredCountry, setPreferredCountry ] = useState([]);
+	const [ preferState, setPreferState ] = useState([]);
+	const [ bodyType, setBodyType ] = useState([]);
+	const [ complexion, setComplexion ] = useState([]);
 	const [ loading, setLoading ] = useState({ state: false, caste: false });
 
 	const fetchData = async (url, setData, type) => {
@@ -34,24 +45,39 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		maritalStatus: '',
 		numberOfChildren: '',
 		childrenAcceptable: '',
-		motherTongue: '',
-		residencyCountry: '',
+		motherTongue: [],
+		residencyCountry: [],
 		religion: '',
-		caste: '',
-		// subCaste: '',
-		highestEducation: '',
-		employedIn: '',
-		occupation: '',
+		caste: [],
+		highestEducation: [],
+		employedIn: [],
+		occupation: [],
 		annualIncome: '',
 		dietingAcceptable: '',
 		drinkingAcceptable: '',
 		smokingAcceptable: '',
-		bodyType: '',
-		preferredCountry: '',
-		preferredState: '',
-		complexion: '',
+		bodyType: [],
+		preferredCountry: [],
+		preferState: [],
+		complexion: [],
 		lookingFor: ''
 	});
+
+	useEffect(() => {
+		setFormData((prev) => ({
+			...prev,
+			residencyCountry: residencyCountryIds,
+			caste: selectedCast,
+			motherTongue: motherTongue,
+			highestEducation: educationIds,
+			employedIn: employedIn,
+			occupation: occupation,
+			preferredCountry: preferredCountry,
+			preferState: preferState,
+			bodyType: bodyType,
+			complexion: complexion
+		}));
+	}, [ residencyCountryIds, selectedCast, motherTongue, educationIds, employedIn, occupation, preferState, preferredCountry, bodyType, complexion ]);
 
 	const [ errors, setErrors ] = useState({});
 
@@ -100,6 +126,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		console.log(formData);
 		if (!formData.height.inches) delete formData.height.inches;
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
@@ -137,13 +164,20 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
+	// const handleSelectionChange = (selectedIds) => {
+	// 	console.log("Selected IDs:", selectedIds);
+	// 	// setSelectedCountryIds(selectedIds);
+	// };
+	console.log(employedIn);
+
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
+
 	return (
-		<div className="box-shadow bg-white border rounded-md mx-auto">
+		<div className="box-shadow bg-white border rounded-md mx-auto overflow-visible">
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Partner Expectation</p>
 			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
 
-				{/* <MultiSelectDropdown dataList={countriesWithDoesNotMatter?.country} onSelectionChange={handleSelectionChange} />
+				{/* <MultiSelectDropdown dataList={countriesWithDoesNotMatter?.country} onSelectionChange={setSelectedCountryIds} />
 				<MultiSelectDropdown dataList={casteList?.caste} onSelectionChange={handleSelectionChange} /> */}
 
 				{/* {age} */}
@@ -281,7 +315,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Residency Country <span className="text-red-500">*</span>
 					</label>
-					<select
+					<MultiSelectDropdown dataList={countriesWithDoesNotMatter?.country} onSelectionChange={setResidencyCountryIds} fieldName={'Select Country'} />
+					{/* <select
 						id="residencyCountry"
 						className={getInputClasses('residencyCountry')}
 						name="residencyCountry"
@@ -289,13 +324,12 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Residency Country</option>
-						{/* {countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>} */}
 						{countriesWithDoesNotMatter?.country?.map((country, index) => (
 							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
 						))}
-					</select>
+					</select> */}
 					{errors.residencyCountry && <p className="text-red-500 text-xs">{errors.residencyCountry}</p>}
 				</div>
 
@@ -323,7 +357,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				{/* Caste */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Caste <span className="text-red-500">*</span></label>
-					<select
+					<MultiSelectDropdown dataList={casteList?.caste} onSelectionChange={setSelectedCast} fieldName={'Select Caste'} />
+					{/* <select
 						id="caste"
 						className={getInputClasses('caste')}
 						name="caste"
@@ -338,7 +373,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 								{caste.name}
 							</option>
 						))}
-					</select>
+					</select> */}
 					{errors.caste && <p className="text-red-500 text-xs">{errors.caste}</p>}
 				</div>
 
@@ -359,8 +394,9 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 				{/* Mother Tongue */}
 				<div>
-					<label className="block font-medium mb-1 md:mb-2 mt-1 text-headingGray">Mother Tongue<span className="text-red-500"> *</span></label>
-					<select
+					<label className="block font-medium mb-1 mt-1 text-headingGray">Mother Tongue<span className="text-red-500"> *</span></label>
+					<MultiSelectDropdown dataList={languages?.language} onSelectionChange={setMotherTongue} fieldName={'Select Mother Tongue'} />
+					{/* <select
 						id="motherTongue"
 						className="input-field text-gray-700"
 						name="motherTongue"
@@ -368,22 +404,22 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Mother Tongue</option>
-						{/* {langLoading && !languages.length && <option>Loading languages...</option>} */}
 						{languages?.language?.map((language) => (
 							<option key={language._id} value={language._id}>
 								{language.name}
 							</option>
 						))}
-					</select>
+					</select> */}
 					{errors.motherTongue && <p className="text-red-500 text-xs">{errors.motherTongue}</p>}
 				</div>
 
 				{/* Highest Education */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
-						Highest Education <span className="text-red-500">*</span>
+						Education <span className="text-red-500">*</span>
 					</label>
-					<select
+					<MultiSelectDropdown dataList={education?.education} onSelectionChange={setEducationIds} fieldName={'Select Education'} />
+					{/* <select
 						id="highestEducation"
 						className={getInputClasses('highestEducation')}
 						name="highestEducation"
@@ -396,7 +432,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
 						))}
-					</select>
+					</select> */}
 					{errors.highestEducation && <p className="text-red-500 text-xs">{errors.highestEducation}</p>}
 				</div>
 
@@ -405,7 +441,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Employed In <span className="text-red-500">*</span>
 					</label>
-					<select
+					<MultiDropdown dataList={career.employedIn} onSelectionChange={setEmployedIn} fieldName={'Select Employed in'} />
+					{/* <select
 						id="EmployedIn"
 						className={getInputClasses('employedIn')}
 						name="employedIn"
@@ -419,7 +456,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
-					</select>
+					</select> */}
 					{errors.employedIn && <p className="text-red-500 text-xs">{errors.employedIn}</p>}
 				</div>
 
@@ -427,7 +464,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Occupation <span className="text-red-500">*</span>
 					</label>
-					<select
+					<OccupationSelect dataList={occupations?.occupation} onSelectionChange={setOccupation} fieldName={'Select Occupation'} />
+					{/* <select
 						id="occupation"
 						className={getInputClasses('occupation')}
 						name="occupation"
@@ -447,7 +485,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 								))}
 							</optgroup>
 						))}
-					</select>
+					</select> */}
 					{errors.occupation && <p className="text-red-500 text-xs">{errors.occupation}</p>}
 				</div>
 
@@ -544,7 +582,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Body Type <span className="text-red-500">*</span>
 					</label>
-					<select
+					<MultiDropdown dataList={PhysicalAttributesData.bodyType} onSelectionChange={setBodyType} fieldName={'Select Body Type'} />
+					{/* <select
 						id="bodyType"
 						className={getInputClasses('bodyType')}
 						name="bodyType"
@@ -558,7 +597,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 								{value.charAt(0).toUpperCase() + value.slice(1)}
 							</option>
 						))}
-					</select>
+					</select> */}
 					{errors.bodyType && <p className="text-red-500 text-xs">{errors.bodyType}</p>}
 				</div>
 
@@ -567,7 +606,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Preferred Country <span className="text-red-500">*</span>
 					</label>
-					<select
+					<MultiSelectDropdown dataList={countriesWithDoesNotMatter?.country} onSelectionChange={setPreferredCountry} fieldName={'Select Country'} />
+					{/* <select
 						id="preferredCountry"
 						className={getInputClasses('preferredCountry')}
 						name="preferredCountry"
@@ -575,37 +615,36 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select preferred country</option>
-						{/* {countriesLoading && !countries.length && <option value="" disabled>Loading countries...</option>} */}
 						{countriesWithDoesNotMatter?.country?.map((country, index) => (
 							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
 						))}
-					</select>
+					</select> */}
 					{errors.preferredCountry && <p className="text-red-500 text-xs">{errors.preferredCountry}</p>}
 				</div>
 				{/* State */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
-						Prefer redState <span className="text-red-500">*</span>
+						Prefer State <span className="text-red-500">*</span>
 					</label>
-					<select
-						id="preferredState"
-						className={getInputClasses('preferredState')}
-						name="preferredState"
-						value={formData.preferredState}
+					<MultiSelectDropdown dataList={stateList?.state} onSelectionChange={setPreferState} fieldName={'Select Country'} />
+					{/* <select
+						id="preferState"
+						className={getInputClasses('preferState')}
+						name="preferState"
+						value={formData.preferState}
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select preferred state</option>
 						{formData.country == '' && <option value="" disabled>Please Select country</option>}
-						{/* {statesLoading && !states?.length && <option value="" disabled>Loading states...</option>} */}
 						{stateList?.state?.map((state) => (
 							<option key={state._id} value={state._id}>
 								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
 							</option>
 						))}
-					</select>
-					{errors.preferredState && <p className="text-red-500 text-xs">{errors.preferredState}</p>}
+					</select> */}
+					{errors.preferState && <p className="text-red-500 text-xs">{errors.preferState}</p>}
 				</div>
 
 				{/* Complexion */}
@@ -613,21 +652,22 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Complexion <span className="text-red-500">*</span>
 					</label>
-					<select
-						id="complexion"
-						className={getInputClasses('complexion')}
-						name="complexion"
-						value={formData.complexion}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Complexion</option>
-						<option value="doesn't matter">Doesn't matter</option>
-						{PhysicalAttributesData.complexion.map((value, index) => (
-							<option key={index} value={value}>
-								{value.charAt(0).toUpperCase() + value.slice(1)}
-							</option>
-						))}
-					</select>
+					<MultiDropdown dataList={PhysicalAttributesData.bodyType} onSelectionChange={setComplexion} fieldName={'Select Body Type'} />
+					{/* <select
+							id="complexion"
+							className={getInputClasses('complexion')}
+							name="complexion"
+							value={formData.complexion}
+							onChange={handleChange}
+						>
+							<option value="" disabled>Select Complexion</option>
+							<option value="doesn't matter">Doesn't matter</option>
+							{PhysicalAttributesData.complexion.map((value, index) => (
+								<option key={index} value={value}>
+									{value.charAt(0).toUpperCase() + value.slice(1)}
+								</option>
+							))}
+						</select> */}
 					{errors.complexion && <p className="text-red-500 text-xs">{errors.complexion}</p>}
 				</div>
 

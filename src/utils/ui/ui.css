@@ -5,3 +5,12 @@
 .scrollbar-visible::-webkit-scrollbar {
 	display: block;
 }
+
+.arrowBg {
+	background: rgb(255, 255, 255);
+	background: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.46551120448179273) 0%,
+		rgba(255, 255, 255, 1) 39%
+	);
+}

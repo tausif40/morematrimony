@@ -30,13 +30,13 @@ function ProfileOption() {
 	}, [ userDetails, userDetails?.data?.user?.profileCompletion ])
 
 	const percentColor = (presence) => {
-		const colors = [ 'ten', 'twenty', 'forty', 'fifty', 'sixty', 'eighty', 'hundred' ];
-		const index = Math.min(Math.floor(presence / 10));
+		const colors = [ 'ten', 'twenty', 'forty', 'sixty', 'eighty', 'hundred' ];
+		const index = Math.min(Math.floor(presence / 20));
 		return colors[ index ];
 	};
 
-	console.log(userDetails);
-	console.log(percent);
+	// console.log(color);
+	// console.log(percent);
 
 	const navOption = [
 		{ name: 'Dashboard', path: '/dashboard', icon: RiHome4Line },

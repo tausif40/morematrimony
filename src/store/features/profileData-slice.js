@@ -39,25 +39,6 @@ export const fetchCountriesWithDoesNotMatter = createAsyncThunk('data/countriesW
   }
 });
 
-// export const fetchStates = createAsyncThunk('data/fetchStates', async (countryId, { rejectWithValue }) => {
-//   try {
-//     const response = await apiClient.get(`/state?countryId=${countryId}`);
-//     // console.log(response);
-//     return response.data;
-//   } catch (error) {
-//     // console.log(error);
-//     return rejectWithValue(error.response?.data || 'Failed to fetch states');
-//   }
-// });
-
-// export const fetchCities = createAsyncThunk('data/fetchCities', async (stateId, { rejectWithValue }) => {
-//   try {
-//     const response = await apiClient.get(`/city?stateId=${stateId}`);
-//     return response.data;
-//   } catch (error) {
-//     return rejectWithValue(error.response?.data || 'Failed to fetch cities');
-//   }
-// });
 
 export const fetchOccupations = createAsyncThunk('data/fetchOccupations', async (_, { rejectWithValue }) => {
   try {

@@ -13,13 +13,14 @@ const ProfileImage = () => {
 	// const [ images, setImages ] = useState([])
 
 	const ProfileImages = useSelector((state) => state.userDetails.profileImages);
-	console.log(ProfileImages.data.gallery);
+	console.log(ProfileImages?.data?.gallery);
+	// const images = ProfileImages?.data?.gallery;
 
-	// 	useEffect(() => {
-	// 		ProfileImages?.data?.gallery?.map((val) => {
-	// 			setImages((pre) => { pre, ...val.image })
+	// useEffect(() => {
+	// 	ProfileImages?.data?.gallery?.map((img) => {
+	// 		setImages((prevImages) => [ ...prevImages, img.image ]);
 	// 	})
-	// }, [])
+	// }, [ ProfileImages ])
 	const images = [
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img2_pop07c.jpg' },
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594306/Tausif/temp/img4_qjhdex.jpg' },
@@ -27,10 +28,9 @@ const ProfileImage = () => {
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img3_gl05sz.jpg' },
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1717399015/Tausif/temp/img_rjd4en.png' },
 	];
+	// console.log(images);
 
 	const handlePurchase = () => {
-		// Implement purchase logic here
-		// On successful purchase, set `isPurchased` to true
 		setIsPurchased(true);
 	};
 
@@ -48,6 +48,7 @@ const ProfileImage = () => {
 			>
 				{images.map((value, index) => (
 					<SwiperSlide key={index}>
+
 						<div className="relative w-full sm:w-[260px] md:w-[320px] lg:w-[360px] h-[22rem] sm:h-[20rem] md:h-[22rem] lg:h-96 overflow-hidden">
 
 							<img src={value.img} alt={`Image ${index + 1}`} className="object-cover rounded-lg w-full h-full" />

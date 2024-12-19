@@ -52,7 +52,6 @@ const MyProfilePage = () => {
 	const [ divisions, setDivisions ] = useState([])
 
 	useEffect(() => {
-		console.log(dispatch(fetchDivision()));
 		const DivisionData = async () => {
 			try {
 				const response = await apiClient.get('/division');
