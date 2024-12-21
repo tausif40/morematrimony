@@ -274,7 +274,7 @@ textarea:focus,
 }
 
 .customScroll-bar::-webkit-scrollbar-thumb {
-	background-color: #9c9c9c;
+	background-color: #b5b5b5;
 }
 
 /* horizontal scrollbar */

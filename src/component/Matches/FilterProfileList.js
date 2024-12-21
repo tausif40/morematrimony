@@ -38,7 +38,7 @@ const FilterSection = ({ title, children }) => {
 				>
 					<div className="p-4 bg-white text-sm">
 						{children}
-					</div> 
+					</div>
 				</div>
 			</div>
 		</>
@@ -79,6 +79,10 @@ const FilterProfileList = () => {
 					<p>Residency Information go here</p>
 				</FilterSection>
 
+				<FilterSection title="Spiritual Details">
+					<p>Spiritual Details go here</p>
+				</FilterSection>
+
 				<FilterSection title="Education Details">
 					<p>Education Details go here</p>
 				</FilterSection>
@@ -99,25 +103,14 @@ const FilterProfileList = () => {
 					<p>Hobbies filters go here</p>
 				</FilterSection>
 
-				<FilterSection title="Religious Details">
-					<p>Religious filters go here</p>
-				</FilterSection>
-
-				<FilterSection title="Spiritual Details">
-					<p>Spiritual Details go here</p>
-				</FilterSection>
-
 				<FilterSection title="Lifestyle">
 					<p>Lifestyle filters go here</p>
 				</FilterSection>
 
-				<FilterSection title="Family Details">
+				{/* <FilterSection title="Family Details">
 					<p>Family filters go here</p>
-				</FilterSection>
+				</FilterSection> */}
 
-				<FilterSection title="Partner Expectation">
-					<p>Partner Expectation go here</p>
-				</FilterSection>
 
 			</div>
 		</div>

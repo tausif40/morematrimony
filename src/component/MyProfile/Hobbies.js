@@ -115,7 +115,7 @@ const Hobbies = ({ onFormSubmit, data }) => {
 									{filteredHobbies?.map((hobby) => (
 										<div
 											key={hobby._id}
-											className={`cursor-pointer p-2 text-center px-4 rounded-full ${selectedHobbies.some((h) => h._id === hobby._id) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
+											className={`cursor-pointer py-2 text-xs text-center px-3 rounded-full ${selectedHobbies.some((h) => h._id === hobby._id) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
 											onClick={() => handleSelect(hobby.name)}
 										>
 											{hobby.name}

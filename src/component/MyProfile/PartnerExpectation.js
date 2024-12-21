@@ -652,7 +652,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Complexion <span className="text-red-500">*</span>
 					</label>
-					<MultiDropdown dataList={PhysicalAttributesData.bodyType} onSelectionChange={setComplexion} fieldName={'Select Body Type'} />
+					<MultiDropdown dataList={PhysicalAttributesData.complexion} onSelectionChange={setComplexion} fieldName={'Select Body Type'} />
 					{/* <select
 							id="complexion"
 							className={getInputClasses('complexion')}

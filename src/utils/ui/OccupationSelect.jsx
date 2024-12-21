@@ -31,8 +31,7 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 		}
 		setSelectedItems(updatedSelection);
 
-		// Pass only role names to the parent component
-		onSelectionChange(updatedSelection.map((selected) => selected.role));
+		onSelectionChange(updatedSelection.map((selected) => selected.id));
 	};
 
 	// Remove Selected Tag
@@ -40,8 +39,7 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 		const updatedSelection = selectedItems.filter((selected) => selected.id !== item.id);
 		setSelectedItems(updatedSelection);
 
-		// Pass updated role names list to the parent component
-		onSelectionChange(updatedSelection.map((selected) => selected.role));
+		onSelectionChange(updatedSelection.map((selected) => selected.id));
 	};
 
 	// Close dropdown when clicking outside

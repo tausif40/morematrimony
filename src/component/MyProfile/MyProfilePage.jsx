@@ -20,6 +20,7 @@ import {
 } from '../../store/features/profileData-slice';
 import apiClient from '../../api/apiClient';
 import { encryptData, decryptData } from "../../utils/encryption";
+import { socialBackground } from '../../utils/data/MyProfileData';
 
 const MyProfilePage = () => {
 	const dispatch = useDispatch({});
@@ -63,8 +64,6 @@ const MyProfilePage = () => {
 		DivisionData()
 	}, [])
 
-
-
 	const userData = userDetails?.user
 	const introduction = userData?.introduction;
 	const basicInfo = userData?.basicInformation;
@@ -74,6 +73,7 @@ const MyProfilePage = () => {
 	const careerData = userData?.career;
 	const physicalAttributes = userData?.physicalAttributes;
 	const languageData = userData?.language;
+	const socialBackgroundData = userData?.spiritualAndSocialBackground;
 
 	const handleFormSubmit = (data) => {
 		console.log("data before submit -", data);
@@ -97,7 +97,7 @@ const MyProfilePage = () => {
 			<PhysicalAttributes onFormSubmit={handleFormSubmit} data={physicalAttributes} />
 			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading, languageData }} />
 			<Hobbies onFormSubmit={handleFormSubmit} data={{ hobbies, hobbiesError }} />
-			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries }} />
+			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries, socialBackgroundData }} />
 			<Lifestyle onFormSubmit={handleFormSubmit} />
 			<FamilyInformation onFormSubmit={handleFormSubmit} />
 			<PartnerExpectation onFormSubmit={handleFormSubmit} data={{ countriesWithDoesNotMatter, religions, occupations, education, languages }} />

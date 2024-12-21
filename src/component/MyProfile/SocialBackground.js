@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { socialBackground } from '../../utils/data/MyProfileData';
 import { hinduId, christianId } from '../../utils/data/config';
@@ -6,8 +6,8 @@ import apiClient from '../../api/apiClient';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const SocialBackground = ({ onFormSubmit, data }) => {
-	const { religions, divisions, stars, zodiac, languages, countries } = data;
+const SocialBackground = ({ data }) => {
+	const { religions, divisions, stars, zodiac, languages, countries, socialBackgroundData } = data;
 
 	const [ isChristian, setIsChristian ] = useState(false)
 	const [ isHindu, setIsHindu ] = useState(false)
@@ -36,6 +36,47 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 		dosh: '',
 		doshName: ''
 	});
+
+	useEffect(() => {
+		if (socialBackgroundData) {
+			setFormData({
+				religion: socialBackgroundData?.religion._id,
+				caste: socialBackgroundData?.caste._id,
+				division: socialBackgroundData?.caste.name,
+				subCaste: socialBackgroundData?.subCaste,
+				ethnicity: socialBackgroundData?.ethnicity._id,
+				star: socialBackgroundData?.star._id,
+				rashi: socialBackgroundData?.rashi._id,
+				zodiac: socialBackgroundData?.zodiac._id,
+				timeOfBirth: socialBackgroundData?.timeOfBirth,
+				birthPlace: {
+					country: socialBackgroundData?.birthPlace.country._id,
+					state: socialBackgroundData?.birthPlace.state._id,
+					city: socialBackgroundData?.birthPlace.city._id
+				},
+				gothra: socialBackgroundData?.gothra,
+				kundli: socialBackgroundData?.kundli,
+				dosh: socialBackgroundData?.dosh,
+				doshName: socialBackgroundData?.doshName
+			});
+			const religionId = socialBackgroundData?.religion._id
+			religionId == hinduId ? setIsHindu(true) : religionId == christianId && setIsChristian(true)
+
+			if (socialBackgroundData?.birthPlace.country._id) {
+				fetchState(socialBackgroundData?.birthPlace.country._id);
+			}
+			if (socialBackgroundData?.birthPlace.state._id) {
+				fetchCity(socialBackgroundData?.birthPlace.state._id);
+			}
+			if (socialBackgroundData?.religion._id) {
+				fetchCaste(socialBackgroundData?.religion._id);
+			}
+			if (socialBackgroundData?.star._id) {
+				fetchCaste(socialBackgroundData?.star._id);
+			}
+		}
+	}, [ socialBackgroundData ]);
+
 
 	const fetchData = async (url, setData, type) => {
 		setLoading((prev) => ({ ...prev, [ type ]: true }));
@@ -108,7 +149,6 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 			return;
 		}
 
-
 		let cleanedFormData = { ...formData };
 
 		if (!isHindu) {
@@ -129,8 +169,8 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 		const loadingToast = toast.loading('Updating.....');
 		try {
 			const formDataObj = new FormData();
-			console.log("formDataObj - ", formDataObj);
-			console.log("formData - ", formData);
+			// console.log("formDataObj - ", formDataObj);
+			// console.log("formData - ", formData);
 			Object.keys(cleanedFormData).forEach((key) => {
 				if (key === 'birthPlace') {
 					if (cleanedFormData.birthPlace.country) {
@@ -150,9 +190,9 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 			});
 
 			// Log final FormData contents
-			for (const [ key, value ] of formDataObj.entries()) {
-				console.log(`${key}:`, value);
-			}
+			// for (const [ key, value ] of formDataObj.entries()) {
+			// 	console.log(`${key}:`, value);
+			// }
 
 			const response = await axios.patch(`${BASE_URL}/user/spiritualAndSocialBackground`, formDataObj, {
 				headers: {
@@ -189,7 +229,6 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
-
 	const handleBirthPlaceChange = (e, field) => {
 		const { value } = e.target;
 
@@ -216,7 +255,6 @@ const SocialBackground = ({ onFormSubmit, data }) => {
 			[ `birthPlace${field.charAt(0).toUpperCase() + field.slice(1)}` ]: '',
 		}));
 	};
-
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 
