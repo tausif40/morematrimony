@@ -29,7 +29,7 @@ function PhotoGallery() {
 		// console.log(response);
 		alert("currently not working")
 	};
-	// console.log(DpImage);
+	console.log(images?.length);
 
 	return (
 		<div className="container text-textGray border shadow-md rounded-xl">
@@ -52,7 +52,7 @@ function PhotoGallery() {
 												onClick={open}
 												src={data.image}
 												alt=""
-												className="h-80 md:h-72 object-cover w-full"
+												className="h-80 md:h-80 object-cover w-full"
 											/>
 										</>
 									)}
@@ -74,6 +74,7 @@ function PhotoGallery() {
 								</div>
 							</div>
 						))}
+						{images.length === 0 && <img src="./assets/img/noImage.jpg" alt="" />}
 					</div>
 				</Gallery>
 			</div>

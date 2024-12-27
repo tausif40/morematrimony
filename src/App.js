@@ -8,7 +8,7 @@ import NavMain from './component/NavBar/NavMain';
 import HomePageLayout from './component/Layout/HomePageLayout';
 import ContactUs from './component/Form/ContactUs';
 import RegistrationForm from './component/Form/RegistrationForm';
-import LoginPage from './component/Form/LoginPage';
+import LoginPage from './component/pages/LoginPage';
 import ActiveMembers from './component/ActiveMembers/ActiveMembers';
 import HappyStories from './component/HappyStories/HappyStories';
 import Footer from './component/Footer/Footer';
@@ -24,6 +24,7 @@ import ProfileDetails from './component/ViewProfile/ProfileDetails';
 import MatchesLayout from './component/Layout/MatchesLayout';
 import Plans from './component/Plans/Plans';
 import Help from './component/Help/Help';
+import AgentProfile from './component/AgentProfile/AgentProfile';
 
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
 import { getMatchProfile } from './store/features/matchProfile-slice';
@@ -83,6 +84,7 @@ const App = () => {
           <Route path="/*" element={<PageNotFound />} />
           <Route path="/" element={<HomePageLayout />} />
           <Route path="/active-members" element={<ActiveMembers />} />
+          <Route path="//my-profile" element={<AgentProfile />} />
           <Route path="/happy-stories" element={<HappyStories />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/register" element={<RegistrationForm />} />

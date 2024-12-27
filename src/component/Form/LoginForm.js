@@ -7,7 +7,7 @@ import { loginUser } from '../../store/auth/auth-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-const LoginPage = () => {
+const LoginForm = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [ email, setEmail ] = useState('');
@@ -154,4 +154,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default LoginForm;

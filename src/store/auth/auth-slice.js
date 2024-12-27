@@ -41,7 +41,30 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, 
 });
 
 // LogOut User
-
+export const logOut = createAsyncThunk('auth/logOut', async (_, thunkAPI) => {
+	const navigate = useNavigate();
+	const loadingToast = toast.loading('wait for LogOut...');
+	try {
+		const refreshToken = Cookies.get('refresh_token');
+		const logoutToken = { refreshToken: refreshToken };
+		console.log(logoutToken);
+		await apiClient.post('/auth/logout', logoutToken).then((response) => {
+			console.log(response);
+			toast.success('Logged out successfully.', { id: loadingToast });
+			ClearAllCookies();
+			navigate('/');
+		}).catch((error) => {
+			console.log(error);
+			toast.error('Failed to log out.', { id: loadingToast });
+		});
+	} catch (error) {
+		console.error('Logout error:', error);
+		toast.error(
+			error.response?.data?.message || error.message || 'An unexpected error occurred.',
+			{ id: loadingToast }
+		);
+	}
+});
 function ClearAllCookies() {
 	const cookies = Object.keys(Cookies.get());
 	cookies.forEach(cookie => {
@@ -49,24 +72,6 @@ function ClearAllCookies() {
 	});
 	return null;
 }
-
-export const logOut = createAsyncThunk('auth/logOut', async (_, thunkAPI) => {
-	const navigate = useNavigate();
-	const loadingToast = toast.loading('wait for LogOut...');
-	try {
-		console.log({ refreshToken: refreshToken });
-		const response = await apiClient.post('/auth/logout', { refreshToken: refreshToken });
-		console.log(response);
-		toast.success('Logged out successfully.', { id: loadingToast });
-		ClearAllCookies();
-		// window.location.reload(false);
-		navigate('/')
-		return response.data;
-	} catch (error) {
-		toast.error(error.response?.data?.message || error.message || 'Failed to log out.', { id: loadingToast });
-		return thunkAPI.rejectWithValue(error.response.data);
-	}
-});
 
 const authSlice = createSlice({
 	name: 'auth',

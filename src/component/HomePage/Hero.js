@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import LoginPage from '../Form/LoginPage';
+import LoginForm from '../Form/LoginForm';
 import Cookies from 'js-cookie';
 
 function Hero() {
@@ -20,7 +20,7 @@ function Hero() {
 						<p className='text-hotRed text-3xl md:text-4xl sm:leading-[50px]'>Make Yours <br /> Special</p>
 					</div> */}
 					<div className='mr-0 md:mr-12 lg:mr-28'>
-						{!isUserLogin && <LoginPage />}
+						{!isUserLogin && <LoginForm />}
 					</div>
 				</div>
 			</section>

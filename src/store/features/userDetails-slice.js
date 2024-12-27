@@ -14,6 +14,7 @@ export const getUserDetails = createAsyncThunk('data/getUserDetails', async (_, 
 export const getProfileImages = createAsyncThunk('data/getProfileImages', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/gallery`);
+		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);
