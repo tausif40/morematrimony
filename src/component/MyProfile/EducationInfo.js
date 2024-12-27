@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 const EducationInfo = ({ onFormSubmit, data }) => {
 
-	const { education, educationInfo } = data;
+	const { education, educationInfo, isLoading } = data;
 
 	const [ formData, setFormData ] = useState({
 		highestEducation: '',
@@ -119,7 +119,7 @@ const EducationInfo = ({ onFormSubmit, data }) => {
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>Update</button>
 				</div>
 			</form >
 		</div >

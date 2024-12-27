@@ -6,8 +6,9 @@ import { indiaId } from '../../utils/data/config';
 
 const ResidencyInformation = ({ data, onFormSubmit }) => {
 	const [ stateList, setStateList ] = useState([]);
-
-	const { countries, countriesLoading, residency } = data;
+	const [ cityList, setCityList ] = useState([]);
+	const [ cityLoading, setCityLoading ] = useState(false)
+	const { countries, countriesLoading, residency, isLoading } = data;
 	// console.log(residency);
 
 	useEffect(() => {
@@ -30,24 +31,42 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 		residencyStatus: '',
 		citizenship: '',
 		ancestralOrigin: {
-			state: ''
+			state: '',
+			city: ''
 		},
 	});
 
 	useEffect(() => {
 		if (residency) {
 			setFormData({
-				birthCountry: residency.birthCountry?._id || '',
-				growUpCountry: residency.growUpCountry?._id || '',
-				residencyCountry: residency.residencyCountry?._id || '',
-				residencyStatus: residency.residencyStatus || '',
-				citizenship: residency.citizenship?._id || '',
+				birthCountry: residency?.birthCountry?._id || '',
+				growUpCountry: residency?.growUpCountry?._id || '',
+				residencyCountry: residency?.residencyCountry?._id || '',
+				residencyStatus: residency?.residencyStatus || '',
+				citizenship: residency?.citizenship?._id || '',
 				ancestralOrigin: {
-					state: residency.ancestralOrigin?.state || '',
+					state: residency?.ancestralOrigin?.state || '',
+					city: residency?.ancestralOrigin?.city || '',
 				},
 			});
 		}
+		if (residency?.ancestralOrigin?.state) {
+			fetchCity(residency?.ancestralOrigin?.state);
+		}
 	}, [ residency ]);
+
+	const fetchCity = async (stateId) => {
+		setCityLoading(true)
+		try {
+			const response = await apiClient.get(`/city?stateId=${stateId}`);
+			setCityList(response.data)
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setCityLoading(false)
+		}
+	}
+
 
 	const [ errors, setErrors ] = useState({});
 
@@ -59,7 +78,8 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 		if (!formData.growUpCountry) validationErrors.growUpCountry = 'Grow Up Country is required';
 		if (!formData.residencyCountry) validationErrors.residencyCountry = 'Residency Country is required';
 		if (!formData.residencyStatus) validationErrors.residencyStatus = 'Residency Status is required';
-		if (!formData.ancestralOrigin.state) validationErrors.ancestralOrigin = 'Ancestral Origin is required';
+		if (!formData.ancestralOrigin.state) validationErrors.ancestralOriginState = 'Ancestral State is required';
+		if (!formData.ancestralOrigin.city) validationErrors.ancestralOriginCity = 'Ancestral city is required';
 		if (!formData.citizenship) validationErrors.citizenship = 'Citizenship is required';
 
 		if (Object.keys(validationErrors).length > 0) {
@@ -75,13 +95,15 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 		const { name, value } = e.target;
 
 		setFormData((prevFormData) => {
-			if (name === 'ancestralOrigin') {
+			if (name === 'ancestralOriginState') {
+				fetchCity(value);
 				return {
-					...prevFormData,
-					ancestralOrigin: {
-						...prevFormData.ancestralOrigin,
-						state: value,
-					},
+					...prevFormData, ancestralOrigin: { ...prevFormData.ancestralOrigin, state: value, },
+				};
+			}
+			if (name === 'ancestralOriginCity') {
+				return {
+					...prevFormData, ancestralOrigin: { ...prevFormData.ancestralOrigin, city: value, },
 				};
 			}
 
@@ -193,19 +215,19 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 					{errors.residencyStatus && <p className="text-red-500 text-xs">{errors.residencyStatus}</p>}
 				</div>
 
-				{/* Ancestral Origin */}
+				{/* Ancestral state */}
 				<div>
-					<label htmlFor="ancestralOrigin" className="block font-medium mb-1 mt-1 text-headingGray">
+					<label htmlFor="ancestralOriginState" className="block font-medium mb-1 mt-1 text-headingGray">
 						Ancestral Origin (Only India) <span className="text-red-500">*</span>
 					</label>
 					<select
-						id="ancestralOrigin"
-						className={getInputClasses('ancestralOrigin')}
-						name="ancestralOrigin"
+						id="ancestralOriginState"
+						className={getInputClasses('ancestralOriginState')}
+						name="ancestralOriginState"
 						value={formData.ancestralOrigin.state}
 						onChange={handleChange}
 					>
-						<option value="" disabled>Select Ancestral Origin</option>
+						<option value="" disabled>Select Ancestral State</option>
 						{/* {!stateList?.length && <option value="" disabled>Loading states...</option>} */}
 						{stateList?.state?.map((state) => (
 							<option key={state.id} value={state._id}>
@@ -213,8 +235,33 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 							</option>
 						))}
 					</select>
-					{errors.ancestralOrigin && <p className="text-red-500 text-xs">{errors.ancestralOrigin}</p>}
+					{errors.ancestralOriginState && <p className="text-red-500 text-xs">{errors.ancestralOriginState}</p>}
 				</div>
+
+				{/* Ancestral city */}
+				<div>
+					<label htmlFor="ancestralOriginCity" className="block font-medium mb-1 mt-1 text-headingGray">
+						Ancestral Origin City <span className="text-red-500">*</span>
+					</label>
+					<select
+						id="ancestralOriginCity"
+						className={getInputClasses('ancestralOriginCity')}
+						name="ancestralOriginCity"
+						value={formData.ancestralOrigin.city}
+						onChange={handleChange}
+					>
+						<option value="" disabled>Select Ancestral City</option>
+						{formData.state == '' && <option value="" disabled>Please Select state</option>}
+						{cityLoading && !cityList?.length && <option value="" disabled> Loading cities...</option>}
+						{cityList?.city?.map((city) => (
+							<option key={city._id} value={city._id}>
+								{city.name.charAt(0).toUpperCase() + city.name.slice(1)}
+							</option>
+						))}
+					</select>
+					{errors.ancestralOriginCity && <p className="text-red-500 text-xs">{errors.ancestralOriginCity}</p>}
+				</div>
+
 				{/* Citizenship */}
 				<div>
 					<label htmlFor="citizenship" className="block font-medium mb-1 mt-1 text-headingGray">
@@ -240,7 +287,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm " disabled={isLoading}>Update</button>
 				</div>
 			</form>
 		</div>

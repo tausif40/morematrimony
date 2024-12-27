@@ -4,7 +4,7 @@ import { career } from '../../utils/data/MyProfileData';
 
 const Career = ({ data, onFormSubmit }) => {
 
-	const { countries, countriesLoading, occupations, careerData } = data;
+	const { countries, countriesLoading, occupations, careerData, isLoading } = data;
 
 	const [ formData, setFormData ] = useState({
 		employedIn: '',
@@ -200,7 +200,7 @@ const Career = ({ data, onFormSubmit }) => {
 				</div>
 
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>Update</button>
 				</div>
 			</form>
 		</div>

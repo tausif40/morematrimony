@@ -29,7 +29,7 @@ const ProfileCard = (userData) => {
 		}
 	}, [ accountCreate ]);
 
-	console.log({ profileData: profileData });
+	// console.log({ profileData: profileData });
 	const showProfileDetails = () => {
 		navigate('/view-profile', { state: profileData });
 	};

@@ -3,6 +3,7 @@ import apiClient from '../../api/apiClient';
 import { toast } from 'react-hot-toast';
 import { encryptData, decryptData } from '../../utils/encryption';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const refreshToken = Cookies.get('refresh_token');
 
@@ -40,13 +41,29 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, 
 });
 
 // LogOut User
+
+function ClearAllCookies() {
+	const cookies = Object.keys(Cookies.get());
+	cookies.forEach(cookie => {
+		Cookies.remove(cookie);
+	});
+	return null;
+}
+
 export const logOut = createAsyncThunk('auth/logOut', async (_, thunkAPI) => {
+	const navigate = useNavigate();
+	const loadingToast = toast.loading('wait for LogOut...');
 	try {
 		console.log({ refreshToken: refreshToken });
 		const response = await apiClient.post('/auth/logout', { refreshToken: refreshToken });
 		console.log(response);
+		toast.success('Logged out successfully.', { id: loadingToast });
+		ClearAllCookies();
+		// window.location.reload(false);
+		navigate('/')
 		return response.data;
 	} catch (error) {
+		toast.error(error.response?.data?.message || error.message || 'Failed to log out.', { id: loadingToast });
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });
@@ -103,7 +120,7 @@ const authSlice = createSlice({
 			})
 			.addCase(logOut.rejected, (state, action) => {
 				state.isLoading = false;
-				console.log(action.payload);
+				// console.log(action.payload);
 				state.error = action.payload || 'Failed to log out.';
 			})
 			.addCase(logOut.pending, (state) => {

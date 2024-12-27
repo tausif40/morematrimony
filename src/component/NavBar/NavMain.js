@@ -11,10 +11,14 @@ import { IoIosLogOut } from "react-icons/io";
 import DeviceDetector from '../../utils/device/DeviceDetector';
 import Cookies from 'js-cookie';
 import useLogout from '../Logout/Logout';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../store/auth/auth-slice';
 
 const NavMain = () => {
+	const dispatch = useDispatch();
 	const location = useLocation();
 	const navigate = useNavigate();
+	const handleLogout = useLogout();
 	const [ path, setPath ] = useState('')
 	const [ isUserRegister, setIsUserRegister ] = useState(false)
 	const [ mobileScreen, setMobileScreen ] = useState(false)
@@ -23,8 +27,14 @@ const NavMain = () => {
 	const dropdownRef = useRef(null);
 	const deviceType = DeviceDetector();
 	const token = Cookies.get('access_token');
-	const handleLogout = useLogout();
+	// const handleLogout = useLogout();
 
+	const handelLogOut = () => {
+		console.log('logout');
+		// dispatch(logOut())
+		handleLogout();
+	}
+	// console.log(handleLogout);
 	// const [ isVisible, setIsVisible ] = useState(true)
 	// const [ lastScrollY, setLastScrollY ] = useState(0)
 	// const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false)
@@ -203,7 +213,7 @@ const NavMain = () => {
 									</Link>
 								))}
 							<p className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center cursor-pointer"
-								onClick={handleLogout}>
+								onClick={handelLogOut}>
 								<IoIosLogOut /><p className='min-w-max'>Logout</p>
 							</p>
 						</div>

@@ -7,6 +7,8 @@ const IntroductionForm = ({ data, onFormSubmit }) => {
 	const [ introduction, setIntroduction ] = useState('');
 	const [ errors, setError ] = useState();
 
+	const { introductionData, isLoading } = data
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (introduction.trim() === '') {
@@ -17,8 +19,8 @@ const IntroductionForm = ({ data, onFormSubmit }) => {
 		onFormSubmit({ introduction });
 	};
 	useEffect(() => {
-		setIntroduction(data)
-	}, [ data ])
+		setIntroduction(introductionData)
+	}, [ introductionData ])
 
 	return (
 		<form onSubmit={handleSubmit} className="box-shadow bg-white border rounded-md">
@@ -41,6 +43,7 @@ const IntroductionForm = ({ data, onFormSubmit }) => {
 				<div className="flex justify-between ">
 					<p className="text-red-500 text-xs mt-1 md:pl-40">{errors}</p>
 					<button
+						disabled={isLoading}
 						type="submit"
 						className="gradient-btn mt-4 text-white py-2 px-4 rounded-md right text-sm"
 					>

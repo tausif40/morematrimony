@@ -4,6 +4,7 @@ import { maritalStatus } from '../../utils/data/MyProfileData';
 
 const BasicInformationForm = ({ data, onFormSubmit }) => {
 	const [ numberOfChildren, setNumberOfChildren ] = useState();
+	const { basicInfo, isLoading } = data;
 	const [ formData, setFormData ] = useState({
 		firstName: '',
 		lastName: '',
@@ -15,18 +16,18 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 	});
 
 	useEffect(() => {
-		if (data) {
+		if (basicInfo) {
 			setFormData({
-				firstName: data.firstName || '',
-				lastName: data.lastName || '',
-				dateOfBirth: data.dateOfBirth ? data.dateOfBirth.split('T')[ 0 ] : '',
-				gender: data.gender || '',
-				onBehalf: data.onBehalf || '',
-				maritalStatus: data.maritalStatus || '',
-				numberOfChildren: data.numberOfChildren || ''
+				firstName: basicInfo.firstName || '',
+				lastName: basicInfo.lastName || '',
+				dateOfBirth: basicInfo.dateOfBirth ? basicInfo.dateOfBirth.split('T')[ 0 ] : '',
+				gender: basicInfo.gender || '',
+				onBehalf: basicInfo.onBehalf || '',
+				maritalStatus: basicInfo.maritalStatus || '',
+				numberOfChildren: basicInfo.numberOfChildren || ''
 			});
 		}
-	}, [ data ]);
+	}, [ basicInfo ]);
 
 	const validateDOB = (dob) => {
 		const today = new Date();
@@ -243,7 +244,7 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 				</div>
 
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>Update</button>
 				</div>
 			</form>
 		</div>

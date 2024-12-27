@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import ScrollToTop from './component/ScrollToTop/ScrollToTop';
 import TopNav from './component/NavBar/TopNav';
 import NavMain from './component/NavBar/NavMain';
@@ -27,10 +28,10 @@ import Help from './component/Help/Help';
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
 import { getMatchProfile } from './store/features/matchProfile-slice';
 import { useDispatch } from 'react-redux';
-import Cookies from 'js-cookie';
 
 const App = () => {
   const token = Cookies.get('access_token');
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const dashboardPaths = [
     '/dashboard',
@@ -63,6 +64,13 @@ const App = () => {
     dispatch(getProfileImages());
     dispatch(getMatchProfile());
   }, [ dispatch ]);
+
+  // useEffect(() => {
+  //   if (token == undefined) {
+  //     window.location.reload();
+  //     navigate('/')
+  //   }
+  // }, [ token ])
 
   return (
     <>

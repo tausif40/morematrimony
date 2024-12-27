@@ -12,7 +12,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 	const [ stateList, setStateList ] = useState([])
 	const [ casteList, setCasteList ] = useState([])
-	const [ residencyCountryIds, setResidencyCountryIds ] = useState([]);
+	// const [ residencyCountryIds, setResidencyCountryIds ] = useState([]);
 	const [ selectedCast, setSelectedCast ] = useState([]);
 	const [ motherTongue, setMotherTongue ] = useState([]);
 	const [ educationIds, setEducationIds ] = useState([]);
@@ -43,10 +43,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		age: { min: '', max: '' },
 		height: { feet: '', inches: '' },
 		maritalStatus: '',
-		numberOfChildren: '',
+		// residencyCountry: [],
+		// numberOfChildren: '',
 		childrenAcceptable: '',
 		motherTongue: [],
-		residencyCountry: [],
 		religion: '',
 		caste: [],
 		highestEducation: [],
@@ -66,7 +66,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 	useEffect(() => {
 		setFormData((prev) => ({
 			...prev,
-			residencyCountry: residencyCountryIds,
+			// residencyCountry: residencyCountryIds,
 			caste: selectedCast,
 			motherTongue: motherTongue,
 			highestEducation: educationIds,
@@ -77,35 +77,92 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 			bodyType: bodyType,
 			complexion: complexion
 		}));
-	}, [ residencyCountryIds, selectedCast, motherTongue, educationIds, employedIn, occupation, preferState, preferredCountry, bodyType, complexion ]);
+	}, [ selectedCast, motherTongue, educationIds, employedIn, occupation, preferState, preferredCountry, bodyType, complexion ]);
 
 	const [ errors, setErrors ] = useState({});
+
+	// const validateForm = () => {
+	// 	let formErrors = {};
+
+	// 	Object.keys(formData).forEach((field) => {
+	// 		if (!formData[ field ] && field !== 'numberOfChildren' && field !== 'childrenAcceptable' && field !== 'lookingFor') {
+	// 			const formattedKey = field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
+	// 			formErrors[ field ] = `${formattedKey} is required`;
+	// 		}
+	// 	});
+
+	// 	if (!formData.age.min || !formData.age.max) {
+	// 		formErrors[ 'age.min' ] = 'Age (min and max) is required';
+	// 		formErrors[ 'age.max' ] = 'Age (min and max) is required';
+	// 	} else if (parseInt(formData.age.min) >= parseInt(formData.age.max)) {
+	// 		formErrors.age = 'Min age should be less than max age';
+	// 	}
+
+	// 	if (!formData.height.feet) {
+	// 		formErrors[ 'height.feet' ] = 'Height is required';
+	// 	}
+
+	// 	if (isChildrenFieldsVisible()) {
+	// 		if (!formData.numberOfChildren) {
+	// 			formErrors.numberOfChildren = 'Number of children is required';
+	// 		}
+	// 		if (!formData.childrenAcceptable) {
+	// 			formErrors.childrenAcceptable = 'Children acceptable is required';
+	// 		}
+	// 	}
+
+	// 	setErrors(formErrors);
+	// 	return Object.keys(formErrors).length === 0;
+	// };
 
 	const validateForm = () => {
 		let formErrors = {};
 
+		// Validate required fields
 		Object.keys(formData).forEach((field) => {
-			if (!formData[ field ] && field !== 'numberOfChildren' && field !== 'childrenAcceptable' && field !== 'lookingFor') {
-				const formattedKey = field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
+			if (
+				!formData[ field ] &&
+				![ 'childrenAcceptable', 'lookingFor' ].includes(field)
+			) {
+				const formattedKey = field
+					.replace(/([A-Z])/g, ' $1')
+					.replace(/^./, (str) => str.toUpperCase());
 				formErrors[ field ] = `${formattedKey} is required`;
+			}
+
+			// Validate nested fields
+			if (field === 'age') {
+				if (!formData.age.min || !formData.age.max) {
+					formErrors[ 'age.min' ] = 'Min age is required';
+					formErrors[ 'age.max' ] = 'Max age is required';
+				} else if (parseInt(formData.age.min) >= parseInt(formData.age.max)) {
+					formErrors.age = 'Min age should be less than max age';
+				}
+			}
+
+			if (field === 'height') {
+				if (!formData.height.feet || isNaN(parseInt(formData.height.feet))) {
+					formErrors[ 'height.feet' ] = 'Height (feet) is required and must be numeric';
+				}
+				if (formData.height.inches && isNaN(parseInt(formData.height.inches))) {
+					formErrors[ 'height.inches' ] = 'Height (inches) must be numeric';
+				}
+			}
+
+			// Validate array fields
+			if (Array.isArray(formData[ field ]) && formData[ field ].length === 0) {
+				const formattedKey = field
+					.replace(/([A-Z])/g, ' $1')
+					.replace(/^./, (str) => str.toUpperCase());
+				formErrors[ field ] = `${formattedKey} must have at least one selection`;
 			}
 		});
 
-		if (!formData.age.min || !formData.age.max) {
-			formErrors[ 'age.min' ] = 'Age (min and max) is required';
-			formErrors[ 'age.max' ] = 'Age (min and max) is required';
-		} else if (parseInt(formData.age.min) >= parseInt(formData.age.max)) {
-			formErrors.age = 'Min age should be less than max age';
-		}
-
-		if (!formData.height.feet) {
-			formErrors[ 'height.feet' ] = 'Height is required';
-		}
-
+		// Additional validations for children fields
 		if (isChildrenFieldsVisible()) {
-			if (!formData.numberOfChildren) {
-				formErrors.numberOfChildren = 'Number of children is required';
-			}
+			// if (!formData.numberOfChildren) {
+			// 	formErrors.numberOfChildren = 'Number of children is required';
+			// }
 			if (!formData.childrenAcceptable) {
 				formErrors.childrenAcceptable = 'Children acceptable is required';
 			}
@@ -115,9 +172,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		return Object.keys(formErrors).length === 0;
 	};
 
+
 	const isChildrenFieldsVisible = () => {
 		if (formData.maritalStatus == 'single') {
-			delete formData.numberOfChildren;
+			// delete formData.numberOfChildren;
 			delete formData.childrenAcceptable;
 		} else if (formData.lookingFor == "") delete formData.lookingFor;
 
@@ -126,7 +184,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// console.log(formData);
+		console.log(formData);
 		if (!formData.height.inches) delete formData.height.inches;
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
@@ -134,6 +192,69 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		}
 		onFormSubmit({ partnerExpectation: formData });
 	};
+
+	// const handleChange = (e) => {
+	// 	const { name, value } = e.target;
+
+	// 	setFormData((prevFormData) => ({
+	// 		...prevFormData,
+	// 		[ name ]: value,
+	// 	}));
+	// 	if (name.includes('age') || name.includes('height')) {
+	// 		const [ group, field ] = name.split('.');
+	// 		setFormData((prevFormData) => ({
+	// 			...prevFormData,
+	// 			[ group ]: { ...prevFormData[ group ], [ field ]: value }
+	// 		}));
+	// 	} else {
+	// 		setFormData((prevFormData) => ({
+	// 			...prevFormData,
+	// 			[ name ]: value
+	// 		}));
+	// 	}
+
+	// 	if (name === 'religion') {
+	// 		setCasteList('')
+	// 		fetchCaste(value);
+	// 	}
+	// 	setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
+	// };
+
+	// const handleSelectionChange = (selectedIds) => {
+	// 	console.log("Selected IDs:", selectedIds);
+	// 	// setSelectedCountryIds(selectedIds);
+	// };
+	// console.log(employedIn);
+
+	// const handleChange = (e) => {
+	// 	const { name, value } = e.target;
+	// 	console.log(value);
+	// 	if (name === 'religion') {
+	// 		setFormData((prevFormData) => ({
+	// 			...prevFormData,
+	// 			religion: value,
+	// 			caste: []
+	// 		}));
+
+	// 		setErrors((prevErrors) => ({
+	// 			...prevErrors,
+	// 			religion: '',
+	// 			// caste: ''
+	// 		}));
+
+	// 		fetchCaste(value);
+	// 	} else {
+	// 		setFormData((prevFormData) => ({
+	// 			...prevFormData,
+	// 			[ name ]: value
+	// 		}));
+
+	// 		setErrors((prevErrors) => ({
+	// 			...prevErrors,
+	// 			[ name ]: ''
+	// 		}));
+	// 	}
+	// };
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -160,15 +281,20 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 			fetchCaste(value);
 		}
 
-
 		setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 	};
 
-	// const handleSelectionChange = (selectedIds) => {
-	// 	console.log("Selected IDs:", selectedIds);
-	// 	// setSelectedCountryIds(selectedIds);
-	// };
-	// console.log(employedIn);
+	const handleMultiSelectChange = (name, selectedItems) => {
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[ name ]: selectedItems
+		}));
+
+		setErrors((prevErrors) => ({
+			...prevErrors,
+			[ name ]: ''
+		}));
+	};
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 
@@ -176,10 +302,6 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		<div className="box-shadow bg-white border rounded-md mx-auto overflow-visible">
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Partner Expectation</p>
 			<form className="md:grid grid-cols-2 gap-4 py-4 px-6 text-sm space-y-5 md:space-y-0" onSubmit={handleSubmit}>
-
-				{/* <MultiSelectDropdown dataList={countriesWithDoesNotMatter?.country} onSelectionChange={setSelectedCountryIds} />
-				<MultiSelectDropdown dataList={casteList?.caste} onSelectionChange={handleSelectionChange} /> */}
-
 				{/* {age} */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
@@ -189,11 +311,11 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						<select
 							className={`input-field text-gray-700 p-1 outline-none border`}
 							name="age.min"
-							value={formData.age.min}
+							value={formData?.age?.min}
 							onChange={handleChange}
 						>
 							<option value="" disabled>Min</option>
-							{partnerExpectations?.age.map((value, index) => (
+							{partnerExpectations?.age?.map((value, index) => (
 								<option key={index} value={value}>
 									{value}
 								</option>
@@ -278,7 +400,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				{/* Number of Children & Children Acceptable */}
 				{isChildrenFieldsVisible() && (
 					<>
-						<div>
+						{/* <div>
 							<label className="block font-medium mb-1 mt-1 text-headingGray">
 								Number of Children <span className="text-red-500">*</span>
 							</label>
@@ -290,7 +412,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 								onChange={handleChange}
 							/>
 							{errors.numberOfChildren && <p className="text-red-500 text-xs mt-1">{errors.numberOfChildren}</p>}
-						</div>
+						</div> */}
 						<div>
 							<label className="block font-medium mb-1 mt-1 text-headingGray">
 								Children Acceptable <span className="text-red-500">*</span>
@@ -311,27 +433,16 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				)}
 
 				{/* Residence Country */}
-				<div>
+				{/* <div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Residency Country <span className="text-red-500">*</span>
 					</label>
-					<MultiSelectDropdown dataList={countriesWithDoesNotMatter?.country} onSelectionChange={setResidencyCountryIds} fieldName={'Select Country'} />
-					{/* <select
-						id="residencyCountry"
-						className={getInputClasses('residencyCountry')}
-						name="residencyCountry"
-						value={formData.residencyCountry}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Residency Country</option>
-						{countriesWithDoesNotMatter?.country?.map((country, index) => (
-							<option key={country._id} value={country._id}>
-								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
-							</option>
-						))}
-					</select> */}
+					<MultiSelectDropdown
+						dataList={countriesWithDoesNotMatter?.country}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('residencyCountry', selectedItems)}
+						fieldName={'Select Country'} />
 					{errors.residencyCountry && <p className="text-red-500 text-xs">{errors.residencyCountry}</p>}
-				</div>
+				</div> */}
 
 				{/* Religion */}
 				<div>
@@ -357,59 +468,21 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				{/* Caste */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Caste <span className="text-red-500">*</span></label>
-					<MultiSelectDropdown dataList={casteList?.caste} onSelectionChange={setSelectedCast} fieldName={'Select Caste'} />
-					{/* <select
-						id="caste"
-						className={getInputClasses('caste')}
-						name="caste"
-						value={formData.caste}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Caste</option>
-						{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
-						{loading.caste && !casteList?.length && <option value="" disabled>Loading cast...</option>}
-						{casteList?.caste?.map((caste) => (
-							<option key={caste._id} value={caste._id}>
-								{caste.name}
-							</option>
-						))}
-					</select> */}
+					<MultiSelectDropdown
+						dataList={casteList?.caste}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('caste', selectedItems)}
+						fieldName={'Select Caste'} />
 					{errors.caste && <p className="text-red-500 text-xs">{errors.caste}</p>}
 				</div>
 
-				{/* Sub Caste */}
-				{/* <div>
-					<label className="block font-medium mb-1 mt-1 text-headingGray">Sub Caste <span className="text-red-500">*</span></label>
-					<input
-						type="text"
-						id="subCaste"
-						className={getInputClasses('subCaste')}
-						placeholder="SubCast"
-						name="subCaste"
-						value={formData.subCaste}
-						onChange={handleChange}
-					/>
-					{errors.subCaste && <p className="text-red-500 text-xs">{errors.subCaste}</p>}
-				</div> */}
 
 				{/* Mother Tongue */}
 				<div>
-					<label className="block font-medium mb-1 mt-1 text-headingGray">Mother Tongue<span className="text-red-500"> *</span></label>
-					<MultiSelectDropdown dataList={languages?.language} onSelectionChange={setMotherTongue} fieldName={'Select Mother Tongue'} />
-					{/* <select
-						id="motherTongue"
-						className="input-field text-gray-700"
-						name="motherTongue"
-						value={formData.motherTongue}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Mother Tongue</option>
-						{languages?.language?.map((language) => (
-							<option key={language._id} value={language._id}>
-								{language.name}
-							</option>
-						))}
-					</select> */}
+					<label className="block font-medium mb-1 mt-1 text-headingGray">Language<span className="text-red-500"> *</span></label>
+					<MultiSelectDropdown
+						dataList={languages?.language}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('motherTongue', selectedItems)}
+						fieldName={'Select Mother Tongue'} />
 					{errors.motherTongue && <p className="text-red-500 text-xs">{errors.motherTongue}</p>}
 				</div>
 
@@ -418,21 +491,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Education <span className="text-red-500">*</span>
 					</label>
-					<MultiSelectDropdown dataList={education?.education} onSelectionChange={setEducationIds} fieldName={'Select Education'} />
-					{/* <select
-						id="highestEducation"
-						className={getInputClasses('highestEducation')}
-						name="highestEducation"
-						value={formData.highestEducation}
-						onChange={handleChange}
-					>
-						<option value="" disabled>Select Education</option>
-						{education?.education?.map((country) => (
-							<option key={country._id} value={country._id} disabled={country.id == 1} className={`${country.id == 1 && 'bg-[#a6a6a6] text-white'}`}>
-								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
-							</option>
-						))}
-					</select> */}
+					<MultiSelectDropdown
+						dataList={education?.education}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('highestEducation', selectedItems)}
+						fieldName={'Select Education'} />
 					{errors.highestEducation && <p className="text-red-500 text-xs">{errors.highestEducation}</p>}
 				</div>
 
@@ -441,7 +503,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Employed In <span className="text-red-500">*</span>
 					</label>
-					<MultiDropdown dataList={career.employedIn} onSelectionChange={setEmployedIn} fieldName={'Select Employed in'} />
+					<MultiDropdown
+						dataList={career.employedIn}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('employedIn', selectedItems)}
+						fieldName={'Select Employed in'} />
 					{/* <select
 						id="EmployedIn"
 						className={getInputClasses('employedIn')}
@@ -464,7 +529,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Occupation <span className="text-red-500">*</span>
 					</label>
-					<OccupationSelect dataList={occupations?.occupation} onSelectionChange={setOccupation} fieldName={'Select Occupation'} />
+					<OccupationSelect
+						dataList={occupations?.occupation}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('occupation', selectedItems)}
+						fieldName={'Select Occupation'} />
 					{/* <select
 						id="occupation"
 						className={getInputClasses('occupation')}
@@ -582,7 +650,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Body Type <span className="text-red-500">*</span>
 					</label>
-					<MultiDropdown dataList={PhysicalAttributesData.bodyType} onSelectionChange={setBodyType} fieldName={'Select Body Type'} />
+					<MultiDropdown
+						dataList={PhysicalAttributesData.bodyType}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('bodyType', selectedItems)}
+						fieldName={'Select Body Type'} />
 					{/* <select
 						id="bodyType"
 						className={getInputClasses('bodyType')}
@@ -606,7 +677,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Preferred Country <span className="text-red-500">*</span>
 					</label>
-					<MultiSelectDropdown dataList={countriesWithDoesNotMatter?.country} onSelectionChange={setPreferredCountry} fieldName={'Select Country'} />
+					<MultiSelectDropdown
+						dataList={countriesWithDoesNotMatter?.country}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('preferredCountry', selectedItems)}
+						fieldName={'Select Country'} />
 					{/* <select
 						id="preferredCountry"
 						className={getInputClasses('preferredCountry')}
@@ -628,7 +702,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Prefer State <span className="text-red-500">*</span>
 					</label>
-					<MultiSelectDropdown dataList={stateList?.state} onSelectionChange={setPreferState} fieldName={'Select Country'} />
+					<MultiSelectDropdown
+						dataList={stateList?.state}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('preferState', selectedItems)}
+						fieldName={'Select Country'} />
 					{/* <select
 						id="preferState"
 						className={getInputClasses('preferState')}
@@ -652,7 +729,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Complexion <span className="text-red-500">*</span>
 					</label>
-					<MultiDropdown dataList={PhysicalAttributesData.complexion} onSelectionChange={setComplexion} fieldName={'Select Body Type'} />
+					<MultiDropdown
+						dataList={PhysicalAttributesData.complexion}
+						onSelectionChange={(selectedItems) => handleMultiSelectChange('complexion', selectedItems)}
+						fieldName={'Select Body Type'} />
 					{/* <select
 							id="complexion"
 							className={getInputClasses('complexion')}

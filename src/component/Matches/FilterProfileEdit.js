@@ -5,14 +5,14 @@ function FilterProfileEdit({ onClose, filterData }) {
 
 	const [ showModal, setShowModal ] = useState(true);
 
-	const handleVerification = () => {
-		// submit(true);
-		setShowModal(false);
-		onClose();
-	};
-	useEffect(() => {
-		console.log(filterData);
-	})
+	// const handleVerification = () => {
+	// 	// submit(true);
+	// 	setShowModal(false);
+	// 	onClose();
+	// };
+	// useEffect(() => {
+	// 	console.log(filterData);
+	// }, [])
 
 	return (
 		<>

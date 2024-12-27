@@ -9,7 +9,7 @@ const Language = ({ onFormSubmit, data }) => {
 	const [ error, setError ] = useState()
 	const [ knownLanguagesError, setKnownLanguagesError ] = useState()
 	const dropdownRef = useRef(null);
-	const { languages, languageLoading, languageData } = data;
+	const { languages, languageLoading, languageData, isLoading } = data;
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -119,7 +119,7 @@ const Language = ({ onFormSubmit, data }) => {
 					{<p className="text-red-500 text-xs mt-1	">{knownLanguagesError}</p>}
 				</div>
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>Update</button>
 				</div>
 			</form>
 		</div>

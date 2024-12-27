@@ -62,17 +62,17 @@ const SocialBackground = ({ data }) => {
 			const religionId = socialBackgroundData?.religion._id
 			religionId == hinduId ? setIsHindu(true) : religionId == christianId && setIsChristian(true)
 
+			if (socialBackgroundData?.religion._id) {
+				fetchCaste(socialBackgroundData?.religion._id);
+			}
 			if (socialBackgroundData?.birthPlace.country._id) {
 				fetchState(socialBackgroundData?.birthPlace.country._id);
 			}
 			if (socialBackgroundData?.birthPlace.state._id) {
 				fetchCity(socialBackgroundData?.birthPlace.state._id);
 			}
-			if (socialBackgroundData?.religion._id) {
-				fetchCaste(socialBackgroundData?.religion._id);
-			}
 			if (socialBackgroundData?.star._id) {
-				fetchCaste(socialBackgroundData?.star._id);
+				fetchRashi(socialBackgroundData?.star._id);
 			}
 		}
 	}, [ socialBackgroundData ]);

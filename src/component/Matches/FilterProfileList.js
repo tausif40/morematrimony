@@ -64,8 +64,8 @@ const FilterProfileList = () => {
 							<p className='flex items-center gap-2'>4'10" - 5'10" </p>
 						</div>
 						<div className="flex justify-between">
-							<span>Profile Created By</span>
-							<p className='flex items-center gap-2'>Any </p>
+							<span>Gender</span>
+							<p className='flex items-center gap-2'>Male</p>
 						</div>
 						{/* <button className="text-orange-500 text-sm">View more ▼</button> */}
 					</div>

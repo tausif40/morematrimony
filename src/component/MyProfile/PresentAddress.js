@@ -7,7 +7,7 @@ const PresentAddress = ({ onFormSubmit, data }) => {
 	const [ cityList, setCityList ] = useState([]);
 	const [ stateLoading, setStateLoading ] = useState(false)
 	const [ cityLoading, setCityLoading ] = useState(false)
-	const { countries, presentAddress } = data;
+	const { countries, presentAddress, isLoading } = data;
 
 	const [ formData, setFormData ] = useState({
 		country: '',
@@ -203,7 +203,7 @@ const PresentAddress = ({ onFormSubmit, data }) => {
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>Update</button>
 				</div>
 			</form>
 		</div>

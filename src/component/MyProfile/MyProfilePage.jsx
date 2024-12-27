@@ -24,6 +24,7 @@ import { socialBackground } from '../../utils/data/MyProfileData';
 
 const MyProfilePage = () => {
 	const dispatch = useDispatch({});
+	const [ isLoading, setIsLoading ] = useState(false);
 
 	const { data: userDetails, loading: userDetailsLoading, error: userDetailsError } = useSelector((state) => state.userDetails.userDetails);
 	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
@@ -36,6 +37,7 @@ const MyProfilePage = () => {
 	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
 	const { data: countriesWithDoesNotMatter, loading: countriesWithDoesNotMatterLoading } = useSelector((state) => state.profileData.countriesWithDoesNotMatter);
 
+	const formData = useSelector((state) => state.profileData.formData);
 
 	useEffect(() => {
 		dispatch(fetchCountries());
@@ -65,7 +67,7 @@ const MyProfilePage = () => {
 	}, [])
 
 	const userData = userDetails?.user
-	const introduction = userData?.introduction;
+	const introductionData = userData?.introduction;
 	const basicInfo = userData?.basicInformation;
 	const presentAddress = userData?.presentAddress;
 	const residency = userData?.residencyInformation;
@@ -75,8 +77,13 @@ const MyProfilePage = () => {
 	const languageData = userData?.language;
 	const socialBackgroundData = userData?.spiritualAndSocialBackground;
 
+	useEffect(() => {
+		console.log("formData - ", formData?.loading)
+		setIsLoading(formData?.loading)
+	}, [ formData?.loading ])
+	// console.log("formData - ", formData)
 	const handleFormSubmit = (data) => {
-		console.log("data before submit -", data);
+		console.log(data);
 		// const encryptedData = encryptData(data);
 		// console.log("encryptedData - ", encryptedData);
 		// const dData = decryptData(encryptedData);
@@ -88,19 +95,19 @@ const MyProfilePage = () => {
 	// console.log(userData);
 	return (
 		<div className='space-y-10'>
-			<Introduction onFormSubmit={handleFormSubmit} data={introduction} />
-			<BasicInformation onFormSubmit={handleFormSubmit} data={basicInfo} />
-			<PresentAddress onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, presentAddress }} />
-			<ResidencyInformation onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, residency }} />
-			<EducationInfo onFormSubmit={handleFormSubmit} data={{ education, educationInfo }} />
-			<Career onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, occupations, careerData }} />
-			<PhysicalAttributes onFormSubmit={handleFormSubmit} data={physicalAttributes} />
-			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading, languageData }} />
-			<Hobbies onFormSubmit={handleFormSubmit} data={{ hobbies, hobbiesError }} />
-			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries, socialBackgroundData }} />
+			<Introduction onFormSubmit={handleFormSubmit} data={{ introductionData, isLoading }} />
+			<BasicInformation onFormSubmit={handleFormSubmit} data={{ basicInfo, isLoading }} />
+			<PresentAddress onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, presentAddress, isLoading }} />
+			<ResidencyInformation onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, residency, isLoading }} />
+			<EducationInfo onFormSubmit={handleFormSubmit} data={{ education, educationInfo, isLoading }} />
+			<Career onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, occupations, careerData, isLoading }} />
+			<PhysicalAttributes onFormSubmit={handleFormSubmit} data={{ physicalAttributes, isLoading }} />
+			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading, languageData, isLoading }} />
+			<Hobbies onFormSubmit={handleFormSubmit} data={{ hobbies, hobbiesError, isLoading }} />
+			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries, socialBackgroundData, isLoading }} />
 			<Lifestyle onFormSubmit={handleFormSubmit} />
 			<FamilyInformation onFormSubmit={handleFormSubmit} />
-			<PartnerExpectation onFormSubmit={handleFormSubmit} data={{ countriesWithDoesNotMatter, religions, occupations, education, languages }} />
+			<PartnerExpectation onFormSubmit={handleFormSubmit} data={{ countriesWithDoesNotMatter, religions, occupations, education, languages, isLoading }} />
 		</div>
 	);
 };

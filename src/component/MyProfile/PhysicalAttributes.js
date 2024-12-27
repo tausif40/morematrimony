@@ -4,6 +4,8 @@ import { PhysicalAttributesData } from '../../utils/data/MyProfileData';
 
 const PhysicalAttributes = ({ onFormSubmit, data }) => {
 
+	const { physicalAttributes, isLoading } = data
+
 	const [ formData, setFormData ] = useState({
 		height: { feet: '', inches: '' },
 		weight: '',
@@ -21,24 +23,25 @@ const PhysicalAttributes = ({ onFormSubmit, data }) => {
 	});
 
 	useEffect(() => {
-		if (data) {
+		console.log(physicalAttributes);
+		if (physicalAttributes) {
 			setFormData({
-				height: data.height || { feet: '', inches: '' },
-				weight: data.weight || '',
-				eyeColor: data.eyeColor || '',
-				hairColor: data.hairColor || '',
-				complexion: data.complexion || '',
-				bloodGroup: data.bloodGroup || '',
-				bodyType: data.bodyType || '',
-				tattoo: data.tattoo !== undefined ? data.tattoo : '',
+				height: physicalAttributes.height || { feet: '', inches: '' },
+				weight: physicalAttributes.weight || '',
+				eyeColor: physicalAttributes.eyeColor || '',
+				hairColor: physicalAttributes.hairColor || '',
+				complexion: physicalAttributes.complexion || '',
+				bloodGroup: physicalAttributes.bloodGroup || '',
+				bodyType: physicalAttributes.bodyType || '',
+				tattoo: physicalAttributes.tattoo || '',
 				disability: {
-					disability: data.disability?.disability || '',
-					type: data.disability?.type || '',
-					details: data.disability?.details || ''
+					disability: physicalAttributes.disability?.disability || '',
+					type: physicalAttributes.disability?.type || '',
+					details: physicalAttributes.disability?.details || ''
 				}
 			});
 		}
-	}, [ data ]);
+	}, [ physicalAttributes ]);
 
 	const [ errors, setErrors ] = useState({});
 
@@ -325,8 +328,8 @@ const PhysicalAttributes = ({ onFormSubmit, data }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Tattoo Option</option>
-						<option value='true'>Yes</option>
-						<option value='false'>No</option>
+						<option value='yes'>Yes</option>
+						<option value='no'>No</option>
 					</select>
 					{errors.tattoo && <p className="text-red-500 text-xs">{errors.tattoo}</p>}
 				</div>
@@ -395,7 +398,7 @@ const PhysicalAttributes = ({ onFormSubmit, data }) => {
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>Update</button>
 				</div>
 			</form>
 		</div>

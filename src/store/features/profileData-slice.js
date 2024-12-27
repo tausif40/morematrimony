@@ -6,10 +6,10 @@ import { getUserDetails } from './userDetails-slice';
 export const uploadFileData = createAsyncThunk('data/uploadFileData', async (formdata, { rejectWithValue, dispatch }) => {
   const loadingToast = toast.loading('Updating.....');
   try {
-    console.log(formdata);
+    // console.log(formdata);
     const response = await apiClient.patch('/user/myProfile', formdata);
     toast.success('Update successful!', { id: loadingToast });
-    console.log(response);
+    // console.log(response);
     dispatch(getUserDetails())
     return response.data;
   } catch (error) {
@@ -136,17 +136,13 @@ const profileData = createSlice({
     formData: { data: null, loading: false, error: null },
     countries: { data: [], loading: false, error: null },
     countriesWithDoesNotMatter: { data: [], loading: false, error: null },
-    // states: { data: [], loading: false, error: null },
-    // cities: { data: [], loading: false, error: null },
     occupations: { data: [], loading: false, error: null },
     languages: { data: [], loading: false, error: null },
     hobbies: { data: [], loading: false, error: null },
     education: { data: [], loading: false, error: null },
     religions: { data: [], loading: false, error: null },
-    // caste: { data: [], loading: false, error: null },
     divisions: { data: [], loading: false, error: null },
     stars: { data: [], loading: false, error: null },
-    // rashiSigns: { data: [], loading: false, error: null },
     zodiac: { data: [], loading: false, error: null },
   },
   reducers: {},
