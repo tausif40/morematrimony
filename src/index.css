@@ -38,6 +38,10 @@ body {
 	font-family: "poppins", sans-serif;
 }
 
+.custom-image-fit img {
+    object-fit: contain;
+}
+
 .pointer {
 	cursor: pointer;
 }

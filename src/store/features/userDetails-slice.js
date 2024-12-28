@@ -27,6 +27,7 @@ const userDataSlice = createSlice({
 	initialState: {
 		userDetails: { data: [], loading: false, error: null },
 		profileImages: { data: [], loading: false, error: null },
+		dpImage: { img: null, loading: false, error: null },
 	},
 	reducers: {},
 	extraReducers: (builder) => {
@@ -36,7 +37,8 @@ const userDataSlice = createSlice({
 				state.userDetails.error = true
 			})
 			.addCase(getUserDetails.fulfilled, (state, action) => {
-				state.userDetails.data = action.payload;
+				state.userDetails.data = [];
+				state.dpImage.img = action?.payload?.user?.profileImage;
 				state.userDetails.loading = false;
 			})
 			.addCase(getUserDetails.rejected, (state, action) => {
@@ -44,8 +46,8 @@ const userDataSlice = createSlice({
 				state.userDetails.error = action.payload || action.error.message;
 			})
 			//get images
-			.addCase(getProfileImages.pending, (state, action) => {
-				// state.profileImages.data = action.payload;
+			.addCase(getProfileImages.pending, (state) => {
+				state.profileImages.data = [];
 				state.profileImages.loading = true
 				state.profileImages.error = true
 			})

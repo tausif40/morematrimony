@@ -12,7 +12,7 @@ import DeviceDetector from '../../utils/device/DeviceDetector';
 import { FaRegUser } from "react-icons/fa";
 import Cookies from 'js-cookie';
 import useLogout from '../Logout/Logout';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const NavMain = () => {
 	const location = useLocation();
@@ -27,10 +27,11 @@ const NavMain = () => {
 	const token = Cookies.get('access_token');
 	const handleLogout = useLogout();
 
+	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
+
 	const handelLogOut = () => {
-		console.log('logout');
 		const res = handleLogout();
-		console.log(res);
+		// console.log(res);
 		setIsOpen(false);
 	}
 	// console.log(handleLogout);
@@ -177,12 +178,13 @@ const NavMain = () => {
 								? <>
 									<div className='block md:hidden'><IoNotificationsCircleSharp size={44} /></div>
 									<div className="relative" >
-										<button className="px-2 py-[3px] w-14 "
+										<button className=""
 											onClick={() => setIsOpen(!isOpen)}
 											aria-haspopup="true"
 											aria-expanded={isOpen}
 										>
-											<img src="/assets/img/img0.png" alt="" className='rounded-full border' />
+											{/* <img src={dpImage || "/assets/img/img0.png"} alt="" className='w-16 h-16 object-contain rounded-full border' /> */}
+											<img src={dpImage || `./assets/img/avatar-place.png`} alt="" className='w-8 h-8 ring-1 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200' style={{ objectPosition: 'center 10%' }} />
 										</button>
 
 									</div>

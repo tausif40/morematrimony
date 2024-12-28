@@ -13,9 +13,11 @@ import { LuView } from "react-icons/lu";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import '../../CSS/dashboard.css'
+import useLogout from '../Logout/Logout';
 
 function ProfileOption() {
 	const location = useLocation();
+	const handleLogout = useLogout();
 
 	const currentPath = location.pathname;
 	const [ profileCompletion, setProfileCompletion ] = useState()
@@ -23,19 +25,24 @@ function ProfileOption() {
 
 	const userDetails = useSelector((state) => state.userDetails.userDetails);
 	const percent = userDetails?.data?.user?.profileCompletion;
+	const name = userDetails?.data?.user?.basicInformation?.firstName + userDetails?.data?.user?.basicInformation?.lastName
+	const dpImage = userDetails?.data?.user?.profileImage
 
 	useEffect(() => {
 		setProfileCompletion(percent)
 		percent && setColor(percentColor(percent))
-	}, [ userDetails, userDetails?.data?.user?.profileCompletion ])
+	}, [ userDetails, percent ])
+
+	const handelLogOut = () => {
+		const res = handleLogout();
+		console.log(res);
+	}
 
 	const percentColor = (presence) => {
 		const colors = [ 'ten', 'twenty', 'forty', 'sixty', 'eighty', 'hundred' ];
 		const index = Math.min(Math.floor(presence / 20));
 		return colors[ index ];
 	};
-
-	// console.log(color);
 	// console.log(percent);
 
 	const navOption = [
@@ -61,26 +68,26 @@ function ProfileOption() {
 		<>
 			< section className='bg-white pt-6 min-h-screen'>
 				<div className='px-4 flex flex-col items-center'>
-					<img src="/assets/img/img0.png" alt="" className='size-24 rounded-full border mb-4' />
-					<p className='font-bold text-2xl text-headingGray'>Mohd. Tausif</p>
+					<img src={dpImage || `./assets/img/avatar-place.png`} alt="" className='w-28 h-28 mb-4 ring-2 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200 border-gray-500' style={{ objectPosition: 'center 10%' }} />
+					<p className='font-semibold text-2xl text-headingGray'>{name || 'User Name'}</p>
 					<div className={`${color} flex text-xs my-1 border px-2 rounded-full`} >
 						<p className='text-[12px]'>Profile completion: </p>
 						<p>&nbsp;{profileCompletion || 0}&nbsp;</p>
 						<p className='text-[10px]'>%</p>
 					</div>
 					<Link to='/member-profile'>
-						<p className='bg-[#fbcbcfd4] cursor-pointer text-hotRed py-2 px-8 rounded-md w-full flex justify-center border border-[#fbcbcfd4] hover:border-hotRed transition-all mt-4'>Public Profile</p>
+						<p className='bg-[#fbcbcfd4] cursor-pointer text-hotRed py-2 px-8 rounded-md w-full flex justify-center border border-[#fbcbcfd4] hover:border-hotRed transition-all mt-5'>Public Profile</p>
 					</Link>
 				</div>
 
 				<div className='flex flex-col text-headingGray text-sm mt-6'>
 					{navOption.map((value, index) => (
 						<Link to={value.path} key={index}>
-							<p className={`cursor-pointer px-8 py-[10px] flex items-center gap-2 border-l-[3px] hover:bg-[#fbcbcfd4] hover:border-l-[3px] hover:border-hotRed ${value.path == currentPath ? 'bg-[#fbcbcfd4] border-hotRed' : 'border-transparent'}`}><value.icon size={13} />{value.name}</p>
+							<p className={`cursor-pointer px-8 py-[10px] flex items-center gap-2 border-l-[3px] hover:border-l-[3px] hover:border-hotRed ${value.path == currentPath ? 'bg-[#fbcbcfd4] border-hotRed ' : 'border-transparent hover:bg-[#f0efefd4] '}`}><value.icon size={13} />{value.name}</p>
 						</Link>
 					))}
 				</div >
-				<p className='gradient-btn py-2 rounded-md flex justify-center items-center mt-4'><RiLogoutCircleRLine size={16} />&nbsp;Logout</p>
+				<p className='gradient-btn py-2 rounded-md flex justify-center items-center mt-4' onClick={handelLogOut}><RiLogoutCircleRLine size={16} />&nbsp;Logout</p>
 			</ section>
 		</>
 	)

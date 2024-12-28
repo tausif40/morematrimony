@@ -16,8 +16,9 @@ import ChangePassword from '../Form/ChangePassword';
 import Gallery from '../Gallery/Gallery';
 import Viewed from '../Viewed/Viewed';
 import ViewedByYou from '../ViewedByYou/ViewedByYou';
-import { getUserDetails } from '../../store/features/userDetails-slice';
+import { getProfileImages, getUserDetails } from '../../store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
+import { getMatchProfile } from '../../store/features/matchProfile-slice';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -37,7 +38,9 @@ function DashboardLayout() {
 
 	useEffect(() => {
 		dispatch(getUserDetails());
-	}, [])
+		dispatch(getProfileImages());
+		dispatch(getMatchProfile());
+	}, [ dispatch ]);
 
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
@@ -93,7 +96,7 @@ function DashboardLayout() {
 				</div>
 
 				<div className="container flex justify-between gap-8 my-10 ">
-					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[730px]">
+					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[792px]">
 						<ProfileOption />
 					</div>
 

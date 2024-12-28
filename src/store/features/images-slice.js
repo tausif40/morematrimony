@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
-import { getUserDetails } from './userDetails-slice';
+import { getUserDetails, getProfileImages } from './userDetails-slice';
 import toast from 'react-hot-toast';
 
 export const uploadImages = createAsyncThunk('data/uploadImages', async (_, { rejectWithValue, dispatch }) => {
@@ -31,10 +31,27 @@ export const uploadDpImage = createAsyncThunk('data/uploadDpImages', async (user
 	}
 });
 
+export const deleteImage = createAsyncThunk('data/deleteImage', async (imageId, { rejectWithValue, dispatch }) => {
+	const loadingToast = toast.loading('deleting....');
+	try {
+		// const { userId, url } = userData;
+		console.log(imageId);
+		const response = await apiClient.delete(`/gallery/${imageId}`);
+		toast.success('Delete successful!', { id: loadingToast });
+		dispatch(getProfileImages());
+		console.log(response.data);
+		return response.data;
+	} catch (error) {
+		toast.error(error?.response?.data?.message || 'Delete failed', { id: loadingToast });
+		return rejectWithValue(error.response?.data || 'Failed to delete profile images');
+	}
+});
+
 const userUploadImages = createSlice({
 	name: 'data',
 	initialState: {
 		allUploadImages: { images: [], loading: false, error: null, },
+		// deleteImage: { data: [], loading: false, error: null, },
 		DpImage: { image: [], loading: false, error: null },
 	},
 	reducers: {},

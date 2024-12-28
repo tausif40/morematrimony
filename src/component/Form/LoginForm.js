@@ -15,9 +15,10 @@ const LoginForm = () => {
 	const [ passwordError, setPasswordError ] = useState('');
 	const [ emailError, setEmailError ] = useState('');
 	const [ error, setError ] = useState('');
+	const [ isLoading, setIsLoading ] = useState(false);
 
-	const BASE_URL = process.env.REACT_APP_API_URL;
-	BASE_URL == undefined && console.log('Base url not found');
+	// const BASE_URL = process.env.REACT_APP_API_URL;
+	// BASE_URL == undefined && console.log('Base url not found');
 
 	const handleLogin = async (e) => {
 		// console.log(email, password);
@@ -35,7 +36,7 @@ const LoginForm = () => {
 		}
 
 		try {
-
+			setIsLoading(true);
 			const result = await dispatch(loginUser({ email, password }));
 
 			if (loginUser.fulfilled.match(result)) {
@@ -46,9 +47,11 @@ const LoginForm = () => {
 
 				// toast.success('Login successful!');
 				navigate('/dashboard');
+				setIsLoading(false);
 			} else {
 				const errorMessage = result.error?.message || 'Login failed. Please try again.';
-				// toast.error(errorMessage);
+				console.log(errorMessage);
+				setIsLoading(false);
 			}
 
 		} catch (error) {
@@ -114,6 +117,7 @@ const LoginForm = () => {
 					<button
 						type="submit"
 						className="gradient-btn opacity-70 hover:opacity-85 transition-all rounded-md w-full p-3 font-medium"
+						disabled={isLoading}
 					>
 						Login to your Account
 					</button>
