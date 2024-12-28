@@ -18,10 +18,12 @@ function PhotoGallery() {
 	const DpImage = useSelector((state) => state.image.DpImage);
 
 	useEffect(() => {
-		profileImages?.data?.gallery?.forEach((value) => {
-			setImages((prevImages) => [ ...prevImages, value ]);
-		});
+		// profileImages?.data?.gallery?.forEach((value) => {
+		// 	setImages((prevImages) => [ ...prevImages, value ]);
+		// });
+		setImages(profileImages?.data?.gallery)
 	}, [ profileImages ]);
+	// console.log(profileImages?.data?.gallery);
 
 	const handelUploadImage = (userId, url) => {
 		dispatch(uploadDpImage({ userId, url }));
@@ -29,7 +31,8 @@ function PhotoGallery() {
 
 	const handelDeleteImage = async (userId) => {
 		// const response = await apiClient.delete(`/gallery/${userId}`);
-		dispatch(deleteImage(userId));
+		// dispatch(deleteImage(userId));
+		alert('Delete not working Image');
 	};
 
 	return (
@@ -38,7 +41,7 @@ function PhotoGallery() {
 				<Gallery>
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 object-cover">
 						<ImageUploader />
-						{images.map((data, index) => (
+						{images?.map((data, index) => (
 							<div key={index} className="relative m-auto flex justify-center w-full">
 								<Item
 									original={data.image}
@@ -77,7 +80,7 @@ function PhotoGallery() {
 								</div>
 							</div>
 						))}
-						{!profileImages.loading && images.length === 0 && <img src="./assets/img/noImage.jpg" alt="" className='h-full' />}
+						{!profileImages?.loading && images?.length === 0 && <img src="./assets/img/noImage.jpg" alt="" className='h-full' />}
 					</div>
 				</Gallery>
 			</div>
