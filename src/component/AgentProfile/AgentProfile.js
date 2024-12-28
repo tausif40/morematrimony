@@ -85,6 +85,8 @@ const CreativeProfilePage = () => {
 
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
 
+	// console.log(dpImage);
+
 	const handleEdit = (field) => {
 		setEditingField(field);
 	};

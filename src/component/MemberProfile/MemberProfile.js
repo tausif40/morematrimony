@@ -14,6 +14,8 @@ function MemberProfile() {
 	const age = Math.floor((new Date() - new Date(dob)) / (1000 * 60 * 60 * 24 * 365.25))
 	const id = userDetails?.data?.user?._id
 
+	console.log(userDetails);
+	console.log(dpImage);
 	// useEffect(() => {
 	// }, [ dispatch, userDetails?.data?.user?.profileImage ])
 	// console.log(userDetails);

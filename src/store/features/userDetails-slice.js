@@ -14,7 +14,7 @@ export const getUserDetails = createAsyncThunk('data/getUserDetails', async (_, 
 export const getProfileImages = createAsyncThunk('data/getProfileImages', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/gallery`);
-		console.log(response.data);
+		// console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -37,7 +37,7 @@ const userDataSlice = createSlice({
 				state.userDetails.error = true
 			})
 			.addCase(getUserDetails.fulfilled, (state, action) => {
-				state.userDetails.data = [];
+				state.userDetails.data = action.payload;
 				state.dpImage.img = action?.payload?.user?.profileImage;
 				state.userDetails.loading = false;
 			})
