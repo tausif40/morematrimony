@@ -3,20 +3,6 @@ import apiClient from '../../api/apiClient';
 import { getUserDetails, getProfileImages } from './userDetails-slice';
 import toast from 'react-hot-toast';
 
-export const uploadImages = createAsyncThunk('data/uploadImages', async (_, { rejectWithValue, dispatch }) => {
-	// try {
-	// 	const response = await apiClient.post(`/gallery`, {
-	// 		headers: {
-	// 			'Content-Type': 'multipart/form-data',
-	// 		},
-	// 	});
-	// 	dispatch(getProfileImages());
-	// 	return response.data;
-	// } catch (error) {
-	// 	return rejectWithValue(error.response?.data || 'Failed to upload images');
-	// }
-});
-
 export const uploadDpImage = createAsyncThunk('data/uploadDpImages', async (userData, { rejectWithValue, dispatch }) => {
 	const loadingToast = toast.loading('Updating.....');
 	try {
@@ -30,6 +16,42 @@ export const uploadDpImage = createAsyncThunk('data/uploadDpImages', async (user
 		return rejectWithValue(error.response?.data || 'Failed to update profile images');
 	}
 });
+
+export const uploadImages = createAsyncThunk(
+	'data/uploadImages',
+	async ({ formData, file }, { rejectWithValue, dispatch }) => {
+		const loadingToast = toast.loading('Uploading image...');
+		try {
+			const response = await apiClient.post('/gallery', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+				onUploadProgress: (progressEvent) => {
+					const percentage = Math.round(
+						(progressEvent.loaded * 100) / progressEvent.total
+					);
+					console.log(`Upload progress: ${percentage}%`);
+				},
+			});
+
+			toast.success('Image uploaded successfully!', { id: loadingToast });
+			dispatch(getProfileImages());
+
+			// Generate a preview URL for the uploaded image
+			const imageUrl = URL.createObjectURL(file);
+
+			return { imageUrl, ...response.data };
+		} catch (error) {
+			toast.error(
+				error?.response?.data?.message || 'Failed to upload image',
+				{ id: loadingToast }
+			);
+			return rejectWithValue(error.response?.data || 'Failed to upload image');
+		}
+	}
+);
+
+
 
 export const deleteImage = createAsyncThunk('data/deleteImage', async (imageId, { rejectWithValue, dispatch }) => {
 	const loadingToast = toast.loading('deleting....');
@@ -51,7 +73,7 @@ const userUploadImages = createSlice({
 	name: 'data',
 	initialState: {
 		allUploadImages: { images: [], loading: false, error: null, },
-		// deleteImage: { data: [], loading: false, error: null, },
+		deleteImage: { data: [], loading: false, error: null, },
 		DpImage: { image: [], loading: false, error: null },
 	},
 	reducers: {},

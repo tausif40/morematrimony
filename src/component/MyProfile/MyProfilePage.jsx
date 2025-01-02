@@ -78,11 +78,11 @@ const MyProfilePage = () => {
 	const socialBackgroundData = userData?.spiritualAndSocialBackground;
 
 	useEffect(() => {
-		console.log("formData - ", formData?.loading)
 		setIsLoading(formData?.loading)
 	}, [ formData?.loading ])
-	// console.log("formData - ", formData)
+	
 	const handleFormSubmit = (data) => {
+		console.log("formData - ", formData)
 		console.log(data);
 		// const encryptedData = encryptData(data);
 		// console.log("encryptedData - ", encryptedData);

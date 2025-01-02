@@ -1,6 +1,5 @@
 import React from "react";
 import moment from 'moment';
-import { useSelector } from "react-redux";
 
 const DetailedProfile = ({ userDetails }) => {
 
@@ -13,8 +12,8 @@ const DetailedProfile = ({ userDetails }) => {
 			lastName: data?.basicInformation?.lastName || "_",
 			dateOfBirth: data?.basicInformation?.dateOfBirth || "_",
 			gender: data?.basicInformation?.gender || "_",
-			maritalStatus: data?.agentId?.onBehalf || "_",
-			profileCreatedBy: data?.agentId?.onBehalf || "_",
+			maritalStatus: data?.basicInformation?.maritalStatus || "_",
+			profileCreatedBy: data?.basicInformation?.onBehalf || "_",
 		},
 		presentAddress: {
 			country: data?.presentAddress?.country?.name || "_",
@@ -74,6 +73,10 @@ const DetailedProfile = ({ userDetails }) => {
 			rashi: data?.spiritualAndSocialBackground?.rashi?.name || "_",
 			zodiac: data?.spiritualAndSocialBackground?.zodiac?.name || "_",
 			timeOfBirth: data?.spiritualAndSocialBackground?.timeOfBirth || "_",
+			kundli: data?.spiritualAndSocialBackground?.kundli || "_",
+			gothra: data?.spiritualAndSocialBackground?.gothra || "_",
+			dosh: data?.spiritualAndSocialBackground?.dosh || "_",
+			doshName: data?.spiritualAndSocialBackground?.doshName || "_",
 		},
 		lifestyle: {
 			diet: data?.lifestyle?.diet || "_",
@@ -246,7 +249,7 @@ const DetailedProfile = ({ userDetails }) => {
 
 						{/* Spiritual and Social Background */}
 						<div className="md:border-b pb-6 md:pl-6">
-							<p className="w-24 bg-white text-primary  flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Spiritual</p>
+							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Spiritual</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.spiritualSocial || {}).map(([ key, value ]) => {
 									if (typeof value === 'object' && !Array.isArray(value)) {
@@ -268,12 +271,12 @@ const DetailedProfile = ({ userDetails }) => {
 										);
 									}
 									return (
-										<p className="grid grid-cols-2" key={key}>
-											<p className="text-md font-medium mb-2 capitalize">
+										<div className="grid grid-cols-2" key={key}>
+											<dt className="text-md font-medium mb-2 capitalize">
 												{key.replace(/([A-Z])/g, ' $1')}:
-											</p>
-											<span>{value}</span>
-										</p>
+											</dt>
+											<dd>{key === 'kundli' ? 'request' : value}</dd>
+										</div>
 									);
 								})}
 							</div>

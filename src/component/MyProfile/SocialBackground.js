@@ -5,6 +5,7 @@ import { hinduId, christianId } from '../../utils/data/config';
 import apiClient from '../../api/apiClient';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Space, TimePicker } from 'antd';
 
 const SocialBackground = ({ data }) => {
 	const { religions, divisions, stars, zodiac, languages, countries, socialBackgroundData } = data;
@@ -77,7 +78,6 @@ const SocialBackground = ({ data }) => {
 		}
 	}, [ socialBackgroundData ]);
 
-
 	const fetchData = async (url, setData, type) => {
 		setLoading((prev) => ({ ...prev, [ type ]: true }));
 		try {
@@ -94,9 +94,7 @@ const SocialBackground = ({ data }) => {
 	const fetchCaste = (religionId) => fetchData(`/caste?religionId=${religionId}`, setCasteList, 'caste');
 	const fetchRashi = (starId) => fetchData(`/rashiSign?starId=${starId}`, setRashiSignsList, 'rashi');
 
-
 	const [ errors, setErrors ] = useState({});
-
 
 	const cleanFormData = (data) => {
 		const cleanedData = {};
@@ -190,22 +188,23 @@ const SocialBackground = ({ data }) => {
 			});
 
 			// Log final FormData contents
-			// for (const [ key, value ] of formDataObj.entries()) {
-			// 	console.log(`${key}:`, value);
-			// }
+			for (const [ key, value ] of formDataObj.entries()) {
+				console.log(`${key}:`, value);
+			}
 
-			const response = await axios.patch(`${BASE_URL}/user/spiritualAndSocialBackground`, formDataObj, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-					Authorization: `Bearer ${token}`
-				},
-			})
+			const response = apiClient.patch(`${BASE_URL}/user/spiritualAndSocialBackground`, formDataObj)
 			console.log(response);
 			response.status === 200 && toast.success('Update successful!', { id: loadingToast });
 		} catch (error) {
 			console.log(error);
 			toast.error(error?.response?.data?.message || error?.response?.message || 'Upload failed', { id: loadingToast });
 		}
+	};
+
+	const onTimeChange = (time, timeString) => {
+		console.log(timeString);
+		console.log(formData);
+		setFormData((prev) => ({ ...prev, timeOfBirth: timeString }));
 	};
 
 	const handleChange = (e) => {
@@ -434,8 +433,10 @@ const SocialBackground = ({ data }) => {
 						value={formData.timeOfBirth}
 						onChange={handleChange}
 						placeholder="Time of birth"
-
 					/>
+					{/* <Space>
+						<TimePicker use12Hours format="h:mm a" onChange={onTimeChange} />
+					</Space> */}
 					{errors.timeOfBirth && <p className="text-red-500 text-xs">{errors.timeOfBirth}</p>}
 				</div>
 
@@ -509,6 +510,7 @@ const SocialBackground = ({ data }) => {
 
 				{isHindu && (
 					<>
+						{/* gotra */}
 						<div>
 							<label htmlFor="gothra" className="block font-medium mb-1 mt-1 text-headingGray">
 								Gothra
@@ -524,7 +526,7 @@ const SocialBackground = ({ data }) => {
 							/>
 							{errors.gothra && <p className="text-red-500 text-xs">{errors.gothra}</p>}
 						</div>
-
+						{/* Upload Kundli */}
 						<div>
 							<label htmlFor="kundli" className="block font-medium mb-1 mt-1 text-headingGray">
 								Upload Kundli
@@ -538,7 +540,7 @@ const SocialBackground = ({ data }) => {
 							/>
 							{/* {errors.kundli && <p className="text-red-500 text-xs">{errors.kundli}</p>} */}
 						</div>
-
+						{/* Have Dosh? */}
 						<div>
 							<label htmlFor="dosh" className="block font-medium mb-1 mt-1 text-headingGray">
 								Have Dosh?
@@ -557,7 +559,7 @@ const SocialBackground = ({ data }) => {
 							</select>
 							{errors.dosh && <p className="text-red-500 text-xs">{errors.dosh}</p>}
 						</div>
-
+						{/* Dosh Name  */}
 						{formData.dosh === 'yes' && (
 							<div>
 								<label htmlFor="doshName" className="block font-medium mb-1 mt-1 text-headingGray">

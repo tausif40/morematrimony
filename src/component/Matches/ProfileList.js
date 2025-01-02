@@ -7,6 +7,7 @@ import { getMatchProfile } from '../../store/features/matchProfile-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import male from '../../img/male.png'
 import female from '../../img/female.png'
+import ProfileListSkeleton from '../Loader/ProfileListSkeleton';
 
 const ProfileCard = (userData) => {
 	const navigate = useNavigate();
@@ -106,6 +107,8 @@ const ProfileList = () => {
 	const dispatch = useDispatch()
 
 	const matchProfile = useSelector((state) => state.matchProfile.matchProfile);
+	const loading = matchProfile.loading
+
 
 	useEffect(() => {
 		dispatch(getMatchProfile());
@@ -144,14 +147,28 @@ const ProfileList = () => {
 		});
 	};
 
-	const profiles = matchProfile?.user ? mapProfiles(matchProfile.user) : [];
+	const profiles = matchProfile?.data?.user ? mapProfiles(matchProfile.data.user) : [];
+
+	console.log("loader - ", loading);
+
+
+
 
 	return (
-		<div className="mx-auto md:p-4">
-			{profiles.map((profile, index) => (
-				<ProfileCard key={index} {...profile} />
-			))}
-		</div>
+		<>
+			<div className="mx-auto md:p-4">
+				{loading && (
+					<>
+						{[ ...Array(8) ].map((_, index) => (
+							<ProfileListSkeleton key={index} />
+						))}
+					</>
+				)}
+				{profiles.map((profile, index) => (
+					<ProfileCard key={index} {...profile} />
+				))}
+			</div>
+		</>
 	);
 };
 

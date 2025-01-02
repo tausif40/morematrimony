@@ -14,9 +14,9 @@ function FilterMenu() {
 		{ name: 'Proffered Profession', path: 'proffered-profession' },
 		{ name: 'Preferred Education', path: 'preferred-education' },
 		{ name: 'Preferred Star', path: 'preferred-star' },
-		{ name: 'Hobby Matches', path: 'hobby-matches' },
+		// { name: 'Hobby Matches', path: 'hobby-matches' },
 		{ name: 'Parent Created Matches', path: 'Parent-created-matches' },
-		{ name: 'Others Created Matches', path: 'others-created-matches' },
+		// { name: 'Others Created Matches', path: 'others-created-matches' },
 		{ name: ' Divorced, Widow', path: ' divorced' },
 	]
 
