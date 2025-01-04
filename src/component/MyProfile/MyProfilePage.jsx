@@ -105,8 +105,8 @@ const MyProfilePage = () => {
 			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading, languageData, isLoading }} />
 			<Hobbies onFormSubmit={handleFormSubmit} data={{ hobbies, hobbiesError, isLoading }} />
 			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries, socialBackgroundData, isLoading }} />
-			<Lifestyle onFormSubmit={handleFormSubmit} />
-			<FamilyInformation onFormSubmit={handleFormSubmit} />
+			<Lifestyle onFormSubmit={handleFormSubmit} loading={isLoading}/>
+			<FamilyInformation onFormSubmit={handleFormSubmit} loading={isLoading} />
 			<PartnerExpectation onFormSubmit={handleFormSubmit} data={{ countriesWithDoesNotMatter, religions, occupations, education, languages, isLoading }} />
 		</div>
 	);

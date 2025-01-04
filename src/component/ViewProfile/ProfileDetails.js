@@ -48,8 +48,9 @@ const ProfileDetails = () => {
 			lastName: data?.basicInformation?.lastName || "_",
 			dateOfBirth: data?.basicInformation?.dateOfBirth || "_",
 			gender: data?.basicInformation?.gender || "_",
-			maritalStatus: data?.agentId?.onBehalf || "_",
-			profileCreatedBy: data?.agentId?.onBehalf || "_",
+			maritalStatus: data?.basicInformation?.maritalStatus || "_",
+			numberOfChildren: data?.basicInformation?.numberOfChildren || "_",
+			profileCreatedBy: data?.basicInformation?.onBehalf || "_",
 		},
 		presentAddress: {
 			country: data?.presentAddress?.country?.name || "_",
@@ -71,7 +72,7 @@ const ProfileDetails = () => {
 		},
 		career: {
 			employedIn: data?.career?.employedIn || "_",
-			occupation: data?.career?.occupation?.name || "_",
+			occupation: data?.career?.occupation?.occupationName || "_",
 			occupationDetails: data?.career?.occupationDetails || "_",
 			organizationName: data?.career?.organizationName || "_",
 			jobLocation: data?.career?.jobLocation?.name || "_",
@@ -109,6 +110,10 @@ const ProfileDetails = () => {
 			rashi: data?.spiritualAndSocialBackground?.rashi?.name || "_",
 			zodiac: data?.spiritualAndSocialBackground?.zodiac?.name || "_",
 			timeOfBirth: data?.spiritualAndSocialBackground?.timeOfBirth || "_",
+			kundli: data?.spiritualAndSocialBackground?.kundli || "_",
+			gothra: data?.spiritualAndSocialBackground?.gothra || "_",
+			dosh: data?.spiritualAndSocialBackground?.dosh || "_",
+			doshName: data?.spiritualAndSocialBackground?.doshName || "_",
 		},
 		lifestyle: {
 			diet: data?.lifestyle?.diet || "_",
@@ -130,20 +135,19 @@ const ProfileDetails = () => {
 			age: `${data?.partnerExpectation?.age?.min || "_"} to ${data?.partnerExpectation?.age?.max || "_"}`,
 			height: `${data?.partnerExpectation?.height?.feet || 0} feet ${data?.partnerExpectation?.height?.inches || 0} inches`,
 			maritalStatus: data?.partnerExpectation?.maritalStatus || "_",
-			residencyCountry: data?.partnerExpectation?.residencyCountry?.name || "_",
-			religion: data?.partnerExpectation?.religion?.name || "_",
-			caste: data?.partnerExpectation?.caste?.name || "_",
+			religion: data?.partnerExpectation?.religion?.map((caste) => `${caste.name}`).join(", ") || "_",
+			caste: data?.partnerExpectation?.caste?.map((caste) => `${caste.name}`).join(", ") || "_",
 			occupation: data?.partnerExpectation?.occupation?.map((occ) => `${occ.occupationName} (${occ.role})`).join(", ") || "_",
-			motherTongue: data?.partnerExpectation?.motherTongue?.name || "_",
-			highestEducation: data?.partnerExpectation?.highestEducation?.name || "_",
+			motherTongue: data?.partnerExpectation?.motherTongue?.map((caste) => `${caste.name}`).join(", ") || "_",
+			highestEducation: data?.partnerExpectation?.highestEducation?.map((caste) => `${caste.name}`).join(", ") || "_",
 			employedIn: data?.partnerExpectation?.employedIn || "_",
 			annualIncome: data?.partnerExpectation?.annualIncome || "_",
 			smokingAcceptable: data?.partnerExpectation?.smokingAcceptable || "_",
 			drinkingAcceptable: data?.partnerExpectation?.drinkingAcceptable || "_",
 			dietingAcceptable: data?.partnerExpectation?.dietingAcceptable || "_",
 			bodyType: data?.partnerExpectation?.bodyType || "_",
-			preferredCountry: data?.partnerExpectation?.preferredCountry?.name || "_",
-			preferredState: data?.partnerExpectation?.preferredState?.name || "_",
+			preferredCountry: data?.partnerExpectation?.preferredCountry?.map((caste) => `${caste.name}`).join(", ") || "_",
+			preferredState: data?.partnerExpectation?.preferState?.map((caste) => `${caste.name}`).join(", ") || "_",
 			complexion: data?.partnerExpectation?.complexion || "_",
 			generalRequirement: data?.partnerExpectation?.lookingFor || "_"
 		}
@@ -285,7 +289,7 @@ const ProfileDetails = () => {
 
 									{/* Spiritual and Social Background */}
 									<div className="md:border-b pb-6 md:pl-6">
-										<p className="w-24 bg-white text-primary  flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Spiritual</p>
+										<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Spiritual</p>
 										<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 											{Object.entries(profileData?.spiritualSocial || {}).map(([ key, value ]) => {
 												if (typeof value === 'object' && !Array.isArray(value)) {
@@ -307,12 +311,12 @@ const ProfileDetails = () => {
 													);
 												}
 												return (
-													<p className="grid grid-cols-2" key={key}>
-														<p className="text-md font-medium mb-2 capitalize">
+													<div className="grid grid-cols-2" key={key}>
+														<dt className="text-md font-medium mb-2 capitalize">
 															{key.replace(/([A-Z])/g, ' $1')}:
-														</p>
-														<span>{value}</span>
-													</p>
+														</dt>
+														<dd>{value}</dd>
+													</div>
 												);
 											})}
 										</div>

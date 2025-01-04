@@ -20,7 +20,7 @@ function FilterSection({
 					<span className="text-gray-600 font-medium">{section?.title}</span>
 					{section?.isExpanded ? (
 						<ChevronUp className="w-4 h-4 text-gray-400 ml-2" />
-					) : (
+					) : ( 
 						<ChevronDown className="w-4 h-4 text-gray-400 ml-2" />
 					)}
 				</button>

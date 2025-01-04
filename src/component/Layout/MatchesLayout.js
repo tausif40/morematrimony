@@ -6,11 +6,11 @@ import FilterInterface from '../Matches/Filter/FilterInterface'
 function MatchesLayout() {
 	return (
 		<>
-			<div className=" bg-gray-50">
+			<div className=" bg-gray-50 pb-12">
 				<div className="z-40">
 					<FilterMenu />
 				</div>
-				<div className="container flex lg:gap-6 xl:gap-8 mb-10 mt-8">
+				<div className="container flex lg:gap-6 xl:gap-8 mt-8">
 					<div className="bg-white rounded-md mt-4 transition-all duration-300 shadow-md">
 						{/* <FilterProfileList /> */}
 						<FilterInterface />

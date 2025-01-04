@@ -27,7 +27,7 @@ export const lifestyle = {
 
 export const maritalStatus = {
 	status: [ "single", "divorced", "widowed", "widower" ],
-	onBehalf: [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ]
+	onBehalf: [ 'mySelf', 'parent', 'sister', 'brother', 'relative', 'friend' ]
 }
 
 export const culturalBackground = {

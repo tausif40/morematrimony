@@ -1,23 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserCircle, Mail, Phone, Edit2, Cake, CalendarDays, X } from 'lucide-react';
 import moment from 'moment';
 import { IoMaleFemaleOutline } from "react-icons/io5";
-import { useSelector } from 'react-redux';
-
-
-const initialProfileData = {
-	firstName: "Mohd.",
-	lastName: "Tausif",
-	gender: "female",
-	onBehalf: "mySelf",
-	dateOfBirth: "2024-11-01T00:00:00.000Z",
-	email: "tausif@gmail.com",
-	mobile: "+1234567890",
-	createdAt: "2024-11-27T12:51:24.792Z",
-	updatedAt: "2024-11-27T12:51:24.792Z"
-};
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getAgentDetails } from '../../store/features/userDetails-slice';
 
 const ProfileItem = ({ icon, label, value, isEditable, onEdit }) => {
 	const [ isHovered, setIsHovered ] = useState(false);
@@ -80,12 +66,23 @@ const EditPopup = ({ field, value, onSave, onCancel }) => (
 );
 
 const CreativeProfilePage = () => {
-	const [ profileData, setProfileData ] = useState(initialProfileData);
+	const dispatch = useDispatch();
+	const [ profileData, setProfileData ] = useState({});
 	const [ editingField, setEditingField ] = useState(null);
 
+	const agentDetails = useSelector((state) => state.userDetails.agentDetails);
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
 
-	// console.log(dpImage);
+	// setProfileData(agentDetails)
+	// console.log(agentDetails?.data?.agent);
+
+	useEffect(() => {
+		dispatch(getAgentDetails());
+	}, [ dispatch ]);
+
+	useEffect(() => {
+		setProfileData(agentDetails?.data?.agent)
+	}, [ agentDetails?.data?.agent ]);
 
 	const handleEdit = (field) => {
 		setEditingField(field);
@@ -111,46 +108,46 @@ const CreativeProfilePage = () => {
 							{/* <UserCircle className="w-32 h-32 text-white bg-gray-300 rounded-full p-2" /> */}
 						</div>
 						<h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
-							{`${profileData.firstName} ${profileData.lastName}`}
+							{`${profileData?.firstName || 'Name'} ${profileData?.lastName || ''}`}
 						</h1>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
 						<ProfileItem
 							icon={<Mail className="w-5 h-5" />}
 							label="Email"
-							value={profileData.email}
+							value={profileData?.email}
 							isEditable={true}
 							onEdit={() => handleEdit('email')}
 						/>
 						<ProfileItem
 							icon={<Phone className="w-5 h-5" />}
 							label="Mobile"
-							value={profileData.mobile}
+							value={profileData?.mobile}
 							isEditable={true}
 							onEdit={() => handleEdit('mobile')}
 						/>
 						<ProfileItem
 							icon={<IoMaleFemaleOutline className="w-5 h-5" />}
 							label="Gender"
-							value={profileData.gender}
+							value={profileData?.gender}
 							isEditable={false}
 						/>
 						<ProfileItem
 							icon={<UserCircle className="w-5 h-5" />}
 							label="On Behalf"
-							value={profileData.onBehalf}
+							value={profileData?.onBehalf}
 							isEditable={false}
 						/>
 						<ProfileItem
 							icon={<Cake className="w-5 h-5" />}
 							label="Date of Birth"
-							value={moment(profileData.dateOfBirth).format('DD MMM YYYY')}
+							value={moment(profileData?.dateOfBirth).format('DD MMM YYYY')}
 							isEditable={false}
 						/>
 						<ProfileItem
 							icon={<CalendarDays className="w-5 h-5" />}
 							label="Member Since"
-							value={moment(profileData.createdAt).format('DD MMM YYYY')}
+							value={moment(profileData?.createdAt).format('DD MMM YYYY')}
 							isEditable={false}
 						/>
 					</div>

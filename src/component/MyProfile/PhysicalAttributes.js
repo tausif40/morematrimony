@@ -23,7 +23,6 @@ const PhysicalAttributes = ({ onFormSubmit, data }) => {
 	});
 
 	useEffect(() => {
-		console.log(physicalAttributes);
 		if (physicalAttributes) {
 			setFormData({
 				height: physicalAttributes.height || { feet: '', inches: '' },

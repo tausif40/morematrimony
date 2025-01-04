@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { familyInformation } from '../../utils/data/MyProfileData';
 
-const FamilyInformation = ({ onFormSubmit }) => {
+const FamilyInformation = ({ onFormSubmit, loading }) => {
 
 	const [ formData, setFormData ] = useState({
 		familyValue: '',
@@ -301,7 +301,7 @@ const FamilyInformation = ({ onFormSubmit }) => {
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={loading}>Update</button>
 				</div>
 			</form>
 		</div>

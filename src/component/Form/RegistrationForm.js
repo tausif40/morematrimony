@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from "../../store/auth/auth-slice";
+import { maritalStatus } from "../../utils/data/MyProfileData";
 
 const RegistrationForm = () => {
 	const dropdownRef = useRef(null);
@@ -15,7 +16,7 @@ const RegistrationForm = () => {
 	const secretKey = process.env.REACT_APP_ENCRYPTION_KEY;
 	const { isLoading, error } = useSelector((state) => state.auth);
 
-	const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
+	// const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
@@ -80,7 +81,6 @@ const RegistrationForm = () => {
 		if (!formData.email) newErrors.email = 'Email is required';
 		if (!emailRegex.test(formData.email)) newErrors.email = "Invalid email format";
 		if (!formData.password) newErrors.password = 'Password is required';
-		// if (formData.password.length > 7) newErrors.password = 'Password min 8 characters';
 		return newErrors;
 	};
 
@@ -115,6 +115,7 @@ const RegistrationForm = () => {
 			return;
 		}
 		setErrors({});
+
 		try {
 
 			const result = await dispatch(registerUser(formData));
@@ -125,11 +126,10 @@ const RegistrationForm = () => {
 				Cookies.set('access_token', tokens.access.token);
 				Cookies.set('refresh_token', tokens.refresh.token);
 
-				toast.success('Registration successful! Redirecting to dashboard...');
+				// toast.success('Registration successful! Redirecting to dashboard...');
 				navigate('/dashboard');
 			} else {
-				const errorMessage = result.error?.message || 'Registration failed. Please try again.';
-				toast.error(errorMessage);
+				console.log(error);
 			}
 		} catch (error) {
 			toast.error('An unexpected error occurred. Please try again later.');
@@ -180,7 +180,7 @@ const RegistrationForm = () => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>On Behalf</option>
-						{profiles?.map((profile, index) => (
+						{maritalStatus?.onBehalf?.map((profile, index) => (
 							<option key={index} value={profile}>
 								{profile.charAt(0).toUpperCase() + profile.slice(1)}
 							</option>
@@ -331,6 +331,7 @@ const RegistrationForm = () => {
 				<button
 					type="submit"
 					className="gradient-btn w-full p-3 text-white font-semibold rounded-md"
+					disabled={isLoading}
 				>
 					Create Account
 				</button>

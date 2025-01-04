@@ -72,7 +72,7 @@ function ShortProfile({ data }) {
 
 						<div className='px-4 md:px-0 flex flex-col justify-between w-full'>
 							<div className='relative text-black pb-4'>
-								<div className='absolute top-0 right-1 cursor-pointer z-50 flex flex-row-reverse'>
+								<div className='absolute top-0 right-1 cursor-pointer z-10 flex flex-row-reverse'>
 									<div onClick={showSideMenu}>
 										<PiDotsThreeOutlineVerticalFill size={20} />
 									</div>

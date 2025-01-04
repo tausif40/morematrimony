@@ -12,6 +12,7 @@ const SocialBackground = ({ data }) => {
 
 	const [ isChristian, setIsChristian ] = useState(false)
 	const [ isHindu, setIsHindu ] = useState(false)
+	const [ btnDisable, setBtnDisable ] = useState(false)
 	const [ stateList, setStateList ] = useState([])
 	const [ cityList, setCityList ] = useState([])
 	const [ casteList, setCasteList ] = useState([])
@@ -41,38 +42,38 @@ const SocialBackground = ({ data }) => {
 	useEffect(() => {
 		if (socialBackgroundData) {
 			setFormData({
-				religion: socialBackgroundData?.religion._id,
-				caste: socialBackgroundData?.caste._id,
-				division: socialBackgroundData?.caste.name,
-				subCaste: socialBackgroundData?.subCaste,
-				ethnicity: socialBackgroundData?.ethnicity._id,
-				star: socialBackgroundData?.star._id,
-				rashi: socialBackgroundData?.rashi._id,
-				zodiac: socialBackgroundData?.zodiac._id,
-				timeOfBirth: socialBackgroundData?.timeOfBirth,
+				religion: socialBackgroundData?.religion?._id || '',
+				caste: socialBackgroundData?.caste?._id || '',
+				division: socialBackgroundData?.caste.name || '',
+				subCaste: socialBackgroundData?.subCaste || '',
+				ethnicity: socialBackgroundData?.ethnicity?._id || '',
+				star: socialBackgroundData?.star?._id || '',
+				rashi: socialBackgroundData?.rashi?._id || '',
+				zodiac: socialBackgroundData?.zodiac?._id || '',
+				timeOfBirth: socialBackgroundData?.timeOfBirth || '',
 				birthPlace: {
-					country: socialBackgroundData?.birthPlace.country._id,
-					state: socialBackgroundData?.birthPlace.state._id,
-					city: socialBackgroundData?.birthPlace.city._id
+					country: socialBackgroundData?.birthPlace?.country._id || '',
+					state: socialBackgroundData?.birthPlace?.state._id || '',
+					city: socialBackgroundData?.birthPlace?.city._id || ''
 				},
-				gothra: socialBackgroundData?.gothra,
-				kundli: socialBackgroundData?.kundli,
-				dosh: socialBackgroundData?.dosh,
-				doshName: socialBackgroundData?.doshName
+				gothra: socialBackgroundData?.gothra || '',
+				kundli: socialBackgroundData?.kundli || '',
+				dosh: socialBackgroundData?.dosh || '',
+				doshName: socialBackgroundData?.doshName || ''
 			});
 			const religionId = socialBackgroundData?.religion._id
 			religionId == hinduId ? setIsHindu(true) : religionId == christianId && setIsChristian(true)
 
-			if (socialBackgroundData?.religion._id) {
+			if (socialBackgroundData?.religion?._id) {
 				fetchCaste(socialBackgroundData?.religion._id);
 			}
 			if (socialBackgroundData?.birthPlace.country._id) {
 				fetchState(socialBackgroundData?.birthPlace.country._id);
 			}
-			if (socialBackgroundData?.birthPlace.state._id) {
+			if (socialBackgroundData?.birthPlace?.state._id) {
 				fetchCity(socialBackgroundData?.birthPlace.state._id);
 			}
-			if (socialBackgroundData?.star._id) {
+			if (socialBackgroundData?.star?._id) {
 				fetchRashi(socialBackgroundData?.star._id);
 			}
 		}
@@ -114,7 +115,7 @@ const SocialBackground = ({ data }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// console.log(formData);
+
 		const newErrors = {};
 
 		// Object.keys(formData).forEach((key) => {
@@ -154,7 +155,7 @@ const SocialBackground = ({ data }) => {
 			delete cleanedFormData.kundli;
 			delete cleanedFormData.dosh;
 			delete cleanedFormData.doshName;
-			console.log("cleanedFormData - ", cleanedFormData);
+			// console.log("cleanedFormData - ", cleanedFormData);
 		}
 		if (!isChristian) delete cleanedFormData.division;
 		if (!formData.gothra) delete cleanedFormData.gothra;
@@ -166,6 +167,7 @@ const SocialBackground = ({ data }) => {
 
 		const loadingToast = toast.loading('Updating.....');
 		try {
+			setBtnDisable(true);
 			const formDataObj = new FormData();
 			// console.log("formDataObj - ", formDataObj);
 			// console.log("formData - ", formData);
@@ -192,20 +194,32 @@ const SocialBackground = ({ data }) => {
 				console.log(`${key}:`, value);
 			}
 
-			const response = apiClient.patch(`${BASE_URL}/user/spiritualAndSocialBackground`, formDataObj)
-			console.log(response);
-			response.status === 200 && toast.success('Update successful!', { id: loadingToast });
+			const response = await axios.patch(`${BASE_URL}/user/spiritualAndSocialBackground`, formDataObj, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'multipart/form-data',
+				},
+			})
+			console.log('Response:', response);
+			if (response.status === 200) {
+				toast.success('Update successful!', { id: loadingToast });
+				setBtnDisable(false);
+			} else {
+				toast.error('Update failed', { id: loadingToast });
+				setBtnDisable(false);
+			}
 		} catch (error) {
 			console.log(error);
 			toast.error(error?.response?.data?.message || error?.response?.message || 'Upload failed', { id: loadingToast });
+			setBtnDisable(false);
 		}
 	};
 
-	const onTimeChange = (time, timeString) => {
-		console.log(timeString);
-		console.log(formData);
-		setFormData((prev) => ({ ...prev, timeOfBirth: timeString }));
-	};
+	// const onTimeChange = (time, timeString) => {
+	// 	console.log(timeString);
+	// 	console.log(formData);
+	// 	setFormData((prev) => ({ ...prev, timeOfBirth: timeString }));
+	// };
 
 	const handleChange = (e) => {
 		const { name, value, files } = e.target;
@@ -587,7 +601,7 @@ const SocialBackground = ({ data }) => {
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={btnDisable}>Update</button>
 				</div>
 			</form>
 		</div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { lifestyle } from '../../utils/data/MyProfileData'
 
-const Lifestyle = ({ onFormSubmit }) => {
+const Lifestyle = ({ onFormSubmit, loading }) => {
 	const [ formData, setFormData ] = useState({
 		diet: '',
 		drink: '',
@@ -111,7 +111,7 @@ const Lifestyle = ({ onFormSubmit }) => {
 
 				{/* Submit Button */}
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={loading}>Update</button>
 				</div>
 			</form>
 		</div>

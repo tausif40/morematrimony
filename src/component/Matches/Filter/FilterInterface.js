@@ -17,7 +17,7 @@ function FilterInterface() {
 			id: 'onBehalf',
 			title: 'On Behalf',
 			type: 'checkbox',
-			isExpanded: true,
+			isExpanded: false,
 			options: maritalStatus?.onBehalf?.map((item) => ({
 				id: item,
 				label: item ? item.charAt(0).toUpperCase() + item.slice(1) : '',
@@ -27,7 +27,7 @@ function FilterInterface() {
 			id: 'maritalStatus',
 			title: 'Marital Status',
 			type: 'checkbox',
-			isExpanded: true,
+			isExpanded: false,
 			options: maritalStatus?.status?.map((status) => ({
 				id: status,
 				label: status ? status.charAt(0).toUpperCase() + status.slice(1) : '',
@@ -37,7 +37,7 @@ function FilterInterface() {
 			id: 'basicInformationInChildren',
 			title: 'Children Actable',
 			type: 'radio',
-			isExpanded: true,
+			isExpanded: false,
 			options: [
 				{ id: 'yes', label: 'Yes' },
 				{ id: 'no', label: 'No' },
@@ -47,14 +47,14 @@ function FilterInterface() {
 			id: 'presentCountry',
 			title: 'Present Country',
 			type: 'checkbox',
-			isExpanded: true,
+			isExpanded: false,
 			options: [],
 		},
 		{
 			id: 'residencyStatus',
 			title: 'Residency Status',
 			type: 'checkbox',
-			isExpanded: true,
+			isExpanded: false,
 			options: personalInformation?.residencyStatus?.map((item) => ({
 				id: item,
 				label: item ? item.charAt(0).toUpperCase() + item.slice(1) : '',

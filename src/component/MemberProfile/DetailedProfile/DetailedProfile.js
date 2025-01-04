@@ -13,6 +13,7 @@ const DetailedProfile = ({ userDetails }) => {
 			dateOfBirth: data?.basicInformation?.dateOfBirth || "_",
 			gender: data?.basicInformation?.gender || "_",
 			maritalStatus: data?.basicInformation?.maritalStatus || "_",
+			numberOfChildren: data?.basicInformation?.numberOfChildren || "_",
 			profileCreatedBy: data?.basicInformation?.onBehalf || "_",
 		},
 		presentAddress: {
@@ -35,7 +36,7 @@ const DetailedProfile = ({ userDetails }) => {
 		},
 		career: {
 			employedIn: data?.career?.employedIn || "_",
-			occupation: data?.career?.occupation?.name || "_",
+			occupation: data?.career?.occupation?.occupationName || "_",
 			occupationDetails: data?.career?.occupationDetails || "_",
 			organizationName: data?.career?.organizationName || "_",
 			jobLocation: data?.career?.jobLocation?.name || "_",
@@ -98,25 +99,24 @@ const DetailedProfile = ({ userDetails }) => {
 			age: `${data?.partnerExpectation?.age?.min || "_"} to ${data?.partnerExpectation?.age?.max || "_"}`,
 			height: `${data?.partnerExpectation?.height?.feet || 0} feet ${data?.partnerExpectation?.height?.inches || 0} inches`,
 			maritalStatus: data?.partnerExpectation?.maritalStatus || "_",
-			residencyCountry: data?.partnerExpectation?.residencyCountry?.name || "_",
 			religion: data?.partnerExpectation?.religion?.name || "_",
-			caste: data?.partnerExpectation?.caste?.name || "_",
+			caste: data?.partnerExpectation?.caste?.map((caste) => `${caste.name}`).join(", ") || "_",
 			occupation: data?.partnerExpectation?.occupation?.map((occ) => `${occ.occupationName} (${occ.role})`).join(", ") || "_",
-			motherTongue: data?.partnerExpectation?.motherTongue?.name || "_",
-			highestEducation: data?.partnerExpectation?.highestEducation?.name || "_",
+			motherTongue: data?.partnerExpectation?.motherTongue?.map((caste) => `${caste.name}`).join(", ") || "_",
+			highestEducation: data?.partnerExpectation?.highestEducation?.map((caste) => `${caste.name}`).join(", ") || "_",
 			employedIn: data?.partnerExpectation?.employedIn || "_",
 			annualIncome: data?.partnerExpectation?.annualIncome || "_",
 			smokingAcceptable: data?.partnerExpectation?.smokingAcceptable || "_",
 			drinkingAcceptable: data?.partnerExpectation?.drinkingAcceptable || "_",
 			dietingAcceptable: data?.partnerExpectation?.dietingAcceptable || "_",
 			bodyType: data?.partnerExpectation?.bodyType || "_",
-			preferredCountry: data?.partnerExpectation?.preferredCountry?.name || "_",
-			preferredState: data?.partnerExpectation?.preferredState?.name || "_",
+			preferredCountry: data?.partnerExpectation?.preferredCountry?.map((caste) => `${caste.name}`).join(", ") || "_",
+			preferredState: data?.partnerExpectation?.preferState?.map((caste) => `${caste.name}`).join(", ") || "_",
 			complexion: data?.partnerExpectation?.complexion || "_",
 			generalRequirement: data?.partnerExpectation?.lookingFor || "_"
 		}
 	};
-
+	// console.log("sister -", data?.familyDetails?.sisters);
 	// console.log(profileData.career);
 
 	return (
@@ -275,7 +275,7 @@ const DetailedProfile = ({ userDetails }) => {
 											<dt className="text-md font-medium mb-2 capitalize">
 												{key.replace(/([A-Z])/g, ' $1')}:
 											</dt>
-											<dd>{key === 'kundli' ? 'request' : value}</dd>
+											<dd>{value}</dd>
 										</div>
 									);
 								})}

@@ -58,7 +58,7 @@ const ProfileCard = (userData) => {
 				<div>
 					{/* <Link to={'/view-profile'}> */}
 					<div onClick={showProfileDetails}>
-						<h3 className="text-xl font-semibold text-black">{fistName} {lastName}</h3>
+						<h3 className="text-xl font-semibold text-black pointer">{fistName} {lastName}</h3>
 					</div>
 					{/* </Link> */}
 					<p className="mt-1 text-sm text-gray-500">
@@ -110,9 +110,9 @@ const ProfileList = () => {
 	const loading = matchProfile.loading
 
 
-	useEffect(() => {
-		dispatch(getMatchProfile());
-	}, [ dispatch ])
+	// useEffect(() => {
+	// 	dispatch(getMatchProfile());
+	// }, [ dispatch ])
 
 	const mapProfiles = (profiles) => {
 		return profiles.map((profile) => {
@@ -154,7 +154,7 @@ const ProfileList = () => {
 			<div className="mx-auto md:p-4">
 				{loading && (
 					<>
-						{[ ...Array(8) ].map((_, index) => (
+						{[ ...Array(5) ].map((_, index) => (
 							<ProfileListSkeleton key={index} />
 						))}
 					</>
@@ -162,6 +162,7 @@ const ProfileList = () => {
 				{profiles.map((profile, index) => (
 					<ProfileCard key={index} {...profile} />
 				))}
+				{!loading && profiles.length === 0 && <div className='flex justify-center'><img src="./assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
 			</div>
 		</>
 	);

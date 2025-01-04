@@ -1,6 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
 
+export const getAgentDetails = createAsyncThunk('data/getAgentDetails', async (_, { rejectWithValue }) => {
+	try {
+		const response = await apiClient.get(`/agent`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(error.response?.data || 'Failed to fetch UserDetails');
+	}
+});
 export const getUserDetails = createAsyncThunk('data/getUserDetails', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/user`);
@@ -25,6 +34,7 @@ export const getProfileImages = createAsyncThunk('data/getProfileImages', async 
 const userDataSlice = createSlice({
 	name: 'data',
 	initialState: {
+		agentDetails: { data: [], loading: false, error: null },
 		userDetails: { data: [], loading: false, error: null },
 		profileImages: { data: [], loading: false, error: null },
 		dpImage: { img: null, loading: false, error: null },
@@ -32,6 +42,20 @@ const userDataSlice = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
+			// agent details
+			.addCase(getAgentDetails.pending, (state) => {
+				state.agentDetails.loading = true
+				state.agentDetails.error = true
+			})
+			.addCase(getAgentDetails.fulfilled, (state, action) => {
+				state.agentDetails.data = action.payload;
+				state.agentDetails.loading = false;
+			})
+			.addCase(getAgentDetails.rejected, (state, action) => {
+				state.agentDetails.loading = false;
+				state.agentDetails.error = action.payload || action.error.message;
+			})
+			// user Details
 			.addCase(getUserDetails.pending, (state) => {
 				state.userDetails.loading = true
 				state.userDetails.error = true

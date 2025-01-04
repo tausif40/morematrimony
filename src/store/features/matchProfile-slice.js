@@ -123,7 +123,7 @@ const matchProfileSlice = createSlice({
 				state.matchProfile.error = action.payload || action.error.message;
 			})
 			.addCase(matchProfileFilter.pending, (state) => {
-				state.matchProfile.loading = true;
+				// state.matchProfile.loading = true;
 				state.matchProfile.error = null;
 			})
 			.addCase(matchProfileFilter.fulfilled, (state, action) => {

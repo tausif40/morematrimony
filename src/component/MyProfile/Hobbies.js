@@ -10,7 +10,7 @@ const Hobbies = ({ onFormSubmit, data }) => {
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const dropdownRef = useRef(null);
 
-	const { hobbies } = data;
+	const { hobbies, isLoading } = data;
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -42,7 +42,6 @@ const Hobbies = ({ onFormSubmit, data }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
 		if (selectedHobbies.length < 1) {
 			toast.error('Minimum 1 hobby is required');
 			setError('Minimum 1 hobby is required');
@@ -108,10 +107,11 @@ const Hobbies = ({ onFormSubmit, data }) => {
 										}}
 										className="w-full border border-gray-300 p-2 rounded-md outline-none focus:border-gold"
 									/>
+									<p className='text-red-500 font-light text-sm pt-1'>select only five</p>
 								</div>
 
 								{/* Render hobbies in the dropdown */}
-								<div className="flex flex-wrap gap-3 justify-between p-4 max-h-72 overflow-y-auto customScroll-bar">
+								<div className="flex flex-wrap gap-3 justify-between px-4 pb-4 max-h-72 overflow-y-auto customScroll-bar">
 									{filteredHobbies?.map((hobby) => (
 										<div
 											key={hobby._id}
@@ -130,7 +130,7 @@ const Hobbies = ({ onFormSubmit, data }) => {
 				{error && <p className="text-red-500">{error}</p>}
 
 				<div className="col-span-2 flex justify-end mt-4">
-					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">
+					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>
 						Update
 					</button>
 				</div>
