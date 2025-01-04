@@ -40,7 +40,7 @@ const MyProfilePage = () => {
 	const formData = useSelector((state) => state.profileData.formData);
 
 	useEffect(() => {
-		dispatch(fetchCountries());
+		// dispatch(fetchCountries());
 		dispatch(fetchEducation());
 		dispatch(fetchOccupations());
 		dispatch(fetchLanguages());

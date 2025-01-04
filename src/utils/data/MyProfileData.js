@@ -1,7 +1,7 @@
 // export const ProfileListData = {
 
 export const personalInformation = {
-	residencyStatus: [ "permanent resident", "investor", "work permit", "student visa", "temporary visa", "other" ],
+	residencyStatus: [ "permanent resident", "investor", "work permit", "student visa", "temporary visa", "other" ], 
 }
 export const PhysicalAttributesData = {
 	foot: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],

@@ -29,6 +29,7 @@ import AgentProfile from './component/AgentProfile/AgentProfile';
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
 import { getMatchProfile } from './store/features/matchProfile-slice';
 import { useDispatch } from 'react-redux';
+import { fetchCountries } from './store/features/profileData-slice';
 
 const App = () => {
   const token = Cookies.get('access_token');
@@ -61,6 +62,7 @@ const App = () => {
   // });
 
   useEffect(() => {
+    dispatch(fetchCountries());
     dispatch(getUserDetails());
     dispatch(getProfileImages());
     dispatch(getMatchProfile());

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
 import { toast } from 'react-hot-toast';
 import { getUserDetails } from './userDetails-slice';
+import { indiaId } from '../../utils/data/config';
 
 export const uploadFileData = createAsyncThunk('data/uploadFileData', async (formdata, { rejectWithValue, dispatch }) => {
   const loadingToast = toast.loading('Updating.....');
@@ -22,6 +23,14 @@ export const uploadFileData = createAsyncThunk('data/uploadFileData', async (for
 export const fetchCountries = createAsyncThunk('data/fetchCountries', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get(`/country`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Failed to fetch countries');
+  }
+});
+export const fetchIndianState = createAsyncThunk('data/fetchIndianState', async (_, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`/state?countryId=${indiaId}`);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to fetch countries');
@@ -135,6 +144,7 @@ const profileData = createSlice({
   initialState: {
     formData: { data: null, loading: false, error: null },
     countries: { data: [], loading: false, error: null },
+    indiaStates: { data: [], loading: false, error: null },
     countriesWithDoesNotMatter: { data: [], loading: false, error: null },
     occupations: { data: [], loading: false, error: null },
     languages: { data: [], loading: false, error: null },
@@ -186,6 +196,19 @@ const profileData = createSlice({
       .addCase(fetchCountries.rejected, (state, action) => {
         state.countries.loading = false;
         state.countries.error = action.payload || action.error.message;
+      })
+      // Fetch  Indian State
+      .addCase(fetchIndianState.pending, (state) => {
+        state.indiaStates.loading = true;
+        state.indiaStates.error = null;
+      })
+      .addCase(fetchIndianState.fulfilled, (state, action) => {
+        state.indiaStates.data = action.payload;
+        state.indiaStates.loading = false;
+      })
+      .addCase(fetchIndianState.rejected, (state, action) => {
+        state.indiaStates.loading = false;
+        state.indiaStates.error = action.payload || action.error.message;
       })
       // Fetch fetchCountriesWithDoesNotMatter
       .addCase(fetchCountriesWithDoesNotMatter.pending, (state) => {

@@ -36,7 +36,7 @@ const ProfileCard = (userData) => {
 	};
 
 	return (
-		<div className="border rounded-lg shadow-sm p-3 md:p-4 mb-10 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 ">
+		<div className="rounded-lg hover:shadow-lg shadow p-3 md:p-4 mb-6 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 bg-white">
 			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl overflow-hidden"
 				onClick={showProfileDetails}>
 				<div className="absolute inset-0 bg-cover"
@@ -148,11 +148,6 @@ const ProfileList = () => {
 	};
 
 	const profiles = matchProfile?.data?.user ? mapProfiles(matchProfile.data.user) : [];
-
-	console.log("loader - ", loading);
-
-
-
 
 	return (
 		<>

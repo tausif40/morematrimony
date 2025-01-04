@@ -11,7 +11,7 @@ function FilterMenu() {
 		{ name: 'Viewed You', path: 'viewed-you' },
 		{ name: 'My Interest', path: 'my-interest' },
 		{ name: 'Preferred City, State', path: 'preferred-city' },
-		{ name: 'Proffered Profession', path: 'proffered-profession' },
+		{ name: 'Preferred Profession', path: 'proffered-profession' },
 		{ name: 'Preferred Education', path: 'preferred-education' },
 		{ name: 'Preferred Star', path: 'preferred-star' },
 		// { name: 'Hobby Matches', path: 'hobby-matches' },
@@ -22,8 +22,8 @@ function FilterMenu() {
 
 	return (
 		<>
-			< section className='bg-white'>
-				<div className='flex flex-wrap justify-center text-headingGray space-x-2 pt-4 pb-2 border-b'>
+			< section className='bg-white w-full'>
+				<div className='flex flex-wrap justify-center text-headingGray space-x-2 pt-4 pb-2 border-b mt-4 '>
 					{navOption.map((value, index) => (
 						// <Link to={value.path} >
 						<div className={`min-w-max tracking-wide cursor-pointer px-4 py-2 flex items-center gap-2 font-medium text-sm hover:text-primary ${value.path == currentPath && 'text-gradient'}`}>{value.name}</div>
