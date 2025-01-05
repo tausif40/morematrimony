@@ -20,7 +20,7 @@ function FilterSection({
 					<span className="text-gray-600 font-medium">{section?.title}</span>
 					{section?.isExpanded ? (
 						<ChevronUp className="w-4 h-4 text-gray-400 ml-2" />
-					) : ( 
+					) : (
 						<ChevronDown className="w-4 h-4 text-gray-400 ml-2" />
 					)}
 				</button>
@@ -43,11 +43,11 @@ function FilterSection({
 								name={section?.id}
 								checked={selectedOptions[ section?.id ]?.includes(option?.id) || false}
 								onChange={() => handleOptionChange(section?.id, option?.id, section?.type)}
-								className={
-									section?.type === 'checkbox'
-										? 'form-checkbox rounded border-gray-300 text-blue-500 focus:ring-blue-500'
-										: 'form-radio border-gray-300 text-blue-500 focus:ring-blue-500'
+								className={section?.type === 'checkbox'
+									? 'form-checkbox rounded border-gray-300 text-blue-500 focus:ring-blue-500'
+									: 'form-radio border-gray-300 text-blue-500 focus:ring-blue-500'
 								}
+								disabled={section?.id === 1}
 							/>
 							<span className="text-gray-600 text-sm">{option?.label}</span>
 							{option?.count !== undefined && (

@@ -13,7 +13,7 @@ const ProfileImage = () => {
 	// const [ images, setImages ] = useState([])
 
 	const ProfileImages = useSelector((state) => state.userDetails.profileImages);
-	console.log(ProfileImages?.data?.gallery);
+	// console.log(ProfileImages?.data?.gallery);
 	// const images = ProfileImages?.data?.gallery;
 
 	// useEffect(() => {

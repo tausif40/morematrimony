@@ -25,7 +25,7 @@ function ShortProfile({ data }) {
 	// 		behavior: 'instant'
 	// 	});
 	// }, []);
-	console.log(data);
+	// console.log(data);
 
 	const handelShortlist = () => setShortlist((prev) => !prev);
 	const handelInterest = () => setIsInterestAccept((prev) => !prev);

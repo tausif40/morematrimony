@@ -70,8 +70,10 @@ import { getQueryParams } from '../../utils/utils';
 
 // Fetch all match profiles
 export const getMatchProfile = createAsyncThunk('data/getMatchProfile', async (_, { rejectWithValue }) => {
+	// console.log("url - ", `/user/matched-profile`);
 	try {
 		const response = await apiClient.get(`/user/matched-profile`);
+		// console.log("response - ", response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -81,10 +83,10 @@ export const getMatchProfile = createAsyncThunk('data/getMatchProfile', async (_
 
 // Fetch filtered match profiles
 export const matchProfileFilter = createAsyncThunk('data/matchProfileFilter', async (filterData, { rejectWithValue }) => {
-	console.log(filterData);
+	// console.log(filterData);
 	try {
 		const queryParams = getQueryParams(filterData);
-		console.log(`/user/auth?${queryParams}`);
+		// console.log(`/user/auth?${queryParams}`);
 		const response = await apiClient.get(`/user/auth?${queryParams}`);
 		return response.data;
 	} catch (error) {

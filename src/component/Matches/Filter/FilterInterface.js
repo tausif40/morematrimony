@@ -4,13 +4,17 @@ import FilterSection from './FilterSection';
 import FilterPopup from './FilterPopup';
 import { useDispatch, useSelector } from 'react-redux';
 import { matchProfileFilter } from '../../../store/features/matchProfile-slice';
-import { maritalStatus, personalInformation } from '../../../utils/data/MyProfileData';
+import { maritalStatus, personalInformation, PhysicalAttributesData, familyInformation, career, socialBackground } from '../../../utils/data/MyProfileData';
 import { CiFilter } from "react-icons/ci";
 
 
 function FilterInterface() {
 	const dispatch = useDispatch()
 	const countries = useSelector((state) => state.profileData.countries);
+	const indiaStates = useSelector((state) => state.profileData.indiaStates);
+	const education = useSelector((state) => state.profileData.education);
+	const occupations = useSelector((state) => state.profileData.occupations);
+
 
 	const [ sections, setSections ] = useState([
 		{
@@ -35,7 +39,7 @@ function FilterInterface() {
 		},
 		{
 			id: 'basicInformationInChildren',
-			title: 'Children Actable',
+			title: 'Children',
 			type: 'radio',
 			isExpanded: false,
 			options: [
@@ -60,8 +64,100 @@ function FilterInterface() {
 				label: item ? item.charAt(0).toUpperCase() + item.slice(1) : '',
 			})),
 		},
+		{
+			id: 'ancestralOrigin',
+			title: 'Ancestral Origin',
+			type: 'checkbox',
+			isExpanded: false,
+			options: indiaStates?.data?.state?.map((item) => ({
+				id: item._id,
+				label: item?.name ? item?.name.charAt(0).toUpperCase() + item.name.slice(1) : '',
+			})),
+		},
+		{
+			id: 'education',
+			title: 'education',
+			type: 'checkbox',
+			isExpanded: false,
+			options: education?.data?.education?.map((item) => ({
+				id: item._id,
+				label: item?.name ? item?.name.charAt(0).toUpperCase() + item.name.slice(1) : '',
+			})),
+		},
+		{
+			id: 'occupation',
+			title: 'Occupation',
+			type: 'checkbox',
+			isExpanded: false,
+			options: occupations?.data?.occupations?.map((item) => ({
+				id: item._id,
+				label: item?.name ? item?.name.charAt(0).toUpperCase() + item.name.slice(1) : '',
+			})),
+		},
+		{
+			id: 'bodyType',
+			title: 'Body Type',
+			type: 'checkbox',
+			isExpanded: false,
+			options: PhysicalAttributesData?.bodyType?.map((item) => ({
+				id: item,
+				label: item ? item?.charAt(0).toUpperCase() + item.slice(1) : '',
+			})),
+		},
+		{
+			id: 'complexion',
+			title: 'Complexion',
+			type: 'checkbox',
+			isExpanded: false,
+			options: PhysicalAttributesData?.complexion?.map((item) => ({
+				id: item,
+				label: item ? item?.charAt(0).toUpperCase() + item.slice(1) : '',
+			})),
+		},
+		{
+			id: 'disability',
+			title: 'Disability',
+			type: 'radio',
+			isExpanded: false,
+			options: [
+				{ id: 'yes', label: 'Yes' },
+				{ id: 'no', label: 'No' },
+			],
+		},
+		{
+			id: 'dosh',
+			title: 'Dosh',
+			type: 'checkbox',
+			isExpanded: false,
+			options: socialBackground?.doshName?.map((item) => ({
+				id: item,
+				label: item ? item?.charAt(0).toUpperCase() + item.slice(1) : '',
+			})),
+		},
+		{
+			id: 'familyStatus',
+			title: 'Family Status',
+			type: 'checkbox',
+			isExpanded: false,
+			options: familyInformation?.familyStatus?.map((item) => ({
+				id: item,
+				label: item ? item?.charAt(0).toUpperCase() + item.slice(1) : '',
+			})),
+		},
+		{
+			id: 'employedIn',
+			title: 'employed In',
+			type: 'checkbox',
+			isExpanded: false,
+			options: career?.employedIn?.map((item) => ({
+				id: item,
+				label: item ? item?.charAt(0).toUpperCase() + item.slice(1) : '',
+			})),
+		},
 	]);
 
+	// console.log(education);
+	// console.log(occupations);
 
 	const [ selectedOptions, setSelectedOptions ] = useState({});
 	const [ activePopupId, setActivePopupId ] = useState(null);

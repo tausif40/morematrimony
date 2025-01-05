@@ -148,7 +148,7 @@ const ProfileList = () => {
 	};
 
 	const profiles = matchProfile?.data?.user ? mapProfiles(matchProfile.data.user) : [];
-
+	// console.log("match list profiles - ", matchProfile);
 	return (
 		<>
 			<div className="mx-auto md:p-4">

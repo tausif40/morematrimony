@@ -117,7 +117,7 @@ const DetailedProfile = ({ userDetails }) => {
 		}
 	};
 	// console.log("sister -", data?.familyDetails?.sisters);
-	// console.log(profileData.career);
+	console.log("data -", data);
 
 	return (
 		<div className="container text-textGray border shadow-md rounded-xl ">

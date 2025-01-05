@@ -8,5 +8,7 @@
 		"Pratapgarh",
 		"Raasi",
 		"Rashi"
-	]
+	],
+	"editor.find.cursorMoveOnType": true,
+	"editor.cursorStyle": "line"
 }

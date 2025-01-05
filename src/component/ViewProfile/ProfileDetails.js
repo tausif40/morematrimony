@@ -135,7 +135,7 @@ const ProfileDetails = () => {
 			age: `${data?.partnerExpectation?.age?.min || "_"} to ${data?.partnerExpectation?.age?.max || "_"}`,
 			height: `${data?.partnerExpectation?.height?.feet || 0} feet ${data?.partnerExpectation?.height?.inches || 0} inches`,
 			maritalStatus: data?.partnerExpectation?.maritalStatus || "_",
-			religion: data?.partnerExpectation?.religion?.map((caste) => `${caste.name}`).join(", ") || "_",
+			religion: data?.partnerExpectation?.religion[ 0 ]?.name,
 			caste: data?.partnerExpectation?.caste?.map((caste) => `${caste.name}`).join(", ") || "_",
 			occupation: data?.partnerExpectation?.occupation?.map((occ) => `${occ.occupationName} (${occ.role})`).join(", ") || "_",
 			motherTongue: data?.partnerExpectation?.motherTongue?.map((caste) => `${caste.name}`).join(", ") || "_",
@@ -152,6 +152,10 @@ const ProfileDetails = () => {
 			generalRequirement: data?.partnerExpectation?.lookingFor || "_"
 		}
 	};
+
+	console.log("data - ", data)
+	console.log("partnerExpectation - ", data?.partnerExpectation)
+	console.log("profileData - ", profileData?.partnerExpectation)
 
 	return (
 		<>

@@ -41,8 +41,8 @@ const MyProfilePage = () => {
 
 	useEffect(() => {
 		// dispatch(fetchCountries());
-		dispatch(fetchEducation());
-		dispatch(fetchOccupations());
+		// dispatch(fetchEducation());
+		// dispatch(fetchOccupations());
 		dispatch(fetchLanguages());
 		dispatch(fetchHobbies());
 		dispatch(fetchReligions());

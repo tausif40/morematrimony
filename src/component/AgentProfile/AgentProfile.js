@@ -108,7 +108,7 @@ const CreativeProfilePage = () => {
 							{/* <UserCircle className="w-32 h-32 text-white bg-gray-300 rounded-full p-2" /> */}
 						</div>
 						<h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
-							{`${profileData?.firstName || 'Name'} ${profileData?.lastName || ''}`}
+							{`${profileData?.firstName || ''} ${profileData?.lastName || ''}`}
 						</h1>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
