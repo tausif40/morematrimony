@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
 function FilterPopup({
@@ -7,22 +7,37 @@ function FilterPopup({
   handleOptionChange,
   onClose,
 }) {
+  const [ searchQuery, setSearchQuery ] = useState('');
+
   if (!section) return null;
+
+  const filteredOptions = section.options.filter(option =>
+    option.label.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-        >
-          <X className="w-6 h-6" />
-        </button>
+      <div className="bg-white rounded-lg max-w-md w-full h-[70vh] overflow-y-auto relative">
+        <div className="sticky top-0 left-0 right-0 px-6 py-4 bg-gray-100 rounded-t-lg">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
 
-        <h3 className="text-lg font-medium mb-4">{section.title}</h3>
+          <h3 className="text-lg font-medium mb-2">{section.title}</h3>
 
-        <div className="space-y-2">
-          {section.options.map((option) => (
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="space-y-2 p-6">
+          {filteredOptions.map((option) => (
             <label key={option.id} className="flex items-center space-x-2 cursor-pointer">
               <input
                 type={section.type}

@@ -9,7 +9,7 @@ function MemberProfile() {
 
 	const userDetails = useSelector((state) => state.userDetails.userDetails);
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
-	const name = userDetails?.data?.user?.basicInformation?.firstName + userDetails?.data?.user?.basicInformation?.lastName
+	const name = userDetails?.data?.user?.basicInformation?.firstName + " " +userDetails?.data?.user?.basicInformation?.lastName
 	const dob = userDetails?.data?.user?.basicInformation.dateOfBirth
 	const age = Math.floor((new Date() - new Date(dob)) / (1000 * 60 * 60 * 24 * 365.25))
 	const id = userDetails?.data?.user?._id
