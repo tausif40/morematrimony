@@ -1,5 +1,3 @@
-
-
 export const getQueryParams = (filterData) => {
 	const queryParams = new URLSearchParams();
 

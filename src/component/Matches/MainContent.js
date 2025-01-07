@@ -31,36 +31,35 @@ const ProfileCard = (userData) => {
 	}, [ accountCreate ]);
 
 	// console.log({ profileData: profileData });
-	const showProfileDetails = () => {
-		navigate('/view-profile', { state: profileData });
-	};
+	// const showProfileDetails = () => {
+	// 	navigate('/view-profile', { state: profileData });
+	// };
 
 	return (
 		<div className="rounded-lg hover:shadow-lg shadow p-3 md:p-4 mb-6 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 bg-white">
-			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-xl overflow-hidden"
-				onClick={showProfileDetails}>
+			<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-md overflow-hidden">
 				<div className="absolute inset-0 bg-cover"
 					style={{ backgroundImage: `url(${img})`, filter: `blur(16px)` }} >
 				</div>
 				<div className="absolute inset-0 rounded-xl"></div>
-				{/* <Link to={showProfileDetails} className="relative z-10"> */}
-				<div className='relative z-10'>
-					<span className="text-4xl text-gray-400">
-						{newUser && <div className="ribbon"><span>New Join</span></div>}
-					</span>
-					<img src={img == undefined ? gender === 'male' ? male : female : img} alt="img" className="object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64 mix-blend-multiply contrast-100" />
-				</div>
-				{/* </Link> */}
+				<Link to={`/matches/profile-details/${id}`} className="relative z-10">
+					<div className='relative z-10'>
+						<span className="text-4xl text-gray-400">
+							{newUser && <div className="ribbon"><span>New Join</span></div>}
+						</span>
+						<img src={img == undefined ? gender === 'male' ? male : female : img} alt="img" className="object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64 mix-blend-multiply contrast-100" />
+					</div>
+				</Link>
 			</div>
 
 			{/* Profile Details */}
 			<div className="h-64 w-full flex flex-col justify-between py-2 ">
 				<div>
-					{/* <Link to={'/view-profile'}> */}
-					<div onClick={showProfileDetails}>
-						<h3 className="text-xl font-semibold text-black pointer">{fistName} {lastName}</h3>
-					</div>
-					{/* </Link> */}
+					<Link to={`/matches/profile-details/${id}`}>
+						<div>
+							<h3 className="text-xl font-semibold text-black pointer">{fistName} {lastName}</h3>
+						</div>
+					</Link>
 					<p className="mt-1 text-sm text-gray-500">
 						{id.slice(-8).toUpperCase()} | Last seen {lastSeen}
 					</p>
@@ -70,8 +69,8 @@ const ProfileCard = (userData) => {
 							height && height,
 							religion && caste ? `${religion} - ${caste}` : religion || caste,
 							education && education,
-							occupation && occupation,
-							location && location,
+							occupation && `${occupation} (${location})`,
+							// location && ,
 						].filter(Boolean).join(' • ').replace(/\b\w/g, (char) => char.toUpperCase())}
 					</div>
 				</div>
@@ -97,13 +96,13 @@ const ProfileCard = (userData) => {
 						</p>
 					</div>
 				</div>
-			</div>
-		</div>
+			</div >
+		</div >
 	);
 };
 
 // Main Component
-const ProfileList = () => {
+const MainContent = () => {
 	const dispatch = useDispatch()
 
 	const matchProfile = useSelector((state) => state.matchProfile.matchProfile);
@@ -124,34 +123,42 @@ const ProfileList = () => {
 			} = profile;
 
 			return {
+				id: _id,
 				fistName: basicInformation?.firstName,
 				lastName: basicInformation?.lastName,
 				gender: basicInformation?.gender,
-				id: _id,
 				age: basicInformation?.dateOfBirth
 					? Math.floor((new Date() - new Date(basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25))
 					: '',
 				height: physicalAttributes?.height
 					? `${physicalAttributes.height.feet}' ${physicalAttributes.height.inches || 0}"`
 					: '',
-				religion: profile.spiritualAndSocialBackground?.religion[ 0 ]?.name,
-				caste: profile.spiritualAndSocialBackground?.caste[ 0 ]?.name,
-				education: profile.educationalDetails?.highestEducation[ 0 ]?.name,
-				occupation: profile.career?.occupation[ 0 ]?.occupationName,
-				location: 'Not Specified',
+				religion: profile.spiritualAndSocialBackground?.religion?.name,
+				caste: profile.spiritualAndSocialBackground?.caste?.name,
+				education: profile.educationalDetails?.highestEducation?.name,
+				occupation: profile.career?.occupation?.occupationName,
+				location: profile?.career?.jobLocation?.name,
 				lastSeen: 'Recently Active',
 				accountCreate: createdAt,
 				img: profile.profileImage,
-				allData: profile
 			};
 		});
 	};
+	// allData: profile
 
 	const profiles = matchProfile?.data?.user ? mapProfiles(matchProfile.data.user) : [];
-	// console.log("match list profiles - ", matchProfile);
+	console.log("match list profiles - ", matchProfile);
 	return (
 		<>
-			<div className="mx-auto md:p-4">
+			<div className="mx-auto md:px-4">
+				<div className="mb-4">
+					<input
+						type="text"
+						placeholder="Search profiles..."
+						className="w-full p-3 mb-4 border rounded-md outline-none focus:border-gold"
+					/>
+				</div>
+
 				{loading && (
 					<>
 						{[ ...Array(5) ].map((_, index) => (
@@ -159,6 +166,7 @@ const ProfileList = () => {
 						))}
 					</>
 				)}
+
 				{profiles.map((profile, index) => (
 					<ProfileCard key={index} {...profile} />
 				))}
@@ -168,4 +176,4 @@ const ProfileList = () => {
 	);
 };
 
-export default ProfileList;
+export default MainContent;

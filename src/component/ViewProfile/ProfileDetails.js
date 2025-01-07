@@ -1,11 +1,30 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import ShortProfile from "./ShortProfile";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserDetailsById } from "../../store/features/matchProfile-slice";
+import ShortProfileDetailsSkeleton from "../Loader/ShortProfileDetailsSkeleton";
 
 const ProfileDetails = () => {
+	const dispatch = useDispatch()
 	const location = useLocation();
-	const data = location.state;
+	const params = useParams();
+	const id = params.id;
+
+	const userDetailsById = useSelector((state) => state.matchProfile.userDetailsById);
+	const loading = userDetailsById.loading
+
+	useEffect(() => {
+		dispatch(getUserDetailsById(id))
+	}, [ id ])
+
+	useEffect(() => {
+	}, [ loading ])
+
+
+	const data = userDetailsById?.data?.user
+	console.log(data);
 
 	useEffect(() => {
 		window.scrollTo({
@@ -38,7 +57,7 @@ const ProfileDetails = () => {
 		jobLocation: data?.career?.jobLocation?.name || "_",
 		annualIncome: data?.career?.annualIncome || "_",
 		lastSeen: '',
-		id: data._id
+		id: data?._id
 	}
 
 	const profileData = {
@@ -153,18 +172,21 @@ const ProfileDetails = () => {
 		}
 	};
 
-	console.log("data - ", data)
-	console.log("partnerExpectation - ", data?.partnerExpectation)
-	console.log("profileData - ", profileData?.partnerExpectation)
+	// console.log("data - ", data)
+	// console.log("partnerExpectation - ", data?.partnerExpectation)
+	// console.log("profileData - ", profileData?.partnerExpectation)
 
 	return (
 		<>
+
 			<div className='px-3 sm:px-6 md:px-10 lg:px-24 xl:px-36 pt-12 pb-16'>
 				<div className=''>
-					<ShortProfile data={shortProfileData} />
+					{loading ? < ShortProfileDetailsSkeleton /> :
+						<ShortProfile data={shortProfileData} />
+					}
 				</div>
 				<div className='mt-12'>
-					<div className="container text-textGray border shadow-md rounded-xl ">
+					{!loading && <div className="container text-textGray border shadow-md rounded-xl ">
 						<div className="space-y-6 md:space-y-8 pt-2 md:pt-4 pb-12 lg:px-6">
 							{/* Introduction */}
 							<div className="p-4">
@@ -368,8 +390,10 @@ const ProfileDetails = () => {
 
 						</div>
 					</div >
+					}
 				</div>
 			</div>
+
 		</>
 	);
 };

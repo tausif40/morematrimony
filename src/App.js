@@ -21,7 +21,8 @@ import MemberProfileLayout from './component/Layout/MemberProfileLayout';
 // import ViewProfile from './component/ViewProfile/ViewProfile';
 import ViewProfileLayout from './component/Layout/ViewProfileLayout';
 import ProfileDetails from './component/ViewProfile/ProfileDetails';
-import MatchesLayout from './component/Layout/MatchesLayout';
+// import MatchesLayout from './component/Layout/MatchesLayout';
+import MatchesList from './component/Matches/MatchesList';
 import Plans from './component/Plans/Plans';
 import Help from './component/Help/Help';
 import AgentProfile from './component/AgentProfile/AgentProfile';
@@ -94,14 +95,14 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/matches" element={<MatchesLayout />} />
+          <Route path="/matches" element={<MatchesList />} />
 
           {dashboardPaths.map((path) => (
             <Route key={path} path={path} element={<DashboardLayout />} />
           ))}
 
           <Route path="/member-profile" element={<MemberProfileLayout />} />
-          <Route path="/view-profile" element={<ProfileDetails />} />
+          <Route path="/matches/profile-details/:id" element={<ProfileDetails />} />
           <Route path="/plans" element={<Plans />} />
           <Route path="/help" element={<Help />} />
         </Routes>

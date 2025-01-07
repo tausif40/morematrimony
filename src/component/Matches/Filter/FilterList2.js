@@ -6,93 +6,93 @@ function FilterList() {
 
 	const [ sections, setSections ] = useState(
 		[
-		{
-			id: 'verification',
-			title: 'Verification Status',
-			type: 'checkbox',
-			isExpanded: true,
-			options: [
-				{ id: 'all-verification', label: 'All' },
-				{ id: 'blue-tick', label: 'Blue Tick Profiles', isNew: true }
-			]
-		},
-		{
-			id: 'photo',
-			title: 'Photo Settings',
-			type: 'checkbox',
-			isExpanded: true,
-			options: [
-				{ id: 'all-photos', label: 'All' },
-				{ id: 'visible', label: 'Visible to all', count: 27 },
-				{ id: 'protected', label: 'Protected Photos', count: 3 }
-			]
-		},
-		{
-			id: 'joined',
-			title: 'Recently Joined',
-			type: 'radio',
-			isExpanded: true,
-			options: [
-				{ id: 'all-joined', label: 'All' },
-				{ id: 'day', label: 'Within a day', count: 11 },
-				{ id: 'week', label: 'Within a week', count: 32 },
-				{ id: 'month', label: 'Within a month', count: 125 }
-			]
-		},
-		{
-			id: 'active',
-			title: 'Active Members',
-			type: 'radio',
-			isExpanded: true,
-			options: [
-				{ id: 'all-active', label: 'All' },
-				{ id: 'active-day', label: 'Within a day', count: 22 },
-				{ id: 'active-week', label: 'Within a week', count: 55 },
-				{ id: 'active-month', label: 'Within a month', count: 125 }
-			]
-		},
-		{
-			id: 'community',
-			title: 'Community',
-			type: 'checkbox',
-			isExpanded: true,
-			showAll: false,
-			options: [
-				{ id: 'all-community', label: 'All' },
-				{ id: 'thakur', label: 'Thakur', count: 135 },
-				{ id: 'kurmi', label: 'Kurmi', count: 123 },
-				{ id: 'rajput', label: 'Rajput', count: 101 },
-				{ id: 'jatav', label: 'Jatav', count: 85 },
-				{ id: 'yadav', label: 'Yadav', count: 83 },
-				{ id: 'tili', label: 'Tili', count: 1 },
-				{ id: 'kurmi-kshatriya', label: 'Kurmi Kshatriya', count: 1 },
-				{ id: 'option1', label: 'Option 1', count: 50 },
-				{ id: 'option2', label: 'Option 2', count: 40 },
-				{ id: 'option3', label: 'Option 3', count: 30 },
-				{ id: 'option4', label: 'Option 4', count: 20 },
-				{ id: 'option5', label: 'Option 5', count: 10 }
-			]
-		},
-		{
-			id: 'mother-tongue',
-			title: 'Mother Tongue',
-			type: 'checkbox',
-			isExpanded: true,
-			showAll: false,
-			options: [
-				{ id: 'all-language', label: 'All' },
-				{ id: 'hindi', label: 'Hindi', count: 125 },
-				{ id: 'bhojpuri', label: 'Bhojpuri', count: 2 },
-				{ id: 'magahi', label: 'Magahi', count: 1 },
-				{ id: 'maithili', label: 'Maithili', count: 1 },
-				{ id: 'english', label: 'English', count: 1 },
-				{ id: 'tamil', label: 'Tamil', count: 15 },
-				{ id: 'telugu', label: 'Telugu', count: 12 },
-				{ id: 'kannada', label: 'Kannada', count: 8 },
-				{ id: 'malayalam', label: 'Malayalam', count: 5 }
-			]
-		}
-	])
+			{
+				id: 'verification',
+				title: 'Verification Status',
+				type: 'checkbox',
+				isExpanded: true,
+				options: [
+					{ id: 'all-verification', label: 'All' },
+					{ id: 'blue-tick', label: 'Blue Tick Profiles', isNew: true }
+				]
+			},
+			{
+				id: 'photo',
+				title: 'Photo Settings',
+				type: 'checkbox',
+				isExpanded: true,
+				options: [
+					{ id: 'all-photos', label: 'All' },
+					{ id: 'visible', label: 'Visible to all', count: 27 },
+					{ id: 'protected', label: 'Protected Photos', count: 3 }
+				]
+			},
+			{
+				id: 'joined',
+				title: 'Recently Joined',
+				type: 'radio',
+				isExpanded: true,
+				options: [
+					{ id: 'all-joined', label: 'All' },
+					{ id: 'day', label: 'Within a day', count: 11 },
+					{ id: 'week', label: 'Within a week', count: 32 },
+					{ id: 'month', label: 'Within a month', count: 125 }
+				]
+			},
+			{
+				id: 'active',
+				title: 'Active Members',
+				type: 'radio',
+				isExpanded: true,
+				options: [
+					{ id: 'all-active', label: 'All' },
+					{ id: 'active-day', label: 'Within a day', count: 22 },
+					{ id: 'active-week', label: 'Within a week', count: 55 },
+					{ id: 'active-month', label: 'Within a month', count: 125 }
+				]
+			},
+			{
+				id: 'community',
+				title: 'Community',
+				type: 'checkbox',
+				isExpanded: true,
+				showAll: false,
+				options: [
+					{ id: 'all-community', label: 'All' },
+					{ id: 'thakur', label: 'Thakur', count: 135 },
+					{ id: 'kurmi', label: 'Kurmi', count: 123 },
+					{ id: 'rajput', label: 'Rajput', count: 101 },
+					{ id: 'jatav', label: 'Jatav', count: 85 },
+					{ id: 'yadav', label: 'Yadav', count: 83 },
+					{ id: 'tili', label: 'Tili', count: 1 },
+					{ id: 'kurmi-kshatriya', label: 'Kurmi Kshatriya', count: 1 },
+					{ id: 'option1', label: 'Option 1', count: 50 },
+					{ id: 'option2', label: 'Option 2', count: 40 },
+					{ id: 'option3', label: 'Option 3', count: 30 },
+					{ id: 'option4', label: 'Option 4', count: 20 },
+					{ id: 'option5', label: 'Option 5', count: 10 }
+				]
+			},
+			{
+				id: 'mother-tongue',
+				title: 'Mother Tongue',
+				type: 'checkbox',
+				isExpanded: true,
+				showAll: false,
+				options: [
+					{ id: 'all-language', label: 'All' },
+					{ id: 'hindi', label: 'Hindi', count: 125 },
+					{ id: 'bhojpuri', label: 'Bhojpuri', count: 2 },
+					{ id: 'magahi', label: 'Magahi', count: 1 },
+					{ id: 'maithili', label: 'Maithili', count: 1 },
+					{ id: 'english', label: 'English', count: 1 },
+					{ id: 'tamil', label: 'Tamil', count: 15 },
+					{ id: 'telugu', label: 'Telugu', count: 12 },
+					{ id: 'kannada', label: 'Kannada', count: 8 },
+					{ id: 'malayalam', label: 'Malayalam', count: 5 }
+				]
+			}
+		])
 
 	const [ selectedOptions, setSelectedOptions ] = useState({})
 	const [ activePopup, setActivePopup ] = useState(null)

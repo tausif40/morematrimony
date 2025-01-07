@@ -1,5 +1,5 @@
 import React from 'react'
-import MatchesList from '../Matches/MatchesList'
+import ProfileList from '../Matches/MatchesList'
 import FilterMenu from '../Matches/FilterMenu'
 import FilterInterface from '../Matches/Filter/FilterInterface'
 
@@ -11,13 +11,12 @@ function MatchesLayout() {
 					<FilterMenu />
 				</div>
 				<div className="container flex lg:gap-6 xl:gap-8 mt-8">
-					<div className="bg-white rounded-md mt-4 transition-all duration-300 shadow-md">
-						{/* <FilterProfileList /> */}
+					{/* <div className="bg-white rounded-md mt-4 transition-all duration-300 shadow-md">
 						<FilterInterface />
-					</div>
+					</div> */}
 
 					<div className="w-full">
-						<MatchesList />
+						<ProfileList />
 					</div>
 				</div>
 

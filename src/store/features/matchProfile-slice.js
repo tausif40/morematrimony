@@ -1,69 +1,3 @@
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import apiClient from '../../api/apiClient';
-// import { getQueryParams } from '../../utils/utils';
-
-// export const getMatchProfile = createAsyncThunk('data/getMatchProfile', async (_, { rejectWithValue }) => {
-// 	try {
-// 		const response = await apiClient.get(`/user/matched-profile`);
-// 		return response.data;
-// 	} catch (error) {
-// 		console.log(error);
-// 		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
-// 	}
-// });
-
-// export const matchProfileFilter = createAsyncThunk('data/getMatchProfile', async (filterData, { rejectWithValue }) => {
-
-// 	try {
-// 		const response = await apiClient.get(`/user/auth?${getQueryParams(filterData)}`);
-// 		return response.data;
-// 	} catch (error) {
-// 		console.log(error);
-// 		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
-// 	}
-// });
-
-
-// const matchProfile = createSlice({
-// 	name: 'data',
-// 	initialState: {
-// 		matchProfile: { data: [], loading: false, error: null }
-// 	},
-// 	reducers: {},
-// 	extraReducers: (builder) => {
-// 		builder
-// 			.addCase(getMatchProfile.pending, (state) => {
-// 				state.matchProfile.loading = true
-// 				state.matchProfile.error = true
-// 			})
-// 			.addCase(getMatchProfile.fulfilled, (state, action) => {
-// 				// console.log(action);
-// 				state.matchProfile.data = action.payload;
-// 				state.matchProfile.loading = false;
-// 			})
-// 			.addCase(getMatchProfile.rejected, (state, action) => {
-// 				state.matchProfile.loading = false;
-// 				state.matchProfile.error = action.payload || action.error.message;
-// 			})
-
-// 			.addCase(matchProfileFilter.pending, (state) => {
-// 				state.matchProfile.loading = true
-// 				state.matchProfile.error = true
-// 			})
-// 			.addCase(matchProfileFilter.fulfilled, (state, action) => {
-// 				// console.log(action);
-// 				state.matchProfile.data = action.payload;
-// 				state.matchProfile.loading = false;
-// 			})
-// 			.addCase(matchProfileFilter.rejected, (state, action) => {
-// 				state.matchProfile.loading = false;
-// 				state.matchProfile.error = action.payload || action.error.message;
-// 			})
-// 	}
-// })
-
-// export default matchProfile.reducer;
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
 import { getQueryParams } from '../../utils/utils';
@@ -73,7 +7,27 @@ export const getMatchProfile = createAsyncThunk('data/getMatchProfile', async (_
 	// console.log("url - ", `/user/matched-profile`);
 	try {
 		const response = await apiClient.get(`/user/matched-profile`);
-		// console.log("response - ", response.data);
+		console.log("getMatchProfile - ", response.data);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
+	}
+});
+
+export const getUserDetailsById = createAsyncThunk('data/getUserDetailsById', async (id, { rejectWithValue }) => {
+	try {
+		const response = await apiClient.get(`/user/matched-profile/${id}`);
+		// console.log("getUserDetailsById - ", response.data);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
+	}
+});
+export const matchedProfileGallery = createAsyncThunk('data/getUserDetailsById', async (id, { rejectWithValue }) => {
+	try {
+		const response = await apiClient.get(`gallery/matchedProfileGallery${id}`);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -83,11 +37,12 @@ export const getMatchProfile = createAsyncThunk('data/getMatchProfile', async (_
 
 // Fetch filtered match profiles
 export const matchProfileFilter = createAsyncThunk('data/matchProfileFilter', async (filterData, { rejectWithValue }) => {
-	// console.log(filterData);
+	console.log(filterData);
 	try {
 		const queryParams = getQueryParams(filterData);
 		// console.log(`/user/auth?${queryParams}`);
 		const response = await apiClient.get(`/user/auth?${queryParams}`);
+		console.log("matchProfileFilter - ", response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -95,11 +50,13 @@ export const matchProfileFilter = createAsyncThunk('data/matchProfileFilter', as
 	}
 });
 
+
 // Slice definition
 const matchProfileSlice = createSlice({
 	name: 'data',
 	initialState: {
 		matchProfile: { data: [], loading: false, error: null },
+		userDetailsById: { data: [], loading: false, error: null },
 		filters: {}, // Store the currently applied filters
 	},
 	reducers: {
@@ -111,6 +68,7 @@ const matchProfileSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
+		console.log("filters - ", matchProfileSlice.filters);
 		builder
 			.addCase(getMatchProfile.pending, (state) => {
 				state.matchProfile.loading = true;
@@ -124,6 +82,20 @@ const matchProfileSlice = createSlice({
 				state.matchProfile.loading = false;
 				state.matchProfile.error = action.payload || action.error.message;
 			})
+			// getUserDetailsById
+			.addCase(getUserDetailsById.pending, (state) => {
+				state.userDetailsById.loading = true;
+				state.userDetailsById.error = null;
+			})
+			.addCase(getUserDetailsById.fulfilled, (state, action) => {
+				state.userDetailsById.data = action.payload;
+				state.userDetailsById.loading = false;
+			})
+			.addCase(getUserDetailsById.rejected, (state, action) => {
+				state.userDetailsById.loading = false;
+				state.userDetailsById.error = action.payload || action.error.message;
+			})
+			// matchProfileFilter
 			.addCase(matchProfileFilter.pending, (state) => {
 				// state.matchProfile.loading = true;
 				state.matchProfile.error = null;

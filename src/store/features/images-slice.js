@@ -51,8 +51,6 @@ export const uploadImages = createAsyncThunk(
 	}
 );
 
-
-
 export const deleteImage = createAsyncThunk('data/deleteImage', async (imageId, { rejectWithValue, dispatch }) => {
 	const loadingToast = toast.loading('deleting....');
 	try {
@@ -93,7 +91,7 @@ const userUploadImages = createSlice({
 			})
 
 			.addCase(uploadDpImage.pending, (state) => {
-				state.DpImage.loading = true
+				// state.DpImage.loading = true
 				state.DpImage.error = true
 			})
 			.addCase(uploadDpImage.fulfilled, (state, action) => {
