@@ -43,9 +43,9 @@ const MyProfilePage = () => {
 		// dispatch(fetchCountries());
 		// dispatch(fetchEducation());
 		// dispatch(fetchOccupations());
+		// dispatch(fetchReligions());
 		dispatch(fetchLanguages());
 		dispatch(fetchHobbies());
-		dispatch(fetchReligions());
 		dispatch(fetchStars());
 		dispatch(fetchZodiac());
 		dispatch(fetchDivision());

@@ -90,12 +90,12 @@ function DashboardLayout() {
 				<VerificationForm verify={setVerified} onClose={() => setShowVerification(false)} />
 			)}
 
-			<div className="app-container relative">
+			<div className="app-container relative ">
 				<div className="hidden lg:block">
 					<DashboardMenu />
 				</div>
 
-				<div className="container flex justify-between gap-8 my-10 ">
+				<div className="container flex justify-between gap-8 py-10 ">
 					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[792px]">
 						<ProfileOption />
 					</div>

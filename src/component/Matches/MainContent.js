@@ -147,7 +147,7 @@ const MainContent = () => {
 	// allData: profile
 
 	const profiles = matchProfile?.data?.user ? mapProfiles(matchProfile.data.user) : [];
-	console.log("match list profiles - ", matchProfile);
+	// console.log("match list profiles - ", matchProfile);
 	return (
 		<>
 			<div className="mx-auto md:px-4">

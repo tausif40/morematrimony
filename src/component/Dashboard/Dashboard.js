@@ -15,7 +15,7 @@ function Dashboard() {
 				<VerificationForm verify={setVerified} onClose={() => setShowVerification(false)} />
 			)}
 
-			<section className='bg-white rounded-md w-full'>
+			<section className='bg-white py-4 px-6 border rounded-md w-full'>
 				<div className='grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6 text-center'>
 					<div className='bg-zinc-100 text-headingGray py-10 space-y-6 rounded-md'>
 						<p className='font-bold text-3xl text-gradient'>5</p>

@@ -13,28 +13,37 @@ export default function MatchesList() {
 	const [ activePopup, setActivePopup ] = useState(null);
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const [ stateList, setStateList ] = useState([]);
-	const [ cityList, setCityList ] = useState([]);
+	const [ presentCityList, setPresentCityList ] = useState([]);
+	const [ ancestralOriginCity, setAncestralOriginCity ] = useState([]);
+	const [ CasteList, setCasteList ] = useState([]);
 	const [ stateLoading, setStateLoading ] = useState(false)
 	const [ cityLoading, setCityLoading ] = useState(false)
 
 	const countries = useSelector((state) => state.profileData.countries);
+	const IndianState = useSelector((state) => state.profileData.indiaStates);
 	const education = useSelector((state) => state.profileData.education);
 	const occupations = useSelector((state) => state.profileData.occupations);
+	const religions = useSelector((state) => state.profileData.religions);
 
-	// console.log("stateList - ", stateList);
-	// console.log("cityList - ", cityList);
+	// console.log("IndianState - ", IndianState?.data?.state);
+	// console.log("religions - ", religions);
 
 	const [ selectedFilters, setSelectedFilters ] = useState({
 		onBehalf: [],
 		maritalStatus: [],
-		basicInformationInChildren: [],
+		basicInformationInChildren: '',
+		ancestralOrigin: '',
+		ancestralOriginCity: '',
 		presentCountry: '',
 		presentState: '',
 		presentCity: '',
 		residencyStatus: [],
+		education: [],
+		// occupation: [],
+		bodyType: [],
+		religion: '',
+		caste: [],
 		dosh: '',
-
-
 	});
 
 	// Filter options
@@ -42,22 +51,18 @@ export default function MatchesList() {
 		onBehalf: maritalStatus?.onBehalf,
 		maritalStatus: maritalStatus?.status,
 		basicInformationInChildren: [ "yes", "no" ],
-		residencyStatus: personalInformation?.residencyStatus,
+		ancestralOrigin: IndianState?.data?.state,
+		ancestralOriginCity: ancestralOriginCity,
 		presentCountry: countries?.data?.country,
 		presentState: stateList?.state,
-		presentCity: cityList?.city,
+		presentCity: presentCityList,
+		residencyStatus: personalInformation?.residencyStatus,
+		education: education?.data?.education,
+		// occupation: occupations?.data?.occupation,
+		bodyType: PhysicalAttributesData?.bodyType,
+		religion: religions?.data?.religion,
+		caste: CasteList,
 		dosh: socialBackground?.doshName,
-
-		// caste: [
-		// 	{ _id: '1', name: "Doesn't Matter" },
-		// 	{ _id: '2', name: 'Muslim - Ansari' },
-		// ],
-		// language: [
-		// 	{ _id: '1', name: 'Angika' },
-		// 	{ _id: '2', name: 'Arunachali' },
-		// ],
-		// age: [ '18-25', '26-30', '31-35', '36-40', '40+' ],
-		// occupation: [ 'IT Professional', 'Doctor', 'Engineer', 'Business', 'Others' ],
 	};
 
 	// Display-friendly names for filter categories
@@ -65,25 +70,24 @@ export default function MatchesList() {
 		onBehalf: 'On Behalf',
 		maritalStatus: 'Marital Status',
 		basicInformationInChildren: 'Children',
+		ancestralOrigin: 'Ancestral Origin',
+		ancestralOriginCity: 'Ancestral Origin City',
 		presentCountry: 'Present Country',
 		residencyStatus: 'Residency Status',
 		presentState: 'Present State',
 		presentCity: 'Present City',
+		education: 'Education',
+		occupation: 'Occupation',
+		bodyType: 'Body Type',
+		religion: 'Religion',
+		caste: 'Caste',
 		dosh: 'Dosh Name',
-		// education: 'Education Level',
-		// occupation: 'Occupation',
-		// country: 'Country',
-		// caste: 'Caste',
-		// language: 'Languages',
-		// age: 'Age Range',
 	};
-
 
 	useEffect(() => {
 		dispatch(matchProfileFilter(selectedFilters));
 		// console.log(selectedFilters);
 	}, [ selectedFilters ])
-
 
 	const fetchState = async (countryId) => {
 		setStateLoading(true)
@@ -96,12 +100,25 @@ export default function MatchesList() {
 			setStateLoading(false)
 		}
 	}
+	const fetchCast = async (religionId) => {
+		setStateLoading(true)
+		try {
+			const response = await apiClient.get(`/caste?religionId=${religionId}`);
+			// console.log(response?.data);
+			setCasteList(response?.data?.caste)
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setStateLoading(false)
+		}
+	}
 
-	const fetchCity = async (stateId) => {
+	const fetchCity = async (stateId, category) => {
 		setCityLoading(true)
 		try {
 			const response = await apiClient.get(`/city?stateId=${stateId}`);
-			setCityList(response.data)
+			if (category == 'presentState') setPresentCityList(response?.data?.city)
+			if (category == 'ancestralOrigin') setAncestralOriginCity(response?.data?.city)
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -110,9 +127,10 @@ export default function MatchesList() {
 	}
 
 	const handleFilterSelect = (category, value) => {
-		console.log(category, value);
-		if (category == 'presentCountry') { setStateList([]); setCityList([]); fetchState(value) };
-		if (category == 'ancestralOrigin') { setCityList([]); fetchCity(value) };
+		if (category == 'presentCountry') { setStateList([]); setPresentCityList([]); fetchState(value) };
+		if (category == 'presentState') { setPresentCityList([]); fetchCity(value, category) };
+		if (category == 'ancestralOrigin') { setAncestralOriginCity([]); fetchCity(value, category) };
+		if (category == 'religion') { setCasteList([]); fetchCast(value) };
 
 		setSelectedFilters((prev) => {
 			if (Array.isArray(prev[ category ])) {
@@ -152,11 +170,18 @@ export default function MatchesList() {
 		setSelectedFilters({
 			onBehalf: [],
 			maritalStatus: [],
-			basicInformationInChildren: [],
-			presentCountry: '',
+			basicInformationInChildren: '',
 			ancestralOrigin: '',
 			ancestralOriginCity: '',
+			presentCountry: '',
+			presentState: '',
+			presentCity: '',
 			residencyStatus: [],
+			education: [],
+			// occupation: [],
+			bodyType: [],
+			religion: '',
+			caste: [],
 			dosh: '',
 		});
 	};
@@ -183,7 +208,7 @@ export default function MatchesList() {
 	return (
 		<>
 			<FilterMenu />
-			<div className="flex pt-4 bg-gray-50">
+			<div className="flex bg-gray-50">
 				<FilterSidebar
 					selectedFilters={selectedFilters}
 					setActivePopup={setActivePopup}
@@ -193,7 +218,7 @@ export default function MatchesList() {
 					removeFilter={removeFilter}
 					getCategoryDisplayName={getCategoryDisplayName} // Pass down display name function
 				/>
-				<div className="flex-1 px-10 pb-10 pt-2">
+				<div className="flex-1 mt-6 px-10 pb-10 pt-2">
 					{/* <h1>Matches List</h1> */}
 					{/* <div className="grid gap-4">
 						{[ ...Array(15).keys() ].map((i) => (

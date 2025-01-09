@@ -30,7 +30,7 @@ import AgentProfile from './component/AgentProfile/AgentProfile';
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
 import { getMatchProfile } from './store/features/matchProfile-slice';
 import { useDispatch } from 'react-redux';
-import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations } from './store/features/profileData-slice';
+import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations, fetchReligions } from './store/features/profileData-slice';
 
 const App = () => {
   const token = Cookies.get('access_token');
@@ -70,6 +70,7 @@ const App = () => {
     dispatch(getMatchProfile());
     dispatch(fetchEducation());
     dispatch(fetchOccupations());
+    dispatch(fetchReligions());
   }, [ dispatch ]);
 
   // useEffect(() => {

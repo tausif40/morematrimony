@@ -28,7 +28,7 @@ function ProfileOption() {
 	const fistName = userDetails?.data?.user?.basicInformation?.firstName || 'User';
 	const lastName = userDetails?.data?.user?.basicInformation?.lastName || 'Name';
 	const dpImage = userDetails?.data?.user?.profileImage
-	console.log(userDetails);
+	// console.log(userDetails);
 	useEffect(() => {
 		setProfileCompletion(percent)
 		percent && setColor(percentColor(percent))
