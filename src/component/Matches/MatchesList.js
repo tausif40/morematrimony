@@ -18,6 +18,7 @@ export default function MatchesList() {
 	const [ CasteList, setCasteList ] = useState([]);
 	const [ stateLoading, setStateLoading ] = useState(false)
 	const [ cityLoading, setCityLoading ] = useState(false)
+	const [ clearFilter, setClearFilter ] = useState(false)
 
 	const countries = useSelector((state) => state.profileData.countries);
 	const IndianState = useSelector((state) => state.profileData.indiaStates);
@@ -85,8 +86,9 @@ export default function MatchesList() {
 	};
 
 	useEffect(() => {
-		dispatch(matchProfileFilter(selectedFilters));
-		// console.log(selectedFilters);
+
+		if (!clearFilter) dispatch(matchProfileFilter(selectedFilters));
+		console.log("clearFilter - ", clearFilter);
 	}, [ selectedFilters ])
 
 	const fetchState = async (countryId) => {
@@ -127,6 +129,7 @@ export default function MatchesList() {
 	}
 
 	const handleFilterSelect = (category, value) => {
+		setClearFilter(false)
 		if (category == 'presentCountry') { setStateList([]); setPresentCityList([]); fetchState(value) };
 		if (category == 'presentState') { setPresentCityList([]); fetchCity(value, category) };
 		if (category == 'ancestralOrigin') { setAncestralOriginCity([]); fetchCity(value, category) };
@@ -166,6 +169,7 @@ export default function MatchesList() {
 	};
 
 	const clearAllFilters = () => {
+		setClearFilter(true)
 		dispatch(getMatchProfile())
 		setSelectedFilters({
 			onBehalf: [],

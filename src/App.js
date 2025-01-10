@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.css'
 import Cookies from 'js-cookie';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './component/ScrollToTop/ScrollToTop';
 import TopNav from './component/NavBar/TopNav';
 import NavMain from './component/NavBar/NavMain';
@@ -33,8 +33,6 @@ import { useDispatch } from 'react-redux';
 import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations, fetchReligions } from './store/features/profileData-slice';
 
 const App = () => {
-  const token = Cookies.get('access_token');
-  const navigate = useNavigate()
   const dispatch = useDispatch();
   const dashboardPaths = [
     '/dashboard',
@@ -91,12 +89,13 @@ const App = () => {
           <Route path="/*" element={<PageNotFound />} />
           <Route path="/" element={<HomePageLayout />} />
           <Route path="/active-members" element={<ActiveMembers />} />
-          <Route path="//my-profile" element={<AgentProfile />} />
+          <Route path="/my-profile" element={<AgentProfile />} />
           <Route path="/happy-stories" element={<HappyStories />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/matches" element={<MatchesList />} />
+          <Route path="/matches/:path" element={<MatchesList />} />
 
           {dashboardPaths.map((path) => (
             <Route key={path} path={path} element={<DashboardLayout />} />

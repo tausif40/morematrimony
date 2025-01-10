@@ -35,30 +35,30 @@ const ProfileDetails = () => {
 	}, []);
 
 	const shortProfileData = {
-		firstName: data?.basicInformation?.firstName || "_",
-		lastName: data?.basicInformation?.lastName || "_",
-		dateOfBirth: data?.basicInformation?.dateOfBirth || "_",
-		religion: data?.spiritualAndSocialBackground?.religion?.name || "_",
-		caste: data?.spiritualAndSocialBackground?.caste?.name || "_",
-		subCaste: data?.spiritualAndSocialBackground?.subCaste || "_",
-		country: data?.presentAddress?.country?.name || "_",
-		state: data?.presentAddress?.state?.name || "_",
-		city: data?.presentAddress?.city?.name || "_",
+		firstName: data?.basicInformation?.firstName || "",
+		lastName: data?.basicInformation?.lastName || "",
+		dateOfBirth: data?.basicInformation?.dateOfBirth || "",
+		religion: data?.spiritualAndSocialBackground?.religion?.name || "",
+		caste: data?.spiritualAndSocialBackground?.caste?.name || "",
+		subCaste: data?.spiritualAndSocialBackground?.subCaste || "",
+		country: data?.presentAddress?.country?.name || "",
+		state: data?.presentAddress?.state?.name || "",
+		city: data?.presentAddress?.city?.name || "",
 		age: data?.basicInformation?.dateOfBirth
 			? Math.floor((new Date() - new Date(data?.basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25))
 			: '',
-		height: data?.physicalAttributes?.height
-			? `${data?.physicalAttributes.height.feet}' ${data?.physicalAttributes.height.inches || 0}"`
-			: '',
-		weight: data?.physicalAttributes?.weight || "_",
-		highestEducation: data?.educationalDetails?.highestEducation?.name || "_",
-		employedIn: data?.career?.employedIn || "_",
-		occupation: data?.career?.occupation?.name || "_",
-		jobLocation: data?.career?.jobLocation?.name || "_",
-		annualIncome: data?.career?.annualIncome || "_",
+		height: data?.physicalAttributes?.height && `${data?.physicalAttributes?.height?.feet || 0}' ${data?.physicalAttributes?.height?.inches || 0}"`,
+		weight: data?.physicalAttributes?.weight || "",
+		highestEducation: data?.educationalDetails?.highestEducation?.name || "",
+		employedIn: data?.career?.employedIn || "",
+		occupation: data?.career?.occupation?.name || "",
+		jobLocation: data?.career?.jobLocation?.name || "",
+		annualIncome: data?.career?.annualIncome || "",
 		lastSeen: '',
 		id: data?._id
 	}
+
+	console.log("shortProfileData - ", shortProfileData);
 
 	const profileData = {
 		introduction: data?.introduction || "_",

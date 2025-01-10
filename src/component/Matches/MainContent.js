@@ -25,12 +25,12 @@ const ProfileCard = (userData) => {
 		const timeDifference = currentDate - accountDate;
 		const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
 
-		if (daysDifference <= 7) {
+		if (daysDifference <= 30) {
 			setNewUser(true);
 		}
+		// console.log("accountCreate - ", accountCreate, " - ", daysDifference);
 	}, [ accountCreate ]);
 
-	// console.log({ profileData: profileData });
 	// const showProfileDetails = () => {
 	// 	navigate('/view-profile', { state: profileData });
 	// };
@@ -112,9 +112,10 @@ const MainContent = () => {
 	// useEffect(() => {
 	// 	dispatch(getMatchProfile());
 	// }, [ dispatch ])
+	// console.log(matchProfile);
 
 	const mapProfiles = (profiles) => {
-		return profiles.map((profile) => {
+		return profiles?.map((profile) => {
 			const {
 				_id,
 				basicInformation,
@@ -133,11 +134,11 @@ const MainContent = () => {
 				height: physicalAttributes?.height
 					? `${physicalAttributes.height.feet}' ${physicalAttributes.height.inches || 0}"`
 					: '',
-				religion: profile.spiritualAndSocialBackground?.religion?.name,
-				caste: profile.spiritualAndSocialBackground?.caste?.name,
-				education: profile.educationalDetails?.highestEducation?.name,
-				occupation: profile.career?.occupation?.occupationName,
-				location: profile?.career?.jobLocation?.name,
+				religion: profile.spiritualAndSocialBackground?.religion[ 0 ]?.name,
+				caste: profile.spiritualAndSocialBackground?.caste[ 0 ]?.name,
+				education: profile.educationalDetails?.highestEducation[ 0 ]?.name,
+				occupation: profile.career?.occupation[ 0 ]?.occupationName,
+				location: profile?.career?.jobLocation[ 0 ]?.name,
 				lastSeen: 'Recently Active',
 				accountCreate: createdAt,
 				img: profile.profileImage,
@@ -146,7 +147,7 @@ const MainContent = () => {
 	};
 	// allData: profile
 
-	const profiles = matchProfile?.data?.user ? mapProfiles(matchProfile.data.user) : [];
+	const profiles = matchProfile?.data?.user?.results ? mapProfiles(matchProfile.data.user?.results) : [];
 	// console.log("match list profiles - ", matchProfile);
 	return (
 		<>
