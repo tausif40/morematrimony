@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { familyInformation } from '../../utils/data/MyProfileData';
+import { familyInformation } from '../../data/MyProfileData';
 
 const FamilyInformation = ({ onFormSubmit, loading }) => {
 

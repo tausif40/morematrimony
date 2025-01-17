@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from "../../store/auth/auth-slice";
-import { maritalStatus } from "../../utils/data/MyProfileData";
+import { maritalStatus } from "../../data/MyProfileData";
 
 const RegistrationForm = () => {
 	const dropdownRef = useRef(null);

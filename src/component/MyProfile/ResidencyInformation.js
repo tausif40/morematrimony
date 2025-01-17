@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { personalInformation } from '../../utils/data/MyProfileData';
+import { personalInformation } from '../../data/MyProfileData';
 import apiClient from '../../api/apiClient';
-import { indiaId } from '../../utils/data/config';
+import { indiaId } from '../../data/config';
 
 const ResidencyInformation = ({ data, onFormSubmit }) => {
 	const [ stateList, setStateList ] = useState([]);

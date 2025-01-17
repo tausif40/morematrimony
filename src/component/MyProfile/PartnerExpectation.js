@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { indiaId } from '../../utils/data/config';
-import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lifestyle } from '../../utils/data/MyProfileData';
+import { indiaId } from '../../data/config';
+import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lifestyle } from '../../data/MyProfileData';
 import apiClient from '../../api/apiClient';
 import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
 import MultiDropdown from '../../utils/ui/MultiDropdown';

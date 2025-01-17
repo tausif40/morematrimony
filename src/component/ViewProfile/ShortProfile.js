@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import ProfileImage from './ProfileImage';
 import { HiOutlineUserCircle } from "react-icons/hi";

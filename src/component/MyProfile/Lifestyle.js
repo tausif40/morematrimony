@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { lifestyle } from '../../utils/data/MyProfileData'
+import { lifestyle } from '../../data/MyProfileData'
 
 const Lifestyle = ({ onFormSubmit, loading }) => {
 	const [ formData, setFormData ] = useState({

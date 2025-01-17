@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { PhysicalAttributesData } from '../../utils/data/MyProfileData';
+import { PhysicalAttributesData } from '../../data/MyProfileData';
 
 const PhysicalAttributes = ({ onFormSubmit, data }) => {
 

@@ -4,7 +4,7 @@ import FilterSection from './FilterSection';
 import FilterPopup from './FilterPopup';
 import { useDispatch, useSelector } from 'react-redux';
 import { matchProfileFilter } from '../../../store/features/matchProfile-slice';
-import { maritalStatus, personalInformation, PhysicalAttributesData, familyInformation, career, socialBackground } from '../../../utils/data/MyProfileData';
+import { maritalStatus, personalInformation, PhysicalAttributesData, familyInformation, career, socialBackground } from '../../../data/MyProfileData';
 import { CiFilter } from "react-icons/ci";
 
 

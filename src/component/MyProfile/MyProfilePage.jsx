@@ -20,7 +20,7 @@ import {
 } from '../../store/features/profileData-slice';
 import apiClient from '../../api/apiClient';
 import { encryptData, decryptData } from "../../utils/encryption";
-import { socialBackground } from '../../utils/data/MyProfileData';
+import { socialBackground } from '../../data/MyProfileData';
 
 const MyProfilePage = () => {
 	const dispatch = useDispatch({});
@@ -80,7 +80,7 @@ const MyProfilePage = () => {
 	useEffect(() => {
 		setIsLoading(formData?.loading)
 	}, [ formData?.loading ])
-	
+
 	const handleFormSubmit = (data) => {
 		console.log("formData - ", formData)
 		console.log(data);
@@ -105,7 +105,7 @@ const MyProfilePage = () => {
 			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading, languageData, isLoading }} />
 			<Hobbies onFormSubmit={handleFormSubmit} data={{ hobbies, hobbiesError, isLoading }} />
 			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries, socialBackgroundData, isLoading }} />
-			<Lifestyle onFormSubmit={handleFormSubmit} loading={isLoading}/>
+			<Lifestyle onFormSubmit={handleFormSubmit} loading={isLoading} />
 			<FamilyInformation onFormSubmit={handleFormSubmit} loading={isLoading} />
 			<PartnerExpectation onFormSubmit={handleFormSubmit} data={{ countriesWithDoesNotMatter, religions, occupations, education, languages, isLoading }} />
 		</div>

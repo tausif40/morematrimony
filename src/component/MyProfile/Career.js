@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { career } from '../../utils/data/MyProfileData';
+import { career } from '../../data/MyProfileData';
 
 const Career = ({ data, onFormSubmit }) => {
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { maritalStatus } from '../../utils/data/MyProfileData';
+import { maritalStatus } from '../../data/MyProfileData';
 
 const BasicInformationForm = ({ data, onFormSubmit }) => {
 	const [ numberOfChildren, setNumberOfChildren ] = useState();
