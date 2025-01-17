@@ -18,7 +18,7 @@ import Viewed from '../Viewed/Viewed';
 import ViewedByYou from '../ViewedByYou/ViewedByYou';
 import { getProfileImages, getUserDetails } from '../../store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
-import { getMatchProfile } from '../../store/features/matchProfile-slice';
+import { getMatchedProfile, getMatchProfile } from '../../store/features/matchProfile-slice';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -39,7 +39,7 @@ function DashboardLayout() {
 	useEffect(() => {
 		dispatch(getUserDetails());
 		dispatch(getProfileImages());
-		dispatch(getMatchProfile());
+		dispatch(getMatchedProfile());
 	}, [ dispatch ]);
 
 	useEffect(() => {

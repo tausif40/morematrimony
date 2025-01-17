@@ -28,7 +28,7 @@ import Help from './component/Help/Help';
 import AgentProfile from './component/AgentProfile/AgentProfile';
 
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
-import { getMatchProfile } from './store/features/matchProfile-slice';
+import { getMatchedProfile } from './store/features/matchProfile-slice';
 import { useDispatch } from 'react-redux';
 import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations, fetchReligions } from './store/features/profileData-slice';
 
@@ -65,7 +65,7 @@ const App = () => {
     dispatch(fetchIndianState());
     dispatch(getUserDetails());
     dispatch(getProfileImages());
-    dispatch(getMatchProfile());
+    dispatch(getMatchedProfile({ isMatchedView: true }));
     dispatch(fetchEducation());
     dispatch(fetchOccupations());
     dispatch(fetchReligions());
@@ -95,7 +95,6 @@ const App = () => {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/matches" element={<MatchesList />} />
-          <Route path="/matches/:path" element={<MatchesList />} />
 
           {dashboardPaths.map((path) => (
             <Route key={path} path={path} element={<DashboardLayout />} />

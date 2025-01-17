@@ -3,11 +3,12 @@ import { IoIosStarOutline } from "react-icons/io";
 import { IoMdStar } from "react-icons/io";
 import { Link, useNavigate } from 'react-router-dom';
 import '../ViewProfile/viewProfile.css';
-import { getMatchProfile } from '../../store/features/matchProfile-slice';
+// import { getMatchProfile } from '../../store/features/matchProfile-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import male from '../../img/male.png'
 import female from '../../img/female.png'
 import ProfileListSkeleton from '../Loader/ProfileListSkeleton';
+import { getMatchedProfile } from '../../store/features/matchProfile-slice';
 
 const ProfileCard = (userData) => {
 	const navigate = useNavigate();
@@ -28,12 +29,8 @@ const ProfileCard = (userData) => {
 		if (daysDifference <= 30) {
 			setNewUser(true);
 		}
-		// console.log("accountCreate - ", accountCreate, " - ", daysDifference);
 	}, [ accountCreate ]);
 
-	// const showProfileDetails = () => {
-	// 	navigate('/view-profile', { state: profileData });
-	// };
 
 	return (
 		<div className="rounded-lg hover:shadow-lg shadow p-3 md:p-4 mb-6 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 bg-white">
@@ -67,7 +64,7 @@ const ProfileCard = (userData) => {
 						{[
 							age && `${age} yrs`,
 							height && height,
-							religion && caste ? `${religion} - ${caste}` : religion || caste,
+							religion && religion && caste ? ` - ${caste}` : religion || caste,
 							education && education,
 							occupation && `${occupation} (${location})`,
 							// location && ,
@@ -104,15 +101,14 @@ const ProfileCard = (userData) => {
 // Main Component
 const MainContent = () => {
 	const dispatch = useDispatch()
+	const [ loading, setLoading ] = useState(false)
+	const matchedProfile = useSelector((state) => state.matchProfile.matchedProfile);
 
-	const matchProfile = useSelector((state) => state.matchProfile.matchProfile);
-	const loading = matchProfile.loading
 
-
-	// useEffect(() => {
-	// 	dispatch(getMatchProfile());
-	// }, [ dispatch ])
-	// console.log(matchProfile);
+	useEffect(() => {
+		matchedProfile?.data?.length == 0 ? setLoading(true) : setLoading(false)
+		// dispatch(getMatchedProfile({ isMatchedView: true }));
+	}, [ dispatch, matchedProfile ])
 
 	const mapProfiles = (profiles) => {
 		return profiles?.map((profile) => {
@@ -147,8 +143,8 @@ const MainContent = () => {
 	};
 	// allData: profile
 
-	const profiles = matchProfile?.data?.user?.results ? mapProfiles(matchProfile.data.user?.results) : [];
-	// console.log("match list profiles - ", matchProfile);
+	const profiles = matchedProfile?.data?.user?.profilesWithNoStatus ? mapProfiles(matchedProfile.data.user?.profilesWithNoStatus) : [];
+	console.log("match list profiles - ", matchedProfile);
 	return (
 		<>
 			<div className="mx-auto md:px-4">

@@ -4,9 +4,9 @@ import FilterPopup from './FilterPopup';
 import MainContent from './MainContent';
 import FilterMenu from './FilterMenu';
 import { useDispatch, useSelector } from 'react-redux';
-import { maritalStatus, personalInformation, PhysicalAttributesData, familyInformation, career, socialBackground } from '../../utils/data/MyProfileData';
+import { maritalStatus, personalInformation, PhysicalAttributesData, socialBackground } from '../../data/MyProfileData';
 import apiClient from '../../api/apiClient';
-import { getMatchProfile, matchProfileFilter } from '../../store/features/matchProfile-slice';
+import { setPage, setFilterApplied, matchProfileFilter, getMatchedProfile } from '../../store/features/matchProfile-slice';
 
 export default function MatchesList() {
 	const dispatch = useDispatch()
@@ -15,19 +15,20 @@ export default function MatchesList() {
 	const [ stateList, setStateList ] = useState([]);
 	const [ presentCityList, setPresentCityList ] = useState([]);
 	const [ ancestralOriginCity, setAncestralOriginCity ] = useState([]);
-	const [ CasteList, setCasteList ] = useState([]);
+	const [ casteList, setCasteList ] = useState([]);
 	const [ stateLoading, setStateLoading ] = useState(false)
 	const [ cityLoading, setCityLoading ] = useState(false)
 	const [ clearFilter, setClearFilter ] = useState(false)
+	// const [ selectedFilters, setSelectedFilters ] = useState(filters || {});
+	// const [ currentPage, setCurrentPage ] = useState(page || 1);
 
 	const countries = useSelector((state) => state.profileData.countries);
-	const IndianState = useSelector((state) => state.profileData.indiaStates);
+	const indianState = useSelector((state) => state.profileData.indiaStates);
 	const education = useSelector((state) => state.profileData.education);
 	const occupations = useSelector((state) => state.profileData.occupations);
 	const religions = useSelector((state) => state.profileData.religions);
 
-	// console.log("IndianState - ", IndianState?.data?.state);
-	// console.log("religions - ", religions);
+	// const { filters, page, noOfFilter } = useSelector((state) => state.matchedProfile);
 
 	const [ selectedFilters, setSelectedFilters ] = useState({
 		onBehalf: [],
@@ -40,7 +41,6 @@ export default function MatchesList() {
 		presentCity: '',
 		residencyStatus: [],
 		education: [],
-		// occupation: [],
 		bodyType: [],
 		religion: '',
 		caste: [],
@@ -52,17 +52,16 @@ export default function MatchesList() {
 		onBehalf: maritalStatus?.onBehalf,
 		maritalStatus: maritalStatus?.status,
 		basicInformationInChildren: [ "yes", "no" ],
-		ancestralOrigin: IndianState?.data?.state,
+		ancestralOrigin: indianState?.data?.state,
 		ancestralOriginCity: ancestralOriginCity,
 		presentCountry: countries?.data?.country,
 		presentState: stateList?.state,
 		presentCity: presentCityList,
 		residencyStatus: personalInformation?.residencyStatus,
 		education: education?.data?.education,
-		// occupation: occupations?.data?.occupation,
 		bodyType: PhysicalAttributesData?.bodyType,
 		religion: religions?.data?.religion,
-		caste: CasteList,
+		caste: casteList,
 		dosh: socialBackground?.doshName,
 	};
 
@@ -86,10 +85,10 @@ export default function MatchesList() {
 	};
 
 	useEffect(() => {
-
-		if (!clearFilter) dispatch(matchProfileFilter(selectedFilters));
-		console.log("clearFilter - ", clearFilter);
-	}, [ selectedFilters ])
+		dispatch(setFilterApplied(selectedFilters));
+		if (!clearFilter) dispatch(getMatchedProfile(selectedFilters));
+		// console.log("clearFilter - ", clearFilter);
+	}, [ dispatch, selectedFilters ])
 
 	const fetchState = async (countryId) => {
 		setStateLoading(true)
@@ -114,7 +113,6 @@ export default function MatchesList() {
 			setStateLoading(false)
 		}
 	}
-
 	const fetchCity = async (stateId, category) => {
 		setCityLoading(true)
 		try {
@@ -170,7 +168,7 @@ export default function MatchesList() {
 
 	const clearAllFilters = () => {
 		setClearFilter(true)
-		dispatch(getMatchProfile())
+		dispatch(getMatchedProfile({ isMatchedView: true }))
 		setSelectedFilters({
 			onBehalf: [],
 			maritalStatus: [],
@@ -220,22 +218,15 @@ export default function MatchesList() {
 					getSelectedName={getSelectedName}
 					clearAllFilters={clearAllFilters}
 					removeFilter={removeFilter}
-					getCategoryDisplayName={getCategoryDisplayName} // Pass down display name function
+					getCategoryDisplayName={getCategoryDisplayName}
 				/>
 				<div className="flex-1 mt-6 px-10 pb-10 pt-2">
-					{/* <h1>Matches List</h1> */}
-					{/* <div className="grid gap-4">
-						{[ ...Array(15).keys() ].map((i) => (
-							<div key={i} className="bg-gray-200 p-4 rounded shadow">
-								Profile {i + 1}
-							</div>
-						))}
-					</div> */}
 					<MainContent />
 				</div>
 				{activePopup && (
 					<FilterPopup
 						activePopup={activePopup}
+						getCategoryDisplayName={getCategoryDisplayName}
 						filteredOptions={filteredOptions}
 						selectedFilters={selectedFilters}
 						handleFilterSelect={handleFilterSelect}

@@ -2,23 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
 import { getQueryParams } from '../../utils/utils';
 
-// Fetch all match profiles
-export const getMatchProfile = createAsyncThunk('data/getMatchProfile', async (_, { rejectWithValue }) => {
-	// console.log("url - ", `/user/matched-profile`);
-	try {
-		const response = await apiClient.get(`/user/matched-profile`);
-		// console.log("getMatchProfile - ", response.data);
-		return response.data;
-	} catch (error) {
-		console.log(error);
-		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
-	}
-});
-
 export const getUserDetailsById = createAsyncThunk('data/getUserDetailsById', async (id, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/user/matched-profile/${id}`);
-		// console.log("getUserDetailsById - ", response.data);
+		console.log(response);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -36,73 +23,54 @@ export const matchedProfileGallery = createAsyncThunk('data/getUserDetailsById',
 });
 
 // Fetch filtered match profiles
-export const matchProfileFilter = createAsyncThunk('data/matchProfileFilter', async (filterData, { rejectWithValue }) => {
-	// console.log(filterData); 
+export const getMatchedProfile = createAsyncThunk('data/getMatchedProfile', async (filterData, { rejectWithValue }) => {
 	try {
 		const queryParams = getQueryParams(filterData);
-		// console.log(`/user/auth?${queryParams}`);
-
-		const response = await apiClient.get(`/user/auth?${queryParams}`);
-		// console.log("matchProfileFilter - ", response.data);
+		console.log(queryParams);
+		const response = await apiClient.get(`/user/auth?${queryParams || ''}`);
 		return response.data;
 	} catch (error) {
 		console.log(error);
 		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
 	}
 });
-
-// Fetch filtered match profiles
-export const matchPreferredProfile = createAsyncThunk('data/matchPreferredProfile', async (filterData, { rejectWithValue }) => {
-	// console.log(filterData); 
-	try {
-		const queryParams = getQueryParams(filterData);
-		// console.log(`/user/auth?${queryParams}`);
-		const response = await apiClient.get(`/user/preferred-profile${queryParams}`);
-		// console.log("matchProfileFilter - ", response.data);
-		return response.data;
-	} catch (error) {
-		console.log(error);
-		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
-	}
-});
-
 
 // Slice definition
 const matchProfileSlice = createSlice({
 	name: 'data',
 	initialState: {
-		matchProfile: { data: [], loading: false, error: null },
+		matchedProfile: { data: [], loading: false, error: null },
 		userDetailsById: { data: [], loading: false, error: null },
-		matchPreferredProfile: { data: [], loading: false, error: null },
-		filters: {}, // Store the currently applied filters
+		filters: {},
+		noOfFilter: 0,
 		page: 1,
 	},
 	reducers: {
-		setFilters: (state, action) => {
-			state.filters = action.payload; // Update filters
-		},
-		resetFilters: (state) => {
-			state.filters = {}; // Reset filters to default
-			state.page = 1
+		setFilterApplied(state, action) {
+			state.filters = action.payload;
 		},
 		setPage(state, action) {
 			state.page = action.payload;
+		},
+		setNoOfFilter(state, action) {
+			state.noOfFilter = action.payload;
 		},
 	},
 	extraReducers: (builder) => {
 		console.log("filters - ", matchProfileSlice.filters);
 		builder
-			.addCase(getMatchProfile.pending, (state) => {
-				state.matchProfile.loading = true;
-				state.matchProfile.error = null;
+			// matchProfileFilter
+			.addCase(getMatchedProfile.pending, (state) => {
+				// state.matchedProfile.loading = true;
+				state.matchedProfile.error = null;
 			})
-			.addCase(getMatchProfile.fulfilled, (state, action) => {
-				state.matchProfile.data = action.payload;
-				state.matchProfile.loading = false;
+			.addCase(getMatchedProfile.fulfilled, (state, action) => {
+				state.matchedProfile.data = action.payload;
+				state.matchedProfile.loading = false;
 			})
-			.addCase(getMatchProfile.rejected, (state, action) => {
-				state.matchProfile.loading = false;
-				state.matchProfile.error = action.payload || action.error.message;
+			.addCase(getMatchedProfile.rejected, (state, action) => {
+				state.matchedProfile.loading = false;
+				state.matchedProfile.error = action.payload || action.error.message;
 			})
 			// getUserDetailsById
 			.addCase(getUserDetailsById.pending, (state) => {
@@ -117,35 +85,8 @@ const matchProfileSlice = createSlice({
 				state.userDetailsById.loading = false;
 				state.userDetailsById.error = action.payload || action.error.message;
 			})
-			// matchProfileFilter
-			.addCase(matchProfileFilter.pending, (state) => {
-				// state.matchProfile.loading = true;
-				state.matchProfile.error = null;
-			})
-			.addCase(matchProfileFilter.fulfilled, (state, action) => {
-				state.matchProfile.data = action.payload;
-				state.matchProfile.loading = false;
-			})
-			.addCase(matchProfileFilter.rejected, (state, action) => {
-				state.matchProfile.loading = false;
-				state.matchProfile.error = action.payload || action.error.message;
-			})
-			// matchPreferredProfile
-			.addCase(matchPreferredProfile.pending, (state) => {
-				// state.matchProfile.loading = true;
-				state.matchProfile.error = null;
-			})
-			.addCase(matchPreferredProfile.fulfilled, (state, action) => {
-				state.matchProfile.data = action.payload;
-				state.matchProfile.loading = false;
-			})
-			.addCase(matchPreferredProfile.rejected, (state, action) => {
-				state.matchProfile.loading = false;
-				state.matchProfile.error = action.payload || action.error.message;
-			});
 	},
 });
 
-// Export actions and reducer
-export const { setFilters, resetFilters } = matchProfileSlice.actions;
+export const { setPage, setNoOfFilter, setFilterApplied } = matchProfileSlice.actions;
 export default matchProfileSlice.reducer;

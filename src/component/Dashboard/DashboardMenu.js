@@ -22,7 +22,7 @@ function DashboardMenu() {
 		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
 		{ name: 'Viewed', path: '/viewed', icon: LuView },
-		{ name: 'Viewed By You', path: '/viewed-by-you', icon: FaUsersViewfinder },
+		{ name: 'Viewed You', path: '/viewed-you', icon: FaUsersViewfinder },
 		// { name: 'Messaging', path: '/message', icon: HiOutlineMail },
 		// { name: 'Notification', path: '/notification', icon: IoIosNotificationsOutline },
 	]

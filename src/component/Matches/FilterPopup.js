@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-
+import React, { useEffect, useState } from 'react';
 
 export default function FilterPopup({
 	activePopup,
@@ -9,12 +8,16 @@ export default function FilterPopup({
 	setActivePopup,
 	searchTerm,
 	setSearchTerm,
+	getCategoryDisplayName,
 	clearCategoryFilters,
 }) {
+
+	const [ search, setSearch ] = useState(false)
 
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
 			if (event.target.id === "modal-wrapper") {
+				setSearchTerm('')
 				setActivePopup(null);
 			}
 		};
@@ -25,28 +28,25 @@ export default function FilterPopup({
 		};
 	}, []);
 
-	// useEffect(() => {
-	// 	if (typeof selectedFilters[ activePopup ] === 'object') {
-	// 		console.log("this is checkbox");
-	// 	}
-	// }, [ selectedFilters[ activePopup ] ])
-	// console.log(typeof selectedFilters[ activePopup ]);
+	useEffect(() => {
+		filteredOptions.length > 6 ? setSearch(true) : setSearch(false)
+	}, [])
 
 	return (
 		<div id="modal-wrapper" className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 			<div className="bg-white rounded-md overflow-hidden shadow-lg w-full max-w-md relative">
-				<div className='sticky top-0 bg-slate-200 px-6 pt-4 shadow'>
-					<div className="flex justify-between items-center mb-2 ">
-						<p className='text-gray-600 text-lg'>{activePopup}</p>
-						<button onClick={() => setActivePopup(null)} className='absolute text-2xl text-gray-400 hover:text-red-500 top-1 right-3'>×</button>
+				<div className={`sticky top-0 bg-slate-200 px-6 shadow ${search && 'pt-4'}`}>
+					<div className={`flex justify-between items-center mb-2 ${!search && 'py-4'}`}>
+						<p className='text-gray-700 text-lg font-medium'>{getCategoryDisplayName(activePopup)} List</p>
+						<button onClick={() => { setSearchTerm(''); setActivePopup(null); }} className='absolute text-2xl text-gray-500 hover:text-red-500 top-1 right-3'>×</button>
 					</div>
-					<input
+					{search && <input
 						type="search"
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 						placeholder="Search..."
 						className="w-full mb-4 p-2 border rounded outline-none focus:border-hotRed"
-					/>
+					/>}
 				</div>
 				<div className="px-6 py-2 min-h-[30vh] max-h-[50vh] overflow-y-auto">
 					{filteredOptions?.map((option) => (
@@ -62,13 +62,13 @@ export default function FilterPopup({
 											checked={selectedFilters[ activePopup ].includes(option._id || option)}
 											onChange={() => handleFilterSelect(activePopup, option._id || option)}
 										/>
-										<span className="ml-2 tracking-wide text-gray-700">{option?.name || option}</span>
+										<span className="ml-2 tracking-wide text-gray-700 capitalize">{option?.name || option}</span>
 									</label>
 									:
 									typeof selectedFilters[ activePopup ] === 'string' &&
 									<label
 										key={option._id || option}
-										for={option._id}
+										htmlFor={option._id}
 										className="flex items-center hover:bg-slate-100 px-4 py-2 rounded"
 									>
 										<input
@@ -77,7 +77,7 @@ export default function FilterPopup({
 											checked={selectedFilters[ activePopup ].includes(option._id || option)}
 											onChange={() => handleFilterSelect(activePopup, option._id || option)}
 										/>
-										<span className="ml-2 tracking-wide text-gray-700">{option?.name || option}</span>
+										<span className="ml-2 tracking-wide text-gray-700 capitalize">{option?.name || option}</span>
 									</label>
 							}
 						</>
@@ -91,13 +91,13 @@ export default function FilterPopup({
 						Clear
 					</button>
 					<button
-						onClick={() => setActivePopup(null)}
+						onClick={() => { setSearchTerm(''); setActivePopup(null) }}
 						className="px-4 py-1 gradient-btn text-white rounded"
 					>
 						Submit
 					</button>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 }

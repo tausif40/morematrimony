@@ -98,7 +98,7 @@ function ShortProfile({ data }) {
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><RiStackshareLine /></p>
-									<p className=''>{data?.religion} - {data?.cast} - {data?.subCaste}</p>
+									<p className=''>{data?.religion && `${data?.religion}`} {data?.cast != null && ` - ${data?.cast}`} {data?.subCaste != null && ` - ${data?.subCaste}`}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>

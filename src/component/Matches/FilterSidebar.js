@@ -1,5 +1,6 @@
 import { MdOutlineRefresh } from "react-icons/md";
 import { LuFilter } from "react-icons/lu";
+import { hinduId } from "../../data/config";
 
 export default function FilterSidebar({
 	selectedFilters,
@@ -10,8 +11,9 @@ export default function FilterSidebar({
 	removeFilter,
 	getCategoryDisplayName,
 }) {
+
 	return (
-		<div className="w-64 bg-white shadow-lg sticky top-0 h-screen overflow-y-auto">
+		<div className="w-72 bg-white shadow-lg sticky top-0 h-screen overflow-y-auto">
 			<div className="px-6 py-3 flex justify-between items-center mb-4 bg-gray-200">
 				<h4 className="text-black flex items-center gap-2"><LuFilter /> <p>Filters</p></h4>
 				<button onClick={clearAllFilters} className="	text-gray-500">
@@ -19,7 +21,16 @@ export default function FilterSidebar({
 				</button>
 			</div>
 			<div className="pl-8 pr-4">
-				{Object.entries(selectedFilters).map(([ category, selected ]) => (
+				{Object.entries(selectedFilters).filter(([ category ]) => {
+					// Logic to hide filters option
+					if (category === "basicInformationInChildren" && !selectedFilters.maritalStatus.includes("divorced", "widowed", "widower")) return false;
+					if (category === "ancestralOriginCity" && !selectedFilters.ancestralOrigin) return false;
+					if (category === "presentState" && !selectedFilters.presentCountry) return false;
+					if (category === "presentCity" && !selectedFilters.presentState) return false;
+					if (category === "caste" && !selectedFilters.religion) return false;
+					if (category === "dosh" && selectedFilters.religion !== hinduId) return false;
+					return true;
+				}).map(([ category, selected ]) => (
 					<div key={category} className="mb-4">
 						<div className="flex justify-between items-center">
 							<button
