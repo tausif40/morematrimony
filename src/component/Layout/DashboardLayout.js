@@ -40,7 +40,7 @@ function DashboardLayout() {
 	useEffect(() => {
 		dispatch(getUserDetails());
 		dispatch(getProfileImages());
-		dispatch(getMatchedProfile());
+		// dispatch(getMatchedProfile());
 	}, [ dispatch ]);
 
 	useEffect(() => {

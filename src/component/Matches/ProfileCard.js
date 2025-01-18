@@ -78,7 +78,7 @@ const ProfileCard = (userData) => {
 
 				{/* Connect Options */}
 				<div className="flex flex-col  mt-2 ">
-					<p className="text-base mt-2 font-bold text-gray-600">
+					<p className="text-base mt-2 font-bold text-gray-600">	
 						<span>{isInterestAccept ? <p>You have sent an interest to her <span className='text-sm font-light'> - {'06 Nov 24'}</span></p> : 'Interested in her?'}</span>
 					</p>
 					<div className='flex items-center gap-4 md:gap-6 mt-4'>
