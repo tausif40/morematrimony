@@ -5,6 +5,7 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsById } from "../../store/features/matchProfile-slice";
 import ShortProfileDetailsSkeleton from "../Loader/ShortProfileDetailsSkeleton";
+import { setUserAction } from "../../store/features/userAction-slice";
 
 const ProfileDetails = () => {
 	const dispatch = useDispatch()
@@ -20,8 +21,9 @@ const ProfileDetails = () => {
 	}, [ id ])
 
 	useEffect(() => {
-	}, [ loading ])
-
+		const action = { targetUserId: id, activityType: 'viewed' }
+		dispatch(setUserAction(action));
+	}, [])
 
 	const data = userDetailsById?.data?.user
 	console.log(data);
@@ -57,8 +59,6 @@ const ProfileDetails = () => {
 		lastSeen: '',
 		id: data?._id
 	}
-
-	console.log("shortProfileData - ", shortProfileData);
 
 	const profileData = {
 		introduction: data?.introduction || "_",
