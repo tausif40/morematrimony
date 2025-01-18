@@ -90,10 +90,10 @@ const ProfileCard = (userData) => {
 								</span>
 							</p>
 						)}
-						<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${IsSendInterest ? 'border-green-500 bg-green-500' : 'border-orange-500 bg-orange-500'} shadow transition-all`}
+						<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${IsSendInterest ? 'border-red-500 bg-red-500' : 'border-orange-500 bg-orange-500'} shadow transition-all`}
 							onClick={() => handelAction('send_interest')}
 						>
-							<span>{IsSendInterest ? 'Interest send' : 'Send Interest'}</span>
+							<span>{IsSendInterest ? 'Pending Interest' : 'Send Interest'}</span>
 						</p>
 					</div>
 				</div>
