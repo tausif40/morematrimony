@@ -14,7 +14,7 @@ function Reviews() {
 			>
 				<div className="flex flex-col items-center text-white">
 					<p className='text-3xl text-center font-semibold pt-[4%]'>Reviews of Members</p>
-					<img src="./assets/img/review.jpg" alt="Member" className="rounded-full mx-auto size-48 object-cover border-4 border-white mt-[4%]" />
+					<img src="/assets/img/review.jpg" alt="Member" className="rounded-full mx-auto size-48 object-cover border-4 border-white mt-[4%]" />
 					<p className='pt-14 px-2 max-w-3xl text-center text-[#ffeced]'>
 						But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was
 						born and / will give you a complete account of the system, and expound the actual teachings of

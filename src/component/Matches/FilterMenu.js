@@ -28,7 +28,7 @@ function FilterMenu() {
 	useEffect(() => {
 		// dispatch(setFilterApplied(selectedFilters));
 		const filter = { [ filterKey ]: true }
-		console.log(filter);
+		// console.log(filter);
 		dispatch(getMatchedProfile(filter));
 		// console.log("params - ", location.search);
 	}, [ dispatch, location ])
@@ -39,7 +39,7 @@ function FilterMenu() {
 				<div className='flex flex-wrap justify-center text-headingGray space-x-2 pt-4 pb-2 border-b mt-4 '>
 					{navOption.map((value, index) => (
 						<Link Link to={`/matches?${value.key}`} key={index} >
-							{console.log(value.key, "==", filterKey)}
+							{/* {console.log(value.key, "==", filterKey)} */}
 							<div className={`min-w-max tracking-wide cursor-pointer px-4 py-2 flex items-center gap-2 font-medium text-sm ${value.key == filterKey ? 'text-primary' : 'hover:text-red-500'}`} onClick={() => setFilterKey(value.key)}>{value.name}</div>
 						</Link >
 					))}

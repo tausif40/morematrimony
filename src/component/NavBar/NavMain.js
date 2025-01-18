@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { PiUsers } from "react-icons/pi";
 import { PiCurrencyDollarDuotone } from "react-icons/pi";
 import { TbMessage2Question } from "react-icons/tb";
@@ -16,10 +16,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const NavMain = () => {
 	const location = useLocation();
-	const navigate = useNavigate();
-	const [ path, setPath ] = useState('')
+	const [ currentPath, setCurrentPath ] = useState('')
 	const [ isUserRegister, setIsUserRegister ] = useState(false)
-	const [ mobileScreen, setMobileScreen ] = useState(false)
+	const [ activeNav, seActiveNav ] = useState(false)
 	const [ isOpen, setIsOpen ] = useState(false)
 	const [ showNotification, setShowNotification ] = useState(false)
 	const dropdownRef = useRef(null);
@@ -62,13 +61,14 @@ const NavMain = () => {
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
 	]
 	const navOption = [
+		{ path: '/dashboard', name: 'Dashboard', icon: AiOutlineDashboard },
 		{ path: '/matches', name: 'Matches', icon: PiUsers },
 		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
 		{ path: '/notifications', name: 'Notification', icon: IoIosNotificationsOutline },
 	]
 	const ProfileOption = [
-		{ path: '/dashboard', name: 'Dashboard', icon: AiOutlineDashboard },
+
 		{ path: '/my-profile', name: 'My Profile', icon: FaRegUser },
 		{ path: '/help', name: 'Help', icon: IoIosHelpCircleOutline },
 	]
@@ -106,12 +106,13 @@ const NavMain = () => {
 
 	useEffect(() => {
 		const pathName = location.pathname
-		setPath(pathName)
-		// console.log('pathName: ', pathName);
-		// console.log(token);
+		setCurrentPath(pathName)
+		// console.log('pathName: ', pathName.startsWith('/dashboard'));
 		token ? setIsUserRegister(true) : setIsUserRegister(false)
 
 	}, [ location, token ]);
+
+	// console.log("activeNav-", activeNav);
 
 	return (
 		<>
@@ -130,47 +131,24 @@ const NavMain = () => {
 					<div className="nav-option py-2 lg:py-0 w-auto flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 text-sm">
 
 						<div className='hidden md:block'>
-							<div className='flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 text-sm'>
+							<div className='flex items-center gap-2 sm:gap-4 md:gap-3 min-[900px]:gap-6 lg:gap-10 text-sm'>
 								{isUserRegister
 									? navOption.map((value, inx) => (
-										<Link to={value.path} key={inx}>
-											<div className={`text-md px-2 cursor-pointer ${path == value.path ? 'text-gradient' : 'text-headingGray'} flex items-center gap-1`}>
-												<value.icon className={`${value.path == path && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+										<NavLink to={value.path} key={inx} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`}`}>
+											<div className={`text-md px-2 cursor-pointer flex items-center gap-1`}>
+												<value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
 											</div>
-										</Link>
+										</NavLink>
 									))
 									: VisitorNav.map((value, inx) => (
-										<Link to={value.path} key={inx}>
-											<div className={`text-md px-2 cursor-pointer ${path == value.path ? 'text-gradient' : 'text-headingGray'} flex items-center gap-1`}>
-												<value.icon className={`${value.path == path && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+										<NavLink to={value.path} key={inx} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`}`}>
+											<div className={`text-md px-2 cursor-pointer flex items-center gap-1`}>
+												<value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
 											</div>
-										</Link>
+										</NavLink>
 									))
 								}
-
-								{/* <Link to={'/matches'}>
-							<div className={`text-gradient text-md px-4 cursor-pointer ${path == '/matches' && 'activeBtn'} flex items-center gap-1`}>
-								<PiUsers size={20} color='#f45d2c' /><p className='min-w-max text-sm'>Matches</p>
 							</div>
-						</Link>
-
-						<div className={`text-gradient text-base px-4 cursor-pointer ${'plans' == path && 'active'} flex items-center gap-1`}
-							onClick={() => handleScroll('plans')}>
-							<PiCurrencyDollarDuotone size={18} color='#f45d2c' /><p className='min-w-max text-sm'>Plans</p>
-						</div>
-
-						<div to={'/contact-us'} className={`text-gradient text-base px-4 cursor-pointer ${path == '/contact-us' && 'active'} flex items-center gap-1`}
-							onClick={() => handleScroll('contactPage')}
-						>
-							<TbMessage2Question size={20} color='#f45d2c' /><p className='min-w-max text-sm'>Contact</p>
-						</div>
-						 */}
-								{/* <Link to={'/notifications'}> */}
-								{/* <div div className={`text-headingGray text-md px-2 cursor-pointer flex items-center gap-1`} onClick={() => setShowNotification(!showNotification)}>
-									<IoIosNotificationsOutline size={20} color='#6d6e6f' /><p className='min-w-max text-sm'>Notifications</p>
-								</div> */}
-							</div>
-							{/* </Link> */}
 						</div>
 
 						<div className='text-sm font-medium text-text flex items-center gap-4 md:gap-0'>
@@ -184,14 +162,19 @@ const NavMain = () => {
 											aria-expanded={isOpen}
 										>
 											{/* <img src={dpImage || "/assets/img/img0.png"} alt="" className='w-16 h-16 object-contain rounded-full border' /> */}
-											<img src={dpImage || `./assets/img/avatar-place.png`} alt="" className='w-8 h-8 ring-1 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200' style={{ objectPosition: 'center 10%' }} />
+											<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='min-w-8 h-8 ring-1 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200' style={{ objectPosition: 'center 10%' }} />
 										</button>
 
 									</div>
 								</>
-								: <Link to={'/register'}>
-									<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
-								</Link>
+								: <>
+									{currentPath == '/register' && <Link to={'/'}>
+										<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Login</p></button>
+									</Link>}
+									{currentPath == '/' && <Link to={'/register'}>
+										<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
+									</Link>}
+								</>
 							}
 						</div>
 
@@ -204,16 +187,16 @@ const NavMain = () => {
 
 							{deviceType === 'Mobile'
 								? MobileProfileOption.map((value, ind) => (
-									<Link to={value.path} key={ind} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
+									<NavLink to={value.path} key={ind} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`} text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center`}
 										onClick={() => setIsOpen(false)}>
-										<value.icon className={`${value.path == path && 'text-[#6d6e6f]'}`} /><p className='min-w-max'>{value.name}</p>
-									</Link>
+										<value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+									</NavLink>
 								))
 								: ProfileOption.map((value, ind) => (
-									<Link to={value.path} key={ind} className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center "
+									<NavLink to={value.path} key={ind} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`} text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center`}
 										onClick={() => setIsOpen(false)}>
-										<value.icon className={`${value.path == path && 'text-[#6d6e6f]'}`} /><p className='min-w-max'>{value.name}</p>
-									</Link>
+										<value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+									</NavLink>
 								))}
 							<p className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center cursor-pointer"
 								onClick={handelLogOut}>

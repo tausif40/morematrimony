@@ -8,7 +8,7 @@ function PremiumPlans() {
 
 					<div className="bg-white p-6 inline-block text-[#6d6e6f] rounded-md w-full">
 						<div>
-							<img src="./assets/img/searchingPartner.jpg" alt="img" className='m-auto' />
+							<img src="/assets/img/searchingPartner.jpg" alt="img" className='m-auto' />
 						</div>
 						<h3 className="text-2xl font-semibold text-headingGray mt-6 ">Default</h3>
 						<p className="mt-4 flex"> <p className='text-green-500'> ✓&nbsp;&nbsp; </p> 5 Express Interests</p>

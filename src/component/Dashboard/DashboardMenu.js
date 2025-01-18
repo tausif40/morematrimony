@@ -9,6 +9,7 @@ import { FaPeopleArrows } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { LuView } from "react-icons/lu";
 import { FaUsersViewfinder } from "react-icons/fa6";
+import { PiClockUser } from "react-icons/pi";
 
 
 function DashboardMenu() {
@@ -18,13 +19,13 @@ function DashboardMenu() {
 	const navOption = [
 		{ name: 'Dashboard', path: '/dashboard', icon: AiOutlineDashboard },
 		// { name: 'Matches', path: '/matches', icon: FaPeopleArrows },
-		{ name: 'My Profile', path: '/profile-setting', icon: AiOutlineUser },
-		{ name: 'My Interest', path: '/my-interest', icon: IoMdHeartEmpty },
-		{ name: 'Shortlist', path: '/shortlist', icon: IoListOutline },
-		{ name: 'Viewed', path: '/viewed', icon: LuView },
-		{ name: 'Viewed You', path: '/viewed-you', icon: FaUsersViewfinder },
+		{ name: 'My Profile', path: '/dashboard/profile-setting', icon: AiOutlineUser },
+		{ name: 'My Interest', path: '/dashboard/my-interest', icon: IoMdHeartEmpty },
+		{ name: 'Shortlist', path: '/dashboard/shortlist', icon: IoListOutline },
+		{ name: 'Request', path: '/dashboard/request', icon: PiClockUser },
+		{ name: 'Viewed', path: '/dashboard/viewed', icon: LuView },
+		{ name: 'Viewed You', path: '/dashboard/viewed-you', icon: FaUsersViewfinder },
 		// { name: 'Messaging', path: '/message', icon: HiOutlineMail },
-		// { name: 'Notification', path: '/notification', icon: IoIosNotificationsOutline },
 	]
 
 	// useEffect(() => {

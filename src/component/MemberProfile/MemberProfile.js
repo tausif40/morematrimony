@@ -9,7 +9,7 @@ function MemberProfile() {
 
 	const userDetails = useSelector((state) => state.userDetails.userDetails);
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
-	const name = userDetails?.data?.user?.basicInformation?.firstName + " " +userDetails?.data?.user?.basicInformation?.lastName
+	const name = userDetails?.data?.user?.basicInformation?.firstName + " " + userDetails?.data?.user?.basicInformation?.lastName
 	const dob = userDetails?.data?.user?.basicInformation.dateOfBirth
 	const age = Math.floor((new Date() - new Date(dob)) / (1000 * 60 * 60 * 24 * 365.25))
 	const id = userDetails?.data?.user?._id
@@ -35,7 +35,7 @@ function MemberProfile() {
 									<p className='py-4'>Age : {age || '_'} yrs</p>
 								</div>
 								<div className='absolute object-cover right-0 top-0 pt-8 sm:pt-3 '>
-									<img src={dpImage || `./assets/img/avatar-place.png`} alt="" className='w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-full shadow-lg bg-gray-50 border-4 border-white' style={{ objectPosition: 'center 20%' }} />
+									<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-full shadow-lg bg-gray-50 border-4 border-white' style={{ objectPosition: 'center 20%' }} />
 								</div>
 							</div>
 

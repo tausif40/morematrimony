@@ -69,7 +69,7 @@ function PhotoGallery() {
 										disabled={DpImage.loading}
 									>
 										{/* <TbUpload size={22} /> */}
-										<img src="./assets/img/setProfile.png" alt="" className='w-6' />
+										<img src="/assets/img/setProfile.png" alt="" className='w-6' />
 									</button>
 									<button
 										onClick={() => handelDeleteImage(data.agentId)}
@@ -80,7 +80,7 @@ function PhotoGallery() {
 								</div>
 							</div>
 						))}
-						{!profileImages?.loading && images?.length === 0 && <img src="./assets/img/noImage.jpg" alt="" className='h-full' />}
+						{!profileImages?.loading && images?.length === 0 && <img src="/assets/img/noImage.jpg" alt="" className='h-full' />}
 					</div>
 				</Gallery>
 			</div>

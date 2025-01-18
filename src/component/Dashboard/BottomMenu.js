@@ -19,22 +19,22 @@ const BottomMenu = ({ onMenuClick }) => {
 						</div>
 					</Link>
 
-					<Link to='/my-interest'>
+					<Link to='/dashboard/my-interest'>
 						<div className='flex flex-col items-center gap-1'>
-							<IoMdHeartEmpty size={18} className={`${currentPath == '/my-interest' && 'text-[#f45d2c]'}`} />
-							<p className={`${currentPath == '/my-interest' && 'text-gradient'}`}>My Interest</p>
+							<IoMdHeartEmpty size={18} className={`${currentPath == '/dashboard/my-interest' && 'text-[#f45d2c]'}`} />
+							<p className={`${currentPath == '/dashboard/my-interest' && 'text-gradient'}`}>My Interest</p>
 						</div>
 					</Link>
 
-					<Link to='/notification'>
+					<Link to='/dashboard/notification'>
 						<div className='flex flex-col items-center gap-1'>
-							<IoIosNotificationsOutline size={20} className={`${currentPath == '/notification' && 'text-[#f45d2c]'}`} />
-							<p className={`${currentPath == '/notification' && 'text-gradient'}`}>Notification</p>
+							<IoIosNotificationsOutline size={20} className={`${currentPath == '/dashboard/notification' && 'text-[#f45d2c]'}`} />
+							<p className={`${currentPath == '/dashboard/notification' && 'text-gradient'}`}>Notification</p>
 						</div>
 					</Link>
 					{/* <Link to='/profile'> */}
 					<div className='flex flex-col items-center gap-1 cursor-pointer' onClick={onMenuClick}>
-						<img src="./assets/img/avatar-place.png" alt="" className='rounded-full w-5' />
+						<img src="/assets/img/avatar-place.png" alt="" className='rounded-full w-5' />
 						<p>Account</p>
 					</div>
 					{/* </Link> */}

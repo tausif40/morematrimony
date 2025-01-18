@@ -37,19 +37,21 @@ const LoginForm = () => {
 
 		try {
 			setIsLoading(true);
-			const result = await dispatch(loginUser({ email, password }));
+			const response = await dispatch(loginUser({ email, password }));
 
-			if (loginUser.fulfilled.match(result)) {
-				const tokens = result?.payload?.tokens;
+			if (loginUser.fulfilled.match(response)) {
+				console.log(response);
+				const tokens = response?.payload?.tokens;
 				console.log(tokens);
 				Cookies.set('access_token', tokens.access.token);
 				Cookies.set('refresh_token', tokens.refresh.token);
+				// Cookies.set('userId', tokens.refresh.token);
 
 				// toast.success('Login successful!');
 				navigate('/dashboard');
 				setIsLoading(false);
 			} else {
-				const errorMessage = result.error?.message || 'Login failed. Please try again.';
+				const errorMessage = response.error?.message || 'Login failed. Please try again.';
 				console.log(errorMessage);
 				setIsLoading(false);
 			}

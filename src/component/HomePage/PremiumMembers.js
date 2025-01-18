@@ -20,7 +20,7 @@ function PremiumMembers() {
 					</div>
 					<div className='grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 mt-16 gap-4 w-full'>
 						<div className="h-72 overflow-hidden relative">
-							<img src="./assets/img/find.jpg" alt="" className="w-full" />
+							<img src="/assets/img/find.jpg" alt="" className="w-full" />
 							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
 								<p className="font-semibold text-white text-3xl pb-2">Search Your Life Partner </p>
@@ -28,7 +28,7 @@ function PremiumMembers() {
 							</div>
 						</div>
 						<div className="h-72 overflow-hidden relative">
-							<img src="./assets/img/destination.jpg" alt="" className="w-full" />
+							<img src="/assets/img/destination.jpg" alt="" className="w-full" />
 							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
 								<p className="font-semibold text-white text-3xl pb-2">Reach Your Destiny Quickly</p>
@@ -36,7 +36,7 @@ function PremiumMembers() {
 							</div>
 						</div>
 						<div className="h-72 overflow-hidden relative">
-							<img src="./assets/img/memory.jpg" alt="" className="w-full" />
+							<img src="/assets/img/memory.jpg" alt="" className="w-full" />
 							<div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 							<div className="absolute inset-0 flex flex-col justify-end pl-4 pb-4">
 								<p className="font-semibold text-white text-3xl pb-2">Save Your Memory</p>
@@ -69,7 +69,7 @@ function PremiumMembers() {
 								<p className='text-gradient font-medium text-xl'>Sign up</p>
 								<p className='text-text font-medium'>Register for free & put up your Profile</p>
 							</div>
-							<img src="./assets/img/login.png" alt="" className='w-20' />
+							<img src="/assets/img/login.png" alt="" className='w-20' />
 						</div>
 
 						<div className='responsive border p-4 flex justify-between items-center gap-16 w-full'>
@@ -78,7 +78,7 @@ function PremiumMembers() {
 								<p className='text-gradient font-medium text-xl'>Connect</p>
 								<p className='text-text font-medium'>Select & Connect with Matches you like</p>
 							</div>
-							<img src="./assets/img/network.png" alt="" className='w-20' />
+							<img src="/assets/img/network.png" alt="" className='w-20' />
 						</div>
 
 						<div className='responsive border p-4 flex justify-between items-center gap-16 w-full'>
@@ -87,7 +87,7 @@ function PremiumMembers() {
 								<p className='text-gradient font-medium text-xl'>Interact</p>
 								<p className='text-text font-medium'>Become a Premium Member & Start a Conversation</p>
 							</div>
-							<img src="./assets/img/conversation.png" alt="" className='w-24' />
+							<img src="/assets/img/conversation.png" alt="" className='w-24' />
 						</div>
 					</div>
 				</div>
@@ -108,15 +108,15 @@ function PremiumMembers() {
 					</div>
 					<div className='pb-20 grid grid-cols-1 lg:grid-cols-3 md:px-20 lg:px-0 mt-48 lg:mt-0 gap-4 justify-items-center w-full'>
 						<div className='text-white border flex items-center gap-2 justify-center py-12 w-full bg-black opacity-60'>
-							<img src="./assets/img/img9.png" alt="" className='size-5' />
+							<img src="/assets/img/img9.png" alt="" className='size-5' />
 							<p> Best Matches</p>
 						</div>
 						<div className='text-white border flex items-center gap-2 justify-center py-12 w-full bg-black opacity-60'>
-							<img src="./assets/img/img10.png" alt="" className='size-6' />
+							<img src="/assets/img/img10.png" alt="" className='size-6' />
 							<p> Verified Profiles</p>
 						</div>
 						<div className='text-white border flex items-center gap-2 justify-center py-12 w-full bg-black opacity-60'>
-							<img src="./assets/img/img11.png" alt="" className='size-5' />
+							<img src="/assets/img/img11.png" alt="" className='size-5' />
 							<p> 100% Privacy</p>
 						</div>
 					</div>

@@ -36,19 +36,19 @@ const App = () => {
   const dispatch = useDispatch();
   const dashboardPaths = [
     '/dashboard',
-    '/matches',
-    '/profile-setting',
-    '/my-interest',
-    '/shortlist',
-    '/viewed',
-    '/viewed-by-you',
-    '/message',
-    '/ignored-list',
-    '/notification',
-    '/change-password',
-    '/gallery',
-    '/deactivate-account',
-    '/delete-account'
+    '/dashboard/matches',
+    '/dashboard/profile-setting',
+    '/dashboard/my-interest',
+    '/dashboard/shortlist',
+    '/dashboard/viewed',
+    '/dashboard/viewed-you',
+    '/dashboard/request',
+    '/dashboard/ignored-list',
+    '/dashboard/notification',
+    '/dashboard/change-password',
+    '/dashboard/gallery',
+    '/dashboard/deactivate-account',
+    '/dashboard/delete-account'
   ];
 
   // document.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -65,7 +65,6 @@ const App = () => {
     dispatch(fetchIndianState());
     dispatch(getUserDetails());
     dispatch(getProfileImages());
-    dispatch(getMatchedProfile({ isMatchedView: true }));
     dispatch(fetchEducation());
     dispatch(fetchOccupations());
     dispatch(fetchReligions());

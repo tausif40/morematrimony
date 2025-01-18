@@ -7,18 +7,19 @@ import BottomMenu from '../Dashboard/BottomMenu';
 import SideMenu from '../Dashboard/SideMenu';
 import MyProfilePage from '../MyProfile/MyProfilePage';
 import PageNotFound2 from '../PageNotFound/PageNotFound2';
-import MyInterest from '../MyInterest/MyInterest';
-import ShortList from '../ShortList/ShortList';
+import MyInterest from '../Dashboard/MyInterest/MyInterest';
+import ShortList from '../Dashboard/ShortList/ShortList';
+import Request from '../Dashboard/Request/Request';
 import Chat from '../Chat/Chat';
 import IgnoreList from '../IgnoreList/IgnoreList';
 import VerificationForm from '../Form/VerificationForm';
 import ChangePassword from '../Form/ChangePassword';
 import Gallery from '../Gallery/Gallery';
-import Viewed from '../Viewed/Viewed';
-import ViewedByYou from '../ViewedByYou/ViewedByYou';
+import Viewed from '../Dashboard/Viewed/Viewed';
 import { getProfileImages, getUserDetails } from '../../store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
 import { getMatchedProfile, getMatchProfile } from '../../store/features/matchProfile-slice';
+import ViewedYou from '../Dashboard/ViewedYou/ViewedYou';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -61,23 +62,25 @@ function DashboardLayout() {
 		switch (currentPath) {
 			case '/dashboard':
 				return <Dashboard />;
-			case '/gallery':
+			case '/dashboard/gallery':
 				return <Gallery />;
-			case '/profile-setting':
+			case '/dashboard/profile-setting':
 				return <MyProfilePage />;
-			case '/my-interest':
+			case '/dashboard/my-interest':
 				return <MyInterest />;
-			case '/shortlist':
+			case '/dashboard/shortlist':
 				return <ShortList />;
-			case '/viewed':
+			case '/dashboard/viewed':
 				return <Viewed />;
-			case '/viewed-by-you':
-				return <ViewedByYou />;
-			case '/message':
+			case '/dashboard/request':
+				return <Request />;
+			case '/dashboard/viewed-you':
+				return <ViewedYou />;
+			case '/dashboard/message':
 				return <Chat />;
-			case '/ignored-list':
+			case '/dashboard/ignored-list':
 				return <IgnoreList />;
-			case '/change-password':
+			case '/dashboard/change-password':
 				return <ChangePassword />;
 			default:
 				return <PageNotFound2 />;
@@ -96,7 +99,7 @@ function DashboardLayout() {
 				</div>
 
 				<div className="container flex justify-between gap-8 py-10 ">
-					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[792px]">
+					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[832px]">
 						<ProfileOption />
 					</div>
 

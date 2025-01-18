@@ -24,7 +24,7 @@ function ShortProfile({ data }) {
 	// 		behavior: 'instant'
 	// 	});
 	// }, []);
-	// console.log(data);
+	console.log(data);
 
 	const handelShortlist = () => setShortlist((prev) => !prev);
 	const handelInterest = () => setIsInterestAccept((prev) => !prev);
@@ -97,7 +97,7 @@ function ShortProfile({ data }) {
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><RiStackshareLine /></p>
-									<p className=''>{data?.religion && `${data?.religion}`} {data?.cast != null && ` - ${data?.cast}`} {data?.subCaste != null && ` - ${data?.subCaste}`}</p>
+									<p className=''>{data?.religion && `${data?.religion}`} {data?.cast == "" ? '' : ` - ${data?.cast}`} {data?.subCaste != "" && ` - ${data?.subCaste}`}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>

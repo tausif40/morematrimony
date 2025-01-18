@@ -40,9 +40,9 @@ function Dashboard() {
 						<div className='border w-full m-auto flex flex-col items-center pb-8 rounded-md shadow-sm'>
 							{
 								verified ?
-									<img src="./assets/img/verified.png" alt="non_verified" className='w-auto pt-8' />
+									<img src="/assets/img/verified.png" alt="non_verified" className='w-auto pt-8' />
 									: <>
-										<img src="./assets/img/non_verified.png" alt="non_verified" className='w-auto' />
+										<img src="/assets/img/non_verified.png" alt="non_verified" className='w-auto' />
 										<button className='gradient-btn text-white px-4 py-2 rounded-md' onClick={() => setShowVerification(true)}>Verify Now</button>
 									</>
 							}

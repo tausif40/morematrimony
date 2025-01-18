@@ -28,7 +28,7 @@ function Header() {
 						<p><CiBellOn size={18} /></p>
 						<CiMail size={18} />
 						<div className='flex items-center'>
-							<img src="./assets/img/avatar-place.png" alt="" className='w-6 mr-2 rounded-full' />
+							<img src="/assets/img/avatar-place.png" alt="" className='w-6 mr-2 rounded-full' />
 							<p className='font-semibold flex items-center' >Hi, &nbsp;<p className='text-gradient' style={{ fontSize: "14px", padding: 0 }}>
 								User Name</p></p>
 						</div>

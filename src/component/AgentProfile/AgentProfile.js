@@ -104,7 +104,7 @@ const CreativeProfilePage = () => {
 				<div className="relative z-10">
 					<div className="flex items-center mt-6 gap-8">
 						<div className="relative mb-4">
-							<img src={dpImage || `./assets/img/avatar-place.png`} alt="" className='w-32 h-32 ring-2 ring-offset-2 object-cover rounded-full bg-gray-200' style={{ objectPosition: 'center 10%' }} />
+							<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='w-32 h-32 ring-2 ring-offset-2 object-cover rounded-full bg-gray-200' style={{ objectPosition: 'center 10%' }} />
 							{/* <UserCircle className="w-32 h-32 text-white bg-gray-300 rounded-full p-2" /> */}
 						</div>
 						<h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">

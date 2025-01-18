@@ -26,7 +26,7 @@ export const matchedProfileGallery = createAsyncThunk('data/getUserDetailsById',
 export const getMatchedProfile = createAsyncThunk('data/getMatchedProfile', async (filterData, { rejectWithValue }) => {
 	try {
 		const queryParams = getQueryParams(filterData);
-		console.log(queryParams);
+		// console.log(queryParams);
 		const response = await apiClient.get(`/user/auth?${queryParams || ''}`);
 		return response.data;
 	} catch (error) {

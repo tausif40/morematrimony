@@ -36,6 +36,7 @@ const userDataSlice = createSlice({
 	initialState: {
 		agentDetails: { data: [], loading: false, error: null },
 		userDetails: { data: [], loading: false, error: null },
+		userId: null,
 		profileImages: { data: [], loading: false, error: null },
 		dpImage: { img: null, loading: false, error: null },
 	},
@@ -61,6 +62,7 @@ const userDataSlice = createSlice({
 				state.userDetails.error = true
 			})
 			.addCase(getUserDetails.fulfilled, (state, action) => {
+				state.userId = action.payload?.user?._id;
 				state.userDetails.data = action.payload;
 				state.dpImage.img = action?.payload?.user?.profileImage;
 				state.userDetails.loading = false;

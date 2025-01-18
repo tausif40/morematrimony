@@ -1,13 +1,45 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
 
-export const setUserAction = createAsyncThunk('action', async (data, { rejectWithValue }) => {
+export const setUserAction = createAsyncThunk('action/setUserAction', async (data, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.post(`/social-action`, data);
+		console.log({ activityType: data.activityType, data: response.data });
+		// getUserAction(data.activityType);
 		return response.data;
 	} catch (error) {
 		console.log(error);
-		return rejectWithValue(error.response?.data || 'Failed to send request');
+		return rejectWithValue(error?.response?.data || 'Failed to send request');
+	}
+});
+export const getUserAction = createAsyncThunk('action/getUserAction', async (activityType, { rejectWithValue }) => {
+	try {
+		const response = await apiClient.get(`/social-action/query?activityType=${activityType}`);
+		// console.log("getUserAction response - ", { activityType, data: response.data });
+		return { activityType, data: response.data };
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(error?.response?.data || 'Failed to send request');
+	}
+});
+export const getReceivedInterest = createAsyncThunk('action/getReceivedInterest', async (userId, { rejectWithValue }) => {
+	try {
+		const response = await apiClient.get(`/social-action/received-interest-profiles?userId=${userId}`);
+		// console.log("getUserAction response - ", { activityType, data: response.data });
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(error?.response?.data || 'Failed to send request');
+	}
+});
+export const getViewedYou = createAsyncThunk('action/getViewedYou', async (userId, { rejectWithValue }) => {
+	try {
+		const response = await apiClient.get(`/social-action/viewed-you?userId=${userId}`);
+		// console.log("getUserAction response - ", { activityType, data: response.data });
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(error?.response?.data || 'Failed to send request');
 	}
 });
 
@@ -15,25 +47,65 @@ export const setUserAction = createAsyncThunk('action', async (data, { rejectWit
 const userAction = createSlice({
 	name: 'action',
 	initialState: {
-		sendInterest: { data: [], loading: false, error: null },
+		send_interest: { data: [], loading: false, error: null },
 		shortlist: { data: [], loading: false, error: null },
+		receivedInterest: { data: [], loading: false, error: null },
 		viewed: { data: [], loading: false, error: null },
+		viewedYou: { data: [], loading: false, error: null },
+		accept: { data: [], loading: false, error: null },
+		skip: { data: [], loading: false, error: null },
 	},
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			// sendInterest
-			.addCase(setUserAction.pending, (state) => {
-				state.sendInterest.loading = true;
-				state.sendInterest.error = null;
+			// Handle getUserAction
+			.addCase(getUserAction.pending, (state, action) => {
+				const { activityType } = action.meta.arg;
+				if (state[ activityType ]) {
+					state[ activityType ].loading = true;
+					state[ activityType ].error = null;
+				}
 			})
-			.addCase(setUserAction.fulfilled, (state, action) => {
-				state.sendInterest.data = action.payload;
-				state.sendInterest.loading = false;
+			.addCase(getUserAction.fulfilled, (state, action) => {
+				// console.log(action.payload);
+				const { activityType, data } = action.payload;
+				if (state[ activityType ]) {
+					state[ activityType ].data = data;
+					state[ activityType ].loading = false;
+				}
 			})
-			.addCase(setUserAction.rejected, (state, action) => {
-				state.sendInterest.loading = false;
-				state.sendInterest.error = action.payload || action.error.message;
+			.addCase(getUserAction.rejected, (state, action) => {
+				const { activityType } = action.meta.arg;
+				if (state[ activityType ]) {
+					state[ activityType ].loading = false;
+					state[ activityType ].error = action.payload || action.error.message;
+				}
+			})
+
+			.addCase(getReceivedInterest.pending, (state) => {
+				state.receivedInterest.loading = true
+				state.receivedInterest.error = true
+			})
+			.addCase(getReceivedInterest.fulfilled, (state, action) => {
+				state.receivedInterest.data = action.payload;
+				state.receivedInterest.loading = false;
+			})
+			.addCase(getReceivedInterest.rejected, (state, action) => {
+				state.receivedInterest.loading = false;
+				state.receivedInterest.error = action.payload || action.error.message;
+			})
+
+			.addCase(getViewedYou.pending, (state) => {
+				state.viewedYou.loading = true
+				state.viewedYou.error = true
+			})
+			.addCase(getViewedYou.fulfilled, (state, action) => {
+				state.viewedYou.data = action.payload;
+				state.viewedYou.loading = false;
+			})
+			.addCase(getViewedYou.rejected, (state, action) => {
+				state.viewedYou.loading = false;
+				state.viewedYou.error = action.payload || action.error.message;
 			})
 	},
 });
