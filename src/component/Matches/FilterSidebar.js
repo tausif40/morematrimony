@@ -29,6 +29,7 @@ export default function FilterSidebar({
 					if (category === "presentCity" && !selectedFilters.presentState) return false;
 					if (category === "caste" && !selectedFilters.religion) return false;
 					if (category === "dosh" && selectedFilters.religion !== hinduId) return false;
+					if (category === "isMatchedView") return false;
 					return true;
 				}).map(([ category, selected ]) => (
 					<div key={category} className="mb-4">

@@ -45,6 +45,7 @@ export default function MatchesList() {
 		religion: '',
 		caste: [],
 		dosh: '',
+		isMatchedView: true
 	});
 
 	// Filter options
@@ -85,7 +86,7 @@ export default function MatchesList() {
 	};
 
 	useEffect(() => {
-		dispatch(setFilterApplied(selectedFilters));
+		dispatch(setFilterApplied({ ...selectedFilters, isMatchedView: false }));
 		if (!clearFilter) dispatch(getMatchedProfile(selectedFilters));
 		// console.log("clearFilter - ", clearFilter);
 	}, [ dispatch, selectedFilters ])

@@ -18,9 +18,9 @@ const mapShortlist = (profiles) => {
 			gender: targetUserId?.basicInformation?.gender,
 			age: targetUserId?.basicInformation?.dateOfBirth
 				? Math.floor((new Date() - new Date(targetUserId?.basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25)) : '',
-			religion: targetUserId?.spiritualAndSocialBackground?.religion[ 0 ]?.name,
-			location: targetUserId?.profile?.career?.jobLocation,
-			motherTongue: targetUserId?.basicInformation?.language?.motherTongue,
+			religion: targetUserId?.spiritualAndSocialBackground?.religion?.name,
+			location: targetUserId?.presentAddress?.country?.name,
+			occupation: targetUserId?.career?.occupation?.occupationName,
 		};
 	});
 };
@@ -41,7 +41,7 @@ const ShortList = () => {
 		setShortListData(profiles)
 	}, [ profiles ])
 
-	console.log("shortlist Data - ",shortlistData);
+	console.log("shortlist Data - ", shortlistData);
 
 	const [ updatedData, setUpdatedData ] = useState({});
 
@@ -68,7 +68,7 @@ const ShortList = () => {
 								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
 								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Religion</th>
 								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Mother Tongue</th>
+								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Occupation</th>
 								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
 								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</th>
 							</tr>
@@ -88,15 +88,15 @@ const ShortList = () => {
 										</Link>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-center">{getUpdatedValue(value.id, 'age')}</td>
-									<td className="px-6 py-4 whitespace-nowrap text-center">{getUpdatedValue(value.id, 'religion')}</td>
-									<td className="px-6 py-4 whitespace-nowrap text-center">{getUpdatedValue(value.id, 'location')}</td>
-									<td className="px-6 py-4 whitespace-nowrap text-center">{getUpdatedValue(value.id, 'motherTongue')}</td>
+									<td className="px-6 py-4 whitespace-nowrap text-start">{getUpdatedValue(value.id, 'religion')}</td>
+									<td className="px-6 py-4 whitespace-nowrap text-start">{getUpdatedValue(value.id, 'location')}</td>
+									<td className="px-6 py-4 whitespace-nowrap text-start">{getUpdatedValue(value.id, 'occupation')}</td>
 									<td className="px-6 py-4 whitespace-nowrap text-center">
 										<span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${value.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-500'}`}>
 											{value.status}
 										</span>
 									</td>
-									<td className="px-6 py-4 whitespace-nowrap flex justify-center"><p><MdDeleteOutline size={24} onClick={() => deleteItem(value.id)} /></p></td>
+									<td className="px-6 py-4 whitespace-nowrap flex justify-center text-red-500"><p><MdDeleteOutline size={24} onClick={() => deleteItem(value.id)} /></p></td>
 								</tr>
 							))}
 						</tbody>
