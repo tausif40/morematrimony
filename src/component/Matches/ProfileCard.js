@@ -14,8 +14,8 @@ const ProfileCard = (userData) => {
 	const { fistName, lastName, gender, id, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img, status
 	} = userData;
 	const [ isInterestAccept, setIsInterestAccept ] = useState(false);
-	const [ IsSendInterest, setIsSendInterest ] = useState(status.isInterestSent);
-	const [ isShortlist, setIsShortlist ] = useState(status.isShortlisted);
+	const [ IsSendInterest, setIsSendInterest ] = useState(false);
+	const [ isShortlist, setIsShortlist ] = useState(false);
 	const [ newUser, setNewUser ] = useState(false);
 
 	const handelAction = (actionType) => {
@@ -24,6 +24,12 @@ const ProfileCard = (userData) => {
 		actionType == 'shortlist' && setIsShortlist(true)
 		dispatch(setUserAction(action));
 	};
+
+	useEffect(() => {
+		status?.isInterestSent == true ? setIsSendInterest(true) : setIsSendInterest(false)
+		status?.isShortlisted == true ? setIsShortlist(true) : setIsShortlist(false)
+		console.log("status int - ", status?.isInterestSent, '\n IsSendInterest = ', IsSendInterest);
+	}, [])
 
 	useEffect(() => {
 		const accountDate = new Date(accountCreate);
@@ -35,6 +41,7 @@ const ProfileCard = (userData) => {
 			setNewUser(true);
 		}
 	}, [ accountCreate ]);
+
 
 	return (
 		<div className="rounded-lg hover:shadow-lg shadow p-3 md:p-4 mb-6 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 bg-white">
@@ -78,7 +85,7 @@ const ProfileCard = (userData) => {
 
 				{/* Connect Options */}
 				<div className="flex flex-col  mt-2 ">
-					<p className="text-base mt-2 font-bold text-gray-600">	
+					<p className="text-base mt-2 font-bold text-gray-600">
 						<span>{isInterestAccept ? <p>You have sent an interest to her <span className='text-sm font-light'> - {'06 Nov 24'}</span></p> : 'Interested in her?'}</span>
 					</p>
 					<div className='flex items-center gap-4 md:gap-6 mt-4'>

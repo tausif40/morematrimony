@@ -20,7 +20,7 @@ const MainContent = () => {
 		// console.log("matched loading - ", matchedProfile?.data?.user?.profilesWithStatus?.length);
 	}, [ dispatch, matchedProfile ])
 
-	console.log("matched Profile - ", matchedProfile);
+	console.log("matched Profile - ", matchedProfile?.data?.user?.profilesWithStatus);
 
 	const mapProfiles = (profiles) => {
 		return profiles?.map((profile) => {

@@ -19,8 +19,8 @@ function FilterMenu() {
 		{ name: ' Divorced, Widow', path: ' divorced', key: 'preferredDivorcedAndWidower' },
 		{ name: 'Preferred Education', path: 'preferred-education', key: 'preferredEducation' },
 		{ name: 'Preferred Profession', path: 'proffered-profession', key: 'preferredProfession' },
-		{ name: 'Viewed You', path: 'viewed-you', key: 'c' },
-		{ name: 'My Interest', path: 'my-interest', key: 'e' },
+		// { name: 'Viewed You', path: 'viewed-you', key: 'c' },
+		// { name: 'My Interest', path: 'my-interest', key: 'e' },
 		// { name: 'Hobby Matches', path: 'hobby-matches', key:'' },
 		// { name: 'Others Created Matches', path: 'others-created-matches', key:'' },
 	]

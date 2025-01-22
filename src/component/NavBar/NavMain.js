@@ -26,13 +26,13 @@ const NavMain = () => {
 	const token = Cookies.get('access_token');
 	const handleLogout = useLogout();
 
-	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
+	const dpImage = useSelector((state) => state.userDetails.dpImage.img); 
 
 	const handelLogOut = () => {
 		const res = handleLogout();
-		// console.log(res);
 		setIsOpen(false);
 	}
+	// console.log(dpImage);
 	// console.log(handleLogout);
 	// const [ isVisible, setIsVisible ] = useState(true)
 	// const [ lastScrollY, setLastScrollY ] = useState(0)
@@ -168,12 +168,14 @@ const NavMain = () => {
 									</div>
 								</>
 								: <>
-									{currentPath == '/register' && <Link to={'/'}>
-										<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Login</p></button>
-									</Link>}
-									{currentPath == '/' && <Link to={'/register'}>
-										<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
-									</Link>}
+									{currentPath == '/register'
+										? <Link to={'/'}>
+											<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Login</p></button>
+										</Link>
+										: <Link to={'/register'}>
+											<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
+										</Link>
+									}
 								</>
 							}
 						</div>
