@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { getReceivedInterest, getUserAction } from '../../../store/features/userAction-slice';
+import { acceptSkipInterest, getReceivedInterest, getUserAction } from '../../../store/features/userAction-slice';
 import male from '../../../img/male.png'
 import female from '../../../img/female.png'
 import { Link } from 'react-router-dom';
@@ -12,7 +12,9 @@ const mapReceivedInterest = (profiles) => {
 	return profiles?.map((profile) => {
 		const { userDetails } = profile;
 		return {
-			userId: userDetails?.targetUserId,
+			userId: profile?.targetUserId,
+			agentId: profile?.agentId,
+			targetUserId: profile?.targetUserId,
 			profileImg: userDetails?.profileImage,
 			firstName: userDetails?.basicInformation?.firstName,
 			lastName: userDetails?.basicInformation?.lastName,
@@ -30,7 +32,7 @@ const mapReceivedInterest = (profiles) => {
 	});
 };
 
-const Request = () => {
+const ReceivedInterest = () => {
 	const dispatch = useDispatch()
 	const [ myInterestList, setMyInterestList ] = useState([])
 	const [ searchQuery, setSearchQuery ] = useState('');
@@ -38,6 +40,7 @@ const Request = () => {
 	const receivedInterest = useSelector((state) => state.userAction.receivedInterest);
 	const userId = useSelector((state) => state.userDetails.userId);
 	const isLoading = receivedInterest.loading
+	console.log(receivedInterest);
 
 	useEffect(() => {
 		dispatch(getReceivedInterest(userId));
@@ -67,6 +70,16 @@ const Request = () => {
 			profile.state?.toLowerCase().includes(searchQuery.toLowerCase())
 		);
 	}, [ myInterestList, searchQuery ]);
+
+	const handelAction = (activityType, userId, agentId, targetUserId) => {
+		const data = {
+			targetUserId: targetUserId,
+			agentIdOfTargetedUser: agentId,
+			userId: userId,
+			activityType: activityType
+		}
+		dispatch(acceptSkipInterest(data));
+	}
 
 
 	return (
@@ -98,7 +111,7 @@ const Request = () => {
 
 					{isLoading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
 						filteredProfiles?.map((profile, index) => (
-							<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-xl transition duration-300 border">
+							<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-lg transition duration-300 border">
 								<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
 									<img
 										src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
@@ -137,18 +150,23 @@ const Request = () => {
 									</div>
 								</div>
 
-								<div className="py-3 flex justify-center items-center border-t">
-									<button className="flex items-center space-x-2 px-6 py-2 border-2 border-green-400 text-green-600 rounded-full transition">
-										<span>Shortlisted</span>
+								<div className="py-3 flex justify-center gap-6 items-center border-t px-4">
+									<button className="flex items-center space-x-2 px-6 py-1 border-2 border-gray-400 text-gray-600 rounded-full transition"
+										onClick={() => handelAction("skip", profile.userId, profile?.agentId, profile.targetUserId)}>
+										<span>Skip</span>
+									</button>
+									<button className="flex items-center space-x-2 px-6 py-1  border-2 border-green-400 hover:shadow bg-green-400 text-white rounded-full transition"
+										onClick={() => handelAction("accept", profile.userId, profile?.agentId, profile.targetUserId)}>
+										<span>Accept</span>
 									</button>
 								</div>
 							</div>
 						))}
 				</div>
-				{!isLoading && filteredProfiles.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
-			</main>
-		</div>
+				{!isLoading && filteredProfiles?.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
+			</main >
+		</div >
 	);
 };
 
-export default Request;
+export default ReceivedInterest;

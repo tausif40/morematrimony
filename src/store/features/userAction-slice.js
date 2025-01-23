@@ -25,6 +25,17 @@ export const getUserAction = createAsyncThunk('action/getUserAction', async (act
 export const getReceivedInterest = createAsyncThunk('action/getReceivedInterest', async (userId, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/social-action/received-interest-profiles?userId=${userId}`);
+		console.log("getReceivedInterest ", response.data);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(error?.response?.data || 'Failed to send request');
+	}
+});
+export const acceptSkipInterest = createAsyncThunk('action/acceptSkipInterest', async (data, { rejectWithValue }) => {
+	try {
+		console.log("send data - ", data);
+		const response = await apiClient.get(`/social-action/accept-skip-profiles`, data);
 		// console.log("getUserAction response - ", { activityType, data: response.data });
 		return response.data;
 	} catch (error) {

@@ -9,7 +9,6 @@ import MyProfilePage from '../MyProfile/MyProfilePage';
 import PageNotFound2 from '../PageNotFound/PageNotFound2';
 import MyInterest from '../Dashboard/MyInterest/MyInterest';
 import ShortList from '../Dashboard/ShortList/ShortList';
-import Request from '../Dashboard/Request/Request';
 import Chat from '../Chat/Chat';
 import IgnoreList from '../IgnoreList/IgnoreList';
 import VerificationForm from '../Form/VerificationForm';
@@ -20,6 +19,7 @@ import { getProfileImages, getUserDetails } from '../../store/features/userDetai
 import { useDispatch } from 'react-redux';
 import { getMatchedProfile, getMatchProfile } from '../../store/features/matchProfile-slice';
 import ViewedYou from '../Dashboard/ViewedYou/ViewedYou';
+import ReceivedInterest from '../Dashboard/ReceivedInterest/ReceivedInterest';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -73,7 +73,7 @@ function DashboardLayout() {
 			case '/dashboard/viewed':
 				return <Viewed />;
 			case '/dashboard/received-interest':
-				return <Request />;
+				return <ReceivedInterest />;
 			case '/dashboard/viewed-you':
 				return <ViewedYou />;
 			case '/dashboard/message':
