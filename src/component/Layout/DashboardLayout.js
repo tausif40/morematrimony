@@ -72,7 +72,7 @@ function DashboardLayout() {
 				return <ShortList />;
 			case '/dashboard/viewed':
 				return <Viewed />;
-			case '/dashboard/request':
+			case '/dashboard/received-interest':
 				return <Request />;
 			case '/dashboard/viewed-you':
 				return <ViewedYou />;

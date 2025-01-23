@@ -2,108 +2,143 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAction } from '../../../store/features/userAction-slice';
-import male from '../../../img/male.png'
-import female from '../../../img/female.png'
+import male from '../../../img/male.png';
+import female from '../../../img/female.png';
 import { Link } from 'react-router-dom';
+import { Search } from 'lucide-react';
+import ActionLoader from '../../Loader/ActionLoader';
 
-const mapShortlist = (profiles) => {
+const mapShortlistData = (profiles) => {
 	return profiles?.map((profile) => {
-		const { targetUserId } = profile;
-
+		const { userDetails } = profile;
 		return {
-			id: targetUserId?._id,
-			profileImg: targetUserId?.profileImage,
-			fistName: targetUserId?.basicInformation?.firstName,
-			lastName: targetUserId?.basicInformation?.lastName,
-			gender: targetUserId?.basicInformation?.gender,
-			age: targetUserId?.basicInformation?.dateOfBirth
-				? Math.floor((new Date() - new Date(targetUserId?.basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25)) : '',
-			religion: targetUserId?.spiritualAndSocialBackground?.religion?.name,
-			location: targetUserId?.presentAddress?.country?.name,
-			occupation: targetUserId?.career?.occupation?.occupationName,
+			userId: userDetails?.targetUserId,
+			profileImg: userDetails?.profileImage,
+			firstName: userDetails?.basicInformation?.firstName,
+			lastName: userDetails?.basicInformation?.lastName,
+			gender: userDetails?.basicInformation?.gender,
+			height: { feet: userDetails?.physicalAttributes?.height?.feet, inch: userDetails?.physicalAttributes?.height?.inches },
+			age: userDetails?.basicInformation?.dateOfBirth
+				&& Math.floor((new Date() - new Date(userDetails?.basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25)),
+			religion: userDetails?.spiritualAndSocialBackground?.religion[ 0 ]?.name,
+			caste: userDetails?.spiritualAndSocialBackground?.caste[ 0 ]?.name,
+			country: userDetails?.presentAddress?.country[ 0 ]?.name,
+			state: userDetails?.presentAddress?.state[ 0 ]?.name,
+			education: userDetails?.educationalDetails?.highestEducation[ 0 ]?.name,
+			occupation: userDetails?.career?.occupation[ 0 ]?.occupationName,
 		};
 	});
 };
 
 const ShortList = () => {
-	const dispatch = useDispatch()
-	const [ shortlistData, setShortListData ] = useState([])
+	const dispatch = useDispatch();
+	const [ myInterestList, setMyInterestList ] = useState([]);
+	const [ searchQuery, setSearchQuery ] = useState('');
 
-	const shortlist = useSelector((state) => state.userAction.shortlist);
+	const shortlistData = useSelector((state) => state.userAction.shortlist);
 
 	useEffect(() => {
 		dispatch(getUserAction("shortlist"));
-	}, [ dispatch ])
+	}, [ dispatch ]);
 
-	const profiles = useMemo(() => mapShortlist(shortlist?.data?.socialAction), [ shortlist?.data?.socialAction ]);
+	console.log(shortlistData);
+	const profiles = useMemo(() => mapShortlistData(shortlistData?.data?.socialAction), [ shortlistData?.data?.socialAction ]);
 
 	useEffect(() => {
-		setShortListData(profiles)
-	}, [ profiles ])
+		setMyInterestList(profiles);
+	}, [ profiles ]);
 
-	console.log("shortlist Data - ", shortlistData);
-
-	const [ updatedData, setUpdatedData ] = useState({});
-
-	const getUpdatedValue = (id, field) => {
-		return updatedData[ id ] ? updatedData[ id ][ field ] : shortlistData.find(item => item.id === id)[ field ];
-	};
-
-	const deleteItem = (id) => {
-		const updatedData = shortlistData.filter(item => item.id !== id);
-		setShortListData(updatedData);
-	};
+	const filteredProfiles = useMemo(() => {
+		if (!searchQuery.trim()) return myInterestList;
+		return myInterestList.filter(profile =>
+			`${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.religion?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.occupation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.education?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.country?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.state?.toLowerCase().includes(searchQuery.toLowerCase())
+		);
+	}, [ myInterestList, searchQuery ]);
 
 	return (
-		<section className="box-shadow bg-white border rounded-md">
-			<p className='px-6 py-3 font-medium border-b text-headingGray'>Shortlists</p>
-			<div className='py-4 px-6 text-sm'>
-				<div className="overflow-x-auto">
-					<table className="min-w-full bg-white border border-gray-200">
-						<thead>
-							<tr className="bg-gray-100">
-								<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
-								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Religion</th>
-								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Occupation</th>
-								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-								<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</th>
-							</tr>
-						</thead>
-						<tbody>
-							{shortlistData?.map((value, index) => (
-								<tr key={value.id} className="border-b border-gray-200">
-									<td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-									<td className="px-6 py-4 whitespace-nowrap">
-										<Link to={`/matches/profile-details/${value?.id}`}>
-											<img src={value?.profileImg == undefined ? value?.gender === 'male' ? male : female : value?.profileImg} alt='img' className="h-10 w-10 rounded-full object-cover bg-gray-200" />
-										</Link>
-									</td>
-									<td className="px-6 py-4 whitespace-nowrap">
-										<Link to={`/matches/profile-details/${value?.id}`}>
-											<p>{value.fistName} {value.lastName}</p>
-										</Link>
-									</td>
-									<td className="px-6 py-4 whitespace-nowrap text-center">{getUpdatedValue(value.id, 'age')}</td>
-									<td className="px-6 py-4 whitespace-nowrap text-start">{getUpdatedValue(value.id, 'religion')}</td>
-									<td className="px-6 py-4 whitespace-nowrap text-start">{getUpdatedValue(value.id, 'location')}</td>
-									<td className="px-6 py-4 whitespace-nowrap text-start">{getUpdatedValue(value.id, 'occupation')}</td>
-									<td className="px-6 py-4 whitespace-nowrap text-center">
-										<span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${value.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-500'}`}>
-											{value.status}
-										</span>
-									</td>
-									<td className="px-6 py-4 whitespace-nowrap flex justify-center text-red-500"><p><MdDeleteOutline size={24} onClick={() => deleteItem(value.id)} /></p></td>
-								</tr>
+		<>
+			<div className="min-h-screen bg-gradient-to-br from-slate-50 to-red-50 rounded-md overflow-hidden border">
+				{/* Header */}
+				<header className="text-gray-700 shadow-md">
+					<div className="container mx-auto px-4 py-3">
+						<div className="flex justify-between items-center">
+							<h1 className="text-2xl font-semibold">My ShortList</h1>
+							<div className="flex items-center space-x-4">
+								<div className="relative">
+									<input
+										type="text"
+										placeholder="Search profiles..."
+										className="pl-10 pr-4 py-2 rounded-full bg-black/10 backdrop-blur-sm text-gray-700 placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black/30 w-96"
+										value={searchQuery}
+										onChange={(e) => setSearchQuery(e.target.value)}
+									/>
+									<Search className="absolute left-3 top-2.5 h-5 w-5 text-black/70" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				{/* Main Content */}
+				<main className="container mx-auto px-4 py-8">
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-10">
+						{shortlistData.loading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
+							filteredProfiles?.map((profile, index) => (
+								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-xl transition duration-300 border">
+									<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
+										<img
+											src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
+											alt={profile.name}
+											className="w-full h-64 object-cover"
+										/>
+									</Link>
+									<div className="px-4 pt-2 pb-4">
+										<div className="flex justify-between items-start mb-3">
+											<div>
+												<Link to={`/matches/profile-details/${profile.userId}`}>
+													<h2 className="text-2xl font-semibold text-gray-800 pb-1 hover:text-blue-800 transition">
+														{profile.firstName != undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
+													</h2>
+												</Link>
+												<p className="text-gray-600 text-sm">
+													{profile.age != undefined && `${profile.age} years • `}
+													{profile.height.feet != undefined && `${profile.height.feet} ' ${profile.height.inch}" • `}
+													<span className='capitalize'>
+														{profile.country != undefined && `${profile.country}, ${profile.state}`}
+													</span>
+												</p>
+											</div>
+										</div>
+										<div className="space-y-2">
+											<p className="text-gray-700">
+												<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
+													{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
+											</p>
+											<p className="text-gray-700">
+												<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
+											</p>
+											<p className="text-gray-700 truncate">
+												<span className="font-semibold text-sm">Education:</span> <span className='font-light capitalize'>{profile.education}</span>
+											</p>
+										</div>
+									</div>
+
+									<div className="py-3 flex justify-center items-center border-t">
+										<button className="flex items-center space-x-2 px-6 py-2 border-2 border-green-400 text-green-600 rounded-full transition">
+											<span>Shortlisted</span>
+										</button>
+									</div>
+								</div>
 							))}
-						</tbody>
-					</table>
-				</div>
+					</div>
+				</main>
 			</div>
-		</section>
+		</>
 	);
 };
 

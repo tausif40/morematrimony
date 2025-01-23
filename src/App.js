@@ -42,7 +42,7 @@ const App = () => {
     '/dashboard/shortlist',
     '/dashboard/viewed',
     '/dashboard/viewed-you',
-    '/dashboard/request',
+    '/dashboard/received-interest',
     '/dashboard/ignored-list',
     '/dashboard/notification',
     '/dashboard/change-password',

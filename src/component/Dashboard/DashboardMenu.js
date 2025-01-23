@@ -22,7 +22,7 @@ function DashboardMenu() {
 		{ name: 'My Profile', path: '/dashboard/profile-setting', icon: AiOutlineUser },
 		{ name: 'My Interest', path: '/dashboard/my-interest', icon: IoMdHeartEmpty },
 		{ name: 'Shortlist', path: '/dashboard/shortlist', icon: IoListOutline },
-		{ name: 'Request', path: '/dashboard/request', icon: PiClockUser },
+		{ name: 'Received Interest', path: '/dashboard/received-interest', icon: PiClockUser },
 		{ name: 'Viewed', path: '/dashboard/viewed', icon: LuView },
 		{ name: 'Viewed You', path: '/dashboard/viewed-you', icon: FaUsersViewfinder },
 		// { name: 'Messaging', path: '/message', icon: HiOutlineMail },

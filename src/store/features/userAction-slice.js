@@ -47,7 +47,7 @@ export const getViewedYou = createAsyncThunk('action/getViewedYou', async (userI
 const userAction = createSlice({
 	name: 'action',
 	initialState: {
-		send_interest: { data: [], loading: false, error: null },
+		send_interest: { data: [], loading: true, error: null },
 		shortlist: { data: [], loading: false, error: null },
 		receivedInterest: { data: [], loading: false, error: null },
 		viewed: { data: [], loading: false, error: null },
@@ -61,14 +61,15 @@ const userAction = createSlice({
 			// Handle getUserAction
 			.addCase(getUserAction.pending, (state, action) => {
 				const { activityType } = action.meta.arg;
+				// console.log(action);
 				if (state[ activityType ]) {
 					state[ activityType ].loading = true;
 					state[ activityType ].error = null;
 				}
 			})
 			.addCase(getUserAction.fulfilled, (state, action) => {
-				// console.log(action.payload);
 				const { activityType, data } = action.payload;
+				// console.log(action.payload);
 				if (state[ activityType ]) {
 					state[ activityType ].data = data;
 					state[ activityType ].loading = false;
