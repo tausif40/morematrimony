@@ -110,7 +110,7 @@ const ViewedYou = () => {
 									<div className="flex justify-between items-start mb-3">
 										<div>
 											<Link to={`/matches/profile-details/${profile.userId}`}>
-												<h2 className="text-2xl font-semibold text-gray-800 pb-1 hover:text-blue-800 transition">
+												<h2 className="text-2xl font-semibold text-gray-800 pb-1">
 													{profile.firstName != undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
 												</h2>
 											</Link>
@@ -124,11 +124,11 @@ const ViewedYou = () => {
 										</div>
 									</div>
 									<div className="space-y-2">
-										<p className="text-gray-700">
+										<p className="text-gray-700 truncate">
 											<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
 												{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
 										</p>
-										<p className="text-gray-700">
+										<p className="text-gray-700 truncate">
 											<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
 										</p>
 										<p className="text-gray-700 truncate">
@@ -137,9 +137,11 @@ const ViewedYou = () => {
 									</div>
 								</div>
 								<div className="py-3 flex justify-center items-center border-t">
-									<button className="flex items-center space-x-2 px-6 py-2 bg-gold text-white rounded-full transition">
-										<span>View Profile</span>
-									</button>
+									<Link to={`/matches/profile-details/${profile.userId}`}>
+										<button className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
+											<span>View Profile</span>
+										</button>
+									</Link>
 								</div>
 							</div>
 						))}

@@ -10,24 +10,25 @@ import ActionLoader from '../../Loader/ActionLoader';
 
 const mapReceivedInterest = (profiles) => {
 	return profiles?.map((profile) => {
+		console.log("profile in recived ", profile);
 		const { userDetails } = profile;
 		return {
-			userId: profile?.targetUserId,
+			userId: userDetails[ 0 ]?._id,
 			agentId: profile?.agentId,
 			targetUserId: profile?.targetUserId,
-			profileImg: userDetails?.profileImage,
-			firstName: userDetails?.basicInformation?.firstName,
-			lastName: userDetails?.basicInformation?.lastName,
-			gender: userDetails?.basicInformation?.gender,
-			height: { feet: userDetails?.physicalAttributes?.height?.feet, inch: userDetails?.physicalAttributes?.height?.inches },
-			age: userDetails?.basicInformation?.dateOfBirth
-				&& Math.floor((new Date() - new Date(userDetails?.basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25)),
-			religion: userDetails?.spiritualAndSocialBackground?.religion[ 0 ]?.name,
-			caste: userDetails?.spiritualAndSocialBackground?.caste[ 0 ]?.name,
-			country: userDetails?.presentAddress?.country[ 0 ]?.name,
-			state: userDetails?.presentAddress?.state[ 0 ]?.name,
-			education: userDetails?.educationalDetails?.highestEducation[ 0 ]?.name,
-			occupation: userDetails?.career?.occupation[ 0 ]?.occupationName,
+			profileImg: userDetails[ 0 ]?.profileImage,
+			firstName: userDetails[ 0 ]?.basicInformation?.firstName,
+			lastName: userDetails[ 0 ]?.basicInformation?.lastName,
+			gender: userDetails[ 0 ]?.basicInformation?.gender,
+			height: { feet: userDetails[ 0 ]?.physicalAttributes?.height?.feet, inch: userDetails[ 0 ]?.physicalAttributes?.height?.inches },
+			age: userDetails[ 0 ]?.basicInformation?.dateOfBirth
+				&& Math.floor((new Date() - new Date(userDetails[ 0 ]?.basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25)),
+			religion: userDetails[ 0 ]?.spiritualAndSocialBackground?.religion[ 0 ]?.name,
+			caste: userDetails[ 0 ]?.spiritualAndSocialBackground?.caste[ 0 ]?.name,
+			country: userDetails[ 0 ]?.presentAddress?.country[ 0 ]?.name,
+			state: userDetails[ 0 ]?.presentAddress?.state[ 0 ]?.name,
+			education: userDetails[ 0 ]?.educationalDetails?.highestEducation[ 0 ]?.name,
+			occupation: userDetails[ 0 ]?.career?.occupation[ 0 ]?.occupationName,
 		};
 	});
 };
@@ -40,13 +41,14 @@ const ReceivedInterest = () => {
 	const receivedInterest = useSelector((state) => state.userAction.receivedInterest);
 	const userId = useSelector((state) => state.userDetails.userId);
 	const isLoading = receivedInterest.loading
-	console.log(receivedInterest);
+	// console.log(receivedInterest);
 
 	useEffect(() => {
 		dispatch(getReceivedInterest(userId));
 	}, [ dispatch, userId ])
 
 	const profiles = useMemo(() => mapReceivedInterest(receivedInterest?.data?.socialAction), [ receivedInterest?.data?.socialAction ]);
+	console.log("profiles - ", receivedInterest);
 
 	useEffect(() => {
 		setMyInterestList(profiles)
@@ -54,8 +56,7 @@ const ReceivedInterest = () => {
 
 	useEffect(() => {
 		// setMyInterestList(profiles)
-		console.log("userId - ", userId);
-		console.log("received Interest - ", receivedInterest);
+		// console.log("userId - ", userId);
 	}, [ receivedInterest ])
 
 
@@ -123,7 +124,7 @@ const ReceivedInterest = () => {
 									<div className="flex justify-between items-start mb-3">
 										<div>
 											<Link to={`/matches/profile-details/${profile.userId}`}>
-												<h2 className="text-2xl font-semibold text-gray-800 pb-1 hover:text-blue-800 transition">
+												<h2 className="text-2xl font-semibold text-gray-800 pb-1">
 													{profile.firstName != undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
 												</h2>
 											</Link>
@@ -151,11 +152,11 @@ const ReceivedInterest = () => {
 								</div>
 
 								<div className="py-3 flex justify-center gap-6 items-center border-t px-4">
-									<button className="flex items-center space-x-2 px-6 py-1 border-2 border-gray-400 text-gray-600 rounded-full transition"
+									<button className="flex items-center px-6 py-2 border-2 border-gray-400 text-gray-600 rounded-full transition"
 										onClick={() => handelAction("skip", profile.userId, profile?.agentId, profile.targetUserId)}>
 										<span>Skip</span>
 									</button>
-									<button className="flex items-center space-x-2 px-6 py-1  border-2 border-green-400 hover:shadow bg-green-400 text-white rounded-full transition"
+									<button className="flex items-center px-6 py-2  border-2 border-sky-500 hover:shadow bg-sky-500 text-white rounded-full transition"
 										onClick={() => handelAction("accept", profile.userId, profile?.agentId, profile.targetUserId)}>
 										<span>Accept</span>
 									</button>

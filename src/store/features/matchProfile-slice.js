@@ -16,7 +16,7 @@ export const matchedProfileGallery = createAsyncThunk('data/getUserDetailsById',
 	try {
 		const response = await apiClient.get(`gallery/matchedProfileGallery${id}`);
 		return response.data;
-	} catch (error) {
+	} catch (error) {		
 		console.log(error);
 		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
 	}

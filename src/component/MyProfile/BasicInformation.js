@@ -79,10 +79,11 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		console.log("before submit - ", formData);
 		const newErrors = validateForm();
 		if (Object.keys(newErrors).length === 0) {
 			setErrors({})
-			if (formData.maritalStatus !== 'single') {
+			if (formData.maritalStatus != 'single') {
 				setFormData((previousData) => ({
 					...previousData,
 					numberOfChildren: numberOfChildren
@@ -186,7 +187,7 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 						className={getInputClasses('maritalStatus')}
 						name="maritalStatus"
 						value={formData.maritalStatus}
-						onChange={handleChange}
+						onChange={handleChange}	
 					>
 						<option value="" disabled>Select</option>
 						{maritalStatus.status.map((value, index) => (

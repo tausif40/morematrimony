@@ -12,7 +12,7 @@ const mapViewedData = (profiles) => {
 	return profiles?.map((profile) => {
 		const { userDetails } = profile;
 		return {
-			userId: userDetails?.targetUserId,
+			userId: profile?.targetUserId,
 			profileImg: userDetails?.profileImage,
 			firstName: userDetails?.basicInformation?.firstName,
 			lastName: userDetails?.basicInformation?.lastName,
@@ -36,6 +36,7 @@ const ShortList = () => {
 	const [ searchQuery, setSearchQuery ] = useState('');
 
 	const viewedData = useSelector((state) => state.userAction.viewed);
+	const isLoading = viewedData.loading;
 
 	useEffect(() => {
 		dispatch(getUserAction("viewed"));
@@ -62,7 +63,7 @@ const ShortList = () => {
 
 	return (
 		<>
-			<div className="min-h-screen bg-gradient-to-br from-slate-50 to-red-50 rounded-md overflow-hidden border">
+			<div className="bg-gradient-to-br from-slate-50 to-red-50 rounded-md overflow-hidden border">
 				{/* Header */}
 				<header className="text-gray-700 shadow-md">
 					<div className="container mx-auto px-4 py-3">
@@ -87,9 +88,9 @@ const ShortList = () => {
 				{/* Main Content */}
 				<main className="container mx-auto px-4 py-8">
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-10">
-						{viewedData.loading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
+						{isLoading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
 							filteredProfiles?.map((profile, index) => (
-								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-xl transition duration-300 border">
+								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-md transition duration-300 border">
 									<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
 										<img
 											src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
@@ -101,7 +102,7 @@ const ShortList = () => {
 										<div className="flex justify-between items-start mb-3">
 											<div>
 												<Link to={`/matches/profile-details/${profile.userId}`}>
-													<h2 className="text-2xl font-semibold text-gray-800 pb-1 hover:text-blue-800 transition">
+													<h2 className="text-2xl font-semibold text-gray-800 pb-1">
 														{profile.firstName != undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
 													</h2>
 												</Link>
@@ -114,12 +115,12 @@ const ShortList = () => {
 												</p>
 											</div>
 										</div>
-										<div className="space-y-2">
+										<div className="space-y-2 truncate">
 											<p className="text-gray-700">
 												<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
 													{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
 											</p>
-											<p className="text-gray-700">
+											<p className="text-gray-700 truncate">
 												<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
 											</p>
 											<p className="text-gray-700 truncate">
@@ -129,13 +130,16 @@ const ShortList = () => {
 									</div>
 
 									<div className="py-3 flex justify-center items-center border-t">
-										<button className="flex items-center space-x-2 px-6 py-2 bg-gold text-white rounded-full transition">
-											<span>View Profile</span>
-										</button>
+										<Link to={`/matches/profile-details/${profile.userId}`}>
+											<button className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
+												<span>View Profile</span>
+											</button>
+										</Link>
 									</div>
 								</div>
 							))}
 					</div>
+					{!isLoading && filteredProfiles?.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
 				</main>
 			</div>
 		</>

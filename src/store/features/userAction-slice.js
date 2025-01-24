@@ -59,9 +59,9 @@ const userAction = createSlice({
 	name: 'action',
 	initialState: {
 		send_interest: { data: [], loading: true, error: null },
-		shortlist: { data: [], loading: false, error: null },
+		shortlist: { data: [], loading: true, error: null },
 		receivedInterest: { data: [], loading: false, error: null },
-		viewed: { data: [], loading: false, error: null },
+		viewed: { data: [], loading: true, error: null },
 		viewedYou: { data: [], loading: false, error: null },
 		accept: { data: [], loading: false, error: null },
 		skip: { data: [], loading: false, error: null },

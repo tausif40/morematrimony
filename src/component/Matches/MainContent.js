@@ -11,7 +11,7 @@ const MainContent = () => {
 	const matchedProfile = useSelector((state) => state.matchProfile.matchedProfile);
 
 	useEffect(() => {
-		dispatch(getMatchedProfile({ isMatchedView: true }));
+		dispatch(getMatchedProfile());
 	}, [ dispatch ])
 
 	useEffect(() => {

@@ -45,7 +45,6 @@ export default function MatchesList() {
 		religion: '',
 		caste: [],
 		dosh: '',
-		isMatchedView: true
 	});
 
 	// Filter options
@@ -86,7 +85,7 @@ export default function MatchesList() {
 	};
 
 	useEffect(() => {
-		dispatch(setFilterApplied({ ...selectedFilters, isMatchedView: false }));
+		dispatch(setFilterApplied(selectedFilters));
 		if (!clearFilter) dispatch(getMatchedProfile(selectedFilters));
 		// console.log("clearFilter - ", clearFilter);
 	}, [ dispatch, selectedFilters ])
@@ -172,7 +171,7 @@ export default function MatchesList() {
 	const clearAllFilters = () => {
 		setClearFilter(true)
 		// setFilterCount(0)
-		dispatch(getMatchedProfile({ isMatchedView: true }))
+		dispatch(getMatchedProfile())
 		setSelectedFilters({
 			onBehalf: [],
 			maritalStatus: [],
