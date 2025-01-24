@@ -31,7 +31,7 @@ const mapSendInterest = (profiles) => {
 	});
 };
 
-const MyInterest = () => {
+const SendInterest = () => {
 	const dispatch = useDispatch();
 	const [ myInterestList, setMyInterestList ] = useState([]);
 	const [ searchQuery, setSearchQuery ] = useState('');
@@ -69,7 +69,7 @@ const MyInterest = () => {
 				<header className="text-gray-700 shadow-md">
 					<div className="container mx-auto px-4 py-3">
 						<div className="flex justify-between items-center">
-							<h1 className="text-2xl font-semibold">My Interest</h1>
+							<h1 className="text-2xl font-semibold">Send Interest</h1>
 							<div className="flex items-center space-x-4">
 								<div className="relative">
 									<input
@@ -150,4 +150,4 @@ const MyInterest = () => {
 	);
 };
 
-export default MyInterest;
+export default SendInterest;

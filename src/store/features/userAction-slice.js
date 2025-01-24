@@ -35,12 +35,22 @@ export const getReceivedInterest = createAsyncThunk('action/getReceivedInterest'
 export const acceptSkipInterest = createAsyncThunk('action/acceptSkipInterest', async (data, { rejectWithValue }) => {
 	try {
 		console.log("send data - ", data);
-		const response = await apiClient.get(`/social-action/accept-skip-profiles`, data);
-		// console.log("getUserAction response - ", { activityType, data: response.data });
+		const response = await apiClient.post(`/social-action/accept-skip-profiles`, data);
+		// console.log("getUserAction response - ", response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);
 		return rejectWithValue(error?.response?.data || 'Failed to send request');
+	}
+});
+export const getAccepter = createAsyncThunk('action/getAccepter', async (id, { rejectWithValue }) => {
+	try {
+		const response = await apiClient.get(`/social-action/accepter-profiles?userId=${id}`);
+		// console.log("getUserAction response - ", response.data);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return rejectWithValue(error?.response?.data || 'Failed to send getAccepter');
 	}
 });
 export const getViewedYou = createAsyncThunk('action/getViewedYou', async (userId, { rejectWithValue }) => {
@@ -64,6 +74,7 @@ const userAction = createSlice({
 		viewed: { data: [], loading: true, error: null },
 		viewedYou: { data: [], loading: false, error: null },
 		accept: { data: [], loading: false, error: null },
+		accepter: { data: [], loading: false, error: null },
 		skip: { data: [], loading: false, error: null },
 	},
 	reducers: {},
@@ -118,6 +129,19 @@ const userAction = createSlice({
 			.addCase(getViewedYou.rejected, (state, action) => {
 				state.viewedYou.loading = false;
 				state.viewedYou.error = action.payload || action.error.message;
+			})
+			// accepter
+			.addCase(getAccepter.pending, (state) => {
+				state.accepter.loading = true
+				state.accepter.error = true
+			})
+			.addCase(getAccepter.fulfilled, (state, action) => {
+				state.accepter.data = action.payload;
+				state.accepter.loading = false;
+			})
+			.addCase(getAccepter.rejected, (state, action) => {
+				state.accepter.loading = false;
+				state.accepter.error = action.payload || action.error.message;
 			})
 	},
 });

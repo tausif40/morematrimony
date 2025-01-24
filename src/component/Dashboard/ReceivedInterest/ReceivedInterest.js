@@ -13,22 +13,21 @@ const mapReceivedInterest = (profiles) => {
 		console.log("profile in recived ", profile);
 		const { userDetails } = profile;
 		return {
-			userId: userDetails[ 0 ]?._id,
 			agentId: profile?.agentId,
-			targetUserId: profile?.targetUserId,
-			profileImg: userDetails[ 0 ]?.profileImage,
-			firstName: userDetails[ 0 ]?.basicInformation?.firstName,
-			lastName: userDetails[ 0 ]?.basicInformation?.lastName,
-			gender: userDetails[ 0 ]?.basicInformation?.gender,
-			height: { feet: userDetails[ 0 ]?.physicalAttributes?.height?.feet, inch: userDetails[ 0 ]?.physicalAttributes?.height?.inches },
-			age: userDetails[ 0 ]?.basicInformation?.dateOfBirth
-				&& Math.floor((new Date() - new Date(userDetails[ 0 ]?.basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25)),
-			religion: userDetails[ 0 ]?.spiritualAndSocialBackground?.religion[ 0 ]?.name,
-			caste: userDetails[ 0 ]?.spiritualAndSocialBackground?.caste[ 0 ]?.name,
-			country: userDetails[ 0 ]?.presentAddress?.country[ 0 ]?.name,
-			state: userDetails[ 0 ]?.presentAddress?.state[ 0 ]?.name,
-			education: userDetails[ 0 ]?.educationalDetails?.highestEducation[ 0 ]?.name,
-			occupation: userDetails[ 0 ]?.career?.occupation[ 0 ]?.occupationName,
+			targetUserId: userDetails?._id,
+			profileImg: userDetails?.profileImage,
+			firstName: userDetails?.basicInformation?.firstName,
+			lastName: userDetails?.basicInformation?.lastName,
+			gender: userDetails?.basicInformation?.gender,
+			height: { feet: userDetails?.physicalAttributes?.height?.feet, inch: userDetails?.physicalAttributes?.height?.inches },
+			age: userDetails?.basicInformation?.dateOfBirth
+				&& Math.floor((new Date() - new Date(userDetails?.basicInformation.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365.25)),
+			religion: userDetails?.spiritualAndSocialBackground?.religion[ 0 ]?.name,
+			caste: userDetails?.spiritualAndSocialBackground?.caste[ 0 ]?.name,
+			country: userDetails?.presentAddress?.country[ 0 ]?.name,
+			state: userDetails?.presentAddress?.state[ 0 ]?.name,
+			education: userDetails?.educationalDetails?.highestEducation[ 0 ]?.name,
+			occupation: userDetails?.career?.occupation[ 0 ]?.occupationName,
 		};
 	});
 };
@@ -48,7 +47,7 @@ const ReceivedInterest = () => {
 	}, [ dispatch, userId ])
 
 	const profiles = useMemo(() => mapReceivedInterest(receivedInterest?.data?.socialAction), [ receivedInterest?.data?.socialAction ]);
-	console.log("profiles - ", receivedInterest);
+	console.log("receivedInterest - ", receivedInterest);
 
 	useEffect(() => {
 		setMyInterestList(profiles)
@@ -72,11 +71,11 @@ const ReceivedInterest = () => {
 		);
 	}, [ myInterestList, searchQuery ]);
 
-	const handelAction = (activityType, userId, agentId, targetUserId) => {
+	const handelAction = (activityType, agentId, targetUserId) => {
 		const data = {
+			userId: userId,
 			targetUserId: targetUserId,
 			agentIdOfTargetedUser: agentId,
-			userId: userId,
 			activityType: activityType
 		}
 		dispatch(acceptSkipInterest(data));
@@ -138,11 +137,11 @@ const ReceivedInterest = () => {
 										</div>
 									</div>
 									<div className="space-y-2">
-										<p className="text-gray-700">
+										<p className="text-gray-700 truncate">
 											<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
 												{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
 										</p>
-										<p className="text-gray-700">
+										<p className="text-gray-700 truncate">
 											<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
 										</p>
 										<p className="text-gray-700 truncate">
@@ -153,11 +152,11 @@ const ReceivedInterest = () => {
 
 								<div className="py-3 flex justify-center gap-6 items-center border-t px-4">
 									<button className="flex items-center px-6 py-2 border-2 border-gray-400 text-gray-600 rounded-full transition"
-										onClick={() => handelAction("skip", profile.userId, profile?.agentId, profile.targetUserId)}>
+										onClick={() => handelAction("skip", profile?.agentId, profile.targetUserId)}>
 										<span>Skip</span>
 									</button>
 									<button className="flex items-center px-6 py-2  border-2 border-sky-500 hover:shadow bg-sky-500 text-white rounded-full transition"
-										onClick={() => handelAction("accept", profile.userId, profile?.agentId, profile.targetUserId)}>
+										onClick={() => handelAction("accept", profile?.agentId, profile.targetUserId)}>
 										<span>Accept</span>
 									</button>
 								</div>

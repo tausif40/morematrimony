@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { PiClockUser } from "react-icons/pi";
 import '../../CSS/dashboard.css'
 import useLogout from '../Logout/Logout';
+import { PiUserCheckLight } from "react-icons/pi";
 
 function ProfileOption() {
 	const location = useLocation();
@@ -29,7 +30,7 @@ function ProfileOption() {
 	const fistName = userDetails?.data?.user?.basicInformation?.firstName || 'User';
 	const lastName = userDetails?.data?.user?.basicInformation?.lastName || 'Name';
 	const dpImage = userDetails?.data?.user?.profileImage;
-	
+
 	// console.log(dpImage);
 	useEffect(() => {
 		setProfileCompletion(percent)
@@ -54,9 +55,10 @@ function ProfileOption() {
 		// { name: 'Packages', path: '/packages', icon: PiGiftLight },
 		// { name: 'Message', path: '/message', icon: HiOutlineMail },
 		{ name: 'Manage Profile', path: '/dashboard/profile-setting', icon: AiOutlineUser },
-		{ name: 'My Interest', path: '/dashboard/my-interest', icon: IoMdHeartEmpty },
+		{ name: 'Accept Interest', path: '/dashboard/accept-interest', icon: PiUserCheckLight },
+		{ name: 'Send Interest', path: '/dashboard/send-interest', icon: IoMdHeartEmpty },
+		{ name: 'Received Interest', path: '/dashboard/received-interest', icon: PiClockUser },
 		{ name: 'Shortlist', path: '/dashboard/shortlist', icon: IoListOutline },
-		{ name: 'Request', path: '/dashboard/request', icon: PiClockUser },
 		{ name: 'Viewed', path: '/dashboard/viewed', icon: LuView },
 		{ name: 'Viewed You', path: '/dashboard/viewed-you', icon: FaUsersViewfinder },
 		{ name: 'Ignored User List', path: '/dashboard/ignored-list', icon: MdOutlineBlock },

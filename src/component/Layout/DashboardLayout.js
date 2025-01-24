@@ -7,7 +7,7 @@ import BottomMenu from '../Dashboard/BottomMenu';
 import SideMenu from '../Dashboard/SideMenu';
 import MyProfilePage from '../MyProfile/MyProfilePage';
 import PageNotFound2 from '../PageNotFound/PageNotFound2';
-import MyInterest from '../Dashboard/MyInterest/MyInterest';
+import SendInterest from '../Dashboard/SendInterest/SendInterest';
 import ShortList from '../Dashboard/ShortList/ShortList';
 import Chat from '../Chat/Chat';
 import IgnoreList from '../IgnoreList/IgnoreList';
@@ -20,6 +20,7 @@ import { useDispatch } from 'react-redux';
 import { getMatchedProfile, getMatchProfile } from '../../store/features/matchProfile-slice';
 import ViewedYou from '../Dashboard/ViewedYou/ViewedYou';
 import ReceivedInterest from '../Dashboard/ReceivedInterest/ReceivedInterest';
+import AcceptedInterest from '../Dashboard/AcceptedInterest/AcceptedInterest';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -66,8 +67,10 @@ function DashboardLayout() {
 				return <Gallery />;
 			case '/dashboard/profile-setting':
 				return <MyProfilePage />;
-			case '/dashboard/my-interest':
-				return <MyInterest />;
+			case '/dashboard/accept-interest':
+				return <AcceptedInterest />;
+			case '/dashboard/send-interest':
+				return <SendInterest />;
 			case '/dashboard/shortlist':
 				return <ShortList />;
 			case '/dashboard/viewed':

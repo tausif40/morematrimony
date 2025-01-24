@@ -162,7 +162,7 @@ const NavMain = () => {
 											aria-expanded={isOpen}
 										>
 											{/* <img src={dpImage || "/assets/img/img0.png"} alt="" className='w-16 h-16 object-contain rounded-full border' /> */}
-											<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='min-w-8 h-8 ring-1 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200' style={{ objectPosition: 'center 10%' }} />
+											<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='w-8 h-8 ring-1 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200' style={{ objectPosition: 'center 10%' }} />
 										</button>
 
 									</div>

@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserAction } from '../../../store/features/userAction-slice';
+import { getAccepter, getUserAction } from '../../../store/features/userAction-slice';
 import male from '../../../img/male.png';
 import female from '../../../img/female.png';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import ActionLoader from '../../Loader/ActionLoader';
 
-const mapViewedData = (profiles) => {
+const mapAcceptList = (profiles) => {
 	return profiles?.map((profile) => {
 		const { userDetails } = profile;
+		console.log(profile)
 		return {
 			userId: profile?.targetUserId,
 			profileImg: userDetails?.profileImage,
@@ -30,28 +31,31 @@ const mapViewedData = (profiles) => {
 	});
 };
 
-const ShortList = () => {
+const AcceptedInterest = () => {
 	const dispatch = useDispatch();
-	const [ myInterestList, setMyInterestList ] = useState([]);
+	const [ acceptList, setAcceptList ] = useState([]);
 	const [ searchQuery, setSearchQuery ] = useState('');
 
-	const viewedData = useSelector((state) => state.userAction.viewed);
-	const isLoading = viewedData.loading;
+	const accept = useSelector((state) => state.userAction.accept);
+	const accepter = useSelector((state) => state.userAction.accepter);
+	const userId = useSelector((state) => state.userDetails.userId);
+	const isLoading = accept.loading || accepter.loading;
+	console.log("accepter ", accepter);
 
 	useEffect(() => {
-		dispatch(getUserAction("viewed"));
+		dispatch(getUserAction("accept"));
+		dispatch(getAccepter(userId));
 	}, [ dispatch ]);
 
-	console.log(viewedData);
-	const profiles = useMemo(() => mapViewedData(viewedData?.data?.socialAction), [ viewedData?.data?.socialAction ]);
+	const acceptByYouList = useMemo(() => mapAcceptList(accept?.data?.socialAction), [ accept?.data?.socialAction ]);
 
 	useEffect(() => {
-		setMyInterestList(profiles);
-	}, [ profiles ]);
+		setAcceptList(acceptByYouList);
+	}, [ acceptByYouList ]);
 
 	const filteredProfiles = useMemo(() => {
-		if (!searchQuery.trim()) return myInterestList;
-		return myInterestList.filter(profile =>
+		if (!searchQuery.trim()) return acceptList;
+		return acceptList.filter(profile =>
 			`${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			profile.religion?.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			profile.occupation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -59,16 +63,35 @@ const ShortList = () => {
 			profile.country?.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			profile.state?.toLowerCase().includes(searchQuery.toLowerCase())
 		);
-	}, [ myInterestList, searchQuery ]);
+	}, [ acceptList, searchQuery ]);
+
+	const handelAccept = (value) => {
+		console.log(value);
+		// if (value == 'accept') {
+		// 	setAcceptList(acceptByYouList);
+		// } else if (value == 'accepterProfiles') {
+		// 	setAcceptList(acceptByYouList);
+		// }
+	}
 
 	return (
 		<>
+
 			<div className="bg-gradient-to-br from-slate-50 to-red-50 rounded-md overflow-hidden border">
 				{/* Header */}
 				<header className="text-gray-700 shadow-md">
 					<div className="container mx-auto px-4 py-3">
 						<div className="flex justify-between items-center">
-							<h1 className="text-2xl font-semibold">Viewed List</h1>
+							<h1 className="text-2xl font-semibold">Accept Interest</h1>
+							<div>
+								<select name="" id="" className='px-2 py-2 border outline-none rounded-md'
+									onChange={(e) => handelAccept(e.target.value)}
+								>
+									{/* <option value="allData">All data</option> */}
+									<option value="accept">Accept by me</option>
+									<option value="accepterProfiles">Accept by opponent</option>
+								</select>
+							</div>
 							<div className="flex items-center space-x-4">
 								<div className="relative">
 									<input
@@ -90,7 +113,7 @@ const ShortList = () => {
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-10">
 						{isLoading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
 							filteredProfiles?.map((profile, index) => (
-								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-md transition duration-300 border">
+								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-lg transition duration-300 border">
 									<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
 										<img
 											src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
@@ -106,7 +129,7 @@ const ShortList = () => {
 														{profile.firstName != undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
 													</h2>
 												</Link>
-												<p className="text-gray-600 text-sm truncate">
+												<p className="text-gray-600 text-sm">
 													{profile.age != undefined && `${profile.age} years • `}
 													{profile.height.feet != undefined && `${profile.height.feet} ' ${profile.height.inch}" • `}
 													<span className='capitalize'>
@@ -115,12 +138,12 @@ const ShortList = () => {
 												</p>
 											</div>
 										</div>
-										<div className="space-y-2 truncate">
-											<p className="text-gray-700">
+										<div className="space-y-2">
+											<p className="text-gray-700 truncate">
 												<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
 													{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
 											</p>
-											<p className="text-gray-700 truncate">
+											<p className="text-gray-700">
 												<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
 											</p>
 											<p className="text-gray-700 truncate">
@@ -129,7 +152,10 @@ const ShortList = () => {
 										</div>
 									</div>
 
-									<div className="py-3 flex justify-center items-center border-t">
+									<div className="py-3 flex justify-center items-center border-t text-sm gap-6">
+										<p className="flex items-center space-x-2 px-4 py-2 border-2 border-green-600 bg-green-600 text-white rounded-full transition">
+											<span>Accept by me</span>
+										</p>
 										<Link to={`/matches/profile-details/${profile.userId}`}>
 											<button className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
 												<span>View Profile</span>
@@ -146,4 +172,4 @@ const ShortList = () => {
 	);
 };
 
-export default ShortList;
+export default AcceptedInterest

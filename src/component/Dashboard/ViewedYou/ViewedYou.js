@@ -11,7 +11,7 @@ const mapViewedYou = (profiles) => {
 	return profiles?.map((profile) => {
 		const { userDetails } = profile;
 		return {
-			userId: profile?.targetUserId,
+			userId: userDetails?._id,
 			agentId: profile?.agentId,
 			targetUserId: profile?.targetUserId,
 			profileImg: userDetails?.profileImage,

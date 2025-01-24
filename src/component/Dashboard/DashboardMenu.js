@@ -10,6 +10,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { LuView } from "react-icons/lu";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import { PiClockUser } from "react-icons/pi";
+import { PiUserCheckLight } from "react-icons/pi";
 
 
 function DashboardMenu() {
@@ -20,9 +21,10 @@ function DashboardMenu() {
 		{ name: 'Dashboard', path: '/dashboard', icon: AiOutlineDashboard },
 		// { name: 'Matches', path: '/matches', icon: FaPeopleArrows },
 		{ name: 'My Profile', path: '/dashboard/profile-setting', icon: AiOutlineUser },
-		{ name: 'My Interest', path: '/dashboard/my-interest', icon: IoMdHeartEmpty },
-		{ name: 'Shortlist', path: '/dashboard/shortlist', icon: IoListOutline },
+		{ name: 'Accept Interest', path: '/dashboard/accept-interest', icon: PiUserCheckLight },
+		{ name: 'Send Interest', path: '/dashboard/send-interest', icon: IoMdHeartEmpty },
 		{ name: 'Received Interest', path: '/dashboard/received-interest', icon: PiClockUser },
+		{ name: 'Shortlist', path: '/dashboard/shortlist', icon: IoListOutline },
 		{ name: 'Viewed', path: '/dashboard/viewed', icon: LuView },
 		{ name: 'Viewed You', path: '/dashboard/viewed-you', icon: FaUsersViewfinder },
 		// { name: 'Messaging', path: '/message', icon: HiOutlineMail },
