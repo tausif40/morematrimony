@@ -9,18 +9,16 @@ import MyProfilePage from '../MyProfile/MyProfilePage';
 import PageNotFound2 from '../PageNotFound/PageNotFound2';
 import SendInterest from '../Dashboard/SendInterest/SendInterest';
 import ShortList from '../Dashboard/ShortList/ShortList';
-import Chat from '../Chat/Chat';
-import IgnoreList from '../IgnoreList/IgnoreList';
 import VerificationForm from '../Form/VerificationForm';
 import ChangePassword from '../Form/ChangePassword';
 import Gallery from '../Gallery/Gallery';
 import Viewed from '../Dashboard/Viewed/Viewed';
 import { getProfileImages, getUserDetails } from '../../store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
-import { getMatchedProfile, getMatchProfile } from '../../store/features/matchProfile-slice';
 import ViewedYou from '../Dashboard/ViewedYou/ViewedYou';
 import ReceivedInterest from '../Dashboard/ReceivedInterest/ReceivedInterest';
 import AcceptedInterest from '../Dashboard/AcceptedInterest/AcceptedInterest';
+import Skip from '../Skip/Skip';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -79,10 +77,8 @@ function DashboardLayout() {
 				return <ReceivedInterest />;
 			case '/dashboard/viewed-you':
 				return <ViewedYou />;
-			case '/dashboard/message':
-				return <Chat />;
-			case '/dashboard/ignored-list':
-				return <IgnoreList />;
+			case '/dashboard/skip':
+				return <Skip />;
 			case '/dashboard/change-password':
 				return <ChangePassword />;
 			default:

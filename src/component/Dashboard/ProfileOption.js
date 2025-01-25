@@ -16,6 +16,9 @@ import { PiClockUser } from "react-icons/pi";
 import '../../CSS/dashboard.css'
 import useLogout from '../Logout/Logout';
 import { PiUserCheckLight } from "react-icons/pi";
+import { PiSkipForwardBold } from "react-icons/pi";
+import { FaUserCheck } from "react-icons/fa6";
+import { BsSend } from "react-icons/bs";
 
 function ProfileOption() {
 	const location = useLocation();
@@ -55,15 +58,15 @@ function ProfileOption() {
 		// { name: 'Packages', path: '/packages', icon: PiGiftLight },
 		// { name: 'Message', path: '/message', icon: HiOutlineMail },
 		{ name: 'Manage Profile', path: '/dashboard/profile-setting', icon: AiOutlineUser },
-		{ name: 'Accept Interest', path: '/dashboard/accept-interest', icon: PiUserCheckLight },
-		{ name: 'Send Interest', path: '/dashboard/send-interest', icon: IoMdHeartEmpty },
-		{ name: 'Received Interest', path: '/dashboard/received-interest', icon: PiClockUser },
+		{ name: 'Accepted', path: '/dashboard/accept-interest', icon: FaUserCheck },
+		{ name: 'Sent', path: '/dashboard/send-interest', icon: BsSend },
+		{ name: 'Received', path: '/dashboard/received-interest', icon: PiClockUser },
 		{ name: 'Shortlist', path: '/dashboard/shortlist', icon: IoListOutline },
 		{ name: 'Viewed', path: '/dashboard/viewed', icon: LuView },
 		{ name: 'Viewed You', path: '/dashboard/viewed-you', icon: FaUsersViewfinder },
-		{ name: 'Ignored User List', path: '/dashboard/ignored-list', icon: MdOutlineBlock },
+		{ name: 'Skip', path: '/dashboard/skip', icon: PiSkipForwardBold },
 		{ name: 'Change Password', path: '/dashboard/change-password', icon: LuKeyRound },
-		{ name: 'Deactivate Account', path: '/dashboard/deactivate-account', icon: HiOutlineLockClosed },
+		// { name: 'Deactivate Account', path: '/dashboard/deactivate-account', icon: HiOutlineLockClosed },
 		{ name: 'Delete Account', path: '/dashboard/delete-account', icon: HiOutlineTrash },
 	];
 

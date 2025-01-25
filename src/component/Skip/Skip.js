@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 
-const IgnoreList = () => {
+const Skip = () => {
 	const [ data, setData ] = useState([
 		{ id: 1, image: 'https://via.placeholder.com/50', name: 'John Doe', age: 25, status: 'Active', religion: 'Christian', location: 'New York', motherTongue: 'English' },
 		{ id: 2, image: 'https://via.placeholder.com/50', name: 'Jane Smith', age: 30, status: 'Inactive', religion: 'Muslim', location: 'London', motherTongue: 'Arabic' },
@@ -70,4 +70,4 @@ const IgnoreList = () => {
 	);
 };
 
-export default IgnoreList
+export default Skip

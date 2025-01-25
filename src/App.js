@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.css'
-import Cookies from 'js-cookie';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import ScrollToTop from './component/ScrollToTop/ScrollToTop';
-import TopNav from './component/NavBar/TopNav';
 import NavMain from './component/NavBar/NavMain';
 import HomePageLayout from './component/Layout/HomePageLayout';
 import ContactUs from './component/Form/ContactUs';
@@ -18,17 +16,14 @@ import PageNotFound from './component/PageNotFound/PageNotFound';
 // layout page
 import DashboardLayout from './component/Layout/DashboardLayout';
 import MemberProfileLayout from './component/Layout/MemberProfileLayout';
-// import ViewProfile from './component/ViewProfile/ViewProfile';
 import ViewProfileLayout from './component/Layout/ViewProfileLayout';
 import ProfileDetails from './component/ViewProfile/ProfileDetails';
-// import MatchesLayout from './component/Layout/MatchesLayout';
 import MatchesList from './component/Matches/MatchesList';
 import Plans from './component/Plans/Plans';
 import Help from './component/Help/Help';
 import AgentProfile from './component/AgentProfile/AgentProfile';
 
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
-import { getMatchedProfile } from './store/features/matchProfile-slice';
 import { useDispatch } from 'react-redux';
 import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations, fetchReligions } from './store/features/profileData-slice';
 
@@ -44,7 +39,7 @@ const App = () => {
     '/dashboard/viewed',
     '/dashboard/viewed-you',
     '/dashboard/received-interest',
-    '/dashboard/ignored-list',
+    '/dashboard/Skip',
     '/dashboard/notification',
     '/dashboard/change-password',
     '/dashboard/gallery',

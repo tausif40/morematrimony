@@ -11,6 +11,8 @@ import { LuView } from "react-icons/lu";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import { PiClockUser } from "react-icons/pi";
 import { PiUserCheckLight } from "react-icons/pi";
+import { FaUserCheck } from "react-icons/fa6";
+import { BsSend } from "react-icons/bs";
 
 
 function DashboardMenu() {
@@ -21,9 +23,9 @@ function DashboardMenu() {
 		{ name: 'Dashboard', path: '/dashboard', icon: AiOutlineDashboard },
 		// { name: 'Matches', path: '/matches', icon: FaPeopleArrows },
 		{ name: 'My Profile', path: '/dashboard/profile-setting', icon: AiOutlineUser },
-		{ name: 'Accept Interest', path: '/dashboard/accept-interest', icon: PiUserCheckLight },
-		{ name: 'Send Interest', path: '/dashboard/send-interest', icon: IoMdHeartEmpty },
-		{ name: 'Received Interest', path: '/dashboard/received-interest', icon: PiClockUser },
+		{ name: 'Accepted', path: '/dashboard/accept-interest', icon: FaUserCheck },
+		{ name: 'Sent', path: '/dashboard/send-interest', icon: BsSend },
+		{ name: 'Received', path: '/dashboard/received-interest', icon: PiClockUser },
 		{ name: 'Shortlist', path: '/dashboard/shortlist', icon: IoListOutline },
 		{ name: 'Viewed', path: '/dashboard/viewed', icon: LuView },
 		{ name: 'Viewed You', path: '/dashboard/viewed-you', icon: FaUsersViewfinder },
@@ -41,7 +43,7 @@ function DashboardMenu() {
 				<div className='container flex text-headingGray font-medium text-sm gap-4'>
 					{navOption.map((value, index) => (
 						<Link to={value.path} key={index}>
-							<div className={`cursor-pointer px-4 py-4 flex items-center gap-2 ${value.path == currentPath && 'text-gradient'}`}><value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} />{value.name}</div>
+							<div className={`cursor-pointer px-4 py-4 flex items-center gap-2 ${value.path == currentPath && 'text-gradient'} min-w-max`}><value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} />{value.name}</div>
 						</Link>
 					))}
 				</div >
