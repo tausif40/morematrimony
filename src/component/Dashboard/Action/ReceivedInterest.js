@@ -1,19 +1,21 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAccepter, getUserAction } from '../../../store/features/userAction-slice';
-import male from '../../../img/male.png';
-import female from '../../../img/female.png';
+import { acceptSkipInterest, getReceivedInterest, getUserAction } from '../../../store/features/userAction-slice';
+import male from '../../../img/male.png'
+import female from '../../../img/female.png'
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import ActionLoader from '../../Loader/ActionLoader';
+import Modal from '../../Modal/Modal'
 
-const mapAcceptList = (profiles) => {
+const mapReceivedInterest = (profiles) => {
 	return profiles?.map((profile) => {
+		console.log("profile in recived ", profile);
 		const { userDetails } = profile;
-		console.log(profile)
 		return {
-			userId: profile?.targetUserId,
+			agentId: profile?.agentId,
+			targetUserId: userDetails?._id,
 			profileImg: userDetails?.profileImage,
 			firstName: userDetails?.basicInformation?.firstName,
 			lastName: userDetails?.basicInformation?.lastName,
@@ -31,55 +33,77 @@ const mapAcceptList = (profiles) => {
 	});
 };
 
-const AcceptedInterest = () => {
-	const dispatch = useDispatch();
-	const [ acceptList, setAcceptList ] = useState([]);
+const ReceivedInterest = () => {
+	const dispatch = useDispatch()
+	const [ myInterestList, setMyInterestList ] = useState([])
 	const [ searchQuery, setSearchQuery ] = useState('');
-
-	const accept = useSelector((state) => state.userAction.accept);
-	const accepter = useSelector((state) => state.userAction.accepter);
+	const [ confirmSkip, setConfirmSkip ] = useState(false);
+	const [ acceptReq, setAcceptReq ] = useState(false);
+	const [ showModal, setShowModal ] = useState(false);
+	const receivedInterest = useSelector((state) => state.userAction.receivedInterest);
 	const userId = useSelector((state) => state.userDetails.userId);
-	const isLoading = accept.loading || accepter.loading;
-	console.log("accepter ", accepter);
+	const isLoading = receivedInterest.loading
+	// console.log(receivedInterest);
 
 	useEffect(() => {
-		dispatch(getUserAction("accept"));
-		dispatch(getAccepter(userId));
-	}, [ dispatch ]);
+		dispatch(getReceivedInterest(userId));
+	}, [ dispatch, userId ])
 
-	const acceptByYouList = useMemo(() => mapAcceptList(accept?.data?.socialAction), [ accept?.data?.socialAction ]);
+	const profiles = useMemo(() => mapReceivedInterest(receivedInterest?.data?.socialAction), [ receivedInterest?.data?.socialAction ]);
+	console.log("receivedInterest - ", receivedInterest);
 
 	useEffect(() => {
-		setAcceptList(acceptByYouList);
-	}, [ acceptByYouList ]);
+		setMyInterestList(profiles)
+	}, [ profiles ])
 
-	const handelAccept = (value) => {
-		console.log(value);
-		// if (value == 'accept') {
-		// 	setAcceptList(acceptByYouList);
-		// } else if (value == 'accepterProfiles') {
-		// 	setAcceptList(acceptByYouList);
-		// }
+	useEffect(() => {
+		// setMyInterestList(profiles)
+		// console.log("userId - ", userId);
+	}, [ receivedInterest ])
+
+
+	const filteredProfiles = useMemo(() => {
+		if (!searchQuery.trim()) return myInterestList;
+		return myInterestList.filter(profile =>
+			`${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.religion?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.occupation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.education?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.country?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.state?.toLowerCase().includes(searchQuery.toLowerCase())
+		);
+	}, [ myInterestList, searchQuery ]);
+
+	const handelAction = (activityType, agentId, targetUserId) => {
+
+		activityType == 'skip' && setShowModal(true);
+		activityType == 'accept' && setAcceptReq(true)
+
+		const data = {
+			userId: userId,
+			targetUserId: targetUserId,
+			agentIdOfTargetedUser: agentId,
+			activityType: activityType
+		}
+		dispatch(acceptSkipInterest(data));
 	}
+
 
 	return (
 		<>
-
-			<div className="bg-gradient-to-br from-slate-50 to-red-50 rounded-md overflow-hidden border">
+			<Modal show={showModal} onClose={() => { setShowModal(false); }}>
+				<p className='text-center text-black text-lg pt-2'>Are Your sure you want to skip this profile?</p>
+				<div className='flex justify-center gap-8 mt-6'>
+					<button className='cancel-button' onClick={() => setShowModal(false)}>Cancel</button>
+					<button className='button' onClick={() => { setConfirmSkip(true); setShowModal(false) }}>Confirm</button>
+				</div>
+			</Modal >
+			<div className="bg-gradient-to-br from-[#fff] to-red-50 rounded-md overflow-hidden border">
 				{/* Header */}
 				<header className="text-gray-700 shadow-md">
 					<div className="container mx-auto px-4 py-3">
 						<div className="flex justify-between items-center">
-							<h1 className="text-2xl font-semibold">Accept Interest</h1>
-							<div>
-								<select name="" id="" className='px-2 py-2 border outline-none rounded-md'
-									onChange={(e) => handelAccept(e.target.value)}
-								>
-									{/* <option value="allData">All data</option> */}
-									<option value="accept">Accept by me</option>
-									<option value="accepterProfiles">Accept by opponent</option>
-								</select>
-							</div>
+							<h1 className="text-2xl font-semibold">Received Interest</h1>
 							<div className="flex items-center space-x-4">
 								<div className="relative">
 									<input
@@ -99,8 +123,9 @@ const AcceptedInterest = () => {
 				{/* Main Content */}
 				<main className="container mx-auto px-4 py-8">
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-10">
+
 						{isLoading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
-							acceptList?.map((profile, index) => (
+							filteredProfiles?.map((profile, index) => (
 								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-lg transition duration-300 border">
 									<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
 										<img
@@ -131,7 +156,7 @@ const AcceptedInterest = () => {
 												<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
 													{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
 											</p>
-											<p className="text-gray-700">
+											<p className="text-gray-700 truncate">
 												<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
 											</p>
 											<p className="text-gray-700 truncate">
@@ -141,23 +166,24 @@ const AcceptedInterest = () => {
 									</div>
 
 									<div className="py-3 flex justify-center items-center border-t text-sm gap-6">
-										<p className="flex items-center space-x-2 px-4 py-2 border-2 border-green-600 bg-green-600 text-white rounded-full transition">
-											<span>Accept by me</span>
-										</p>
-										<Link to={`/matches/profile-details/${profile.userId}`}>
-											<button className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
-												<span>View Profile</span>
-											</button>
-										</Link>
+										{!acceptReq && <button className="flex items-center px-6 py-2 border-2 border-gray-400 text-gray-600 rounded-full transition"
+											onClick={() => handelAction("skip", profile?.agentId, profile.targetUserId)} disabled={confirmSkip}>
+											<span>{confirmSkip ? 'Skipped' : 'Skip'}</span>
+										</button>}
+										{!confirmSkip && <button className={`flex items-center px-6 py-2 border-2 hover:shadow text-white rounded-full transition ${acceptReq ? 'bg-green-500 border-green-500' : 'bg-sky-500 border-sky-500'}`}
+											onClick={() => handelAction("accept", profile?.agentId, profile.targetUserId)}>
+											<span>{acceptReq ? 'Accepted' : 'Accept'}</span>
+										</button>}
 									</div>
+
 								</div>
 							))}
 					</div>
-					{!isLoading && acceptList?.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
-				</main>
-			</div>
+					{!isLoading && filteredProfiles?.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
+				</main >
+			</div >
 		</>
 	);
 };
 
-export default AcceptedInterest
+export default ReceivedInterest;

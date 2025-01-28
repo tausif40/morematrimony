@@ -7,8 +7,6 @@ import HomePageLayout from './component/Layout/HomePageLayout';
 import ContactUs from './component/Form/ContactUs';
 import RegistrationForm from './component/Form/RegistrationForm';
 import LoginPage from './component/pages/LoginPage';
-import ActiveMembers from './component/ActiveMembers/ActiveMembers';
-import HappyStories from './component/HappyStories/HappyStories';
 import Footer from './component/Footer/Footer';
 import BackToTopButton from './component/BackToTop/backToTop';
 import { Toaster } from 'react-hot-toast';
@@ -26,6 +24,7 @@ import AgentProfile from './component/AgentProfile/AgentProfile';
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
 import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations, fetchReligions } from './store/features/profileData-slice';
+import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -80,23 +79,24 @@ const App = () => {
         {/* <ScrollToTop /> */}
         {/* <TopNav /> */}
         <NavMain />
+        
         <Routes>
           <Route path="/*" element={<PageNotFound />} />
           <Route path="/" element={<HomePageLayout />} />
-          <Route path="/active-members" element={<ActiveMembers />} />
-          <Route path="/my-profile" element={<AgentProfile />} />
-          <Route path="/happy-stories" element={<HappyStories />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/matches" element={<MatchesList />} />
 
-          {dashboardPaths.map((path) => (
-            <Route key={path} path={path} element={<DashboardLayout />} />
-          ))}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/my-profile" element={<AgentProfile />} />
+            <Route path="/matches" element={<MatchesList />} />
+            {dashboardPaths.map((path) => (
+              <Route key={path} path={path} element={<DashboardLayout />} />
+            ))}
+            <Route path="/member-profile" element={<MemberProfileLayout />} />
+            <Route path="/matches/profile-details/:id" element={<ProfileDetails />} />
+          </Route>
 
-          <Route path="/member-profile" element={<MemberProfileLayout />} />
-          <Route path="/matches/profile-details/:id" element={<ProfileDetails />} />
           <Route path="/plans" element={<Plans />} />
           <Route path="/help" element={<Help />} />
         </Routes>

@@ -9,14 +9,19 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import ContactDetails from './ContactDetails';
 import { MdKeyboardBackspace } from "react-icons/md";
+import { setUserAction } from '../../store/features/userAction-slice';
+import { useDispatch } from 'react-redux';
 
 function ShortProfile({ data }) {
 	const hideSideMenu = useRef(null);
+	const dispatch = useDispatch();
 	const [ isInterestAccept, setIsInterestAccept ] = useState(false)
 	const [ shortlist, setShortlist ] = useState(false)
 	const [ showMenu, setShowMenu ] = useState(false)
 	const [ contactPopup, setContactPopup ] = useState(false)
 
+	const [ IsSendInterest, setIsSendInterest ] = useState(false);
+	const [ isShortlist, setIsShortlist ] = useState(false);
 	// useEffect(() => {
 	// 	window.scrollTo({
 	// 		top: 0,
@@ -47,6 +52,13 @@ function ShortProfile({ data }) {
 		console.log(value);
 		setShowMenu(false)
 	}
+
+	const handelAction = (actionType) => {
+		const action = { targetUserId: data?.id, activityType: actionType }
+		actionType == 'send_interest' && setIsSendInterest(true)
+		actionType == 'shortlist' && setIsShortlist(true)
+		dispatch(setUserAction(action));
+	};
 
 	return (
 		<>
@@ -115,23 +127,19 @@ function ShortProfile({ data }) {
 
 							<div>
 								<hr />
-								<div className='flex items-center justify-end gap-6 mt-4'>
-									{isInterestAccept
-										? <p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer bg-gray-200 text-textGray border-text transition-all`}
-											onClick={showContactDetails}>
-											<span>Contact Details</span>
-										</p>
-										: <p className={`text-sm flex items-center border gap-2 rounded-full pr-6 pl-4 py-2 cursor-pointer ${shortlist ? 'text-primary border-primary font-semibold' : 'text-text border-text'} transition-all`}
-											onClick={handelShortlist}>
-											<span className='text-sm font-light flex items-center'>
-												{shortlist ? <><IoMdStar />&nbsp;<p className=''>Shortlisted</p></> : <><IoIosStarOutline />&nbsp;<p className='border-text'>ShortList</p></>}
+								<div className='flex items-center justify-end gap-4 md:gap-6 mt-4'>
+									{!isInterestAccept && (
+										<p className={`text-sm flex items-center border gap-2 rounded-full pr-6 pl-4 py-2 cursor-pointer ${isShortlist ? 'text-primary border-primary font-semibold' : 'text-text border-text'} shadow transition-all`}
+											onClick={() => handelAction('shortlist')}>
+											<span className='flex items-center'>
+												{isShortlist ? <><IoMdStar />&nbsp;<p className=''>Shortlisted</p></> : <><IoIosStarOutline />&nbsp;<p className='border-text'>ShortList</p></>}
 											</span>
 										</p>
-
-									}
-									<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${isInterestAccept ? 'border-green-500 bg-green-500' : 'border-gold bg-gold'} transition-all`}
-										onClick={handelInterest}
-									><span>{isInterestAccept ? 'Interest Accepted' : 'Send Interest'}</span>
+									)}
+									<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${IsSendInterest ? 'border-red-500 bg-red-500' : 'border-orange-500 bg-orange-500'} shadow transition-all`}
+										onClick={() => handelAction('send_interest')}
+									>
+										<span>{IsSendInterest ? 'Pending Interest' : 'Send Interest'}</span>
 									</p>
 								</div>
 							</div>

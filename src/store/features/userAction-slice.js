@@ -15,7 +15,7 @@ export const setUserAction = createAsyncThunk('action/setUserAction', async (dat
 export const getUserAction = createAsyncThunk('action/getUserAction', async (activityType, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/social-action/query?activityType=${activityType}`);
-		// console.log("getUserAction response - ", { activityType, data: response.data });
+		console.log("getUserAction response - ", { activityType, data: response.data });
 		return { activityType, data: response.data };
 	} catch (error) {
 		console.log(error);
@@ -36,7 +36,7 @@ export const acceptSkipInterest = createAsyncThunk('action/acceptSkipInterest', 
 	try {
 		console.log("send data - ", data);
 		const response = await apiClient.post(`/social-action/accept-skip-profiles`, data);
-		// console.log("getUserAction response - ", response.data);
+		console.log("acceptSkipInterest response - ", response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);

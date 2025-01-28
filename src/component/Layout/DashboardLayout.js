@@ -7,18 +7,18 @@ import BottomMenu from '../Dashboard/BottomMenu';
 import SideMenu from '../Dashboard/SideMenu';
 import MyProfilePage from '../MyProfile/MyProfilePage';
 import PageNotFound2 from '../PageNotFound/PageNotFound2';
-import SendInterest from '../Dashboard/SendInterest/SendInterest';
-import ShortList from '../Dashboard/ShortList/ShortList';
 import VerificationForm from '../Form/VerificationForm';
 import ChangePassword from '../Form/ChangePassword';
 import Gallery from '../Gallery/Gallery';
-import Viewed from '../Dashboard/Viewed/Viewed';
 import { getProfileImages, getUserDetails } from '../../store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
-import ViewedYou from '../Dashboard/ViewedYou/ViewedYou';
-import ReceivedInterest from '../Dashboard/ReceivedInterest/ReceivedInterest';
-import AcceptedInterest from '../Dashboard/AcceptedInterest/AcceptedInterest';
-import Skip from '../Skip/Skip';
+import SendInterest from '../Dashboard/Action/SendInterest';
+import ShortList from '../Dashboard/Action/ShortList';
+import Viewed from '../Dashboard/Action/Viewed';
+import ViewedYou from '../Dashboard/Action/ViewedYou';
+import ReceivedInterest from '../Dashboard/Action/ReceivedInterest';
+import AcceptedInterest from '../Dashboard/Action/AcceptedInterest';
+import Skip from '../Dashboard/Action/Skip';
 
 function DashboardLayout() {
 	const location = useLocation();

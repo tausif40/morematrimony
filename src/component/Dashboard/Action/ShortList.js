@@ -1,17 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserAction } from '../../../store/features/userAction-slice';
+import { getUserAction, setUserAction } from '../../../store/features/userAction-slice';
 import male from '../../../img/male.png';
 import female from '../../../img/female.png';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import ActionLoader from '../../Loader/ActionLoader';
 
-const mapSendInterest = (profiles) => {
+const mapShortlistData = (profiles) => {
 	return profiles?.map((profile) => {
 		const { userDetails } = profile;
-		console.log(profile)
 		return {
 			userId: profile?.targetUserId,
 			profileImg: userDetails?.profileImage,
@@ -31,23 +30,43 @@ const mapSendInterest = (profiles) => {
 	});
 };
 
-const SendInterest = () => {
+const ShortList = () => {
 	const dispatch = useDispatch();
 	const [ myInterestList, setMyInterestList ] = useState([]);
 	const [ searchQuery, setSearchQuery ] = useState('');
+	const [ isSendInterest, setIsSendInterest ] = useState('');
 
-	const sendInterest = useSelector((state) => state.userAction.send_interest);
-	const isLoading = sendInterest.loading;
-	console.log(sendInterest);
+	const shortlistData = useSelector((state) => state.userAction.shortlist);
+	const isLoading = shortlistData.loading;
+
 	useEffect(() => {
-		dispatch(getUserAction("send_interest"));
+		dispatch(getUserAction("shortlist"));
 	}, [ dispatch ]);
 
-	const profiles = useMemo(() => mapSendInterest(sendInterest?.data?.socialAction), [ sendInterest?.data?.socialAction ]);
+	console.log(shortlistData);
+	const profiles = useMemo(() => mapShortlistData(shortlistData?.data?.socialAction), [ shortlistData?.data?.socialAction ]);
 
 	useEffect(() => {
 		setMyInterestList(profiles);
 	}, [ profiles ]);
+
+	const filteredProfiles = useMemo(() => {
+		if (!searchQuery.trim()) return myInterestList;
+		return myInterestList.filter(profile =>
+			`${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.religion?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.occupation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.education?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.country?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			profile.state?.toLowerCase().includes(searchQuery.toLowerCase())
+		);
+	}, [ myInterestList, searchQuery ]);
+
+	// const handelAction = (actionType, id) => {
+	// 	const action = { targetUserId: id, activityType: actionType }
+	// 	actionType == 'send_interest' && setIsSendInterest(true)
+	// 	dispatch(setUserAction(action));
+	// };
 
 	return (
 		<>
@@ -56,7 +75,7 @@ const SendInterest = () => {
 				<header className="text-gray-700 shadow-md">
 					<div className="container mx-auto px-4 py-3">
 						<div className="flex justify-between items-center">
-							<h1 className="text-2xl font-semibold">Send Interest</h1>
+							<h1 className="text-2xl font-semibold">My ShortList</h1>
 							<div className="flex items-center space-x-4">
 								<div className="relative">
 									<input
@@ -77,8 +96,8 @@ const SendInterest = () => {
 				<main className="container mx-auto px-4 py-8">
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-10">
 						{isLoading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
-							myInterestList?.map((profile, index) => (
-								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-lg transition duration-300 border">
+							filteredProfiles?.map((profile, index) => (
+								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-xl transition duration-300 border">
 									<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
 										<img
 											src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
@@ -103,12 +122,12 @@ const SendInterest = () => {
 												</p>
 											</div>
 										</div>
-										<div className="space-y-2">
-											<p className="text-gray-700 truncate">
+										<div className="space-y-2 truncate">
+											<p className="text-gray-700">
 												<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
 													{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
 											</p>
-											<p className="text-gray-700">
+											<p className="text-gray-700 truncate">
 												<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
 											</p>
 											<p className="text-gray-700 truncate">
@@ -117,24 +136,24 @@ const SendInterest = () => {
 										</div>
 									</div>
 
-									<div className="py-3 flex justify-center items-center border-t text-sm gap-6">
+									<div className="py-3 flex justify-center items-center border-t gap-6">
 										<Link to={`/matches/profile-details/${profile.userId}`}>
-											<button className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
+											<button className="flex items-center space-x-2 px-4 py-[6px] bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
 												<span>View Profile</span>
 											</button>
 										</Link>
-										<button className="flex items-center space-x-2 px-4 py-2 border-2 border-primary bg-primary text-white rounded-full transition">
-											<span>Interest Pending</span>
-										</button>
+										{/* <button className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${isSendInterest ? 'border-red-500 bg-red-500' : 'border-orange-500 bg-orange-500'} shadow transition-all`}
+											onClick={() => handelAction('send_interest', profile.userId)}
+										>Send Interest</button> */}
 									</div>
 								</div>
 							))}
 					</div>
-					{!isLoading && myInterestList?.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
+					{!isLoading && filteredProfiles?.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
 				</main>
 			</div>
 		</>
 	);
 };
 
-export default SendInterest;
+export default ShortList;
