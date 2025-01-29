@@ -41,7 +41,7 @@ const SendInterest = () => {
 	console.log("sendInterest- ", sendInterest);
 	useEffect(() => {
 		dispatch(getUserAction("send_interest"));
-	}, [ dispatch ]);	
+	}, [ dispatch ]);
 
 	const profiles = useMemo(() => mapSendInterest(sendInterest?.data?.socialAction), [ sendInterest?.data?.socialAction ]);
 
@@ -51,7 +51,7 @@ const SendInterest = () => {
 
 	return (
 		<>
-			<div className="bg-gradient-to-br from-slate-50 to-red-50 rounded-md overflow-hidden border">
+			<div className="bg-[#f9f9f9] rounded-md overflow-hidden border">
 				{/* Header */}
 				<header className="text-gray-700 shadow-md">
 					<div className="container mx-auto px-4 py-3">
@@ -83,7 +83,7 @@ const SendInterest = () => {
 										<img
 											src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
 											alt={profile.name}
-											className="w-full h-64 object-cover"
+											className="w-full h-64 object-cover border-b"
 										/>
 									</Link>
 									<div className="px-4 pt-2 pb-4">
@@ -108,7 +108,7 @@ const SendInterest = () => {
 												<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
 													{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
 											</p>
-											<p className="text-gray-700">
+											<p className="text-gray-700 truncate">
 												<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
 											</p>
 											<p className="text-gray-700 truncate">

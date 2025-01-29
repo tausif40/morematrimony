@@ -26,7 +26,7 @@ const NavMain = () => {
 	const token = Cookies.get('access_token');
 	const handleLogout = useLogout();
 
-	const dpImage = useSelector((state) => state.userDetails.dpImage.img); 
+	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
 
 	const handelLogOut = () => {
 		const res = handleLogout();
@@ -65,10 +65,9 @@ const NavMain = () => {
 		{ path: '/matches', name: 'Matches', icon: PiUsers },
 		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
-		{ path: '/notifications', name: 'Notification', icon: IoIosNotificationsOutline },
+		// { path: '/notifications', name: 'Notification', icon: IoIosNotificationsOutline },
 	]
 	const ProfileOption = [
-
 		{ path: '/my-profile', name: 'My Profile', icon: FaRegUser },
 		{ path: '/help', name: 'Help', icon: IoIosHelpCircleOutline },
 	]
@@ -154,7 +153,7 @@ const NavMain = () => {
 						<div className='text-sm font-medium text-text flex items-center gap-4 md:gap-0'>
 							{isUserRegister
 								? <>
-									<div className='block md:hidden'><IoNotificationsCircleSharp size={44} /></div>
+									<div className=''><IoNotificationsCircleSharp size={40} /></div>
 									<div className="relative" >
 										<button className=""
 											onClick={() => setIsOpen(!isOpen)}

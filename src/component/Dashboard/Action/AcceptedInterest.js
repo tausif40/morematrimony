@@ -11,7 +11,6 @@ import ActionLoader from '../../Loader/ActionLoader';
 const mapAcceptList = (profiles) => {
 	return profiles?.map((profile) => {
 		const { userDetails } = profile;
-		console.log(profile)
 		return {
 			userId: profile?.targetUserId,
 			profileImg: userDetails?.profileImage,
@@ -35,52 +34,43 @@ const AcceptedInterest = () => {
 	const dispatch = useDispatch();
 	const [ acceptList, setAcceptList ] = useState([]);
 	const [ searchQuery, setSearchQuery ] = useState('');
+	const [ activeTab, setActiveTab ] = useState("acceptMe");
 
 	const accept = useSelector((state) => state.userAction.accept);
 	const accepter = useSelector((state) => state.userAction.accepter);
 	const userId = useSelector((state) => state.userDetails.userId);
 	const isLoading = accept.loading || accepter.loading;
-	console.log("accepter ", accepter);
 
 	useEffect(() => {
 		dispatch(getUserAction("accept"));
-		dispatch(getAccepter(userId));
-	}, [ dispatch ]);
+		userId && dispatch(getAccepter(userId));
+	}, [ dispatch, userId ]);
 
-	const acceptByYouList = useMemo(() => mapAcceptList(accept?.data?.socialAction), [ accept?.data?.socialAction ]);
+	const acceptByMe = useMemo(() => mapAcceptList(accept?.data?.socialAction), [ accept?.data?.socialAction ]);
+	const acceptOpponent = useMemo(() => mapAcceptList(accepter?.data?.socialAction), [ accepter?.data?.socialAction ]);
 
 	useEffect(() => {
-		setAcceptList(acceptByYouList);
-	}, [ acceptByYouList ]);
-
-	const handelAccept = (value) => {
-		console.log(value);
-		// if (value == 'accept') {
-		// 	setAcceptList(acceptByYouList);
-		// } else if (value == 'accepterProfiles') {
-		// 	setAcceptList(acceptByYouList);
-		// }
-	}
+		activeTab == "acceptMe" ? setAcceptList(acceptByMe) : setAcceptList(acceptOpponent);
+	}, [ acceptByMe, acceptOpponent, activeTab ]);
 
 	return (
 		<>
-
-			<div className="bg-gradient-to-br from-slate-50 to-red-50 rounded-md overflow-hidden border">
+			<div className="bg-[#f9f9f9] rounded-md overflow-hidden border">
 				{/* Header */}
 				<header className="text-gray-700 shadow-md">
 					<div className="container mx-auto px-4 py-3">
 						<div className="flex justify-between items-center">
 							<h1 className="text-2xl font-semibold">Accept Interest</h1>
-							<div>
+							{/* <div>
 								<select name="" id="" className='px-2 py-2 border outline-none rounded-md'
 									onChange={(e) => handelAccept(e.target.value)}
 								>
-									{/* <option value="allData">All data</option> */}
+									<option value="allData">All data</option>
 									<option value="accept">Accept by me</option>
 									<option value="accepterProfiles">Accept by opponent</option>
 								</select>
-							</div>
-							<div className="flex items-center space-x-4">
+							</div> */}
+							{/* <div className="flex items-center space-x-4">
 								<div className="relative">
 									<input
 										type="text"
@@ -91,10 +81,24 @@ const AcceptedInterest = () => {
 									/>
 									<Search className="absolute left-3 top-2.5 h-5 w-5 text-black/70" />
 								</div>
+							</div> */}
+							<div className="grid grid-cols-2 p-1 space-x-1 bg-gray-300 rounded-full float-end">
+								<button
+									className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === "acceptMe" ? "bg-gray-700 text-white" : "text-gray-500"} min-w-max`}
+									onClick={() => setActiveTab("acceptMe")}>
+									Accept by me
+								</button>
+								<button
+									className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === "acceptOpponent" ? "bg-gray-700 text-white" : "text-gray-500"} min-w-max`}
+									onClick={() => setActiveTab("acceptOpponent")}>
+									Accept by opponent
+								</button>
 							</div>
+
 						</div>
 					</div>
 				</header>
+
 
 				{/* Main Content */}
 				<main className="container mx-auto px-4 py-8">
@@ -106,7 +110,7 @@ const AcceptedInterest = () => {
 										<img
 											src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
 											alt={profile.name}
-											className="w-full h-64 object-cover"
+											className="w-full h-64 object-cover border-b"
 										/>
 									</Link>
 									<div className="px-4 pt-2 pb-4">
@@ -131,7 +135,7 @@ const AcceptedInterest = () => {
 												<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
 													{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
 											</p>
-											<p className="text-gray-700">
+											<p className="text-gray-700 truncate">
 												<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
 											</p>
 											<p className="text-gray-700 truncate">
@@ -140,12 +144,12 @@ const AcceptedInterest = () => {
 										</div>
 									</div>
 
-									<div className="py-3 flex justify-center items-center border-t text-sm gap-6">
-										<p className="flex items-center space-x-2 px-4 py-2 border-2 border-emerald-500 bg-emerald-500 text-white rounded-full transition">
-											<span>Accept by me</span>
+									<div className="py-3 flex justify-center items-center border-t text-sm gap-3">
+										<p className={`flex items-center space-x-2 px-4 py-[6px] border-2 text-white rounded-full transition ${activeTab == 'acceptMe' ? 'border-emerald-500 bg-emerald-500' : 'border-teal-500 bg-teal-500'}`}>
+											<span>{activeTab == 'acceptMe' ? 'Accept by me' : 'Accept by opponent'}</span>
 										</p>
 										<Link to={`/matches/profile-details/${profile.userId}`}>
-											<button className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
+											<button className="flex items-center space-x-2 px-4 py-[6px] bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
 												<span>View Profile</span>
 											</button>
 										</Link>

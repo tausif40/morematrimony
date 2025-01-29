@@ -70,7 +70,7 @@ const ViewedYou = () => {
 	}, [ myInterestList, searchQuery ]);
 
 	return (
-		<div className="bg-gradient-to-br from-[#fff] to-red-50 rounded-md overflow-hidden border">
+		<div className="bg-[#f9f9f9] rounded-md overflow-hidden border">
 			{/* Header */}
 			<header className="text-gray-700 shadow-md">
 				<div className="container mx-auto px-4 py-3">
@@ -103,7 +103,7 @@ const ViewedYou = () => {
 									<img
 										src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
 										alt={profile.name}
-										className="w-full h-64 object-cover"
+										className="w-full h-64 object-cover border-b"
 									/>
 								</Link>
 								<div className="px-4 pt-2 pb-4">

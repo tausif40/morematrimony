@@ -46,7 +46,7 @@ export const acceptSkipInterest = createAsyncThunk('action/acceptSkipInterest', 
 export const getAccepter = createAsyncThunk('action/getAccepter', async (id, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/social-action/accepter-profiles?userId=${id}`);
-		// console.log("getUserAction response - ", response.data);
+		// console.log("getAccepter - ", response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);
