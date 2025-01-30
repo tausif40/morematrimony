@@ -43,7 +43,8 @@ const SendInterest = () => {
 		dispatch(getUserAction("send_interest"));
 	}, [ dispatch ]);
 
-	const profiles = useMemo(() => mapSendInterest(sendInterest?.data?.socialAction), [ sendInterest?.data?.socialAction ]);
+	const profiles = useMemo(() => mapSendInterest(sendInterest?.data?.socialAction?.socialAction),
+		[ sendInterest?.data?.socialAction?.socialAction ]);
 
 	useEffect(() => {
 		setMyInterestList(profiles);

@@ -44,7 +44,7 @@ const Skip = () => {
 	}, [ dispatch ]);
 
 	console.log("skipList-", skipList);
-	const profiles = useMemo(() => mapSkipList(skipList?.data?.socialAction), [ skipList?.data?.socialAction ]);
+	const profiles = useMemo(() => mapSkipList(skipList?.data?.socialAction?.socialAction), [ skipList?.data?.socialAction?.socialAction ]);
 
 	useEffect(() => {
 		setMyInterestList(profiles);

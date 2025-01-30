@@ -43,7 +43,7 @@ const ShortList = () => {
 	}, [ dispatch ]);
 
 	console.log(viewedData);
-	const profiles = useMemo(() => mapViewedData(viewedData?.data?.socialAction), [ viewedData?.data?.socialAction ]);
+	const profiles = useMemo(() => mapViewedData(viewedData?.data?.socialAction?.socialAction), [ viewedData?.data?.socialAction?.socialAction ]);
 
 	useEffect(() => {
 		setMyInterestList(profiles);

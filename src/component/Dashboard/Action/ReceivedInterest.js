@@ -49,8 +49,8 @@ const ReceivedInterest = () => {
 		dispatch(getReceivedInterest(userId));
 	}, [ dispatch, userId ])
 
-	const profiles = useMemo(() => mapReceivedInterest(receivedInterest?.data?.socialAction), [ receivedInterest?.data?.socialAction ]);
-	console.log("receivedInterest - ", receivedInterest);
+	const profiles = useMemo(() => mapReceivedInterest(receivedInterest?.data?.socialAction?.socialAction),
+		[ receivedInterest?.data?.socialAction?.socialAction ]);
 
 	useEffect(() => {
 		setMyInterestList(profiles)

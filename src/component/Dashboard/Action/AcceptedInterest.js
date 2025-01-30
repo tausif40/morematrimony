@@ -41,13 +41,16 @@ const AcceptedInterest = () => {
 	const userId = useSelector((state) => state.userDetails.userId);
 	const isLoading = accept.loading || accepter.loading;
 
+	console.log("accept - ", accept);
+	console.log("accepter - ", accepter);
+
 	useEffect(() => {
 		dispatch(getUserAction("accept"));
 		userId && dispatch(getAccepter(userId));
 	}, [ dispatch, userId ]);
 
-	const acceptByMe = useMemo(() => mapAcceptList(accept?.data?.socialAction), [ accept?.data?.socialAction ]);
-	const acceptOpponent = useMemo(() => mapAcceptList(accepter?.data?.socialAction), [ accepter?.data?.socialAction ]);
+	const acceptByMe = useMemo(() => mapAcceptList(accept?.data?.socialAction?.socialAction), [ accept?.data?.socialAction?.socialAction ]);
+	const acceptOpponent = useMemo(() => mapAcceptList(accepter?.data?.socialAction?.socialAction), [ accepter?.data?.socialAction?.socialAction ]);
 
 	useEffect(() => {
 		activeTab == "acceptMe" ? setAcceptList(acceptByMe) : setAcceptList(acceptOpponent);

@@ -44,17 +44,17 @@ const ViewedYou = () => {
 		dispatch(getViewedYou(userId));
 	}, [ dispatch, userId ])
 
-	const profiles = useMemo(() => mapViewedYou(viewedYouList?.data?.socialAction), [ viewedYouList?.data?.socialAction ]);
+	const profiles = useMemo(() => mapViewedYou(viewedYouList?.data?.socialAction?.socialAction), [ viewedYouList?.data?.socialAction?.socialAction ]);
 
 	useEffect(() => {
 		setMyInterestList(profiles)
 	}, [ profiles ])
 
-	useEffect(() => {
-		// setMyInterestList(profiles)
-		console.log("userId - ", userId);
-		console.log("received Interest - ", viewedYouList);
-	}, [ viewedYouList ])
+	// useEffect(() => {
+	// setMyInterestList(profiles)
+	// console.log("userId - ", userId);
+	// console.log("viewedYouList - ", viewedYouList);
+	// }, [ viewedYouList ])
 
 
 	const filteredProfiles = useMemo(() => {
