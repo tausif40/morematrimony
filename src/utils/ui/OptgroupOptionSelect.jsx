@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 
-const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
+const OptgroupOptionSelect = ({ dataList, onSelectionChange, fieldName }) => {
 	const [ selectedItems, setSelectedItems ] = useState([]);
 	const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
 	const [ searchQuery, setSearchQuery ] = useState("");
@@ -14,7 +14,7 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 		return dataList?.flatMap((group) =>
 			group.roles.map((role) => ({
 				...role,
-				occupationName: group.occupationName,
+				name: group.name,
 			}))
 		);
 	};
@@ -60,7 +60,7 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 		const flattenedList = flattenDataList();
 		const filtered = flattenedList?.filter((item) =>
 			item.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			item.occupationName.toLowerCase().includes(searchQuery.toLowerCase())
+			item.name.toLowerCase().includes(searchQuery.toLowerCase())
 		);
 		setFilteredItems(filtered);
 	}, [ searchQuery, dataList ]);
@@ -71,13 +71,13 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 		}
 	}, [ selectedItems ]);
 
-	// Group items by occupationName
+	// Group items by name
 	const groupByOccupation = (items) => {
 		return items.reduce((acc, item) => {
-			if (!acc[ item.occupationName ]) {
-				acc[ item.occupationName ] = [];
+			if (!acc[ item.name ]) {
+				acc[ item.name ] = [];
 			}
-			acc[ item.occupationName ].push(item);
+			acc[ item.name ].push(item);
 			return acc;
 		}, {});
 	};
@@ -129,10 +129,10 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 
 					{/* Grouped Dropdown Options */}
 					<div className="max-h-[50vh] overflow-y-auto shadow-xl text-black">
-						{Object.entries(groupByOccupation(filteredItems)).map(([ occupationName, roles ]) => (
-							<div key={occupationName} className="mb-2">
+						{Object.entries(groupByOccupation(filteredItems)).map(([ name, roles ]) => (
+							<div key={name} className="mb-2">
 								<div className="bg-gray-400 px-4 py-2 text-white">
-									{occupationName}
+									{name}
 								</div>
 								{/* List of Roles */}
 								{roles.map((role) => (
@@ -159,4 +159,4 @@ const OccupationSelect = ({ dataList, onSelectionChange, fieldName }) => {
 };
 
 
-export default OccupationSelect;
+export default OptgroupOptionSelect;

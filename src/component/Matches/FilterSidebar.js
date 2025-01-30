@@ -11,7 +11,7 @@ export default function FilterSidebar({
 	removeFilter,
 	getCategoryDisplayName,
 }) {
-
+	// console.log("selectedFilters-", selectedFilters);
 	return (
 		<div className="w-72 bg-white shadow-lg sticky top-0 h-screen overflow-y-auto">
 			<div className="px-6 py-3 flex justify-between items-center mb-4 bg-gray-200">

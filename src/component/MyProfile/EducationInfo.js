@@ -62,7 +62,7 @@ const EducationInfo = ({ onFormSubmit, data }) => {
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Education Details</p>
 			<form className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4 px-6" onSubmit={handleSubmit}>
 				{/* Highest Education */}
-				<div>
+				{/* <div>
 					<label htmlFor="highestEducation" className="block font-medium mb-1 mt-1 text-headingGray">
 						Highest Education <span className="text-red-500">*</span>
 					</label>
@@ -78,6 +78,34 @@ const EducationInfo = ({ onFormSubmit, data }) => {
 							<option key={country._id} value={country._id} disabled={country.id == 1} className={`${country.id == 1 && 'bg-[#a6a6a6] text-white'}`}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
+						))}
+					</select>
+					{errors.highestEducation && <p className="text-red-500 text-xs">{errors.highestEducation}</p>}
+				</div> */}
+
+				<div>
+					<label htmlFor="highestEducation" className="block font-medium mb-1 mt-1 text-headingGray">
+						Highest Education <span className="text-red-500">*</span>
+					</label>
+					<select
+						id="highestEducation"
+						className={getInputClasses('highestEducation')}
+						name="highestEducation"
+						value={formData.highestEducation}
+						onChange={handleChange}
+					>
+						<option value="" disabled>Select highestEducation</option>
+						{education?.education?.map((education,) => (
+							<optgroup
+								label={education.name}
+								key={education.name}
+							>
+								{education.roles.map((role) => (
+									<option key={role.id} value={role.id}>
+										{role.role}
+									</option>
+								))}
+							</optgroup>
 						))}
 					</select>
 					{errors.highestEducation && <p className="text-red-500 text-xs">{errors.highestEducation}</p>}

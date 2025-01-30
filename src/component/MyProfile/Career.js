@@ -64,6 +64,7 @@ const Career = ({ data, onFormSubmit }) => {
 
 	const getInputClasses = (fieldName) => `input-field ${errors[ fieldName ] && 'border-red-500'} text-gray-700`;
 
+	console.log(occupations)
 	return (
 		<div className="box-shadow bg-white border rounded-md mx-auto">
 			<p className="px-6 py-3 font-medium border-b text-headingGray">Career</p>
@@ -106,8 +107,8 @@ const Career = ({ data, onFormSubmit }) => {
 						<option value="" disabled>Select Occupation</option>
 						{occupations?.occupation?.map((occupation,) => (
 							<optgroup
-								label={occupation.occupationName}
-								key={occupation.occupationName}
+								label={occupation.name}
+								key={occupation.name}
 							>
 								{occupation.roles.map((role) => (
 									<option key={role.id} value={role.id}>

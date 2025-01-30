@@ -92,7 +92,7 @@ const MyProfilePage = () => {
 		dispatch(uploadFileData(data));
 	};
 
-	// console.log(userData);
+	console.log(education);
 	return (
 		<div className='space-y-10'>
 			<Introduction onFormSubmit={handleFormSubmit} data={{ introductionData, isLoading }} />

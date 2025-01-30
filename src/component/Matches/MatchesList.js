@@ -29,7 +29,7 @@ export default function MatchesList() {
 	const religions = useSelector((state) => state.profileData.religions);
 
 	// const { filters, page, noOfFilter } = useSelector((state) => state.matchedProfile);
-
+	// console.log(occupations);
 	const [ selectedFilters, setSelectedFilters ] = useState({
 		onBehalf: [],
 		maritalStatus: [],
@@ -41,6 +41,7 @@ export default function MatchesList() {
 		presentCity: '',
 		residencyStatus: [],
 		education: [],
+		occupation: [],
 		bodyType: [],
 		religion: '',
 		caste: [],
@@ -59,6 +60,7 @@ export default function MatchesList() {
 		presentCity: presentCityList,
 		residencyStatus: personalInformation?.residencyStatus,
 		education: education?.data?.education,
+		occupation: occupations?.data?.occupation,
 		bodyType: PhysicalAttributesData?.bodyType,
 		religion: religions?.data?.religion,
 		caste: casteList,
@@ -77,6 +79,7 @@ export default function MatchesList() {
 		presentState: 'Present State',
 		presentCity: 'Present City',
 		education: 'Education',
+		occupation: 'Occupation',
 		occupation: 'Occupation',
 		bodyType: 'Body Type',
 		religion: 'Religion',
@@ -101,6 +104,7 @@ export default function MatchesList() {
 			setStateLoading(false)
 		}
 	}
+
 	const fetchCast = async (religionId) => {
 		setStateLoading(true)
 		try {
@@ -113,6 +117,7 @@ export default function MatchesList() {
 			setStateLoading(false)
 		}
 	}
+
 	const fetchCity = async (stateId, category) => {
 		setCityLoading(true)
 		try {
@@ -183,7 +188,7 @@ export default function MatchesList() {
 			presentCity: '',
 			residencyStatus: [],
 			education: [],
-			// occupation: [],
+			occupation: [],
 			bodyType: [],
 			religion: '',
 			caste: [],
@@ -195,7 +200,7 @@ export default function MatchesList() {
 		if (!activePopup) return [];
 		const options = filterOptions[ activePopup ];
 		return options?.filter((option) => {
-			const name = option.name || option; // Handle object-based and simple arrays
+			const name = option.name || option;
 			return name.toLowerCase().includes(searchTerm.toLowerCase());
 		});
 	}, [ activePopup, searchTerm ]);

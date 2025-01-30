@@ -6,7 +6,7 @@ import { TbMessage2Question } from "react-icons/tb";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { IoIosHelpCircleOutline } from "react-icons/io";
-import { IoNotificationsCircleSharp } from "react-icons/io5";
+import { FaBell } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
 import DeviceDetector from '../../utils/device/DeviceDetector';
 import { FaRegUser } from "react-icons/fa";
@@ -151,9 +151,11 @@ const NavMain = () => {
 						</div>
 
 						<div className='text-sm font-medium text-text flex items-center gap-4 md:gap-0'>
-							{isUserRegister
-								? <>
-									<div className=''><IoNotificationsCircleSharp size={40} /></div>
+							{isUserRegister ?
+								<>
+									<div className='w-8 h-8 ring-1 ring-offset-2 ring-gray-400 rounded-full bg-gray-200'>
+										<FaBell size={28} />
+									</div>
 									<div className="relative" >
 										<button className=""
 											onClick={() => setIsOpen(!isOpen)}

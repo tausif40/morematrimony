@@ -5,7 +5,7 @@ import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lif
 import apiClient from '../../api/apiClient';
 import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
 import MultiDropdown from '../../utils/ui/MultiDropdown';
-import OccupationSelect from '../../utils/ui/OccupationSelect';
+import OptgroupOptionSelect from '../../utils/ui/OptgroupOptionSelect';
 
 const PartnerExpectation = ({ data, onFormSubmit }) => {
 	const { countriesWithDoesNotMatter, religions, occupations, education, languages } = data
@@ -491,7 +491,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Education <span className="text-red-500">*</span>
 					</label>
-					<MultiSelectDropdown
+					<OptgroupOptionSelect
 						dataList={education?.education}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('highestEducation', selectedItems)}
 						fieldName={'Select Education'} />
@@ -529,7 +529,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Occupation <span className="text-red-500">*</span>
 					</label>
-					<OccupationSelect
+					<OptgroupOptionSelect
 						dataList={occupations?.occupation}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('occupation', selectedItems)}
 						fieldName={'Select Occupation'} />

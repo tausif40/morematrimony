@@ -56,6 +56,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 	}, [ residency ]);
 
 	const fetchCity = async (stateId) => {
+		console.log(stateId);
 		setCityLoading(true)
 		try {
 			const response = await apiClient.get(`/city?stateId=${stateId}`);
