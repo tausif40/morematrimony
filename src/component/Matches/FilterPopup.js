@@ -11,6 +11,7 @@ export default function FilterPopup({
 	getCategoryDisplayName,
 	clearCategoryFilters,
 }) {
+	// console.log(activePopup, "-", filteredOptions);
 
 	const [ search, setSearch ] = useState(false)
 
@@ -51,38 +52,44 @@ export default function FilterPopup({
 				<div className="px-6 py-2 min-h-[30vh] max-h-[50vh] overflow-y-auto">
 					{filteredOptions?.map((option) => (
 						<>
-							{
-								typeof selectedFilters[ activePopup ] === 'object' ?
-									<label
-										key={option._id || option}
-										className="flex items-center hover:bg-slate-100 px-4 py-2 rounded"
-									>
-										<input
-											type="checkbox"
-											checked={selectedFilters[ activePopup ].includes(option._id || option)}
-											onChange={() => handleFilterSelect(activePopup, option._id || option)}
-										/>
-										<span className="ml-2 tracking-wide text-gray-700 capitalize">{option?.name || option}</span>
+							{typeof selectedFilters[ activePopup ] === 'object' ?
+								<>
+									<label key={option._id || option} className="flex items-center hover:bg-slate-100 px-4 py-2 rounded">
+										{(activePopup !== 'occupation' && activePopup !== 'education') &&
+											<input type="checkbox"
+												checked={selectedFilters[ activePopup ].includes(option._id || option)}
+												onChange={() => handleFilterSelect(activePopup, option._id || option)}
+											/>}
+										<span className={`ml-2 tracking-wide text-gray-700 capitalize 
+											${activePopup === 'occupation' && 'font-bold text-lg'} ${activePopup === 'education' && 'font-bold text-lg'}`}>
+											{option?.name || option}</span>
 									</label>
-									:
-									typeof selectedFilters[ activePopup ] === 'string' &&
-									<label
-										key={option._id || option}
-										htmlFor={option._id}
-										className="flex items-center hover:bg-slate-100 px-4 py-2 rounded"
-									>
-										<input
-											id={option._id}
-											type="radio"
-											checked={selectedFilters[ activePopup ].includes(option._id || option)}
-											onChange={() => handleFilterSelect(activePopup, option._id || option)}
-										/>
-										<span className="ml-2 tracking-wide text-gray-700 capitalize">{option?.name || option}</span>
-									</label>
+
+									{option.roles && option.roles.map((role) => (
+										<label key={role.id} className="flex items-center hover:bg-slate-100 px-4 py-2 rounded">
+											<input
+												type="checkbox"
+												checked={selectedFilters[ activePopup ]?.includes(role.id)}
+												onChange={() => handleFilterSelect(activePopup, role.id)}
+											/>
+											<span className="ml-2 tracking-wide text-gray-700 capitalize">{role.role}</span>
+										</label>
+									))}
+								</>
+								:
+								typeof selectedFilters[ activePopup ] === 'string' &&
+								<label key={option._id || option} htmlFor={option._id} className="flex items-center hover:bg-slate-100 px-4 py-2 rounded">
+									<input id={option._id} type="radio"
+										checked={selectedFilters[ activePopup ].includes(option._id || option)}
+										onChange={() => handleFilterSelect(activePopup, option._id || option)}
+									/>
+									<span className="ml-2 tracking-wide text-gray-700 capitalize">{option?.name || option}</span>
+								</label>
 							}
 						</>
 					))}
 				</div>
+
 				<div className="flex justify-end gap-4 p-4 bg-gray-100 text-sm">
 					<button
 						onClick={() => clearCategoryFilters(activePopup)}

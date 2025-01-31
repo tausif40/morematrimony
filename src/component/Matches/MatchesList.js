@@ -206,6 +206,17 @@ export default function MatchesList() {
 	}, [ activePopup, searchTerm ]);
 
 	const getSelectedName = (category, value) => {
+		// console.log('getSelectedName')
+		console.log("category - ", category, "\nvalue - ", value);
+
+		if (category === 'occupation' || category === 'education') {
+			const options = filterOptions[ category ];
+			// console.log(option);
+			const option = options?.find((opt) => opt._id === value || opt === value);
+			return option?.name || option || '';
+
+		}
+
 		const options = filterOptions[ category ];
 		const option = options?.find((opt) => opt._id === value || opt === value);
 		return option?.name || option || '';

@@ -51,7 +51,7 @@ const ProfileCard = (userData) => {
 				</div>
 				<div className="absolute inset-0 rounded-xl"></div>
 				<Link to={`/matches/profile-details/${id}`} className="relative z-10">
-					<div className='relative z-10'>
+					<div className='relative z-10 border rounded-md overflow-hidden'>
 						<span className="text-4xl text-gray-400">
 							{newUser && <div className="ribbon"><span>New Join</span></div>}
 						</span>
