@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import ActionLoader from '../../Loader/ActionLoader';
 import Modal from '../../Modal/Modal'
+import '../../../CSS/LoaderAnimation.css'
 
 const mapReceivedInterest = (profiles) => {
 	return profiles?.map((profile) => {
@@ -38,8 +39,12 @@ const ReceivedInterest = () => {
 	const [ myInterestList, setMyInterestList ] = useState([])
 	const [ searchQuery, setSearchQuery ] = useState('');
 	const [ confirmSkip, setConfirmSkip ] = useState(false);
+	const [ pendingAction, setPendingAction ] = useState(null);
 	const [ acceptReq, setAcceptReq ] = useState(false);
 	const [ showModal, setShowModal ] = useState(false);
+	const [ loadingSkip, setLoadingSkip ] = useState(false);
+	const [ loadingAccept, setLoadingAccept ] = useState(false);
+
 	const receivedInterest = useSelector((state) => state.userAction.receivedInterest);
 	const userId = useSelector((state) => state.userDetails.userId);
 	const isLoading = receivedInterest.loading
@@ -56,11 +61,6 @@ const ReceivedInterest = () => {
 		setMyInterestList(profiles)
 	}, [ profiles ])
 
-	useEffect(() => {
-		// setMyInterestList(profiles)
-		// console.log("userId - ", userId);
-	}, [ receivedInterest ])
-
 
 	const filteredProfiles = useMemo(() => {
 		if (!searchQuery.trim()) return myInterestList;
@@ -75,17 +75,43 @@ const ReceivedInterest = () => {
 	}, [ myInterestList, searchQuery ]);
 
 	const handelAction = (activityType, agentId, targetUserId) => {
+		if (activityType === 'skip') {
+			setShowModal(true);
+			setPendingAction({ activityType, agentId, targetUserId });
+			return;
+		}
+		executeAction(activityType, agentId, targetUserId);
+	};
 
-		activityType == 'skip' && setShowModal(true);
-		activityType == 'accept' && setAcceptReq(true)
+	const confirmAndSkip = () => {
+		if (pendingAction) {
+			executeAction(pendingAction.activityType, pendingAction.agentId, pendingAction.targetUserId);
+			setPendingAction(null);
+		}
+		setShowModal(false);
+	};
 
+	const executeAction = (activityType, agentId, targetUserId) => {
+		activityType == 'accept' && setLoadingAccept(true)
+		activityType == 'skip' && setLoadingSkip(true)
 		const data = {
 			userId: userId,
 			targetUserId: targetUserId,
 			agentIdOfTargetedUser: agentId,
 			activityType: activityType
 		}
-		dispatch(acceptSkipInterest(data));
+
+		dispatch(acceptSkipInterest(data))
+			.then(response => {
+				console.log("Response:", response);
+				activityType == 'accept' && setAcceptReq(true); setLoadingAccept(false)
+				activityType == 'skip' && setConfirmSkip(true); setLoadingSkip(false)
+			})
+			.catch(error => {
+				console.error("Error:", error);
+				activityType == 'accept' && setLoadingAccept(false)
+				activityType == 'skip' && setLoadingSkip(false)
+			});
 	}
 
 
@@ -95,7 +121,7 @@ const ReceivedInterest = () => {
 				<p className='text-center text-black text-lg pt-2'>Are Your sure you want to skip this profile?</p>
 				<div className='flex justify-center gap-8 mt-6'>
 					<button className='cancel-button' onClick={() => setShowModal(false)}>Cancel</button>
-					<button className='button' onClick={() => { setConfirmSkip(true); setShowModal(false) }}>Confirm</button>
+					<button className='button' onClick={confirmAndSkip}>Confirm</button>
 				</div>
 			</Modal >
 			<div className="bg-[#f9f9f9] rounded-md overflow-hidden border">
@@ -166,13 +192,15 @@ const ReceivedInterest = () => {
 									</div>
 
 									<div className="py-3 flex justify-center items-center border-t text-sm gap-6">
-										{!acceptReq && <button className="flex items-center px-6 py-2 border-2 border-gray-400 text-gray-600 rounded-full transition"
-											onClick={() => handelAction("skip", profile?.agentId, profile.targetUserId)} disabled={confirmSkip}>
-											<span>{confirmSkip ? 'Skipped' : 'Skip'}</span>
+										{!acceptReq && <button className={`flex items-center px-6 py-2 border-2 border-gray-400 rounded-full transition ${loadingSkip ? 'bg-gray-200 text-gray-500' : 'text-gray-600'}`}
+											onClick={() => handelAction("skip", profile?.agentId, profile.targetUserId)} disabled={loadingSkip || confirmSkip}>
+											<span>{confirmSkip ? 'Skipped' : <p>{loadingSkip ? 'Skipping' : 'Skip'}</p>}</span>
+											{loadingSkip && <span className="loader left-2 border-gray-600"></span>}
 										</button>}
-										{!confirmSkip && <button className={`flex items-center px-6 py-2 border-2 hover:shadow text-white rounded-full transition ${acceptReq ? 'bg-green-500 border-green-500' : 'bg-sky-500 border-sky-500'}`}
+										{!confirmSkip && <button className={`flex items-center px-6 py-2 border-2 hover:shadow text-white rounded-full transition ${acceptReq ? 'bg-green-500 border-green-500' : loadingAccept ? 'bg-sky-500 text-gray-200 border-sky-500' : 'bg-sky-500 border-sky-500'}`} disabled={loadingAccept || acceptReq}
 											onClick={() => handelAction("accept", profile?.agentId, profile.targetUserId)}>
-											<span>{acceptReq ? 'Accepted' : 'Accept'}</span>
+											<span>{acceptReq ? 'Accepted' : <p>{loadingAccept ? 'Accepting' : 'Accept'}</p>}</span>
+											{loadingAccept && <span className="loader left-2 border-white"></span>}
 										</button>}
 									</div>
 

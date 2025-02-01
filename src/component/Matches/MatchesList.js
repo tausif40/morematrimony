@@ -199,6 +199,16 @@ export default function MatchesList() {
 	const filteredOptions = useMemo(() => {
 		if (!activePopup) return [];
 		const options = filterOptions[ activePopup ];
+		if (activePopup === 'occupation' || activePopup === 'education') {
+			return options?.map((option) => ({
+				...option, roles: option.roles.filter((role) =>
+					role.role.toLowerCase().includes(searchTerm.toLowerCase())),
+			})).filter((option) =>
+				option.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				option.roles.length > 0
+			);
+		}
+
 		return options?.filter((option) => {
 			const name = option.name || option;
 			return name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -206,15 +216,10 @@ export default function MatchesList() {
 	}, [ activePopup, searchTerm ]);
 
 	const getSelectedName = (category, value) => {
-		// console.log('getSelectedName')
-		console.log("category - ", category, "\nvalue - ", value);
-
 		if (category === 'occupation' || category === 'education') {
 			const options = filterOptions[ category ];
-			// console.log(option);
-			const option = options?.find((opt) => opt._id === value || opt === value);
-			return option?.name || option || '';
-
+			const option = options?.flatMap((category) => category.roles)?.find((opt) => opt.id === value);
+			return option?.role || '';
 		}
 
 		const options = filterOptions[ category ];

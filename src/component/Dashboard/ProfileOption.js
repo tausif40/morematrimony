@@ -27,16 +27,18 @@ function ProfileOption() {
 	const currentPath = location.pathname;
 	const [ profileCompletion, setProfileCompletion ] = useState()
 	const [ color, setColor ] = useState('ten')
+	const [ isLoading, setIsLoading ] = useState(false)
 
 	const userDetails = useSelector((state) => state.userDetails.userDetails);
 	const percent = userDetails?.data?.user?.profileCompletion;
-	const fistName = userDetails?.data?.user?.basicInformation?.firstName || 'User';
+	const fistName = userDetails?.data?.user?.basicInformation?.firstName || 'Your';
 	const lastName = userDetails?.data?.user?.basicInformation?.lastName || 'Name';
 	const dpImage = userDetails?.data?.user?.profileImage;
 
-	// console.log(dpImage);
+	// console.log(userDetails?.loading);
 	useEffect(() => {
 		setProfileCompletion(percent)
+		setIsLoading(userDetails?.loading)
 		percent && setColor(percentColor(percent))
 	}, [ userDetails, percent ])
 
@@ -79,10 +81,15 @@ function ProfileOption() {
 				<div className='px-4 flex flex-col items-center'>
 					<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='w-28 h-28 mb-4 ring-2 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200 border-gray-500' style={{ objectPosition: 'center 10%' }} />
 					<p className='font-semibold text-2xl text-headingGray'>{fistName + " " + lastName}</p>
-					<div className={`${color} flex text-xs my-1 border px-2 rounded-full`} >
+
+					{/* <div className={`${isLoading ? 'loading' : color} flex items-center text-xs my-1 border px-2 rounded-full`} >
 						<p className='text-[12px]'>Profile completion: </p>
-						<p>&nbsp;{profileCompletion || 0}&nbsp;</p>
-						<p className='text-[10px]'>%</p>
+						{isLoading ? <><p>&nbsp;&nbsp;</p><span class="loader"></span>&nbsp;&nbsp;</>
+							: <p>&nbsp;{profileCompletion}&nbsp;<span className='text-[10px]'>%</span></p>}
+					</div> */}
+					<div className={`${color} flex items-center text-xs my-1 border px-2 rounded-full`} >
+						<p className='text-[12px]'>Profile completion: </p>
+						<p>&nbsp;{profileCompletion || '_'}&nbsp;<span className='text-[10px]'>%</span></p>
 					</div>
 					<Link to='/member-profile'>
 						<p className='bg-[#fbcbcfd4] cursor-pointer text-hotRed py-2 px-8 rounded-md w-full flex justify-center border border-[#fbcbcfd4] hover:border-hotRed transition-all mt-5'>Public Profile</p>

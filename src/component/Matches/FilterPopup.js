@@ -30,7 +30,7 @@ export default function FilterPopup({
 	}, []);
 
 	useEffect(() => {
-		filteredOptions.length > 6 ? setSearch(true) : setSearch(false)
+		filteredOptions?.length > 6 ? setSearch(true) : setSearch(false)
 	}, [])
 
 	return (
@@ -49,19 +49,18 @@ export default function FilterPopup({
 						className="w-full mb-4 p-2 border rounded outline-none focus:border-hotRed"
 					/>}
 				</div>
-				<div className="px-6 py-2 min-h-[30vh] max-h-[50vh] overflow-y-auto">
+				<div className={`px-6 py-2 min-h-[30vh] max-h-[50vh] overflow-y-auto`}>
 					{filteredOptions?.map((option) => (
 						<>
 							{typeof selectedFilters[ activePopup ] === 'object' ?
 								<>
-									<label key={option._id || option} className="flex items-center hover:bg-slate-100 px-4 py-2 rounded">
+									<label key={option._id || option} className={`flex items-center px-4 py-2 rounded ${(activePopup !== 'occupation' && activePopup !== 'education') && 'hover:bg-slate-100'}`}>
 										{(activePopup !== 'occupation' && activePopup !== 'education') &&
 											<input type="checkbox"
 												checked={selectedFilters[ activePopup ].includes(option._id || option)}
 												onChange={() => handleFilterSelect(activePopup, option._id || option)}
 											/>}
-										<span className={`ml-2 tracking-wide text-gray-700 capitalize 
-											${activePopup === 'occupation' && 'font-bold text-lg'} ${activePopup === 'education' && 'font-bold text-lg'}`}>
+										<span className={`ml-2 tracking-wide text-gray-700 capitalize ${activePopup === 'occupation' && 'font-semibold text-gray-900'} ${activePopup === 'education' && 'font-semibold text-gray-900'}`}>
 											{option?.name || option}</span>
 									</label>
 
@@ -90,12 +89,12 @@ export default function FilterPopup({
 					))}
 				</div>
 
-				<div className="flex justify-end gap-4 p-4 bg-gray-100 text-sm">
+				<div className="flex justify-end gap-4 p-4 bg-gray-100 text-sm font-light">
 					<button
 						onClick={() => clearCategoryFilters(activePopup)}
-						className="px-4 py-1 bg-gray-400 text-white rounded"
+						className="px-4 py-1 bg-gray-400 text-white rounded hover:bg-slate-400 transition-all"
 					>
-						Clear
+						Clear all
 					</button>
 					<button
 						onClick={() => { setSearchTerm(''); setActivePopup(null) }}

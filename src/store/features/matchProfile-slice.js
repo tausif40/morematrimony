@@ -4,7 +4,7 @@ import { getQueryParams } from '../../utils/utils';
 
 export const getUserDetailsById = createAsyncThunk('data/getUserDetailsById', async (id, { rejectWithValue }) => {
 	try {
-		const response = await apiClient.get(`/user/matched-profile/${id}`);
+		const response = await apiClient.get(`/user/user-profile-with-action/${id}`);
 		console.log(response);
 		return response.data;
 	} catch (error) {
@@ -16,7 +16,7 @@ export const matchedProfileGallery = createAsyncThunk('data/getUserDetailsById',
 	try {
 		const response = await apiClient.get(`gallery/matchedProfileGallery${id}`);
 		return response.data;
-	} catch (error) {		
+	} catch (error) {
 		console.log(error);
 		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
 	}
@@ -26,7 +26,7 @@ export const matchedProfileGallery = createAsyncThunk('data/getUserDetailsById',
 export const getMatchedProfile = createAsyncThunk('data/getMatchedProfile', async (filterData, { rejectWithValue }) => {
 	try {
 		const queryParams = getQueryParams(filterData);
-		console.log(queryParams);
+		// console.log(queryParams);
 		const response = await apiClient.get(`/user/auth?${queryParams || ''}`);
 		return response.data;
 	} catch (error) {

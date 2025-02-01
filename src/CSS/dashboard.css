@@ -1,3 +1,8 @@
+.loading {
+	color: #535353;
+	background-color: #53535325;
+	border-color: #53535330;
+}
 .ten {
 	color: #ff0303;
 	background-color: #ff030325;
@@ -33,3 +38,5 @@
 	background-color: #00c13725;
 	border-color: #00c13760;
 }
+
+

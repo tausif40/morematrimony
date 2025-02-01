@@ -56,7 +56,7 @@ export default function FilterSidebar({
 										key={value}
 										className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs flex items-center space-x-1"
 									>
-										{console.log('array - ', getSelectedName(category, value))}
+										{/* {console.log('array - ', getSelectedName(category, value))} */}
 										<span>{getSelectedName(category, value)}</span>
 										<button
 											onClick={() => removeFilter(category, value)}
@@ -69,7 +69,7 @@ export default function FilterSidebar({
 							) : selected ? (
 								<span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs flex items-center space-x-1">
 									<span>{getSelectedName(category, selected)}</span>
-										{console.log('not array - ', getSelectedName(category, selected))}
+										{/* {console.log('not array - ', getSelectedName(category, selected))} */}
 									<button
 										onClick={() => removeFilter(category, selected)}
 										className="text-xs text-red-500 hover:text-red-700"

@@ -23,6 +23,7 @@ const MainContent = () => {
 	// console.log("matched Profile - ", matchedProfile?.data?.user?.profilesWithStatus);
 
 	const mapProfiles = (profiles) => {
+		console.log(profiles);
 		return profiles?.map((profile) => {
 			const {
 				_id,
@@ -33,6 +34,7 @@ const MainContent = () => {
 
 			return {
 				id: _id,
+				agentId: profile?.agentId,
 				fistName: basicInformation?.firstName,
 				lastName: basicInformation?.lastName,
 				gender: basicInformation?.gender,
@@ -50,14 +52,14 @@ const MainContent = () => {
 				lastSeen: 'Recently Active',
 				accountCreate: createdAt,
 				img: profile.profileImage,
-				status: profile.status,
+				action: profile.action,
+				targetedAction: profile.targetedAction
 			};
 		});
 	};
 
 	const profiles = matchedProfile?.data?.user?.profilesWithStatus ? mapProfiles(matchedProfile.data.user?.profilesWithStatus) : [];
 
-	// console.log("match list profiles - ", matchedProfile);
 	return (
 		<>
 			<div className="mx-auto md:px-4">
