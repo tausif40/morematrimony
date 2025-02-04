@@ -24,7 +24,7 @@ export const getProfileImages = createAsyncThunk('data/getProfileImages', async 
 	try {
 		const response = await apiClient.get(`/gallery`);
 		// console.log(response.data);
-		return response.data;
+		return response.data;	
 	} catch (error) {
 		console.log(error);
 		return rejectWithValue(error.response?.data || 'Failed to fetch profile images');

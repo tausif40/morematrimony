@@ -33,7 +33,7 @@ const MainContent = () => {
 			} = profile;
 
 			return {
-				id: _id,
+				targetId: _id,
 				agentId: profile?.agentId,
 				fistName: basicInformation?.firstName,
 				lastName: basicInformation?.lastName,

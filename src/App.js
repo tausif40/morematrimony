@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import ScrollToTop from './component/ScrollToTop/ScrollToTop';
 import NavMain from './component/NavBar/NavMain';
 import HomePageLayout from './component/Layout/HomePageLayout';
@@ -22,12 +22,15 @@ import Help from './component/Help/Help';
 import AgentProfile from './component/AgentProfile/AgentProfile';
 
 import { getProfileImages, getUserDetails } from './store/features/userDetails-slice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations, fetchReligions } from './store/features/profileData-slice';
 import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute';
+import { getNotification } from './store/features/notification-slice';
 
 const App = () => {
+  const location = useLocation()
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.userDetails.userId);
   const dashboardPaths = [
     '/dashboard',
     '/dashboard/matches',
@@ -65,6 +68,10 @@ const App = () => {
     dispatch(fetchReligions());
   }, [ dispatch ]);
 
+  useEffect(() => {
+    dispatch(getNotification(userId));
+  }, [ location.pathname, dispatch, userId ]);
+
   // useEffect(() => {
   //   if (token == undefined) {
   //     window.location.reload();
@@ -79,7 +86,7 @@ const App = () => {
         {/* <ScrollToTop /> */}
         {/* <TopNav /> */}
         <NavMain />
-        
+
         <Routes>
           <Route path="/*" element={<PageNotFound />} />
           <Route path="/" element={<HomePageLayout />} />
@@ -94,7 +101,7 @@ const App = () => {
               <Route key={path} path={path} element={<DashboardLayout />} />
             ))}
             <Route path="/member-profile" element={<MemberProfileLayout />} />
-            <Route path="/matches/profile-details/:id" element={<ProfileDetails />} />
+            <Route path="/matches/profile-details/:targetId/:userId" element={<ProfileDetails />} />
           </Route>
 
           <Route path="/plans" element={<Plans />} />

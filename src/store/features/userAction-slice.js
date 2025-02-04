@@ -4,7 +4,7 @@ import apiClient from '../../api/apiClient';
 export const setUserAction = createAsyncThunk('action/setUserAction', async (data, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.post(`/social-action`, data);
-		console.log({ activityType: data.activityType, data: response.data });
+		// console.log({ activityType: data.activityType, data: response.data });
 		// getUserAction(data.activityType);
 		return response.data;
 	} catch (error) {

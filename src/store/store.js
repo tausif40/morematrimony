@@ -4,7 +4,8 @@ import profileData from './features/profileData-slice'
 import userDataSlice from './features/userDetails-slice';
 import userUploadImages from './features/images-slice';
 import matchProfileSlice from './features/matchProfile-slice';
-import userAction from './features/userAction-slice'
+import userAction from './features/userAction-slice';
+import notificationSlice from './features/notification-slice';
 
 
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
 		image: userUploadImages,
 		matchProfile: matchProfileSlice,
 		userAction: userAction,
+		notification: notificationSlice,
 	},
 
 	middleware: (getDefaultMiddleware) =>

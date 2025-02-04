@@ -13,7 +13,7 @@ import '../../CSS/LoaderAnimation.css'
 const ProfileCard = (userData) => {
 	const dispatch = useDispatch()
 	// console.log(userData);
-	const { fistName, lastName, gender, id, agentId, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img, action, targetedAction } = userData;
+	const { fistName, lastName, gender, targetId, agentId, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img, action, targetedAction } = userData;
 
 	const [ interestReceived, setInterestReceived ] = useState(false);
 	const [ showModal, setShowModal ] = useState(false);
@@ -28,16 +28,16 @@ const ProfileCard = (userData) => {
 	const userId = useSelector((state) => state.userDetails.userId);
 
 	const handelAction = (actionType) => {
-		const action = { targetUserId: id, activityType: actionType }
-		actionType == 'send_interest' && setIsSendInterest(true)
-		actionType == 'shortlist' && setIsShortlist(true)
+		const action = { targetUserId: targetId, activityType: actionType }
+		actionType === 'send_interest' && setIsSendInterest(true)
+		actionType === 'shortlist' && setIsShortlist(true)
 		dispatch(setUserAction(action));
 	};
 
 	useEffect(() => {
-		action?.send_interest?.isDone == true ? setIsSendInterest(true) : setIsSendInterest(false)
-		action?.shortlist?.isDone == true ? setIsShortlist(true) : setIsShortlist(false)
-		targetedAction?.send_interest?.isDone == true ? setInterestReceived(true) : setInterestReceived(false)
+		action?.send_interest?.isDone === true ? setIsSendInterest(true) : setIsSendInterest(false)
+		action?.shortlist?.isDone === true ? setIsShortlist(true) : setIsShortlist(false)
+		targetedAction?.send_interest?.isDone === true ? setInterestReceived(true) : setInterestReceived(false)
 		// console.log("action int - ", action?.isInterestSent, '\n IsSendInterest = ', IsSendInterest);
 	}, [])
 
@@ -53,12 +53,12 @@ const ProfileCard = (userData) => {
 	}, [ accountCreate ]);
 
 	const handelAcceptSkip = (activityType) => {
-		activityType == 'accept' && setLoadingAccept(true)
-		if (activityType == 'skip') { setLoadingSkip(true); setShowModal(false); }
+		activityType === 'accept' && setLoadingAccept(true)
+		if (activityType === 'skip') { setLoadingSkip(true); setShowModal(false); }
 		console.log(activityType);
 		const data = {
 			userId: userId,
-			targetUserId: id,
+			targetUserId: targetId,
 			agentIdOfTargetedUser: agentId,
 			activityType: activityType
 		}
@@ -66,13 +66,13 @@ const ProfileCard = (userData) => {
 		dispatch(acceptSkipInterest(data))
 			.then(response => {
 				console.log("Response:", response);
-				activityType == 'accept' && setAcceptReq(true); setLoadingAccept(false)
-				activityType == 'skip' && setConfirmSkip(true); setLoadingSkip(false)
+				activityType === 'accept' && setAcceptReq(true); setLoadingAccept(false)
+				activityType === 'skip' && setConfirmSkip(true); setLoadingSkip(false)
 			})
 			.catch(error => {
 				console.error("Error:", error);
-				activityType == 'accept' && setLoadingAccept(false)
-				activityType == 'skip' && setLoadingSkip(false)
+				activityType === 'accept' && setLoadingAccept(false)
+				activityType === 'skip' && setLoadingSkip(false)
 			});
 	}
 
@@ -84,12 +84,12 @@ const ProfileCard = (userData) => {
 						style={{ backgroundImage: `url(${img})`, filter: `blur(16px)` }} >
 					</div>
 					<div className="absolute inset-0 rounded-xl"></div>
-					<Link to={`/matches/profile-details/${id}`} className="relative z-10">
+					<Link to={`/matches/profile-details/${targetId}/${userId}`} className="relative z-10">
 						<div className='relative z-10 border rounded-md overflow-hidden'>
 							<span className="text-4xl text-gray-400">
 								{newUser && <div className="ribbon"><span>New Join</span></div>}
 							</span>
-							<img src={img == undefined ? gender === 'male' ? male : female : img} alt="img" className="object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64 mix-blend-multiply contrast-100" />
+							<img src={img === undefined ? gender === 'male' ? male : female : img} alt="img" className="object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64 mix-blend-multiply contrast-100" />
 						</div>
 					</Link>
 				</div>
@@ -97,13 +97,13 @@ const ProfileCard = (userData) => {
 				{/* Profile Details */}
 				<div className="h-64 w-full flex flex-col justify-between py-2 ">
 					<div>
-						<Link to={`/matches/profile-details/${id}`}>
+						<Link to={`/matches/profile-details/${targetId}/${userId}`}>
 							<div>
 								<h3 className="text-xl font-semibold text-black pointer">{fistName} {lastName}</h3>
 							</div>
 						</Link>
 						<p className="mt-1 text-sm text-gray-500">
-							{id.slice(-8).toUpperCase()} | Last seen {lastSeen}
+							{targetId.slice(-8).toUpperCase()} | Last seen {lastSeen}
 						</p>
 						<div className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
 							{[

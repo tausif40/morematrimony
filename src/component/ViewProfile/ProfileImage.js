@@ -8,19 +8,20 @@ import 'swiper/css/scrollbar';
 import './viewProfile.css';
 import { useSelector } from 'react-redux';
 
-const ProfileImage = () => {
+const ProfileImage = (agentId) => {
 	const [ isPurchased, setIsPurchased ] = useState(true);
 	// const [ images, setImages ] = useState([])
 
-	const ProfileImages = useSelector((state) => state.userDetails.profileImages);
-	// console.log(ProfileImages?.data?.gallery);
+	// const getGallery = useSelector((state) => state.matchProfile.matchedProfileGallery);
+	// console.log(getGallery);
 	// const images = ProfileImages?.data?.gallery;
 
 	// useEffect(() => {
-	// 	ProfileImages?.data?.gallery?.map((img) => {
+	// 	// eslint-disable-next-line array-callback-return
+	// 	getGallery?.map((img) => {
 	// 		setImages((prevImages) => [ ...prevImages, img.image ]);
 	// 	})
-	// }, [ ProfileImages ])
+	// }, [ getGallery ])
 	const images = [
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img2_pop07c.jpg' },
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594306/Tausif/temp/img4_qjhdex.jpg' },
@@ -28,7 +29,7 @@ const ProfileImage = () => {
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1729594307/Tausif/temp/img3_gl05sz.jpg' },
 		{ img: 'https://res.cloudinary.com/drfni1iqf/image/upload/v1717399015/Tausif/temp/img_rjd4en.png' },
 	];
-	// console.log(images);
+	console.log(images);
 
 	const handlePurchase = () => {
 		setIsPurchased(true);

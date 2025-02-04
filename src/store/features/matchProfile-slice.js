@@ -2,10 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
 import { getQueryParams } from '../../utils/utils';
 
-export const getUserDetailsById = createAsyncThunk('data/getUserDetailsById', async (id, { rejectWithValue }) => {
+export const getUserDetailsById = createAsyncThunk('data/getUserDetailsById', async (ids, { rejectWithValue }) => {
 	try {
-		const response = await apiClient.get(`/user/user-profile-with-action/${id}`);
-		console.log(response);
+		const response = await apiClient.get(`/user/user-profile-with-action/${ids?.targetId}/${ids?.userId}`);
 		return response.data;
 	} catch (error) {
 		console.log(error);

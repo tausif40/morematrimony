@@ -13,6 +13,7 @@ import { FaRegUser } from "react-icons/fa";
 import Cookies from 'js-cookie';
 import useLogout from '../Logout/Logout';
 import { useDispatch, useSelector } from 'react-redux';
+import NotificationPopup from '../Notification/NotificationPopup';
 
 const NavMain = () => {
 	const location = useLocation();
@@ -28,34 +29,24 @@ const NavMain = () => {
 
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
 
+	const [ isNotificationOpen, setIsNotificationOpen ] = useState(false);
+	const notificationRef = useRef(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+				setIsNotificationOpen(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, []);
+
 	const handelLogOut = () => {
 		const res = handleLogout();
 		setIsOpen(false);
 	}
-	// console.log(dpImage);
-	// console.log(handleLogout);
-	// const [ isVisible, setIsVisible ] = useState(true)
-	// const [ lastScrollY, setLastScrollY ] = useState(0)
-	// const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false)
-
-	// useEffect(() => {
-	// 	const handleScroll = () => {
-	// 		const currentScrollY = window.scrollY
-
-	// 		if (currentScrollY > 500 && currentScrollY > lastScrollY) {
-	// 			setIsVisible(false)
-	// 		} else if (currentScrollY <= 500 || currentScrollY < lastScrollY) {
-	// 			setIsVisible(true)
-	// 		}
-	// 		setLastScrollY(currentScrollY)
-	// 	}
-
-	// 	window.addEventListener('scroll', handleScroll, { passive: true })
-
-	// 	return () => {
-	// 		window.removeEventListener('scroll', handleScroll)
-	// 	}
-	// }, [ lastScrollY ])
 
 	const VisitorNav = [
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
@@ -80,16 +71,6 @@ const NavMain = () => {
 		{ path: '/help', name: 'Help', icon: IoIosHelpCircleOutline },
 	]
 
-	// const handleScroll = (id) => {
-	// 	if (document.getElementById(id) == null) {
-	// 		navigate('/');
-	// 		setTimeout(() => {
-	// 			document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-	// 		}, 300);
-	// 		return;
-	// 	}
-	// 	document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-	// };
 	useEffect(() => {
 		function handleClickOutside(event) {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -135,14 +116,14 @@ const NavMain = () => {
 									? navOption.map((value, inx) => (
 										<NavLink to={value.path} key={inx} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`}`}>
 											<div className={`text-md px-2 cursor-pointer flex items-center gap-1`}>
-												<value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+												<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
 											</div>
 										</NavLink>
 									))
 									: VisitorNav.map((value, inx) => (
 										<NavLink to={value.path} key={inx} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`}`}>
 											<div className={`text-md px-2 cursor-pointer flex items-center gap-1`}>
-												<value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+												<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
 											</div>
 										</NavLink>
 									))
@@ -150,26 +131,29 @@ const NavMain = () => {
 							</div>
 						</div>
 
-						<div className='text-sm font-medium text-text flex items-center gap-4 md:gap-0'>
+						<div className='text-sm font-medium text-text flex gap-4 md:gap-6'>
 							{isUserRegister ?
 								<>
-									<div className='w-8 h-8 ring-1 ring-offset-2 ring-gray-400 rounded-full bg-gray-200'>
-										<FaBell size={28} />
-									</div>
-									<div className="relative" >
-										<button className=""
-											onClick={() => setIsOpen(!isOpen)}
-											aria-haspopup="true"
-											aria-expanded={isOpen}
-										>
-											{/* <img src={dpImage || "/assets/img/img0.png"} alt="" className='w-16 h-16 object-contain rounded-full border' /> */}
-											<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='w-8 h-8 ring-1 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200' style={{ objectPosition: 'center 10%' }} />
+									<div className='w-9 h-9 bg-gray-100 rounded-full border-2 border-gray-300 flex items-center justify-center  focus:border-primary'
+										ref={notificationRef} onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+									>
+										<button >
+											<FaBell size={18} />
 										</button>
+										<NotificationPopup
+											isOpen={isNotificationOpen}
+											onClose={() => setIsNotificationOpen(false)}
+										/>
 
+									</div>
+									<div className='w-8 h-8 rounded-full' ref={dropdownRef}>
+										<button onClick={() => setIsOpen(!isOpen)}>
+											<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='w-8 h-8 ring-1 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200 focus:ring-primary' />
+										</button>
 									</div>
 								</>
 								: <>
-									{currentPath == '/register'
+									{currentPath === '/register'
 										? <Link to={'/'}>
 											<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Login</p></button>
 										</Link>
@@ -185,20 +169,20 @@ const NavMain = () => {
 					</div>
 				</div>
 				{isOpen &&
-					<div className='shadow-md border absolute right-[6%] -mt-2 w-48 bg-white rounded-lg py-1 z-20' ref={dropdownRef}>
+					<div className='shadow-md border absolute right-[6%] -mt-2 w-48 bg-white rounded-lg py-1 z-20'>
 						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-2">
 
 							{deviceType === 'Mobile'
 								? MobileProfileOption.map((value, ind) => (
 									<NavLink to={value.path} key={ind} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`} text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center`}
 										onClick={() => setIsOpen(false)}>
-										<value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+										<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
 									</NavLink>
 								))
 								: ProfileOption.map((value, ind) => (
 									<NavLink to={value.path} key={ind} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`} text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center`}
 										onClick={() => setIsOpen(false)}>
-										<value.icon className={`${value.path == currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+										<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
 									</NavLink>
 								))}
 							<p className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center cursor-pointer"

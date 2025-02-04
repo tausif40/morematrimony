@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ShortProfile from "./ShortProfile";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,24 +9,27 @@ import { setUserAction } from "../../store/features/userAction-slice";
 
 const ProfileDetails = () => {
 	const dispatch = useDispatch()
-	const location = useLocation();
 	const params = useParams();
-	const id = params.id;
+	const targetId = params.targetId;
+	const userId = params.userId;
+
+	// console.log("targetId -", targetId);
 
 	const userDetailsById = useSelector((state) => state.matchProfile.userDetailsById);
 	const loading = userDetailsById.loading
 
 	useEffect(() => {
-		dispatch(getUserDetailsById(id))
-	}, [ id ])
+		const ids = { targetId: targetId, userId: userId }
+		dispatch(getUserDetailsById(ids));
+	}, [ targetId, userId, dispatch ])
 
 	useEffect(() => {
-		const action = { targetUserId: id, activityType: 'viewed' }
+		const action = { targetUserId: targetId, activityType: 'viewed' }
 		dispatch(setUserAction(action));
-	}, [])
+	}, [ targetId, dispatch ])
 
 	const data = userDetailsById?.data?.user
-	console.log(data);
+	// console.log("data -", data);
 
 	useEffect(() => {
 		window.scrollTo({
@@ -57,7 +60,11 @@ const ProfileDetails = () => {
 		jobLocation: data?.career?.jobLocation?.name || "",
 		annualIncome: data?.career?.annualIncome || "",
 		lastSeen: '',
-		id: data?._id
+		targetId: data?._id,
+		userId: userId,
+		agentId: data?.agentId?._id,
+		SocialAction: data?.SocialAction,
+		targetedSocialAction: data?.targetedSocialAction
 	}
 
 	const profileData = {

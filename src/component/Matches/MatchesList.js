@@ -122,8 +122,8 @@ export default function MatchesList() {
 		setCityLoading(true)
 		try {
 			const response = await apiClient.get(`/city?stateId=${stateId}`);
-			if (category == 'presentState') setPresentCityList(response?.data?.city)
-			if (category == 'ancestralOrigin') setAncestralOriginCity(response?.data?.city)
+			if (category === 'presentState') setPresentCityList(response?.data?.city)
+			if (category === 'ancestralOrigin') setAncestralOriginCity(response?.data?.city)
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -134,10 +134,10 @@ export default function MatchesList() {
 	const handleFilterSelect = (category, value) => {
 		setClearFilter(false)
 		// setFilterCount((pre) => pre + 1)
-		if (category == 'presentCountry') { setStateList([]); setPresentCityList([]); fetchState(value) };
-		if (category == 'presentState') { setPresentCityList([]); fetchCity(value, category) };
-		if (category == 'ancestralOrigin') { setAncestralOriginCity([]); fetchCity(value, category) };
-		if (category == 'religion') { setCasteList([]); fetchCast(value) };
+		if (category === 'presentCountry') { setStateList([]); setPresentCityList([]); fetchState(value) };
+		if (category === 'presentState') { setPresentCityList([]); fetchCity(value, category) };
+		if (category === 'ancestralOrigin') { setAncestralOriginCity([]); fetchCity(value, category) };
+		if (category === 'religion') { setCasteList([]); fetchCast(value) };
 
 		setSelectedFilters((prev) => {
 			if (Array.isArray(prev[ category ])) {
