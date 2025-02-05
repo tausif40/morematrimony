@@ -37,5 +37,3 @@ jobs:
       - name: Restart Node.js Process
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/morematrimony && PATH=$PATH:/usr/local/bin pm2 restart src/App.js' 
 
-      - name: Restart Apache2
-        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'sudo service apache2 restart' 
