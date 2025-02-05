@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css'
+import Cookies from 'js-cookie';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import ScrollToTop from './component/ScrollToTop/ScrollToTop';
 import NavMain from './component/NavBar/NavMain';
@@ -30,6 +31,7 @@ import { getNotification } from './store/features/notification-slice';
 const App = () => {
   const location = useLocation()
   const dispatch = useDispatch();
+  const token = Cookies.get('access_token')
   const userId = useSelector((state) => state.userDetails.userId);
   const dashboardPaths = [
     '/dashboard',
@@ -66,7 +68,7 @@ const App = () => {
     dispatch(fetchEducation());
     dispatch(fetchOccupations());
     dispatch(fetchReligions());
-  }, [ dispatch ]);
+  }, [ dispatch, token ]);
 
   useEffect(() => {
     dispatch(getNotification(userId));

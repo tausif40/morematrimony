@@ -65,7 +65,6 @@ const MyProfilePage = () => {
 		}
 		DivisionData()
 	}, [])
-
 	const userData = userDetails?.user
 	const introductionData = userData?.introduction;
 	const basicInfo = userData?.basicInformation;
@@ -76,6 +75,9 @@ const MyProfilePage = () => {
 	const physicalAttributes = userData?.physicalAttributes;
 	const languageData = userData?.language;
 	const socialBackgroundData = userData?.spiritualAndSocialBackground;
+	const lifestyle = userData?.lifestyle;
+	const familyDetails = userData?.familyDetails;
+	const partnerExpectation = userData?.partnerExpectation;
 
 	useEffect(() => {
 		setIsLoading(formData?.loading)
@@ -92,7 +94,6 @@ const MyProfilePage = () => {
 		dispatch(uploadFileData(data));
 	};
 
-	console.log(education);
 	return (
 		<div className='space-y-10'>
 			<Introduction onFormSubmit={handleFormSubmit} data={{ introductionData, isLoading }} />
@@ -105,9 +106,9 @@ const MyProfilePage = () => {
 			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading, languageData, isLoading }} />
 			<Hobbies onFormSubmit={handleFormSubmit} data={{ hobbies, hobbiesError, isLoading }} />
 			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries, socialBackgroundData, isLoading }} />
-			<Lifestyle onFormSubmit={handleFormSubmit} loading={isLoading} />
-			<FamilyInformation onFormSubmit={handleFormSubmit} loading={isLoading} />
-			<PartnerExpectation onFormSubmit={handleFormSubmit} data={{ countriesWithDoesNotMatter, religions, occupations, education, languages, isLoading }} />
+			<Lifestyle onFormSubmit={handleFormSubmit} loading={isLoading} data={lifestyle} />
+			<FamilyInformation onFormSubmit={handleFormSubmit} loading={isLoading} data={familyDetails} />
+			<PartnerExpectation onFormSubmit={handleFormSubmit} data={{ countriesWithDoesNotMatter, religions, occupations, education, languages, isLoading, partnerExpectation }} />
 		</div>
 	);
 };

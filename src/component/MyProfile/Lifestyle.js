@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { lifestyle } from '../../data/MyProfileData'
 
-const Lifestyle = ({ onFormSubmit, loading }) => {
+const Lifestyle = ({ onFormSubmit, loading, data }) => {
+
 	const [ formData, setFormData ] = useState({
 		diet: '',
 		drink: '',
 		smoke: '',
 	});
+
+	useEffect(() => {
+		if (data) {
+			setFormData({
+				diet: data?.diet,
+				drink: data?.drink,
+				smoke: data?.smoke
+			});
+		}
+	}, [ data ]);
+
 	const [ errors, setErrors ] = useState({});
 
 	const handleSubmit = async (e) => {

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { familyInformation } from '../../data/MyProfileData';
 
-const FamilyInformation = ({ onFormSubmit, loading }) => {
+const FamilyInformation = ({ onFormSubmit, loading, data }) => {
 
 	const [ formData, setFormData ] = useState({
 		familyValue: '',
@@ -15,6 +15,21 @@ const FamilyInformation = ({ onFormSubmit, loading }) => {
 		sisters: '',
 		sistersMarried: '',
 	});
+	useEffect(() => {
+		if (data) {
+			setFormData({
+				familyValue: data?.familyValue,
+				familyType: data?.familyType,
+				familyStatus: data?.familyStatus,
+				fatherOccupation: data?.fatherOccupation,
+				motherOccupation: data?.motherOccupation,
+				brothers: data?.brothers,
+				brothersMarried: data?.brothersMarried,
+				sisters: data?.sisters,
+				sistersMarried: data?.sistersMarried,
+			});
+		}
+	}, [ data ]);
 
 	const [ errors, setErrors ] = useState({});
 

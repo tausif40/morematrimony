@@ -23,6 +23,7 @@ export const uploadFileData = createAsyncThunk('data/uploadFileData', async (for
 export const fetchCountries = createAsyncThunk('data/fetchCountries', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get(`/country`);
+    console.log("fetchCountries - ", response.data);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to fetch countries');

@@ -134,19 +134,21 @@ const NavMain = () => {
 						<div className='text-sm font-medium text-text flex gap-4 md:gap-6'>
 							{isUserRegister ?
 								<>
-									<div className='w-9 h-9 bg-gray-100 rounded-full border-2 border-gray-300 flex items-center justify-center  focus:border-primary'
-										ref={notificationRef} onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-									>
-										<button >
-											<FaBell size={18} />
-										</button>
+									<div ref={notificationRef} >
+										<div className='w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full border-1 border-gray-300 flex items-center justify-center  focus:border-primary cursor-pointer'
+											onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+										>
+											<button >
+												<FaBell size={18} />
+											</button>
+										</div>
 										<NotificationPopup
 											isOpen={isNotificationOpen}
 											onClose={() => setIsNotificationOpen(false)}
 										/>
 
 									</div>
-									<div className='w-8 h-8 rounded-full' ref={dropdownRef}>
+									<div className='w-8 h-8 rounded-full'>
 										<button onClick={() => setIsOpen(!isOpen)}>
 											<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='w-8 h-8 ring-1 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200 focus:ring-primary' />
 										</button>
@@ -169,8 +171,8 @@ const NavMain = () => {
 					</div>
 				</div>
 				{isOpen &&
-					<div className='shadow-md border absolute right-[6%] -mt-2 w-48 bg-white rounded-lg py-1 z-20'>
-						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-2">
+					<div className='shadow-md border absolute right-[6%] -mt-2 w-48 bg-white rounded-lg py-1 z-20' ref={dropdownRef}>
+						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-2" >
 
 							{deviceType === 'Mobile'
 								? MobileProfileOption.map((value, ind) => (
