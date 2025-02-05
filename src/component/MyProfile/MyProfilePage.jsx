@@ -12,11 +12,9 @@ import PhysicalAttributes from './PhysicalAttributes';
 import PresentAddress from './PresentAddress';
 import ResidencyInformation from './ResidencyInformation';
 import SocialBackground from './SocialBackground';
-
 import { useDispatch, useSelector } from 'react-redux';
 import {
-	uploadFileData, fetchCountries, fetchEducation, fetchReligions, fetchStars, fetchZodiac,
-	fetchOccupations, fetchLanguages, fetchHobbies, fetchDivision, fetchCountriesWithDoesNotMatter
+	uploadFileData, fetchStars, fetchZodiac, fetchLanguages, fetchHobbies, fetchDivision, fetchCountriesWithDoesNotMatter
 } from '../../store/features/profileData-slice';
 import apiClient from '../../api/apiClient';
 import { encryptData, decryptData } from "../../utils/encryption";
@@ -26,13 +24,14 @@ const MyProfilePage = () => {
 	const dispatch = useDispatch({});
 	const [ isLoading, setIsLoading ] = useState(false);
 
-	const { data: userDetails, loading: userDetailsLoading, error: userDetailsError } = useSelector((state) => state.userDetails.userDetails);
+	const { data: userDetails, } = useSelector((state) => state.userDetails.userDetails);
 	const { data: countries, loading: countriesLoading, error: countriesError } = useSelector((state) => state.profileData.countries);
 	const { data: education, loading: educationLoading, error: educationError } = useSelector((state) => state.profileData.education);
 	const { data: occupations, loading: occupationLoading, error: occupationError } = useSelector((state) => state.profileData.occupations);
 	const { data: languages, loading: languageLoading, error: languagesError } = useSelector((state) => state.profileData.languages);
 	const { data: hobbies, loading: hobbiesLoading, error: hobbiesError } = useSelector((state) => state.profileData.hobbies);
 	const { data: religions, loading: religionLoading, error: religionError } = useSelector((state) => state.profileData.religions);
+	const { data: divisions, loading: divisionsLoading, error: divisionsError } = useSelector((state) => state.profileData.divisions);
 	const { data: stars, loading: starsLoading, error: starsError } = useSelector((state) => state.profileData.stars);
 	const { data: zodiac, loading: zodiacLoading, error: zodiacError } = useSelector((state) => state.profileData.zodiac);
 	const { data: countriesWithDoesNotMatter, loading: countriesWithDoesNotMatterLoading } = useSelector((state) => state.profileData.countriesWithDoesNotMatter);
@@ -43,7 +42,6 @@ const MyProfilePage = () => {
 		// dispatch(fetchCountries());
 		// dispatch(fetchEducation());
 		// dispatch(fetchOccupations());
-		// dispatch(fetchReligions());
 		dispatch(fetchLanguages());
 		dispatch(fetchHobbies());
 		dispatch(fetchStars());
@@ -52,19 +50,6 @@ const MyProfilePage = () => {
 		dispatch(fetchCountriesWithDoesNotMatter('yes'));
 	}, [ dispatch ]);
 
-	const [ divisions, setDivisions ] = useState([])
-
-	useEffect(() => {
-		const DivisionData = async () => {
-			try {
-				const response = await apiClient.get('/division');
-				// setDivisions(response.data);
-			} catch (error) {
-				console.error(error);
-			};
-		}
-		DivisionData()
-	}, [])
 	const userData = userDetails?.user
 	const introductionData = userData?.introduction;
 	const basicInfo = userData?.basicInformation;

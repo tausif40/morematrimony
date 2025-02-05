@@ -169,7 +169,7 @@ const Career = ({ data, onFormSubmit }) => {
 						<option value="" disabled>Select Country</option>
 						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
-							<option key={country.id} value={country._id}>
+							<option key={country._id} value={country._id}>
 								{country.name}
 							</option>
 						))}

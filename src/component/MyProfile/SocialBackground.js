@@ -5,7 +5,6 @@ import { hinduId, christianId } from '../../data/config';
 import apiClient from '../../api/apiClient';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Space, TimePicker } from 'antd';
 
 const SocialBackground = ({ data }) => {
 	const { religions, divisions, stars, zodiac, languages, countries, socialBackgroundData } = data;
@@ -17,6 +16,7 @@ const SocialBackground = ({ data }) => {
 	const [ cityList, setCityList ] = useState([])
 	const [ casteList, setCasteList ] = useState([])
 	const [ rashiSignsList, setRashiSignsList ] = useState([])
+
 	const [ loading, setLoading ] = useState({ state: false, city: false, caste: false, rashi: false, });
 
 	const token = Cookies.get('access_token');
@@ -44,7 +44,7 @@ const SocialBackground = ({ data }) => {
 			setFormData({
 				religion: socialBackgroundData?.religion?._id || '',
 				caste: socialBackgroundData?.caste?._id || '',
-				division: socialBackgroundData?.caste.name || '',
+				division: socialBackgroundData?.division?._id || '',
 				subCaste: socialBackgroundData?.subCaste || '',
 				ethnicity: socialBackgroundData?.ethnicity?._id || '',
 				star: socialBackgroundData?.star?._id || '',
@@ -61,8 +61,9 @@ const SocialBackground = ({ data }) => {
 				dosh: socialBackgroundData?.dosh || '',
 				doshName: socialBackgroundData?.doshName || ''
 			});
+
 			const religionId = socialBackgroundData?.religion._id
-			religionId == hinduId ? setIsHindu(true) : religionId == christianId && setIsChristian(true)
+			religionId === hinduId ? setIsHindu(true) : religionId === christianId && setIsChristian(true)
 
 			if (socialBackgroundData?.religion?._id) {
 				fetchCaste(socialBackgroundData?.religion._id);
@@ -232,8 +233,8 @@ const SocialBackground = ({ data }) => {
 			fetchCaste(value);
 			setCasteList('');
 			setFormData((prev) => ({ ...prev, division: '' }));
-			value == christianId ? setIsChristian(true) : setIsChristian(false);
-			value == hinduId ? setIsHindu(true) : setIsHindu(false);
+			value === christianId ? setIsChristian(true) : setIsChristian(false);
+			value === hinduId ? setIsHindu(true) : setIsHindu(false);
 		} else if (name === 'star') {
 			fetchRashi(value);
 			setRashiSignsList('');
@@ -366,7 +367,7 @@ const SocialBackground = ({ data }) => {
 						<option value="" disabled>Select Ethnicity</option>
 						{/* {languagesLoading && !languages?.length && <option value="" disabled> Loading languages...</option>} */}
 						{languages?.language?.map((language) => (
-							<option key={languages._id} value={language._id}>
+							<option key={language._id} value={language._id}>
 								{language.name}
 							</option>
 						))}

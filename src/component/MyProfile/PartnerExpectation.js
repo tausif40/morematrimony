@@ -8,7 +8,7 @@ import MultiDropdown from '../../utils/ui/MultiDropdown';
 import OptgroupOptionSelect from '../../utils/ui/OptgroupOptionSelect';
 
 const PartnerExpectation = ({ data, onFormSubmit }) => {
-	const { countriesWithDoesNotMatter, religions, occupations, education, languages } = data
+	const { partnerExpectation, countriesWithDoesNotMatter, religions, occupations, education, languages } = data
 
 	const [ stateList, setStateList ] = useState([])
 	const [ casteList, setCasteList ] = useState([])
@@ -23,6 +23,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 	const [ bodyType, setBodyType ] = useState([]);
 	const [ complexion, setComplexion ] = useState([]);
 	const [ loading, setLoading ] = useState({ state: false, caste: false });
+
+	console.log(partnerExpectation);
 
 	const fetchData = async (url, setData, type) => {
 		setLoading((prev) => ({ ...prev, [ type ]: true }));
@@ -79,7 +81,35 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		}));
 	}, [ selectedCast, motherTongue, educationIds, employedIn, occupation, preferState, preferredCountry, bodyType, complexion ]);
 
+
+	useEffect(() => {
+		if (partnerExpectation) {
+			setFormData({
+				age: { min: partnerExpectation?.age?.min, max: partnerExpectation?.age?.max },
+				height: { feet: partnerExpectation?.height?.feet, inches: partnerExpectation?.height?.inches },
+				maritalStatus: '',
+				childrenAcceptable: '',
+				motherTongue: [],
+				religion: '',
+				caste: [],
+				highestEducation: [],
+				employedIn: [],
+				occupation: [],
+				annualIncome: '',
+				dietingAcceptable: '',
+				drinkingAcceptable: '',
+				smokingAcceptable: '',
+				bodyType: [],
+				preferredCountry: [],
+				preferState: [],
+				complexion: [],
+				lookingFor: ''
+			});
+		}
+	}, [ partnerExpectation ])
+
 	const [ errors, setErrors ] = useState({});
+
 
 	// const validateForm = () => {
 	// 	let formErrors = {};

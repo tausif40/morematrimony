@@ -56,10 +56,10 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 	}, [ residency ]);
 
 	const fetchCity = async (stateId) => {
-		console.log(stateId);
+		// console.log(stateId);
 		setCityLoading(true)
 		try {
-			const response = await apiClient.get(`/city?stateId=${stateId}`);
+			const response = await apiClient.get(`/city?stateId=${stateId?._id}`);
 			setCityList(response.data)
 		} catch (error) {
 			console.log(error);
@@ -143,7 +143,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 						<option value="" disabled>Select Birth Country</option>
 						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
-							<option key={country.id} value={country._id}>
+							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
 						))}
@@ -165,7 +165,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 						<option value="" disabled>Select Grow Up Country</option>
 						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
-							<option key={country.id} value={country._id}>
+							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
 						))}
@@ -187,7 +187,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 						<option value="" disabled>Select Residency Country</option>
 						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
-							<option key={country.id} value={country._id}>
+							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
 						))}
@@ -231,7 +231,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 						<option value="" disabled>Select Ancestral State</option>
 						{/* {!stateList?.length && <option value="" disabled>Loading states...</option>} */}
 						{stateList?.state?.map((state) => (
-							<option key={state.id} value={state._id}>
+							<option key={state._id} value={state._id}>
 								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}
 							</option>
 						))}
@@ -278,7 +278,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 						<option value="" disabled>Select Citizenship</option>
 						{countriesLoading && !countries.length && <option>Loading countries...</option>}
 						{countries?.country?.map((country) => (
-							<option key={country.id} value={country._id}>
+							<option key={country._id} value={country._id}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
 						))}

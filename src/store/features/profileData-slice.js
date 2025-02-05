@@ -23,7 +23,6 @@ export const uploadFileData = createAsyncThunk('data/uploadFileData', async (for
 export const fetchCountries = createAsyncThunk('data/fetchCountries', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get(`/country`);
-    console.log("fetchCountries - ", response.data);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to fetch countries');
@@ -102,13 +101,13 @@ export const fetchReligions = createAsyncThunk('data/fetchReligions', async (_, 
 //   }
 // });
 
-export const fetchDivision = createAsyncThunk('data/fetchDivision', async ({ rejectWithValue }) => {
+export const fetchDivision = createAsyncThunk('data/fetchDivision', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get('/division');
     console.log('division slice - ', response.data);
     return response.data;
   } catch (error) {
-    // console.log('division - ', error);
+    console.log('division - ', error);
     return rejectWithValue(error.response?.data || 'Failed to fetch division');
   }
 });
