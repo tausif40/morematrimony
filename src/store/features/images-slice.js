@@ -57,7 +57,7 @@ export const deleteImage = createAsyncThunk('data/deleteImage', async (imageId, 
 		// const { userId, url } = userData;
 		console.log(imageId);
 		const response = await apiClient.delete(`/gallery/${imageId}`);
-		toast.success('Delete successful!', { id: loadingToast });
+		response && toast.success('Delete successful!', { id: loadingToast });
 		dispatch(getProfileImages());
 		console.log(response.data);
 		return response.data;

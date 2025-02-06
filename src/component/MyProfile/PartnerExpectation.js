@@ -99,9 +99,6 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 	}, [ partnerExpectation ])
 
-	console.log(partnerExpectation);
-	console.log("formData-", formData);
-
 
 	const fetchData = async (url, setData, type) => {
 		setLoading((prev) => ({ ...prev, [ type ]: true }));

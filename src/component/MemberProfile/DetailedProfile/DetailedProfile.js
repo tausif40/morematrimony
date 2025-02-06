@@ -74,7 +74,6 @@ const DetailedProfile = ({ userDetails }) => {
 			rashi: data?.spiritualAndSocialBackground?.rashi?.name || "_",
 			zodiac: data?.spiritualAndSocialBackground?.zodiac?.name || "_",
 			timeOfBirth: data?.spiritualAndSocialBackground?.timeOfBirth || "_",
-			kundli: data?.spiritualAndSocialBackground?.kundli || "_",
 			gothra: data?.spiritualAndSocialBackground?.gothra || "_",
 			dosh: data?.spiritualAndSocialBackground?.dosh || "_",
 			doshName: data?.spiritualAndSocialBackground?.doshName || "_",
@@ -139,7 +138,7 @@ const DetailedProfile = ({ userDetails }) => {
 								{Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
+										<dd className="capitalize">{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
 									</div>
 								))}
 							</div>
@@ -153,7 +152,7 @@ const DetailedProfile = ({ userDetails }) => {
 									{Object.entries(profileData?.presentAddress).map(([ key, value ]) => (
 										<React.Fragment key={key}>
 											<dt className="text-md font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-											<dd>{value}</dd>
+											<dd className="capitalize">{value}</dd>
 										</React.Fragment>
 									))}
 								</dl>
@@ -168,7 +167,7 @@ const DetailedProfile = ({ userDetails }) => {
 									{Object.entries(profileData?.residencyInformation).map(([ key, value ]) => (
 										<React.Fragment key={key}>
 											<dt className="text-md font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-											<dd>{value}</dd>
+											<dd className="capitalize">{value}</dd>
 										</React.Fragment>
 									))}
 								</dl>
@@ -180,9 +179,9 @@ const DetailedProfile = ({ userDetails }) => {
 							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Education Details</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.educationalDetails).map(([ key, value ]) => (
-									<div className="grid grid-cols-2 gap-1" key={key}>
+									<div className="grid grid-cols-2 gap-1 break-words whitespace-normal" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>{value}</dd>
+										<dd className="break-words whitespace-normal capitalize">{value}</dd>
 									</div>
 								))}
 							</div>
@@ -195,7 +194,7 @@ const DetailedProfile = ({ userDetails }) => {
 								{Object.entries(profileData?.career).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>{value}</dd>
+										<dd className="capitalize">{value}</dd>
 									</div>
 								))}
 							</div>
@@ -206,10 +205,10 @@ const DetailedProfile = ({ userDetails }) => {
 							<p className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Physical Attributes</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.physicalAttributes).map(([ key, value ]) => (
-									<p className="grid grid-cols-2" key={key}>
-										<p className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</p>
-										{value}
-									</p>
+									<div className="grid grid-cols-2" key={key}>
+										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
+										<dd className="capitalize">{value}</dd>
+									</div>
 								))}
 							</div>
 						</div>
@@ -220,11 +219,11 @@ const DetailedProfile = ({ userDetails }) => {
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<div className="grid grid-cols-2">
 									<dt className="text-md font-medium mb-2">Mother Tongue:</dt>
-									<dd>{profileData?.language.motherTongue}</dd>
+									<dd className="capitalize">{profileData?.language.motherTongue}</dd>
 								</div>
 								<div className="grid grid-cols-2">
 									<dt className="text-md font-medium mb-2">Known Languages:</dt>
-									<dd>{profileData?.language.knownLanguages}</dd>
+									<dd className="capitalize">{profileData?.language.knownLanguages}</dd>
 								</div>
 							</div>
 						</div>
@@ -235,7 +234,7 @@ const DetailedProfile = ({ userDetails }) => {
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								<p className='flex gap-2 flex-wrap'>
 									{profileData?.hobbies?.hobbiesList?.map((res, ind) => (
-										<p key={ind} className="bg-gray-200 rounded-full px-3 py-1 text-headingGray">
+										<p key={ind} className="bg-gray-200 rounded-full px-3 py-1 text-gray-700 text-sm capitalize">
 											{res.name || "_"}
 										</p>
 									))}
@@ -253,7 +252,6 @@ const DetailedProfile = ({ userDetails }) => {
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.spiritualSocial || {}).map(([ key, value ]) => {
 									if (typeof value === 'object' && !Array.isArray(value)) {
-										// If the value is an object, render its key-value pairs
 										return (
 											<div className="flex flex-col gap-2 mb-3" key={key}>
 												<p className="text-md font-medium capitalize">
@@ -263,7 +261,7 @@ const DetailedProfile = ({ userDetails }) => {
 													{Object.entries(value).map(([ subKey, subValue ]) => (
 														<p className="grid grid-cols-2" key={subKey}>
 															<p className="text-sm font-medium capitalize w-48">{subKey}:</p>
-															<span>{subValue}</span>
+															<span className="capitalize">{subValue}</span>
 														</p>
 													))}
 												</div>
@@ -275,10 +273,20 @@ const DetailedProfile = ({ userDetails }) => {
 											<dt className="text-md font-medium mb-2 capitalize">
 												{key.replace(/([A-Z])/g, ' $1')}:
 											</dt>
-											<dd>{value}</dd>
+											<dd className="capitalize">{value}</dd>
 										</div>
 									);
 								})}
+								{data?.spiritualAndSocialBackground?.kundli &&
+									<div className="grid grid-cols-2">
+										<dt className="text-md font-medium mb-2">
+											Kundli :
+										</dt>
+										<dd>
+											<a href={data?.spiritualAndSocialBackground?.kundli}
+												className="px-3 py-[2px] border bg-emerald-200 hover:bg-emerald-300 border-green-500 rounded-full text-sm transition">Download</a>
+										</dd>
+									</div>}
 							</div>
 						</div>
 
@@ -286,9 +294,12 @@ const DetailedProfile = ({ userDetails }) => {
 						<div className="md:border-b pb-6 md:pl-6">
 							<p className="w-24 bg-white text-primary flex justify-center text-xl font-medium relative -bottom-[14px] left-5">Lifestyle</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Diet:</p> {profileData?.lifestyle.diet}</p>
-								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Drink:</p> {profileData?.lifestyle.drink}</p>
-								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Smoke:</p> {profileData?.lifestyle.smoke}</p>
+								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Diet:</p>
+									<span className="capitalize">{profileData?.lifestyle.diet}</span></p>
+								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Drink:</p>
+									<span className="capitalize">{profileData?.lifestyle.drink}</span></p>
+								<p className='grid grid-cols-2'><p className='text-md font-medium w-56 mb-2'>Smoke:</p>
+									<span className="capitalize">{profileData?.lifestyle.smoke}</span></p>
 							</div>
 						</div>
 
@@ -299,7 +310,7 @@ const DetailedProfile = ({ userDetails }) => {
 								{Object.entries(profileData.familyDetails).map(([ key, value ]) => (
 									<div className="grid grid-cols-2" key={key}>
 										<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										<dd>{value}</dd>
+										<dd className="capitalize">{value}</dd>
 									</div>
 								))}
 							</div>
@@ -312,9 +323,10 @@ const DetailedProfile = ({ userDetails }) => {
 							</p>
 							<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
 								{Object.entries(profileData?.partnerExpectation).map(([ key, value ]) => (
-									<div className={`grid gap-2 mb-2 ${key == 'generalRequirement' ? 'grid-cols-1' : 'grid-cols-2'}`} key={key}>
+									<div className={`grid gap-2 mb-2 ${key === 'generalRequirement' ? 'grid-cols-1' : 'grid-cols-2'}`} key={key}>
 										<dt className={`text-md font-medium capitalize`}>{key.replace(/([A-Z])/g, ' $1')}:</dt>
-										{key == 'generalRequirement' ? <p className="text-sm font-light">{value}</p> : <dd>{value}</dd>}
+										{key === 'generalRequirement' ? <p className="text-sm font-light">{value}</p> :
+											<dd className="break-words whitespace-normal capitalize">{value}</dd>}
 									</div>
 								))}
 							</div>

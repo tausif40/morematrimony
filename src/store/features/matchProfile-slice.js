@@ -11,9 +11,9 @@ export const getUserDetailsById = createAsyncThunk('data/getUserDetailsById', as
 		return rejectWithValue(error.response?.data || 'Failed to fetch matchProfile');
 	}
 });
-export const matchedProfileGallery = createAsyncThunk('data/getUserDetailsById', async (id, { rejectWithValue }) => {
+export const getMatchedProfileGallery = createAsyncThunk('data/getMatchedProfileGallery', async (id, { rejectWithValue }) => {
 	try {
-		const response = await apiClient.get(`gallery/matchedProfileGallery${id}`);
+		const response = await apiClient.get(`gallery/matchedProfileGallery/${id}`);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -39,6 +39,7 @@ const matchProfileSlice = createSlice({
 	name: 'data',
 	initialState: {
 		matchedProfile: { data: [], loading: false, error: null },
+		matchedProfileGallery: { data: [], loading: false, error: null },
 		userDetailsById: { data: [], loading: false, error: null },
 		filters: {},
 		noOfFilter: 0,
@@ -70,6 +71,19 @@ const matchProfileSlice = createSlice({
 			.addCase(getMatchedProfile.rejected, (state, action) => {
 				state.matchedProfile.loading = false;
 				state.matchedProfile.error = action.payload || action.error.message;
+			})
+			// getMatchedProfileGallery
+			.addCase(getMatchedProfileGallery.pending, (state) => {
+				state.matchedProfileGallery.loading = true;
+				state.matchedProfileGallery.error = null;
+			})
+			.addCase(getMatchedProfileGallery.fulfilled, (state, action) => {
+				state.matchedProfileGallery.data = action.payload;
+				state.matchedProfileGallery.loading = false;
+			})
+			.addCase(getMatchedProfileGallery.rejected, (state, action) => {
+				state.matchedProfileGallery.loading = false;
+				state.matchedProfileGallery.error = action.payload || action.error.message;
 			})
 			// getUserDetailsById
 			.addCase(getUserDetailsById.pending, (state) => {

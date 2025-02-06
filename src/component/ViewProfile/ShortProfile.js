@@ -17,7 +17,6 @@ function ShortProfile({ data }) {
 	const hideSideMenu = useRef(null);
 	const dispatch = useDispatch();
 
-
 	const [ interestReceived, setInterestReceived ] = useState(false);
 	const [ showModal, setShowModal ] = useState(false);
 	const [ IsSendInterest, setIsSendInterest ] = useState(false);
@@ -138,31 +137,31 @@ function ShortProfile({ data }) {
 									}
 
 								</div>
-								<p className='font-medium text-xl md:text-2xl'>{data?.firstName} {data?.lastName}</p>
+								<p className='font-medium text-xl md:text-2xl capitalize'>{data?.firstName} {data?.lastName}</p>
 								<div className='flex items-center text-sm font-light text-headingGray py-2 tracking-wide'>
 									<p className=''>{data?.id?.slice(-8).toUpperCase()} </p>
-									<span className='text-text'>&nbsp;|&nbsp;</span>
-									<p>Last seen {data?.lastSeen}</p>
+									{/* <span className='text-text'>&nbsp;|&nbsp;</span>
+									<p>Last seen {data?.lastSeen}</p> */}
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className=' tracking-wider'>{data?.age} Yrs, {data?.height}</p>
+									<p className=' tracking-wider capitalize'>{data?.age} Yrs, {data?.height}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><RiStackshareLine /></p>
-									<p className=''>{data?.religion && `${data?.religion}`} {data?.cast == "" ? '' : ` - ${data?.cast}`} {data?.subCaste !== "" && ` - ${data?.subCaste}`}</p>
-								</div>
-								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className=''>{data?.highestEducation}, {data?.occupation}</p>
+									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4 capitalize'><RiStackshareLine /></p>
+									<p className='capitalize'>{data?.religion && `${data?.religion}`} {data?.cast === "" ? '' : ` - ${data?.cast}`} {data?.subCaste !== "" && ` - ${data?.subCaste}`}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className=''>{data.city}, {data.state}, {data.country}</p>
+									<p className='capitalize'>{data?.highestEducation}, {data?.occupation}</p>
+								</div>
+								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
+									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
+									<p className='capitalize'>{data.city}, {data.state}, {data.country}</p>
 								</div>
 								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
 									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><MdOutlineWorkOutline /></p>
-									<p className=''>{data.occupation} ({data.jobLocation}), {data.annualIncome}</p>
+									<p className='capitalize'>{data.occupation} ({data.jobLocation}), {data.annualIncome}</p>
 								</div>
 							</div>
 

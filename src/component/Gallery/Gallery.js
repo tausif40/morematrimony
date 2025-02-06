@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { uploadDpImage } from '../../store/features/images-slice';
 import { MdDelete } from "react-icons/md";
 import ImageUploader from '../../utils/ui/ImageUploader';
-import apiClient from '../../api/apiClient';
 import { deleteImage } from '../../store/features/images-slice';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
@@ -16,21 +15,16 @@ function PhotoGallery() {
 	const DpImage = useSelector((state) => state.image.DpImage);
 
 	useEffect(() => {
-		// profileImages?.data?.gallery?.forEach((value) => {
-		// 	setImages((prevImages) => [ ...prevImages, value ]);
-		// });
 		setImages(profileImages?.data?.gallery)
+		// console.log(profileImages?.data?.gallery);
 	}, [ profileImages ]);
-	// console.log(profileImages?.data?.gallery);
 
 	const handelUploadImage = (userId, url) => {
 		dispatch(uploadDpImage({ userId, url }));
 	};
 
 	const handelDeleteImage = async (userId) => {
-		// const response = await apiClient.delete(`/gallery/${userId}`);
-		// dispatch(deleteImage(userId));
-		alert('Delete not working Image');
+		dispatch(deleteImage(userId));
 	};
 
 	return (
@@ -54,11 +48,10 @@ function PhotoGallery() {
 										className={`bg-black/40 hover:bg-black/70 px-1 py-1 rounded transition-all ${DpImage.loading ? 'text-gray-400 cursor-wait' : 'text-white'}`}
 										disabled={DpImage.loading}
 									>
-										{/* <TbUpload size={22} /> */}
 										<img src="/assets/img/setProfile.png" alt="" className='w-6' />
 									</button>
 									<button
-										onClick={() => handelDeleteImage(image.agentId)}
+										onClick={() => handelDeleteImage(image._id)}
 										className="bg-black/40 hover:bg-black/70 text-white px-1 py-1 rounded transition-all"
 									>
 										<MdDelete size={22} color="#f2432c" />
