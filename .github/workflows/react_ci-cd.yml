@@ -35,7 +35,7 @@ jobs:
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/fontend-morematrimony/morematrimony && node --max-old-space-size=4096 $(which npm) run build'
         
       - name: Copy Build to Nginx Directory
-        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'rsync -avz --delete /var/www/fontend-morematrimony/morematrimony/build/ /var/www/html/matrimony/'
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'rsync -avz --delete /var/www/fontend-morematrimony/morematrimony/build/ /var/www/html/morematrimony/'
       - name: Restart Nginx
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'sudo systemctl restart nginx'
         
