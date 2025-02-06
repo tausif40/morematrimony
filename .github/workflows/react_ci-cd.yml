@@ -33,7 +33,12 @@ jobs:
 
       - name: Build Project
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/fontend-morematrimony/morematrimony && npm run build'
-
+        
+      - name: Copy Build to Nginx Directory
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'rsync -avz --delete /var/www/fontend-morematrimony/morematrimony/build/ /var/www/html/matrimony/'
+      - name: Restart Nginx
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'sudo systemctl restart nginx'
+        
       - name: Restart Node.js Process
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/fontend-morematrimony/morematrimony && PATH=$PATH:/usr/local/bin pm2 restart src/App.js' 
 
