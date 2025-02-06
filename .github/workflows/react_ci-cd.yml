@@ -39,6 +39,4 @@ jobs:
       - name: Restart Nginx
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'sudo systemctl restart nginx'
         
-      - name: Restart Node.js Process
-        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/fontend-morematrimony/morematrimony && PATH=$PATH:/usr/local/bin pm2 restart src/App.js' 
-
+     
