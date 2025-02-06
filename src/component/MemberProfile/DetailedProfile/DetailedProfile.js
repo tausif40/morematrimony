@@ -116,7 +116,7 @@ const DetailedProfile = ({ userDetails }) => {
 			generalRequirement: data?.partnerExpectation?.lookingFor || "_"
 		}
 	};
-	// console.log("sister -", data?.familyDetails?.sisters);
+	console.log("kundli -", data?.spiritualAndSocialBackground?.kundli);
 	console.log("data -", data);
 
 	return (
