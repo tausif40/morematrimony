@@ -27,6 +27,10 @@ jobs:
 
       - name: Clone Repository (using PAT)
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'git clone https://tausif40:${{ secrets.TOKEN }}@github.com/tausif40/morematrimony.git /var/www/fontend-morematrimony/morematrimony'
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "${{ secrets.TEST_SECRETS }}" >> .env
 
       - name: Install Dependencies
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/fontend-morematrimony/morematrimony && npm install'
