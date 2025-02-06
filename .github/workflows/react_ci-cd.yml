@@ -23,17 +23,17 @@ jobs:
           ssh-private-key: ${{ secrets.PRIVATE_KEY }} 
 
       - name: Check Existing Directory and Delete
-        run: ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'if [[ -d /var/www/morematrimony ]]; then rm -rf /var/www/morematrimony; fi' 
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'if [[ -d /var/www/fontend-morematriony/mmorematrimony ]]; then rm -rf /var/www/fontend-morematrimony/morematrimony; fi' 
 
       - name: Clone Repository (using PAT)
-        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'git clone https://tausif40:${{ secrets.TOKEN }}@github.com/tausif40/morematrimony.git /var/www/morematrimony'
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'git clone https://tausif40:${{ secrets.TOKEN }}@github.com/tausif40/morematrimony.git /var/www/fontend-morematrimony/morematrimony'
 
       - name: Install Dependencies
-        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/morematrimony && npm install'
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/fontend-morematrimony/morematrimony && npm install'
 
       - name: Build Project
-        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/morematrimony && npm run build'
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/fontend-morematrimony/morematrimony && npm run build'
 
       - name: Restart Node.js Process
-        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/morematrimony && PATH=$PATH:/usr/local/bin pm2 restart src/App.js' 
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'cd /var/www/fontend-morematrimony/morematrimony && PATH=$PATH:/usr/local/bin pm2 restart src/App.js' 
 
