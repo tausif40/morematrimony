@@ -24,22 +24,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 	const [ complexion, setComplexion ] = useState([]);
 	const [ loading, setLoading ] = useState({ state: false, caste: false });
 
-	console.log(partnerExpectation);
 
-	const fetchData = async (url, setData, type) => {
-		setLoading((prev) => ({ ...prev, [ type ]: true }));
-		try {
-			const response = await apiClient.get(url);
-			setData(response.data);
-		} catch (error) {
-			console.error(error);
-		} finally {
-			setLoading((prev) => ({ ...prev, [ type ]: false }));
-		}
-	};
-
-	useEffect(() => { fetchData(`/state?countryId=${indiaId}`, setStateList, 'state'); }, [ indiaId ])
-	const fetchCaste = (religionId) => fetchData(`/caste?religionId=${religionId}`, setCasteList, 'caste');
+	useEffect(() => { fetchData(`/state?countryId=${indiaId}`, setStateList, 'state'); }, [])
 
 	const [ formData, setFormData ] = useState({
 		age: { min: '', max: '' },
@@ -82,31 +68,58 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 	}, [ selectedCast, motherTongue, educationIds, employedIn, occupation, preferState, preferredCountry, bodyType, complexion ]);
 
 
+
 	useEffect(() => {
 		if (partnerExpectation) {
 			setFormData({
 				age: { min: partnerExpectation?.age?.min, max: partnerExpectation?.age?.max },
 				height: { feet: partnerExpectation?.height?.feet, inches: partnerExpectation?.height?.inches },
-				maritalStatus: '',
-				childrenAcceptable: '',
-				motherTongue: [],
-				religion: '',
-				caste: [],
-				highestEducation: [],
-				employedIn: [],
-				occupation: [],
-				annualIncome: '',
-				dietingAcceptable: '',
-				drinkingAcceptable: '',
-				smokingAcceptable: '',
-				bodyType: [],
-				preferredCountry: [],
-				preferState: [],
-				complexion: [],
-				lookingFor: ''
+				maritalStatus: partnerExpectation?.maritalStatus,
+				childrenAcceptable: partnerExpectation?.childrenAcceptable,
+				religion: partnerExpectation?.religion?._id || '',
+				caste: [ partnerExpectation?.caste?.map(item => item._id) ] || [],
+				motherTongue: partnerExpectation?.motherTongue?.map(item => item._id) || [],
+				highestEducation: partnerExpectation?.highestEducation?.map(item => item._id) || [],
+				employedIn: partnerExpectation?.employedIn || [],
+				occupation: partnerExpectation?.occupation?.map(item => item._id) || [],
+				annualIncome: partnerExpectation?.annualIncome || '',
+				dietingAcceptable: partnerExpectation?.dietingAcceptable || '',
+				drinkingAcceptable: partnerExpectation?.drinkingAcceptable || '',
+				smokingAcceptable: partnerExpectation?.smokingAcceptable || '',
+				bodyType: partnerExpectation?.bodyType || [],
+				preferredCountry: partnerExpectation?.preferredCountry?.map(item => item._id) || [],
+				preferState: partnerExpectation?.preferState?.map(item => item._id) || [],
+				complexion: partnerExpectation?.complexion || [],
+				lookingFor: partnerExpectation?.lookingFor || ''
 			});
 		}
+		if (partnerExpectation?.religion?._id) {
+			fetchCaste(partnerExpectation?.religion._id);
+		}
+
 	}, [ partnerExpectation ])
+
+	console.log(partnerExpectation);
+	console.log("formData-", formData);
+
+
+	const fetchData = async (url, setData, type) => {
+		setLoading((prev) => ({ ...prev, [ type ]: true }));
+		try {
+			const response = await apiClient.get(url);
+			setData(response.data);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoading((prev) => ({ ...prev, [ type ]: false }));
+		}
+	};
+
+	const fetchCaste = (religionId) => fetchData(`/caste?religionId=${religionId}`, setCasteList, 'caste');
+	// const fetchState = (countryId) => fetchData(`/state?countryId=${countryId}`, setStateList, 'state');
+	// const fetchCity = (stateId) => fetchData(`/city?stateId=${stateId}`, setCityList, 'city');
+	// const fetchRashi = (starId) => fetchData(`/rashiSign?starId=${starId}`, setRashiSignsList, 'rashi');
+
 
 	const [ errors, setErrors ] = useState({});
 
@@ -204,10 +217,10 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 
 	const isChildrenFieldsVisible = () => {
-		if (formData.maritalStatus == 'single') {
+		if (formData.maritalStatus === 'single') {
 			// delete formData.numberOfChildren;
 			delete formData.childrenAcceptable;
-		} else if (formData.lookingFor == "") delete formData.lookingFor;
+		} else if (formData.lookingFor === "") delete formData.lookingFor;
 
 		return (formData.maritalStatus !== 'single' && formData.maritalStatus !== '')
 	};
