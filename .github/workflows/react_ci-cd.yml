@@ -23,7 +23,7 @@ jobs:
           ssh-private-key: ${{ secrets.PRIVATE_KEY }} 
 
       - name: Check Existing Directory and Delete
-        run: ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'if [[ -d /var/www/fontend-morematriony/morematrimony ]]; then rm -rf /var/www/fontend-morematrimony/morematrimony; fi'
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'if [[ -d /var/www/fontend-morematrimony/morematrimony ]]; then rm -rf /var/www/fontend-morematrimony/morematrimony; fi'
 
       - name: Clone Repository (using PAT)
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'git clone https://tausif40:${{ secrets.TOKEN }}@github.com/tausif40/morematrimony.git /var/www/fontend-morematrimony/morematrimony'
