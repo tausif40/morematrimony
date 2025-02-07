@@ -44,6 +44,7 @@ const ReceivedInterest = () => {
 	const [ showModal, setShowModal ] = useState(false);
 	const [ loadingSkip, setLoadingSkip ] = useState(false);
 	const [ loadingAccept, setLoadingAccept ] = useState(false);
+	const [ profileStatus, setProfileStatus ] = useState({});
 
 	const receivedInterest = useSelector((state) => state.userAction.receivedInterest);
 	const userId = useSelector((state) => state.userDetails.userId);
@@ -92,28 +93,71 @@ const ReceivedInterest = () => {
 		setShowModal(false);
 	};
 
+	// const executeAction = (activityType, agentId, targetUserId) => {
+	// 	activityType === 'accept' && setLoadingAccept(true)
+	// 	activityType === 'skip' && setLoadingSkip(true)
+	// 	const data = {
+	// 		userId: userId,
+	// 		targetUserId: targetUserId,
+	// 		agentIdOfTargetedUser: agentId,
+	// 		activityType: activityType
+	// 	}
+
+	// 	dispatch(acceptSkipInterest(data))
+	// 		.then(response => {
+	// 			console.log("Response:", response);
+	// 			activityType === 'accept' && setAcceptReq(true); setLoadingAccept(false)
+	// 			activityType === 'skip' && setConfirmSkip(true); setLoadingSkip(false)
+	// 		})
+	// 		.catch(error => {
+	// 			console.error("Error:", error);
+	// 			activityType === 'accept' && setLoadingAccept(false)
+	// 			activityType === 'skip' && setLoadingSkip(false)
+	// 		});
+	// }
+
 	const executeAction = (activityType, agentId, targetUserId) => {
-		activityType == 'accept' && setLoadingAccept(true)
-		activityType == 'skip' && setLoadingSkip(true)
+		setProfileStatus(prev => ({
+			...prev,
+			[ targetUserId ]: {
+				loadingAccept: activityType === 'accept',
+				loadingSkip: activityType === 'skip',
+				completed: false,
+				action: activityType
+			}
+		}));
+
 		const data = {
 			userId: userId,
 			targetUserId: targetUserId,
 			agentIdOfTargetedUser: agentId,
 			activityType: activityType
-		}
+		};
 
 		dispatch(acceptSkipInterest(data))
-			.then(response => {
-				console.log("Response:", response);
-				activityType == 'accept' && setAcceptReq(true); setLoadingAccept(false)
-				activityType == 'skip' && setConfirmSkip(true); setLoadingSkip(false)
+			.then(() => {
+				setProfileStatus(prev => ({
+					...prev,
+					[ targetUserId ]: {
+						loadingAccept: false,
+						loadingSkip: false,
+						completed: true,
+						action: activityType
+					}
+				}));
 			})
-			.catch(error => {
-				console.error("Error:", error);
-				activityType == 'accept' && setLoadingAccept(false)
-				activityType == 'skip' && setLoadingSkip(false)
+			.catch(() => {
+				setProfileStatus(prev => ({
+					...prev,
+					[ targetUserId ]: {
+						loadingAccept: false,
+						loadingSkip: false,
+						completed: false,
+						action: activityType
+					}
+				}));
 			});
-	}
+	};
 
 
 	return (
@@ -156,7 +200,7 @@ const ReceivedInterest = () => {
 								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-lg transition duration-300 border">
 									<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`} className='relative bg-gray-200 w-full'>
 										<img
-											src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
+											src={profile.profileImg === undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
 											alt={profile.name}
 											className="w-full h-64 object-cover border-b"
 										/>
@@ -166,14 +210,14 @@ const ReceivedInterest = () => {
 											<div>
 												<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`}>
 													<h2 className="text-2xl font-semibold text-gray-800 pb-1">
-														{profile.firstName != undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
+														{profile.firstName !== undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
 													</h2>
 												</Link>
 												<p className="text-gray-600 text-sm">
-													{profile.age != undefined && `${profile.age} years • `}
-													{profile.height.feet != undefined && `${profile.height.feet} ' ${profile.height.inch}" • `}
+													{profile.age !== undefined && `${profile.age} years • `}
+													{profile.height.feet !== undefined && `${profile.height.feet} ' ${profile.height.inch}" • `}
 													<span className='capitalize'>
-														{profile.country != undefined && `${profile.country}, ${profile.state}`}
+														{profile.country !== undefined && `${profile.country}, ${profile.state}`}
 													</span>
 												</p>
 											</div>
@@ -181,7 +225,7 @@ const ReceivedInterest = () => {
 										<div className="space-y-2">
 											<p className="text-gray-700 truncate">
 												<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
-													{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
+													{profile.religion !== undefined && `${profile.religion} (${profile.caste})`}</span>
 											</p>
 											<p className="text-gray-700 truncate">
 												<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
@@ -193,16 +237,25 @@ const ReceivedInterest = () => {
 									</div>
 
 									<div className="py-3 flex justify-center items-center border-t text-sm gap-6">
-										{!acceptReq && <button className={`flex items-center px-6 py-2 border-2 border-gray-400 rounded-full transition ${loadingSkip ? 'bg-gray-200 text-gray-500' : 'text-gray-600'}`}
-											onClick={() => handelAction("skip", profile?.agentId, profile.targetUserId)} disabled={loadingSkip || confirmSkip}>
-											<span>{confirmSkip ? 'Skipped' : <p>{loadingSkip ? 'Skipping' : 'Skip'}</p>}</span>
-											{loadingSkip && <span className="loader left-2 border-gray-600"></span>}
-										</button>}
-										{!confirmSkip && <button className={`flex items-center px-6 py-2 border-2 hover:shadow text-white rounded-full transition ${acceptReq ? 'bg-green-500 border-green-500' : loadingAccept ? 'bg-sky-500 text-gray-200 border-sky-500' : 'bg-sky-500 border-sky-500'}`} disabled={loadingAccept || acceptReq}
-											onClick={() => handelAction("accept", profile?.agentId, profile.targetUserId)}>
-											<span>{acceptReq ? 'Accepted' : <p>{loadingAccept ? 'Accepting' : 'Accept'}</p>}</span>
-											{loadingAccept && <span className="loader left-2 border-white"></span>}
-										</button>}
+										{profileStatus[ profile.targetUserId ]?.action !== 'accept' &&
+											<button className={`flex items-center px-6 py-2 border-2 border-gray-400 rounded-full transition 
+												${profileStatus[ profile.targetUserId ]?.loadingSkip ? 'bg-gray-200 text-gray-500' : 'text-gray-600'}`}
+												onClick={() => handelAction("skip", profile?.agentId, profile.targetUserId)}
+												disabled={profileStatus[ profile.targetUserId ]?.loadingSkip || profileStatus[ profile.targetUserId ]?.completed}
+											>
+												{profileStatus[ profile.targetUserId ]?.completed && profileStatus[ profile.targetUserId ]?.action === 'skip' ? 'Skipped' : 'Skip'}
+												{profileStatus[ profile.targetUserId ]?.loadingSkip && <span className="loader left-2 border-white"></span>}
+											</button>}
+										{profileStatus[ profile.targetUserId ]?.action !== 'skip' &&
+											<button className={`flex items-center px-6 py-2 border-2 rounded-full transition text-white
+												${profileStatus[ profile.targetUserId ]?.loadingAccept ? 'bg-sky-300 border-sky-300 text-gray-200' :
+													profileStatus[ profile.targetUserId ]?.completed && profileStatus[ profile.targetUserId ]?.action === 'accept' ? 'bg-green-500 border-green-500' : 'bg-sky-500 border-sky-500'}`}
+												disabled={profileStatus[ profile.targetUserId ]?.loadingAccept || profileStatus[ profile.targetUserId ]?.completed}
+												onClick={() => handelAction("accept", profile?.agentId, profile.targetUserId)}
+											>
+												{profileStatus[ profile.targetUserId ]?.completed && profileStatus[ profile.targetUserId ]?.action === 'accept' ? 'Accepted' : 'Accept'}
+												{profileStatus[ profile.targetUserId ]?.loadingAccept && <span className="loader left-2 border-white"></span>}
+											</button>}
 									</div>
 
 								</div>

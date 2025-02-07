@@ -98,7 +98,7 @@ const ViewedYou = () => {
 					{isLoading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
 						filteredProfiles?.map((profile, index) => (
 							<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-lg transition duration-300 border">
-								<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
+								<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`} className='relative bg-gray-200 w-full'>
 									<img
 										src={profile.profileImg === undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
 										alt={profile.name}
