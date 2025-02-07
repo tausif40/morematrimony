@@ -21,11 +21,7 @@ function ShortProfile({ data }) {
 	const [ showModal, setShowModal ] = useState(false);
 	const [ IsSendInterest, setIsSendInterest ] = useState(false);
 	const [ isShortlist, setIsShortlist ] = useState(false);
-
 	const [ isSkipped, setIsSkipped ] = useState(false);
-	// const [ isPartnerSkipped, setIsPartnerSkipped ] = useState(false);
-	const [ isAccepted, setIsAccepted ] = useState(false);
-	// const [ isPartnerAccepted, setIsPartnerAccepted ] = useState(false);
 
 	const [ showMenu, setShowMenu ] = useState(false)
 	const [ contactPopup, setContactPopup ] = useState(false)

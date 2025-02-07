@@ -18,6 +18,8 @@ const ProfileCard = (userData) => {
 	const [ interestReceived, setInterestReceived ] = useState(false);
 	const [ showModal, setShowModal ] = useState(false);
 	const [ IsSendInterest, setIsSendInterest ] = useState(false);
+	const [ interestLoad, setInterestLoad ] = useState(false);
+	const [ shortlistLoad, setShortlistLoad ] = useState(false);
 	const [ isShortlist, setIsShortlist ] = useState(false);
 	const [ newUser, setNewUser ] = useState(false);
 	const [ confirmSkip, setConfirmSkip ] = useState(false);
@@ -28,10 +30,14 @@ const ProfileCard = (userData) => {
 	const userId = useSelector((state) => state.userDetails.userId);
 
 	const handelAction = (actionType) => {
+		actionType === 'send_interest' && setInterestLoad(true)
+		actionType === 'shortlist' && setShortlistLoad(true)
 		const action = { targetUserId: targetId, activityType: actionType }
-		actionType === 'send_interest' && setIsSendInterest(true)
-		actionType === 'shortlist' && setIsShortlist(true)
-		dispatch(setUserAction(action));
+		dispatch(setUserAction(action))
+			.then(() => {
+				actionType === 'send_interest' && setIsSendInterest(true); setInterestLoad(false)
+				actionType === 'shortlist' && setIsShortlist(true); setShortlistLoad(false)
+			})
 	};
 
 	useEffect(() => {
@@ -39,7 +45,7 @@ const ProfileCard = (userData) => {
 		action?.shortlist?.isDone === true ? setIsShortlist(true) : setIsShortlist(false)
 		targetedAction?.send_interest?.isDone === true ? setInterestReceived(true) : setInterestReceived(false)
 		// console.log("action int - ", action?.isInterestSent, '\n IsSendInterest = ', IsSendInterest);
-	}, [])
+	}, [ userData ])
 
 	useEffect(() => {
 		const accountDate = new Date(accountCreate);
@@ -139,14 +145,16 @@ const ProfileCard = (userData) => {
 								<p className={`text-sm flex items-center border gap-2 rounded-full pr-6 pl-4 py-2 cursor-pointer ${isShortlist ? 'text-primary border-primary font-semibold' : 'text-text border-text'} shadow transition-all`}
 									onClick={() => handelAction('shortlist')}>
 									<span className='flex items-center'>
-										{isShortlist ? <><IoMdStar />&nbsp;<p className=''>Shortlisted</p></> : <><IoIosStarOutline />&nbsp;<p className='border-text'>ShortList</p></>}
+										{isShortlist ? <><IoMdStar />&nbsp;<p>Shortlisted</p></> : <><IoIosStarOutline />&nbsp;<p className='border-text'>ShortList</p></>}
 									</span>
+									{/* {interestLoad && <span className="loader left-2 border-white"></span>} */}
 								</p>
 
 								<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${IsSendInterest ? 'border-red-500 bg-red-500' : 'border-orange-500 bg-orange-500'} shadow transition-all`}
 									onClick={() => handelAction('send_interest')}
 								>
 									<span>{IsSendInterest ? 'Pending Interest' : 'Send Interest'}</span>
+									{/* {shortlistLoad && <span className="loader left-2 border-white"></span>} */}
 								</p>
 							</div>
 						}
