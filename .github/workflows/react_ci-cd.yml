@@ -27,6 +27,22 @@ jobs:
 
       - name: Clone Repository (using PAT)
         run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'git clone https://tausif40:${{ secrets.TOKEN }}@github.com/tausif40/morematrimony.git /var/www/fontend-morematrimony/morematrimony'
+
+
+      - name: Check if TEST_SECRETS is Set
+        run: |
+         if [[ -z "${{ secrets.TEST_SECRETS }}" ]]; then
+         echo "TEST_SECRETS is EMPTY!"
+         exit 1
+         else
+         echo "TEST_SECRETS is SET!"
+         fi
+      - name: Check If .env File Exists
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'ls -l /var/www/fontend-morematrimony/morematrimony/.env'
+
+
+      - name: Check File Permissions
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'ls -lah /var/www/fontend-morematrimony/morematrimony/'
       - name: Create .env file on Remote Server
         run: |
          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
