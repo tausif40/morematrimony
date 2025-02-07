@@ -70,8 +70,8 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 		if (!formData.gender) newErrors.gender = 'Gender is required';
 		if (!formData.maritalStatus) newErrors.maritalStatus = 'Marital Status is required';
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
-		// if (formData.ProfilePhoto == null) newErrors.ProfilePhoto = 'Profile Photo is required';
-		if (formData.maritalStatus != 'single' && !numberOfChildren) {
+		// if (formData.ProfilePhoto  === null) newErrors.ProfilePhoto = 'Profile Photo is required';
+		if (formData.maritalStatus !== 'single' && !numberOfChildren) {
 			newErrors.numberOfChildren = 'Number of Children is required';
 		}
 		return newErrors;
@@ -83,7 +83,7 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 		const newErrors = validateForm();
 		if (Object.keys(newErrors).length === 0) {
 			setErrors({})
-			if (formData.maritalStatus != 'single') {
+			if (formData.maritalStatus !== 'single') {
 				setFormData((previousData) => ({
 					...previousData,
 					numberOfChildren: numberOfChildren
@@ -187,7 +187,7 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 						className={getInputClasses('maritalStatus')}
 						name="maritalStatus"
 						value={formData.maritalStatus}
-						onChange={handleChange}	
+						onChange={handleChange}
 					>
 						<option value="" disabled>Select</option>
 						{maritalStatus.status.map((value, index) => (

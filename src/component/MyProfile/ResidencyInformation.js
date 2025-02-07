@@ -252,7 +252,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Ancestral City</option>
-						{formData.state == '' && <option value="" disabled>Please Select state</option>}
+						{formData.state === '' && <option value="" disabled>Please Select state</option>}
 						{cityLoading && !cityList?.length && <option value="" disabled> Loading cities...</option>}
 						{cityList?.city?.map((city) => (
 							<option key={city._id} value={city._id}>

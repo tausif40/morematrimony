@@ -40,7 +40,7 @@ function FilterMenu() {
 					{navOption.map((value, index) => (
 						<Link Link to={`/matches?${value.key}`} key={index} >
 							{/* {console.log(value.key, "==", filterKey)} */}
-							<div className={`min-w-max tracking-wide cursor-pointer px-4 py-2 flex items-center gap-2 font-medium text-sm ${value.key == filterKey ? 'text-primary' : 'hover:text-red-500'}`} onClick={() => setFilterKey(value.key)}>{value.name}</div>
+							<div className={`min-w-max tracking-wide cursor-pointer px-4 py-2 flex items-center gap-2 font-medium text-sm ${value.key === filterKey ? 'text-primary' : 'hover:text-red-500'}`} onClick={() => setFilterKey(value.key)}>{value.name}</div>
 						</Link >
 					))}
 				</div >

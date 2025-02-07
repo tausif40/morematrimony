@@ -75,7 +75,7 @@ const App = () => {
   }, [ location.pathname, dispatch, userId ]);
 
   // useEffect(() => {
-  //   if (token == undefined) {
+  //   if (token  === undefined) {
   //     window.location.reload();
   //     navigate('/')
   //   }

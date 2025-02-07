@@ -137,7 +137,7 @@ const ViewedYou = () => {
 								</div>
 								<div className="py-3 flex justify-center items-center border-t">
 									<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`}>
-										<button className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
+										<button className="flex items-center space-x-2 px-4 py-[6px] bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
 											<span>View Profile</span>
 										</button>
 									</Link>

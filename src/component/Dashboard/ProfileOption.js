@@ -99,7 +99,7 @@ function ProfileOption() {
 				<div className='flex flex-col text-headingGray text-sm mt-6'>
 					{navOption.map((value, index) => (
 						<Link to={value.path} key={index}>
-							<p className={`cursor-pointer px-8 py-[10px] flex items-center gap-2 border-l-[3px] hover:border-l-[3px] ${value.path == currentPath ? 'bg-[#fbcbcfd4] border-hotRed hover:border-hotRed' : 'border-transparent hover:bg-[#f0efefd4] hover:border-gray-400'}`}><value.icon size={13} />{value.name}</p>
+							<p className={`cursor-pointer px-8 py-[10px] flex items-center gap-2 border-l-[3px] hover:border-l-[3px] ${value.path === currentPath ? 'bg-[#fbcbcfd4] border-hotRed hover:border-hotRed' : 'border-transparent hover:bg-[#f0efefd4] hover:border-gray-400'}`}><value.icon size={13} />{value.name}</p>
 						</Link>
 					))}
 				</div >

@@ -18,7 +18,7 @@ const LoginForm = () => {
 	const [ isLoading, setIsLoading ] = useState(false);
 
 	// const BASE_URL = process.env.REACT_APP_API_URL;
-	// BASE_URL == undefined && console.log('Base url not found');
+	// BASE_URL  === undefined && console.log('Base url not found');
 
 	const handleLogin = async (e) => {
 		// console.log(email, password);

@@ -77,7 +77,7 @@ const RegistrationForm = () => {
 		if (!formData.lastName) newErrors.lastName = 'LastName is required';
 		if (!formData.gender) newErrors.gender = 'Gender is required';
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
-		if (formData.onBehalf == 'mySelf' && !validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
+		if (formData.onBehalf === 'mySelf' && !validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
 		if (!formData.email) newErrors.email = 'Email is required';
 		if (!emailRegex.test(formData.email)) newErrors.email = "Invalid email format";
 		if (!formData.password) newErrors.password = 'Password is required';

@@ -15,7 +15,7 @@ const MainContent = () => {
 	}, [ dispatch ])
 
 	useEffect(() => {
-		matchedProfile?.data?.user?.profilesWithStatus?.length == undefined ? setLoading(true) : setLoading(false)
+		matchedProfile?.data?.user?.profilesWithStatus?.length === undefined ? setLoading(true) : setLoading(false)
 		// dispatch(getMatchedProfile({ isMatchedView: true }));
 		// console.log("matched loading - ", matchedProfile?.data?.user?.profilesWithStatus?.length);
 	}, [ dispatch, matchedProfile ])

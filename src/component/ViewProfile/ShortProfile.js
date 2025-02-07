@@ -22,16 +22,18 @@ function ShortProfile({ data }) {
 	const [ IsSendInterest, setIsSendInterest ] = useState(false);
 	const [ isShortlist, setIsShortlist ] = useState(false);
 
+	const [ isSkipped, setIsSkipped ] = useState(false);
+	// const [ isPartnerSkipped, setIsPartnerSkipped ] = useState(false);
+	const [ isAccepted, setIsAccepted ] = useState(false);
+	// const [ isPartnerAccepted, setIsPartnerAccepted ] = useState(false);
+
 	const [ showMenu, setShowMenu ] = useState(false)
 	const [ contactPopup, setContactPopup ] = useState(false)
-	const [ newUser, setNewUser ] = useState(false);
-	const [ confirmSkip, setConfirmSkip ] = useState(false);
 	const [ acceptReq, setAcceptReq ] = useState(false);
 	const [ loadingSkip, setLoadingSkip ] = useState(false);
 	const [ loadingAccept, setLoadingAccept ] = useState(false);
 
 	const userId = useSelector((state) => state.userDetails.userId);
-
 	const showSideMenu = () => setShowMenu((prev) => !prev);
 
 	useEffect(() => {
@@ -59,22 +61,16 @@ function ShortProfile({ data }) {
 	};
 
 	useEffect(() => {
-		data?.SocialAction?.send_interest?.isDone === true ? setIsSendInterest(true) : setIsSendInterest(false)
-		data?.SocialAction?.shortlist?.isDone === true ? setIsShortlist(true) : setIsShortlist(false)
 		data?.targetedSocialAction?.send_interest?.isDone === true ? setInterestReceived(true) : setInterestReceived(false)
+		// data?.SocialAction?.accept?.isDone ? setAcceptReq(true) : setAcceptReq(false)
+		data?.SocialAction?.accept?.isDone || data?.SocialAction?.acceptByRecipient?.isDone ? setAcceptReq(true) : setAcceptReq(false)
+
+		data?.SocialAction?.send_interest?.isDone ? setIsSendInterest(true) : setIsSendInterest(false)
+		data?.SocialAction?.shortlist?.isDone === true ? setIsShortlist(true) : setIsShortlist(false)
+		data?.SocialAction?.skip?.isDone === true ? setIsSkipped(true) : setIsSkipped(false)
+
 		// console.log("action int - ", action?.isInterestSent, '\n IsSendInterest = ', IsSendInterest);
 	}, [ data ])
-
-	// useEffect(() => {
-	// 	const accountDate = new Date(accountCreate);
-	// 	const currentDate = new Date();
-	// 	const timeDifference = currentDate - accountDate;
-	// 	const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-
-	// 	if (daysDifference <= 30) {
-	// 		setNewUser(true);
-	// 	}
-	// }, [ accountCreate ]);
 
 	const handelAcceptSkip = (activityType) => {
 		activityType === 'accept' && setLoadingAccept(true)
@@ -91,7 +87,7 @@ function ShortProfile({ data }) {
 			.then(response => {
 				console.log("Response:", response);
 				activityType === 'accept' && setAcceptReq(true); setLoadingAccept(false)
-				activityType === 'skip' && setConfirmSkip(true); setLoadingSkip(false)
+				activityType === 'skip' && setIsSkipped(true); setLoadingSkip(false)
 			})
 			.catch(error => {
 				console.error("Error:", error);
@@ -99,6 +95,10 @@ function ShortProfile({ data }) {
 				activityType === 'skip' && setLoadingSkip(false)
 			});
 	}
+	// console.log("isSkipped - ", isSkipped);
+	// console.log("accept - ", data?.SocialAction?.acceptByRecipient?.isDone);
+	// console.log("acceptReq - ", acceptReq);
+	// console.log("IsSendInterest - ", IsSendInterest);
 
 	return (
 		<>
@@ -112,13 +112,6 @@ function ShortProfile({ data }) {
 							<div>
 								<ProfileImage agentId={data?.agentId} />
 							</div>
-							{/* <img src="https://res.cloudinary.com/drfni1iqf/image/upload/v1717399015/Tausif/temp/img_rjd4en.png" alt="" className='h-96 w-[360px] rounded-lg object-cover' /> */}
-							{/* <div className='absolute top-2 right-0 cursor-pointer z-50'
-								onClick={handelInterest}>
-								<p className={`flex items-center ${interest ? 'text-primary ' : 'text-white'} border-3 border-white px-2 rounded-md`}>
-									<span>{interest ? <GoHeartFill size={24} /> : <GoHeart size={24} />}</span>
-								</p>
-							</div> */}
 						</div>
 
 						<div className='px-4 md:px-0 flex flex-col justify-between w-full'>
@@ -170,30 +163,37 @@ function ShortProfile({ data }) {
 								<div className='flex items-center justify-end gap-4 md:gap-6 mt-4'>
 									{interestReceived ?
 										<div className='flex items-center gap-4 md:gap-6 mt-4'>
-											{!acceptReq && <button className={`text-sm flex items-center border-2 border-gray-400 rounded-full px-6 py-2 cursor-pointer ${loadingSkip ? 'bg-gray-200 text-gray-500' : 'text-gray-600'}`} disabled={loadingSkip || confirmSkip}
+											{!acceptReq && <button className={`text-sm flex items-center border-2 border-gray-400 rounded-full px-6 py-2 cursor-pointer ${loadingSkip ? 'bg-gray-200 text-gray-500' : 'text-gray-600'}`} disabled={loadingSkip || isSkipped}
 												onClick={() => setShowModal(true)}>
-												<span>{confirmSkip ? 'Skipped' : <p>{loadingSkip ? 'Skipping' : 'Skip'}</p>}</span>
+												<span>{isSkipped ? 'Skipped' : <p>{loadingSkip ? 'Skipping' : 'Skip'}</p>}</span>
 												{loadingSkip && <span className="loader left-2 border-gray-600"></span>}
 											</button>}
-											{!confirmSkip && <button className={`text-sm flex items-center border gap-2 rounded-full px-6 py-2 cursor-pointer text-white ${acceptReq ? 'bg-green-500 border-green-500' : 'bg-sky-500 border-sky-500'} shadow transition-all`}
+											{!isSkipped && <button className={`text-sm flex items-center border gap-2 rounded-full px-6 py-2 cursor-pointer text-white ${acceptReq ? 'bg-green-500 border-green-500' : 'bg-sky-500 border-sky-500'} shadow transition-all`}
 												onClick={() => handelAcceptSkip("accept")} disabled={loadingAccept || acceptReq}>
 												<span>{acceptReq ? 'Accepted' : <p>{loadingAccept ? 'Accepting' : 'Accept'}</p>}</span>
 												{loadingAccept && <span className="loader left-2 border-white"></span>}
 											</button>}
 										</div>
 										: <div className='flex items-center gap-4 md:gap-6 mt-4'>
-											<p className={`text-sm flex items-center border gap-2 rounded-full pr-6 pl-4 py-2 cursor-pointer ${isShortlist ? 'text-primary border-primary font-semibold' : 'text-text border-text'} shadow transition-all`}
+											{!acceptReq && <button className={`text-sm flex items-center border gap-2 rounded-full pr-6 pl-4 py-2 cursor-pointer ${isShortlist ? 'text-primary border-primary font-semibold' : 'text-text border-text'} shadow transition-all`}
 												onClick={() => handelAction('shortlist')}>
 												<span className='flex items-center'>
 													{isShortlist ? <><IoMdStar />&nbsp;<p className=''>Shortlisted</p></> : <><IoIosStarOutline />&nbsp;<p className='border-text'>ShortList</p></>}
 												</span>
-											</p>
+											</button>}
 
-											<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${IsSendInterest ? 'border-red-500 bg-red-500' : 'border-orange-500 bg-orange-500'} shadow transition-all`}
-												onClick={() => handelAction('send_interest')}
-											>
-												<span>{IsSendInterest ? 'Pending Interest' : 'Send Interest'}</span>
-											</p>
+
+											{acceptReq ?
+												<button className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 text-white bg-green-500 border-green-500`}
+													onClick={() => handelAction('send_interest')}
+												>
+													<span>Accepted</span>
+												</button>
+												: <button className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${IsSendInterest ? 'border-red-500 bg-red-500' : 'border-orange-500 bg-orange-500'}`}
+													onClick={() => handelAction('send_interest')}
+												>
+													<span>{IsSendInterest ? 'Pending Interest' : 'Send Interest'}</span>
+												</button>}
 										</div>
 									}
 								</div>

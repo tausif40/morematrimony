@@ -308,7 +308,7 @@ const SocialBackground = ({ data }) => {
 							onChange={handleChange}
 						>
 							<option value="" disabled>Select Caste</option>
-							{/* {formData.religion == '' && <option value="" disabled>Fist Select religion</option>} */}
+							{/* {formData.religion  === '' && <option value="" disabled>Fist Select religion</option>} */}
 							{/* {divisionLoading && !division?.length && <option value="" disabled> Loading division...</option>} */}
 							{divisions?.division?.map((division) => (
 								<option key={division._id} value={division._id}>
@@ -330,7 +330,7 @@ const SocialBackground = ({ data }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Caste</option>
-						{formData.religion == '' && <option value="" disabled>Fist Select religion</option>}
+						{formData.religion === '' && <option value="" disabled>Fist Select religion</option>}
 						{loading.caste && !casteList?.length && <option value="" disabled>Loading cast...</option>}
 						{casteList?.caste?.map((caste) => (
 							<option key={caste._id} value={caste._id}>
@@ -406,7 +406,7 @@ const SocialBackground = ({ data }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select Rashi</option>
-						{formData.star == '' && <option value="" disabled>Select star fist</option>}
+						{formData.star === '' && <option value="" disabled>Select star fist</option>}
 						{loading.rashi && !rashiSignsList?.length && <option value="" disabled> Loading rashi...</option>}
 						{rashiSignsList?.rashiSign?.map((rashi) => (
 							<option key={rashi._id} value={rashi._id}>
@@ -488,7 +488,7 @@ const SocialBackground = ({ data }) => {
 								onChange={(e) => handleBirthPlaceChange(e, 'state')}
 							>
 								<option value="" disabled>State</option>
-								{formData.birthPlace.country == '' && <option value="" disabled>Please Select country</option>}
+								{formData.birthPlace.country === '' && <option value="" disabled>Please Select country</option>}
 								{loading.state && !stateList?.length && <option value="" disabled>Loading states...</option>}
 								{stateList?.state?.map((state) => (
 									<option key={state._id} value={state._id}>
@@ -509,7 +509,7 @@ const SocialBackground = ({ data }) => {
 								onChange={(e) => handleBirthPlaceChange(e, 'city')}
 							>
 								<option value="" disabled>City</option>
-								{formData.birthPlace.state == '' && <option value="" disabled>Please Select state</option>}
+								{formData.birthPlace.state === '' && <option value="" disabled>Please Select state</option>}
 								{loading.city && !cityList?.length && <option value="" disabled> Loading cities...</option>}
 								{cityList?.city?.map((city) => (
 									<option key={city._id} value={city._id}>

@@ -238,7 +238,7 @@ const ReceivedInterest = () => {
 
 									<div className="py-3 flex justify-center items-center border-t text-sm gap-6">
 										{profileStatus[ profile.targetUserId ]?.action !== 'accept' &&
-											<button className={`flex items-center px-6 py-2 border-2 border-gray-400 rounded-full transition 
+											<button className={`flex items-center px-6 py-[6px] border-2 border-gray-400 rounded-full transition 
 												${profileStatus[ profile.targetUserId ]?.loadingSkip ? 'bg-gray-200 text-gray-500' : 'text-gray-600'}`}
 												onClick={() => handelAction("skip", profile?.agentId, profile.targetUserId)}
 												disabled={profileStatus[ profile.targetUserId ]?.loadingSkip || profileStatus[ profile.targetUserId ]?.completed}
@@ -247,7 +247,7 @@ const ReceivedInterest = () => {
 												{profileStatus[ profile.targetUserId ]?.loadingSkip && <span className="loader left-2 border-white"></span>}
 											</button>}
 										{profileStatus[ profile.targetUserId ]?.action !== 'skip' &&
-											<button className={`flex items-center px-6 py-2 border-2 rounded-full transition text-white
+											<button className={`flex items-center px-6 py-[6px] border-2 rounded-full transition text-white
 												${profileStatus[ profile.targetUserId ]?.loadingAccept ? 'bg-sky-300 border-sky-300 text-gray-200' :
 													profileStatus[ profile.targetUserId ]?.completed && profileStatus[ profile.targetUserId ]?.action === 'accept' ? 'bg-green-500 border-green-500' : 'bg-sky-500 border-sky-500'}`}
 												disabled={profileStatus[ profile.targetUserId ]?.loadingAccept || profileStatus[ profile.targetUserId ]?.completed}

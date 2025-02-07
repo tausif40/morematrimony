@@ -66,7 +66,7 @@ const PhysicalAttributes = ({ onFormSubmit, data }) => {
 		if (cleanedData.disability.disability === 'no') {
 			delete cleanedData.disability.type;
 			delete cleanedData.disability.details;
-		} else if (cleanedData.disability.type != 'other') {
+		} else if (cleanedData.disability.type !== 'other') {
 			delete cleanedData.disability.details;
 		}
 

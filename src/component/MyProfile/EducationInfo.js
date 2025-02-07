@@ -75,7 +75,7 @@ const EducationInfo = ({ onFormSubmit, data }) => {
 					>
 						<option value="" disabled>Select Education</option>
 						{education?.education?.map((country) => (
-							<option key={country._id} value={country._id} disabled={country.id == 1} className={`${country.id == 1 && 'bg-[#a6a6a6] text-white'}`}>
+							<option key={country._id} value={country._id} disabled={country.id  === 1} className={`${country.id  === 1 && 'bg-[#a6a6a6] text-white'}`}>
 								{country.name.charAt(0).toUpperCase() + country.name.slice(1)}
 							</option>
 						))}

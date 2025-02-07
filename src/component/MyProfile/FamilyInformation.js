@@ -49,8 +49,8 @@ const FamilyInformation = ({ onFormSubmit, loading, data }) => {
 			formErrors.sistersMarried = 'Please specify number of married sisters';
 		}
 
-		if (formData.brothers == 0) delete formData.brothersMarried
-		if (formData.sisters == 0) delete formData.sistersMarried
+		if (formData.brothers === 0) delete formData.brothersMarried
+		if (formData.sisters === 0) delete formData.sistersMarried
 
 		setErrors(formErrors);
 		return Object.keys(formErrors).length === 0;
@@ -58,7 +58,7 @@ const FamilyInformation = ({ onFormSubmit, loading, data }) => {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		if (name == 'brothers') {
+		if (name === 'brothers') {
 			formData.brothersMarried = ''
 		} else if (name === 'sisters') {
 			formData.sistersMarried = ''

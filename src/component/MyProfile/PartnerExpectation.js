@@ -754,7 +754,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select preferred state</option>
-						{formData.country == '' && <option value="" disabled>Please Select country</option>}
+						{formData.country  === '' && <option value="" disabled>Please Select country</option>}
 						{stateList?.state?.map((state) => (
 							<option key={state._id} value={state._id}>
 								{state.name.charAt(0).toUpperCase() + state.name.slice(1)}

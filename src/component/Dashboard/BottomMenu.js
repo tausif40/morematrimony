@@ -14,22 +14,22 @@ const BottomMenu = ({ onMenuClick }) => {
 				<div className='custom-shadow2 flex justify-around items-end py-2 bg-white text-xs text-text font-light'>
 					<Link to='/dashboard'>
 						<div className='flex flex-col items-center gap-1'>
-							<RiHome4Line size={18} className={`${currentPath == '/dashboard' && 'text-[#f45d2c]'}`} />
-							<p className={`${currentPath == '/dashboard' && 'text-gradient'}`}>Home</p>
+							<RiHome4Line size={18} className={`${currentPath === '/dashboard' && 'text-[#f45d2c]'}`} />
+							<p className={`${currentPath === '/dashboard' && 'text-gradient'}`}>Home</p>
 						</div>
 					</Link>
 
 					<Link to='/dashboard/my-interest'>
 						<div className='flex flex-col items-center gap-1'>
-							<IoMdHeartEmpty size={18} className={`${currentPath == '/dashboard/my-interest' && 'text-[#f45d2c]'}`} />
-							<p className={`${currentPath == '/dashboard/my-interest' && 'text-gradient'}`}>My Interest</p>
+							<IoMdHeartEmpty size={18} className={`${currentPath === '/dashboard/my-interest' && 'text-[#f45d2c]'}`} />
+							<p className={`${currentPath === '/dashboard/my-interest' && 'text-gradient'}`}>My Interest</p>
 						</div>
 					</Link>
 
 					<Link to='/dashboard/notification'>
 						<div className='flex flex-col items-center gap-1'>
-							<IoIosNotificationsOutline size={20} className={`${currentPath == '/dashboard/notification' && 'text-[#f45d2c]'}`} />
-							<p className={`${currentPath == '/dashboard/notification' && 'text-gradient'}`}>Notification</p>
+							<IoIosNotificationsOutline size={20} className={`${currentPath === '/dashboard/notification' && 'text-[#f45d2c]'}`} />
+							<p className={`${currentPath === '/dashboard/notification' && 'text-gradient'}`}>Notification</p>
 						</div>
 					</Link>
 					{/* <Link to='/profile'> */}

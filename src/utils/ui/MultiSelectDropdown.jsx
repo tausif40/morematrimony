@@ -88,7 +88,7 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 						</button>
 					</div>
 				))}
-				{selectedItems.length == 0 && <p className="text-[#374151]">{fieldName}</p>}
+				{selectedItems.length === 0 && <p className="text-[#374151]">{fieldName}</p>}
 				<div className="ml-auto py-4 px-1">
 					<IoIosArrowDown className="text-gray-700" />
 				</div>
@@ -123,7 +123,7 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 								)}
 							</div>
 						))}
-						{filteredItems == undefined && <p className="px-4 py-2">Wait ...</p>}
+						{filteredItems === undefined && <p className="px-4 py-2">Wait ...</p>}
 						{dataList?.length === 0 && <p className="px-4 py-2">List is Empty</p>}
 					</div>
 				</div>

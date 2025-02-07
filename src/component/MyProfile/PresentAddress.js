@@ -150,7 +150,7 @@ const PresentAddress = ({ onFormSubmit, data }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select State</option>
-						{formData.country == '' && <option value="" disabled>Please Select country</option>}
+						{formData.country === '' && <option value="" disabled>Please Select country</option>}
 						{stateLoading && !stateList?.length && <option value="" disabled>Loading states...</option>}
 						{stateList?.state?.map((state) => (
 							<option key={state._id} value={state._id}>
@@ -173,7 +173,7 @@ const PresentAddress = ({ onFormSubmit, data }) => {
 						onChange={handleChange}
 					>
 						<option value="" disabled>Select State</option>
-						{formData.state == '' && <option value="" disabled>Please Select state</option>}
+						{formData.state === '' && <option value="" disabled>Please Select state</option>}
 						{cityLoading && !cityList?.length && <option value="" disabled> Loading cities...</option>}
 						{cityList?.city?.map((city) => (
 							<option key={city._id} value={city._id}>
