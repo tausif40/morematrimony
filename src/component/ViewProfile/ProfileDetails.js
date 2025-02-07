@@ -29,7 +29,7 @@ const ProfileDetails = () => {
 	}, [ targetId, dispatch ])
 
 	const data = userDetailsById?.data?.user
-	// console.log("data -", data);
+	console.log("userDetailsById -", data);
 
 	useEffect(() => {
 		window.scrollTo({

@@ -48,7 +48,8 @@ const ReceivedInterest = () => {
 	const receivedInterest = useSelector((state) => state.userAction.receivedInterest);
 	const userId = useSelector((state) => state.userDetails.userId);
 	const isLoading = receivedInterest.loading
-	// console.log(receivedInterest);
+	console.log(receivedInterest);
+	console.log(userId);
 
 	useEffect(() => {
 		dispatch(getReceivedInterest(userId));
@@ -153,7 +154,7 @@ const ReceivedInterest = () => {
 						{isLoading ? [ ...Array(6) ].map((_, index) => <ActionLoader key={index} />) :
 							filteredProfiles?.map((profile, index) => (
 								<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-lg transition duration-300 border">
-									<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
+									<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`} className='relative bg-gray-200 w-full'>
 										<img
 											src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
 											alt={profile.name}
@@ -163,7 +164,7 @@ const ReceivedInterest = () => {
 									<div className="px-4 pt-2 pb-4">
 										<div className="flex justify-between items-start mb-3">
 											<div>
-												<Link to={`/matches/profile-details/${profile.userId}`}>
+												<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`}>
 													<h2 className="text-2xl font-semibold text-gray-800 pb-1">
 														{profile.firstName != undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
 													</h2>

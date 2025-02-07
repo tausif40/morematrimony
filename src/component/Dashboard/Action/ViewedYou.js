@@ -11,9 +11,8 @@ const mapViewedYou = (profiles) => {
 	return profiles?.map((profile) => {
 		const { userDetails } = profile;
 		return {
-			userId: userDetails?._id,
+			targetUserId: userDetails?._id,
 			agentId: profile?.agentId,
-			targetUserId: profile?.targetUserId,
 			profileImg: userDetails?.profileImage,
 			firstName: userDetails?.basicInformation?.firstName,
 			lastName: userDetails?.basicInformation?.lastName,
@@ -101,7 +100,7 @@ const ViewedYou = () => {
 							<div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transform hover:shadow-lg transition duration-300 border">
 								<Link to={`/matches/profile-details/${profile.userId}`} className='relative bg-gray-200 w-full'>
 									<img
-										src={profile.profileImg == undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
+										src={profile.profileImg === undefined ? profile.gender === 'male' ? male : female : profile.profileImg}
 										alt={profile.name}
 										className="w-full h-64 object-cover border-b"
 									/>
@@ -109,16 +108,16 @@ const ViewedYou = () => {
 								<div className="px-4 pt-2 pb-4">
 									<div className="flex justify-between items-start mb-3">
 										<div>
-											<Link to={`/matches/profile-details/${profile.userId}`}>
+											<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`}>
 												<h2 className="text-2xl font-semibold text-gray-800 pb-1">
-													{profile.firstName != undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
+													{profile.firstName !== undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
 												</h2>
 											</Link>
 											<p className="text-gray-600 text-sm">
-												{profile.age != undefined && `${profile.age} years • `}
-												{profile.height.feet != undefined && `${profile.height.feet} ' ${profile.height.inch}" • `}
+												{profile.age !== undefined && `${profile.age} years • `}
+												{profile.height.feet !== undefined && `${profile.height.feet} ' ${profile.height.inch}" • `}
 												<span className='capitalize'>
-													{profile.country != undefined && `${profile.country}, ${profile.state}`}
+													{profile.country !== undefined && `${profile.country}, ${profile.state}`}
 												</span>
 											</p>
 										</div>
@@ -126,7 +125,7 @@ const ViewedYou = () => {
 									<div className="space-y-2">
 										<p className="text-gray-700 truncate">
 											<span className="font-semibold text-sm">Religion:</span> <span className='font-light capitalize'>
-												{profile.religion != undefined && `${profile.religion} (${profile.caste})`}</span>
+												{profile.religion !== undefined && `${profile.religion} (${profile.caste})`}</span>
 										</p>
 										<p className="text-gray-700 truncate">
 											<span className="font-semibold text-sm">Occupation:</span> <span className='font-light capitalize'>{profile.occupation}</span>
@@ -137,7 +136,7 @@ const ViewedYou = () => {
 									</div>
 								</div>
 								<div className="py-3 flex justify-center items-center border-t">
-									<Link to={`/matches/profile-details/${profile.userId}`}>
+									<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`}>
 										<button className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-600 border-2 hover:bg-gray-100 border-gray-500 rounded-full transition">
 											<span>View Profile</span>
 										</button>
