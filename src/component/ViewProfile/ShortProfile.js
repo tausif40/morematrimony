@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import 'swiper/css';
 import ProfileImage from './ProfileImage';
 import { HiOutlineUserCircle } from "react-icons/hi";
+import { CiHome } from "react-icons/ci";
 import { RiStackshareLine } from "react-icons/ri";
+import { BookMarked } from 'lucide-react';
 import { IoIosStarOutline } from "react-icons/io";
 import { IoMdStar } from "react-icons/io";
 import { MdOutlineWorkOutline } from "react-icons/md";
@@ -96,6 +98,16 @@ function ShortProfile({ data }) {
 	// console.log("acceptReq - ", acceptReq);
 	// console.log("IsSendInterest - ", IsSendInterest);
 
+	const InfoItem = ({ icon, text }) => {
+		if (!text) return null;
+		return (
+			<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
+				<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'>{icon}</p>
+				<p className='capitalize'>{text}</p>
+			</div>
+		);
+	};
+
 	return (
 		<>
 			{contactPopup && <ContactDetails showDetails={setContactPopup} onClose={() => setContactPopup(false)} />}
@@ -132,26 +144,30 @@ function ShortProfile({ data }) {
 									{/* <span className='text-text'>&nbsp;|&nbsp;</span>
 									<p>Last seen {data?.lastSeen}</p> */}
 								</div>
-								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className=' tracking-wider capitalize'>{data?.age} Yrs, {data?.height}</p>
-								</div>
-								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4 capitalize'><RiStackshareLine /></p>
-									<p className='capitalize'>{data?.religion && `${data?.religion}`} {data?.cast === "" ? '' : ` - ${data?.cast}`} {data?.subCaste !== "" && ` - ${data?.subCaste}`}</p>
-								</div>
-								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className='capitalize'>{data?.highestEducation}, {data?.occupation}</p>
-								</div>
-								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><HiOutlineUserCircle /></p>
-									<p className='capitalize'>{data.city}, {data.state}, {data.country}</p>
-								</div>
-								<div className='flex items-start md:items-center mt-2 text-sm md:text-base'>
-									<p className='p-[1px] bg-text rounded-md text-white mr-2 md:mr-4'><MdOutlineWorkOutline /></p>
-									<p className='capitalize'>{data.occupation} ({data.jobLocation}), {data.annualIncome}</p>
-								</div>
+								<InfoItem
+									icon={<HiOutlineUserCircle />}
+									text={[ data?.age && `${data.age} Yrs`, data?.height ].filter(Boolean).join(', ')}
+								/>
+								<InfoItem
+									icon={<RiStackshareLine />}
+									text={[ data?.religion, data?.cast && `- ${data.cast}`, data?.subCaste && `- ${data.subCaste}` ]
+										.filter(Boolean)
+										.join(' ')}
+								/>
+								<InfoItem
+									icon={<HiOutlineUserCircle />}
+									text={[ data?.highestEducation, data?.occupation ].filter(Boolean).join(', ')}
+								/>
+								<InfoItem
+									icon={<CiHome />}
+									text={[ data?.city, data?.state, data?.country ].filter(Boolean).join(', ')}
+								/>
+								<InfoItem
+									icon={<MdOutlineWorkOutline />}
+									text={[ data?.occupation && `${data.occupation} (${data.jobLocation})`, data?.annualIncome ]
+										.filter(Boolean)
+										.join(', ')}
+								/>
 							</div>
 
 							<div>

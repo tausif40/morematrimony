@@ -105,7 +105,7 @@ const ProfileCard = (userData) => {
 					<div>
 						<Link to={`/matches/profile-details/${targetId}/${userId}`}>
 							<div>
-								<h3 className="text-xl font-semibold text-black pointer">{fistName} {lastName}</h3>
+								<h3 className="text-xl font-semibold text-black pointer capitalize">{fistName} {lastName}</h3>
 							</div>
 						</Link>
 						<p className="mt-1 text-sm text-gray-500">

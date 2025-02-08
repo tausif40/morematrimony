@@ -80,7 +80,7 @@ function ProfileOption() {
 			< section className='bg-white pt-6 min-h-screen'>
 				<div className='px-4 flex flex-col items-center'>
 					<img src={dpImage || `/assets/img/avatar-place.png`} alt="" className='w-28 h-28 mb-4 ring-2 ring-offset-2 ring-gray-400 object-cover rounded-full bg-gray-200 border-gray-500' style={{ objectPosition: 'center 10%' }} />
-					<p className='font-semibold text-2xl text-headingGray'>{fistName + " " + lastName}</p>
+					<p className='font-semibold text-2xl text-headingGray capitalize'>{fistName + " " + lastName}</p>
 
 					{/* <div className={`${isLoading ? 'loading' : color} flex items-center text-xs my-1 border px-2 rounded-full`} >
 						<p className='text-[12px]'>Profile completion: </p>

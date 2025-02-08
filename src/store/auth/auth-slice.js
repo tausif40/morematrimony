@@ -12,12 +12,12 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 	const encryptedUserData = encryptData(userData);
 	const loadingToast = toast.loading('Registering.....');
 	try {
-		const response = await apiClient.post('/auth/signUp', { encryptedData: userData });
+		const response = await apiClient.post('/auth/signUp', { encryptedData: encryptedUserData });
 		toast.success(("Registration successful!"), { id: loadingToast })
 		console.log(response);
 		const decryptedData = decryptData(response.data.encryptedData)
-		// return decryptedData;
-		return response.data;
+		return decryptedData;
+		// return response.data;
 	} catch (error) {
 		console.log(error);
 		toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
