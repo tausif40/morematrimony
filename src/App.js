@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations, fetchReligions } from './store/features/profileData-slice';
 import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute';
 import { getNotification } from './store/features/notification-slice';
+import ResetPassword from './component/Form/ResetPassword';
 
 const App = () => {
   const location = useLocation()
@@ -108,6 +109,7 @@ const App = () => {
 
           <Route path="/plans" element={<Plans />} />
           <Route path="/help" element={<Help />} />
+          {!token && <Route path="/reset-password" element={<ResetPassword />} />}
         </Routes>
 
         <Footer />

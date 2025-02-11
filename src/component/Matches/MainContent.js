@@ -30,11 +30,12 @@ const MainContent = () => {
 	useEffect(() => {
 		matchedProfile?.data?.user?.profilesWithStatus?.length === undefined ? setLoading(true) : setLoading(false)
 		// dispatch(getMatchedProfile({ isMatchedView: true }));
-		console.log("matched loading - ", matchedProfile?.data?.user);
+		// console.log("matched loading - ", matchedProfile?.data?.user);
 		console.log("limit - ", matchedProfile?.data?.user?.limit);
 		console.log("totalPages - ", matchedProfile?.data?.user?.totalPages);
 		console.log("totalCount - ", matchedProfile?.data?.user?.totalCount);
-		// console.log(matchedProfile?.data?.user?.page);
+		setTotal(matchedProfile?.data?.user?.totalCount)
+		setLimit(5)
 	}, [ dispatch, matchedProfile ])
 
 	// console.log("matched Profile - ", matchedProfile?.data?.user?.profilesWithStatus);
