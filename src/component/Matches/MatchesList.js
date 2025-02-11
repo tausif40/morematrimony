@@ -80,7 +80,6 @@ export default function MatchesList() {
 		presentCity: 'Present City',
 		education: 'Education',
 		occupation: 'Occupation',
-		occupation: 'Occupation',
 		bodyType: 'Body Type',
 		religion: 'Religion',
 		caste: 'Caste',
@@ -234,7 +233,7 @@ export default function MatchesList() {
 	return (
 		<>
 			<FilterMenu />
-			<div className="flex bg-gray-50">
+			<div className="flex bg-gray-100">
 				<FilterSidebar
 					selectedFilters={selectedFilters}
 					setActivePopup={setActivePopup}

@@ -6,7 +6,7 @@ import FilterInterface from '../Matches/Filter/FilterInterface'
 function MatchesLayout() {
 	return (
 		<>
-			<div className=" bg-gray-50 pb-12">
+			<div className=" bg-gray-100 pb-12">
 				<div className="z-40">
 					<FilterMenu />
 				</div>

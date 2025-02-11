@@ -19,7 +19,7 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 		return decryptedData;
 		// return response.data;
 	} catch (error) {
-		console.log(error);
+		console.log(error); 
 		toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
 		return thunkAPI.rejectWithValue(error.response.data);
 	}

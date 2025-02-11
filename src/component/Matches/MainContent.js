@@ -4,26 +4,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProfileListSkeleton from '../Loader/ProfileListSkeleton';
 import { getMatchedProfile } from '../../store/features/matchProfile-slice';
 import ProfileCard from './ProfileCard';
+import { Pagination } from 'antd';
+import '../../CSS/antPagination.css'
+import { useSearchParams } from 'react-router-dom';
 
 const MainContent = () => {
 	const dispatch = useDispatch()
+	const [ searchParams, setSearchParams ] = useSearchParams();
 	const [ loading, setLoading ] = useState(false)
 	const matchedProfile = useSelector((state) => state.matchProfile.matchedProfile);
+	const [ limit, setLimit ] = useState(5);
+	const [ page, setPage ] = useState();
+	const [ total, setTotal ] = useState();
+
+	const currentPage = Number(searchParams.get("page")) || 1;
+
+	const handlePageChange = (page) => {
+		setSearchParams({ page });
+	};
 
 	useEffect(() => {
-		dispatch(getMatchedProfile());
-	}, [ dispatch ])
+		dispatch(getMatchedProfile({ limit: limit, page: currentPage }));
+	}, [ dispatch, limit, currentPage ])
 
 	useEffect(() => {
 		matchedProfile?.data?.user?.profilesWithStatus?.length === undefined ? setLoading(true) : setLoading(false)
 		// dispatch(getMatchedProfile({ isMatchedView: true }));
-		// console.log("matched loading - ", matchedProfile?.data?.user?.profilesWithStatus?.length);
+		console.log("matched loading - ", matchedProfile?.data?.user);
+		console.log("limit - ", matchedProfile?.data?.user?.limit);
+		console.log("totalPages - ", matchedProfile?.data?.user?.totalPages);
+		console.log("totalCount - ", matchedProfile?.data?.user?.totalCount);
+		// console.log(matchedProfile?.data?.user?.page);
 	}, [ dispatch, matchedProfile ])
 
 	// console.log("matched Profile - ", matchedProfile?.data?.user?.profilesWithStatus);
 
 	const mapProfiles = (profiles) => {
-		console.log(profiles);
+		// console.log(profiles);
 		return profiles?.map((profile) => {
 			const {
 				_id,
@@ -83,6 +100,9 @@ const MainContent = () => {
 					<ProfileCard key={index} {...profile} />
 				))}
 				{!loading && profiles.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
+				<div className='flex justify-center pt-6 mb-4'>
+					<Pagination current={currentPage} total={total} onChange={handlePageChange} />
+				</div>
 			</div>
 		</>
 	);

@@ -35,9 +35,9 @@ function ProfileOption() {
 	const lastName = userDetails?.data?.user?.basicInformation?.lastName || 'Name';
 	const dpImage = userDetails?.data?.user?.profileImage;
 
-	// console.log(userDetails?.loading);
 	useEffect(() => {
 		setProfileCompletion(percent)
+		// console.log(percent);
 		setIsLoading(userDetails?.loading)
 		percent && setColor(percentColor(percent))
 	}, [ userDetails, percent ])

@@ -20,6 +20,7 @@ const IntroductionForm = ({ data, onFormSubmit }) => {
 	};
 	useEffect(() => {
 		setIntroduction(introductionData)
+		console.log(introductionData);
 	}, [ introductionData ])
 
 	return (

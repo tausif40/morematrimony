@@ -51,15 +51,15 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 			});
 		}
 		if (residency?.ancestralOrigin?.state) {
-			fetchCity(residency?.ancestralOrigin?.state);
+			fetchCity(residency?.ancestralOrigin?.state?._id);
 		}
 	}, [ residency ]);
 
 	const fetchCity = async (stateId) => {
-		// console.log(stateId);
+		// console.log("stateId - ", stateId);
 		setCityLoading(true)
 		try {
-			const response = await apiClient.get(`/city?stateId=${stateId?._id}`);
+			const response = await apiClient.get(`/city?stateId=${stateId}`);
 			setCityList(response.data)
 		} catch (error) {
 			console.log(error);

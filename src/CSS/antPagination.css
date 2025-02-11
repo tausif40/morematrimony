@@ -1,0 +1,31 @@
+/* Change background color of pagination container */
+.ant-pagination {
+	background-color: #f0f2f5;
+	padding: 10px;
+	border-radius: 8px;
+}
+
+/* Change default page button styles */
+.ant-pagination-item {
+	background-color: #ffffff;
+	border: 1px solid #d9d9d9;
+}
+
+/* Change hover effect */
+.ant-pagination-item:hover {
+	background-color: #f7fcff !important;
+	border-color: #1890ff;
+}
+
+/* Change active page color */
+.ant-pagination-item-active {
+	background-color: #f21a2d !important;
+	border-color: #f21a2d !important;
+}
+.ant-pagination-item-active:hover {
+	background-color: #f21a2d !important;
+}
+
+.ant-pagination-item-active a {
+	color: white !important;
+}
