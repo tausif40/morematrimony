@@ -118,19 +118,21 @@ const RegistrationForm = () => {
 
 		try {
 
-			const result = await dispatch(registerUser(formData));
+			dispatch(registerUser(formData)).then((res) => {
 
-			if (registerUser.fulfilled.match(result)) {
-				const tokens = result?.payload?.tokens;
-				console.log(tokens);
-				Cookies.set('access_token', tokens.access.token);
-				Cookies.set('refresh_token', tokens.refresh.token);
+				if (registerUser.fulfilled.match(res)) {
+					const tokens = res?.payload?.tokens;
+					console.log(tokens);
+					Cookies.set('access_token', tokens.access.token);
+					Cookies.set('refresh_token', tokens.refresh.token);
 
-				// toast.success('Registration successful! Redirecting to dashboard...');
-				navigate('/dashboard');
-			} else {
-				console.log(error);
-			}
+					// toast.success('Registration successful! Redirecting to dashboard...');
+					// navigate('/dashboard');
+					navigate(`/dashboard?email=${formData.email}`);
+				} else {
+					console.log(error);
+				}
+			})
 		} catch (error) {
 			toast.error('An unexpected error occurred. Please try again later.');
 			console.error('Registration error:', error);

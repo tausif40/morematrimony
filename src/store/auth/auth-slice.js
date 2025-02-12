@@ -9,17 +9,19 @@ const refreshToken = Cookies.get('refresh_token');
 
 // Register User
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData, thunkAPI) => {
-	const encryptedUserData = encryptData(userData);
+	// const encryptedUserData = encryptData(userData);
+	const encryptedUserData = userData;
 	const loadingToast = toast.loading('Registering.....');
+	console.log(userData);
 	try {
-		const response = await apiClient.post('/auth/signUp', { encryptedData: encryptedUserData });
+		const response = await apiClient.post('/auth/signUp', userData);
 		toast.success(("Registration successful!"), { id: loadingToast })
 		console.log(response);
-		const decryptedData = decryptData(response.data.encryptedData)
-		return decryptedData;
-		// return response.data;
+		// const decryptedData = decryptData(response.data.encryptedData)
+		// return decryptedData;
+		return response.data;
 	} catch (error) {
-		console.log(error); 
+		console.log(error);
 		toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
 		return thunkAPI.rejectWithValue(error.response.data);
 	}

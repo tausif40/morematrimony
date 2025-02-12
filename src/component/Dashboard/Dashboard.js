@@ -7,12 +7,12 @@ import VerificationForm from '../Form/VerificationForm';
 function Dashboard() {
 
 	const [ verified, setVerified ] = useState(false);
-	const [ showVerification, setShowVerification ] = useState(false);
+	// const [ showVerification, setShowVerification ] = useState(false);
 
 	return (
 		<>
-			{!verified && showVerification && (
-				<VerificationForm verify={setVerified} onClose={() => setShowVerification(false)} />
+			{!verified && (
+				<VerificationForm verify={setVerified} />
 			)}
 
 			<section className='bg-white py-4 px-6 border rounded-md w-full'>
@@ -37,7 +37,7 @@ function Dashboard() {
 						<PremiumPlans />
 					</div>
 					<div className='space-y-6 w-full sm:w-1/2'>
-						<div className='border w-full m-auto flex flex-col items-center pb-8 rounded-md shadow-sm'>
+						{/* <div className='border w-full m-auto flex flex-col items-center pb-8 rounded-md shadow-sm'>
 							{
 								verified ?
 									<img src="/assets/img/verified.png" alt="non_verified" className='w-auto pt-8' />
@@ -46,7 +46,7 @@ function Dashboard() {
 										<button className='gradient-btn text-white px-4 py-2 rounded-md' onClick={() => setShowVerification(true)}>Verify Now</button>
 									</>
 							}
-						</div>
+						</div> */}
 
 						<div className='w-full border shadow-sm rounded-md'>
 							<p className='px-6 py-2 border-b text-headingGray text-lg'>Matched profile</p>
