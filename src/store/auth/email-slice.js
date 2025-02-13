@@ -22,6 +22,25 @@ export const resendEmailOTP = createAsyncThunk('email/resendEmailOTP', async (da
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });
+// forgot Email
+export const forgotPsd = createAsyncThunk('email/forgotPsd', async (data, thunkAPI) => {
+	try {
+		const response = await apiClient.post('/auth/forgot-password', data);
+		console.log(response.data);
+		return response.data;
+	} catch (error) {
+		return thunkAPI.rejectWithValue(error.response.data);
+	}
+});
+export const resetPsd = createAsyncThunk('email/resetPsd', async (data, thunkAPI) => {
+	try {
+		const response = await apiClient.post(`/auth/reset-password?${data?.token}`, { password: data.password });
+		console.log(response.data);
+		return response.data;
+	} catch (error) {
+		return thunkAPI.rejectWithValue(error.response.data);
+	}
+});
 
 const emailSlice = createSlice({
 	name: 'email',

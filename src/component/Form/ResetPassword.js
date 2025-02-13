@@ -1,10 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { resetPsd } from "../../store/auth/email-slice";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 const ResetPassword = () => {
+	const location = useLocation();
+	const dispatch = useDispatch();
 	const [ password, setPassword ] = useState("");
 	const [ confirmPassword, setConfirmPassword ] = useState("");
 	const [ message, setMessage ] = useState("");
+	const [ token, setToken ] = useState("");
+
+
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
+		const tokenFromUrl = params.get("token");
+		if (tokenFromUrl) {
+			setToken(tokenFromUrl);
+		}
+	}, [ location ]);
 
 	const handleResetPassword = async (e) => {
 		e.preventDefault();
@@ -15,9 +30,15 @@ const ResetPassword = () => {
 		}
 
 		try {
-			const response = await axios.post("/api/reset-password", password);
+			const data = { token: token, password: password }
+			dispatch(resetPsd(data))
+				.then((response) => {
+					setMessage(response.data.message || "Password reset successful!");
 
-			setMessage(response.data.message || "Password reset successful!");
+				}).catch(() => {
+
+				})
+
 		} catch (error) {
 			setMessage(error.response?.data?.message || "An error occurred");
 		}
