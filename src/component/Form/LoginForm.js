@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { loginUser } from '../../store/auth/auth-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import ForgotPsd from './ForgotPsd';
+import VerificationForm from './VerificationForm';
 
 
 const LoginForm = () => {
@@ -18,7 +19,7 @@ const LoginForm = () => {
 	const [ error, setError ] = useState('');
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ showForgotPsd, setShowForgotPsd ] = useState(false);
-
+	const [ showEmailOtp, setShowEmailOtp ] = useState(false);
 	// const BASE_URL = process.env.REACT_APP_API_URL;
 	// BASE_URL  === undefined && console.log('Base url not found');
 
@@ -38,34 +39,44 @@ const LoginForm = () => {
 		}
 
 		try {
+			const loadingToast = toast.loading('Logging.....');
 			setIsLoading(true);
-			const response = await dispatch(loginUser({ email, password }));
+			dispatch(loginUser({ email, password }))
+				.then((response) => {
+					const user = response?.payload?.user
+					console.log(user);
+					if (user?.isVerifiedEmail) {
+						navigate('/dashboard');
+						toast.success(("Login successful!"), { id: loadingToast })
+					} else {
+						setShowEmailOtp(true)
+						toast.info(("Please Verify Email"), { id: loadingToast })
+					}
+					// const tokens = response?.payload?.tokens;
+					// console.log(tokens);
+					// Cookies.set('access_token', tokens.access.token);
+					// Cookies.set('refresh_token', tokens.refresh.token);
+					// Cookies.set('userId', tokens.refresh.token);
+					// toast.success('Login successful!');
+					setIsLoading(false);
 
-			if (loginUser.fulfilled.match(response)) {
-				console.log(response);
-				const tokens = response?.payload?.tokens;
-				console.log(tokens);
-				Cookies.set('access_token', tokens.access.token);
-				Cookies.set('refresh_token', tokens.refresh.token);
-				// Cookies.set('userId', tokens.refresh.token);
-
-				// toast.success('Login successful!');
-				navigate('/dashboard');
-				setIsLoading(false);
-			} else {
-				const errorMessage = response.error?.message || 'Login failed. Please try again.';
-				console.log(errorMessage);
-				setIsLoading(false);
-			}
-
+				}).catch((error) => {
+					console.log(error);
+					const errorMessage = error?.response?.data?.message || error?.message || "Login failed.";
+					console.log(errorMessage);
+					setIsLoading(false);
+					toast.error(errorMessage, { id: loadingToast })
+				})
 		} catch (error) {
-			toast.error('An unexpected error occurred. Please try again later.');
 			console.error('Login error:', error);
+			toast.error('An unexpected error occurred. Please try again later.');
+			setIsLoading(false)
 		}
 	};
 
 	return (
 		<>
+			{showEmailOtp && <VerificationForm email={email} />}
 			{showForgotPsd && <ForgotPsd onClose={setShowForgotPsd} />}
 			{/* // <div className="flex items-center justify-center min-h-screen my-10 px-2 md:px-4"> */}
 			<div className="w-80 sm:min-w-[356px] md:min-w-96">

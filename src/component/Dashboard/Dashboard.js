@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import DashboardMenu from './DashboardMenu'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import PremiumPlans from '../PremiumPlans/PremiumPlans'
 import VerificationForm from '../Form/VerificationForm';
 
 function Dashboard() {
-
+	const location = useLocation();
 	const [ verified, setVerified ] = useState(false);
 	// const [ showVerification, setShowVerification ] = useState(false);
-
+	console.log(location);
 	return (
 		<>
 			{!verified && (

@@ -25,16 +25,16 @@ function DashboardLayout() {
 	const dispatch = useDispatch()
 	const currentPath = location.pathname;
 	const [ menuOpen, setMenuOpen ] = useState(false);
-	const [ verified, setVerified ] = useState(true);
-	const [ showVerification, setShowVerification ] = useState(false);
+	// const [ verified, setVerified ] = useState(true);
+	// const [ showVerification, setShowVerification ] = useState(false);
 
-	useEffect(() => {
-		if (!verified && currentPath !== '/dashboard') {
-			setShowVerification(true);
-		} else {
-			setShowVerification(false);
-		}
-	}, [ currentPath, verified ]);
+	// useEffect(() => {
+	// 	if (!verified && currentPath !== '/dashboard') {
+	// 		setShowVerification(true);
+	// 	} else {
+	// 		setShowVerification(false);
+	// 	}
+	// }, [ currentPath, verified ]);
 
 	useEffect(() => {
 		dispatch(getUserDetails());
@@ -55,9 +55,9 @@ function DashboardLayout() {
 	}, [ menuOpen ]);
 
 	const renderTabContent = () => {
-		if (!verified && currentPath !== '/dashboard') {
-			return <Dashboard />;
-		}
+		// if (!verified && currentPath !== '/dashboard') {
+		// 	return <Dashboard />;
+		// }
 		switch (currentPath) {
 			case '/dashboard':
 				return <Dashboard />;
@@ -88,10 +88,6 @@ function DashboardLayout() {
 
 	return (
 		<>
-			{!verified && showVerification && (
-				<VerificationForm verify={setVerified} onClose={() => setShowVerification(false)} />
-			)}
-
 			<div className="app-container relative ">
 				<div className="hidden lg:block">
 					<DashboardMenu />

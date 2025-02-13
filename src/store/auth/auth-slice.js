@@ -27,18 +27,26 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 	}
 });
 
+// verify Email
+export const verifyEmail = createAsyncThunk('auth/verifyEmail', async (data, thunkAPI) => {
+	try {
+		const response = await apiClient.post('/auth/verify-otp', data);
+		return response.data;
+	} catch (error) {
+		return thunkAPI.rejectWithValue(error.response.data);
+	}
+});
+
 // Login User
 export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, thunkAPI) => {
-	const encryptedUserData = encryptData(credentials);
-	const loadingToast = toast.loading('Logging.....');
+	// const encryptedUserData = encryptData(credentials);{ encryptedData: encryptedUserData }
 	try {
-		const response = await apiClient.post('/auth/logIn', { encryptedData: encryptedUserData });
-		toast.success(("Login successful!"), { id: loadingToast })
-		const decryptedData = decryptData(response.data.encryptedData)
+		const response = await apiClient.post('/auth/logIn', credentials);
+		console.log(response?.data);
+		// const decryptedData = decryptData(response.data.encryptedData)
 		// window.location.reload(false);
-		return decryptedData;
+		return response.data;
 	} catch (error) {
-		toast.error((error.response.data.message || error.message || "Login failed."), { id: loadingToast })
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });
@@ -83,6 +91,7 @@ const authSlice = createSlice({
 		token: null,
 		isLoading: false,
 		error: null,
+		verify: { data: [], loading: false, error: null, },
 	},
 	reducers: {
 		logout: (state) => {
@@ -99,7 +108,6 @@ const authSlice = createSlice({
 			.addCase(registerUser.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = action.payload.user;
-				state.token = action.payload.tokens.access.token;
 			})
 			.addCase(registerUser.rejected, (state, action) => {
 				state.isLoading = false;
@@ -112,8 +120,8 @@ const authSlice = createSlice({
 			})
 			.addCase(loginUser.fulfilled, (state, action) => {
 				state.isLoading = false;
+				state.error = null;
 				state.user = action.payload.user;
-				state.token = action.payload.tokens.access.token;
 			})
 			.addCase(loginUser.rejected, (state, action) => {
 				state.isLoading = false;
@@ -134,7 +142,22 @@ const authSlice = createSlice({
 			.addCase(logOut.pending, (state) => {
 				state.isLoading = true;
 				state.error = null;
-			});
+			})
+
+			.addCase(verifyEmail.pending, (state) => {
+				state.verify.loading = true;
+				state.verify.error = null;
+			})
+			.addCase(verifyEmail.fulfilled, (action, state) => {
+				state.verify.loading = false;
+				state.verify.error = null;
+				state.verify.data = action.payload;
+			})
+			.addCase(verifyEmail.rejected, (state, action) => {
+				state.verify.loading = false;
+				state.verify.error = action.payload || 'Failed to verify email';
+			})
+
 	},
 });
 
