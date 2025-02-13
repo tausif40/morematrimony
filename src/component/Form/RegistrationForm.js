@@ -15,11 +15,15 @@ const RegistrationForm = () => {
 	const [ agreement, setAgreement ] = useState(false);
 	const [ confirmPassword, setConfirmPassword ] = useState();
 	const secretKey = process.env.REACT_APP_ENCRYPTION_KEY;
+
 	const { isLoading, error } = useSelector((state) => state.auth);
 	// const [ verified, setVerified ] = useState(true);
-	const [ showEmailOtp, setShowEmailOtp ] = useState(false);
 
 	// const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
+
+	useEffect(() => {
+		console.log("isLoading-", isLoading);
+	}, [ isLoading ])
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
@@ -120,22 +124,29 @@ const RegistrationForm = () => {
 		setErrors({});
 
 		try {
-
+			const loadingToast = toast.loading('Registering.....');
 			dispatch(registerUser(formData)).then((res) => {
-
-				if (registerUser.fulfilled.match(res)) {
-					// const tokens = res?.payload?.tokens;
-					// console.log(tokens);
-					// Cookies.set('access_token', tokens.access.token);
-					// Cookies.set('refresh_token', tokens.refresh.token);
-
-					// toast.success('Registration successful! Redirecting to dashboard...');
-					// navigate('/dashboard');
-					setShowEmailOtp(true)
-					// navigate(`/dashboard?email=${formData.email}`);
-				} else {
-					console.log(error);
+				// const tokens = res?.payload?.tokens;
+				console.log(res?.payload);
+				if (res?.payload?.code === 400) {
+					const error = 'Email already exist, Please login!'
+					setErrors({ email: error })
+					return;
+				} else if (!res?.payload?.user?.isVerifiedEmail) {
+					navigate('/verify-email', { state: { email: formData.email }, });
+					toast.dismiss(loadingToast);
+					toast(("Please Verify Email"), { icon: '⚠️' });
 				}
+				// Cookies.set('access_token', tokens.access.token);
+				// Cookies.set('refresh_token', tokens.refresh.token);
+
+				// toast.success('Registration successful! Redirecting to dashboard...');
+				// navigate('/dashboard');
+
+				// navigate(`/dashboard?email=${formData.email}`);
+
+			}).catch((error) => {
+				toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
 			})
 		} catch (error) {
 			toast.error('An unexpected error occurred. Please try again later.');
@@ -162,7 +173,7 @@ const RegistrationForm = () => {
 
 	return (
 		<>
-			{showEmailOtp && <VerificationForm email={formData.email} />}
+			{/* {showEmailOtp && <VerificationForm email={formData.email} />} */}
 			<div className="flex justify-center items-center w-full min-h-screen py-10 px-2 md:px-4">
 				<form
 					onSubmit={handleSubmit}

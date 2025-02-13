@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { verifyEmail } from '../../store/auth/auth-slice';
 import { useNavigate } from 'react-router-dom';
+import { verifyEmailOTP } from '../../store/auth/email-slice';
 
 function VerificationForm({ email }) {
 	const dispatch = useDispatch()
 	const navigate = useNavigate();
 	const [ otp, setOtp ] = useState();
 	const [ error, setError ] = useState('');
-	
+
 	const verify = useSelector((state) => state.auth.verify);
 
 	const handleVerification = () => {
 		const data = { email: email, otp: otp }
-		dispatch(verifyEmail(data)).then((res) => {
+		dispatch(verifyEmailOTP(data)).then((res) => {
 			navigate(`/dashboard`);
 			console.log(res);
 		}).catch((error) => {

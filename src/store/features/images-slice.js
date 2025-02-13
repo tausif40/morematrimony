@@ -79,7 +79,7 @@ const userUploadImages = createSlice({
 		builder
 			.addCase(uploadImages.pending, (state) => {
 				state.allUploadImages.loading = true
-				state.allUploadImages.error = true
+				state.allUploadImages.error = null
 			})
 			.addCase(uploadImages.fulfilled, (state, action) => {
 				state.allUploadImages.images = action.payload;
@@ -91,12 +91,13 @@ const userUploadImages = createSlice({
 			})
 
 			.addCase(uploadDpImage.pending, (state) => {
-				// state.DpImage.loading = true
-				state.DpImage.error = true
+				state.DpImage.loading = true
+				state.DpImage.error = null
 			})
 			.addCase(uploadDpImage.fulfilled, (state, action) => {
-				state.DpImage.image = action.payload;
 				state.DpImage.loading = false;
+				state.DpImage.error = null
+				state.DpImage.image = action.payload;
 			})
 			.addCase(uploadDpImage.rejected, (state, action) => {
 				state.DpImage.loading = false;

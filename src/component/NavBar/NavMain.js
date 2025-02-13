@@ -155,14 +155,22 @@ const NavMain = () => {
 									</div>
 								</>
 								: <>
-									{currentPath === '/register'
+									{/* {currentPath === '/register'
 										? <Link to={'/'}>
 											<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Login</p></button>
 										</Link>
 										: <Link to={'/register'}>
 											<button className="gradient-btn px-4 py-[3px] rounded-md"><p>Registration</p></button>
 										</Link>
-									}
+									} */}
+									<div className='flex items-center gap-6'>
+										<Link to={'/'}>
+											<button className="text-sm text-headingGray underline"><p>Login</p></button>
+										</Link>
+										<Link to={'/register'}>
+											<button className="gradient-btn px-3 py-[3px] rounded-md"><p>Register</p></button>
+										</Link>
+									</div>
 								</>
 							}
 						</div>

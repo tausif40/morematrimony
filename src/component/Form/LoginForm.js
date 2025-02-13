@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-hot-toast';
-import Cookies from 'js-cookie';
+
 import { loginUser } from '../../store/auth/auth-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import ForgotPsd from './ForgotPsd';
 import VerificationForm from './VerificationForm';
+import VerifyEmail from './VerifyEmail';
 
 
 const LoginForm = () => {
@@ -19,7 +20,6 @@ const LoginForm = () => {
 	const [ error, setError ] = useState('');
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ showForgotPsd, setShowForgotPsd ] = useState(false);
-	const [ showEmailOtp, setShowEmailOtp ] = useState(false);
 	// const BASE_URL = process.env.REACT_APP_API_URL;
 	// BASE_URL  === undefined && console.log('Base url not found');
 
@@ -49,15 +49,11 @@ const LoginForm = () => {
 						navigate('/dashboard');
 						toast.success(("Login successful!"), { id: loadingToast })
 					} else {
-						setShowEmailOtp(true)
-						toast.info(("Please Verify Email"), { id: loadingToast })
+						navigate('/verify-email', { state: { email: email }, });
+						toast(("Please Verify Email"), { icon: '⚠️' });
+						toast.dismiss(loadingToast);
 					}
-					// const tokens = response?.payload?.tokens;
-					// console.log(tokens);
-					// Cookies.set('access_token', tokens.access.token);
-					// Cookies.set('refresh_token', tokens.refresh.token);
-					// Cookies.set('userId', tokens.refresh.token);
-					// toast.success('Login successful!');
+					
 					setIsLoading(false);
 
 				}).catch((error) => {
@@ -76,7 +72,7 @@ const LoginForm = () => {
 
 	return (
 		<>
-			{showEmailOtp && <VerificationForm email={email} />}
+			{/* {showEmailOtp && <VerifyEmail email={email} />} */}
 			{showForgotPsd && <ForgotPsd onClose={setShowForgotPsd} />}
 			{/* // <div className="flex items-center justify-center min-h-screen my-10 px-2 md:px-4"> */}
 			<div className="w-80 sm:min-w-[356px] md:min-w-96">

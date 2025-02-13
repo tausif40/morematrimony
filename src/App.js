@@ -28,6 +28,7 @@ import { fetchCountries, fetchEducation, fetchIndianState, fetchOccupations, fet
 import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute';
 import { getNotification } from './store/features/notification-slice';
 import ResetPassword from './component/Form/ResetPassword';
+import VerifyEmail from './component/Form/VerifyEmail';
 
 const App = () => {
   const location = useLocation()
@@ -96,6 +97,7 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/my-profile" element={<AgentProfile />} />

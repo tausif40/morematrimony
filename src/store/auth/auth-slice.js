@@ -11,28 +11,16 @@ const refreshToken = Cookies.get('refresh_token');
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData, thunkAPI) => {
 	// const encryptedUserData = encryptData(userData);
 	const encryptedUserData = userData;
-	const loadingToast = toast.loading('Registering.....');
+
 	console.log(userData);
 	try {
 		const response = await apiClient.post('/auth/signUp', userData);
-		toast.success(("Registration successful!"), { id: loadingToast })
-		console.log(response);
+		// console.log(response);
 		// const decryptedData = decryptData(response.data.encryptedData)
 		// return decryptedData;
 		return response.data;
 	} catch (error) {
 		console.log(error);
-		toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
-		return thunkAPI.rejectWithValue(error.response.data);
-	}
-});
-
-// verify Email
-export const verifyEmail = createAsyncThunk('auth/verifyEmail', async (data, thunkAPI) => {
-	try {
-		const response = await apiClient.post('/auth/verify-otp', data);
-		return response.data;
-	} catch (error) {
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });
@@ -91,7 +79,6 @@ const authSlice = createSlice({
 		token: null,
 		isLoading: false,
 		error: null,
-		verify: { data: [], loading: false, error: null, },
 	},
 	reducers: {
 		logout: (state) => {
@@ -143,21 +130,6 @@ const authSlice = createSlice({
 				state.isLoading = true;
 				state.error = null;
 			})
-
-			.addCase(verifyEmail.pending, (state) => {
-				state.verify.loading = true;
-				state.verify.error = null;
-			})
-			.addCase(verifyEmail.fulfilled, (action, state) => {
-				state.verify.loading = false;
-				state.verify.error = null;
-				state.verify.data = action.payload;
-			})
-			.addCase(verifyEmail.rejected, (state, action) => {
-				state.verify.loading = false;
-				state.verify.error = action.payload || 'Failed to verify email';
-			})
-
 	},
 });
 

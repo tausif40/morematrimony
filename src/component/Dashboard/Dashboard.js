@@ -6,14 +6,11 @@ import VerificationForm from '../Form/VerificationForm';
 
 function Dashboard() {
 	const location = useLocation();
-	const [ verified, setVerified ] = useState(false);
+	// const [ verified, setVerified ] = useState(false);
 	// const [ showVerification, setShowVerification ] = useState(false);
 	console.log(location);
 	return (
 		<>
-			{!verified && (
-				<VerificationForm verify={setVerified} />
-			)}
 
 			<section className='bg-white py-4 px-6 border rounded-md w-full'>
 				<div className='grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6 text-center'>
