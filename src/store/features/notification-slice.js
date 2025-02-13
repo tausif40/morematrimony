@@ -6,7 +6,7 @@ export const getNotification = createAsyncThunk('noti/getNotification', async (u
 		const response = await apiClient.get(`/notification?userId=${userId}`);
 		return response.data;
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return rejectWithValue(error.response?.data || 'Failed to fetch notification');
 	}
 });

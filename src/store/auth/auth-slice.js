@@ -15,7 +15,6 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 	console.log(userData);
 	try {
 		const response = await apiClient.post('/auth/signUp', userData);
-		// console.log(response);
 		// const decryptedData = decryptData(response.data.encryptedData)
 		// return decryptedData;
 		return response.data;
@@ -30,7 +29,6 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, 
 	// const encryptedUserData = encryptData(credentials);{ encryptedData: encryptedUserData }
 	try {
 		const response = await apiClient.post('/auth/logIn', credentials);
-		console.log(response?.data);
 		// const decryptedData = decryptData(response.data.encryptedData)
 		// window.location.reload(false);
 		return response.data;

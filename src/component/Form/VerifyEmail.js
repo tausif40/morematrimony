@@ -11,21 +11,25 @@ function VerifyEmail() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const inputRefs = useRef([]);
-	const { email } = location.state;
 	const [ otp, setOtp ] = useState(Array(6).fill(''));
 	const [ timer, setTimer ] = useState(60);
 	const [ isResendDisabled, setIsResendDisabled ] = useState(true);
 	const [ resending, setResending ] = useState(false);
 	const [ verifying, setVerifying ] = useState(false);
 	const [ error, setError ] = useState('');
+	const [ email, setEmail ] = useState('');
+
 
 	// const verifyEmail = useSelector((state) => state.emailAuth.verifyEmail);
 	// const resendEmail = useSelector((state) => state.emailAuth.resendEmail);
 
-	// useState(() => {
+	// useEffect(() => {
 	// 	console.log("verifyEmail-", verifyEmail);
 	// 	console.log("resendEmail-", resendEmail);
 	// }, [ dispatch, verifyEmail, resendEmail ])
+	useEffect(() => {
+		location?.state === null ? navigate('/') : setEmail(location?.state?.email)
+	}, [ email, navigate, location ])
 
 	useEffect(() => {
 		let interval;

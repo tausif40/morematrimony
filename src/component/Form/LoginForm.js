@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-hot-toast';
-
+import Cookies from 'js-cookie';
 import { loginUser } from '../../store/auth/auth-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import ForgotPsd from './ForgotPsd';
@@ -43,19 +43,22 @@ const LoginForm = () => {
 			setIsLoading(true);
 			dispatch(loginUser({ email, password }))
 				.then((response) => {
-					const user = response?.payload?.user
-					console.log(user);
-					if (user?.isVerifiedEmail) {
-						navigate('/dashboard');
-						toast.success(("Login successful!"), { id: loadingToast })
-					} else {
+					setIsLoading(false);
+					const data = response?.payload
+					console.log(response);
+					if (data?.user?.isVerifiedEmail === false) {
 						navigate('/verify-email', { state: { email: email }, });
 						toast(("Please Verify Email"), { icon: '⚠️' });
 						toast.dismiss(loadingToast);
+					} else if (data?.code === 401) {
+						toast.error((data?.message), { id: loadingToast })
+						return;
+					} else if (data?.user?.isVerifiedEmail === true) {
+						Cookies.set('access_token', data?.tokens?.access?.token);
+						Cookies.set('refresh_token', data?.tokens?.refresh?.token);
+						navigate('/dashboard');
+						toast.success(("Login successful!"), { id: loadingToast })
 					}
-					
-					setIsLoading(false);
-
 				}).catch((error) => {
 					console.log(error);
 					const errorMessage = error?.response?.data?.message || error?.message || "Login failed.";

@@ -131,6 +131,7 @@ const RegistrationForm = () => {
 				if (res?.payload?.code === 400) {
 					const error = 'Email already exist, Please login!'
 					setErrors({ email: error })
+					toast.error(("Email already exist"), { id: loadingToast });
 					return;
 				} else if (!res?.payload?.user?.isVerifiedEmail) {
 					navigate('/verify-email', { state: { email: formData.email }, });

@@ -5,7 +5,10 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
 
-	const isAuthenticated = Cookies.get('access_token') ? true : false;
+	const token = Cookies.get('access_token')
+	console.log("token-", token);
+	const isAuthenticated = token ? true : false;
+	// console.log(isAuthenticated && token !== undefined && token !== '');
 
 	if (!isAuthenticated) {
 		return <Navigate to="/" replace />;
