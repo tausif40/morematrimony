@@ -104,7 +104,7 @@ export const fetchReligions = createAsyncThunk('data/fetchReligions', async (_, 
 export const fetchDivision = createAsyncThunk('data/fetchDivision', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get('/division');
-    console.log('division slice - ', response.data);
+    // console.log('division slice - ', response.data);
     return response.data;
   } catch (error) {
     console.log('division - ', error);

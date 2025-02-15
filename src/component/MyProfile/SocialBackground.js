@@ -161,6 +161,7 @@ const SocialBackground = ({ data }) => {
 		if (!isChristian) delete cleanedFormData.division;
 		if (!formData.gothra) delete cleanedFormData.gothra;
 
+		// eslint-disable-next-line no-mixed-operators
 		if (isHindu && formData.dosh === 'no' || formData.dosh === "don't know") {
 			delete cleanedFormData.doshName;
 		}

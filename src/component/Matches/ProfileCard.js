@@ -105,12 +105,13 @@ const ProfileCard = (userData) => {
 					<div>
 						<Link to={`/matches/profile-details/${targetId}/${userId}`}>
 							<div>
-								<h3 className="text-xl font-semibold text-black pointer capitalize">{fistName} {lastName}</h3>
+								<h3 className="text-xl font-semibold text-black pointer capitalize">{targetId.slice(-8).toUpperCase()}</h3>
+								{/* {fistName} {lastName} */}
 							</div>
 						</Link>
-						<p className="mt-1 text-sm text-gray-500">
+						{/* <p className="mt-1 text-sm text-gray-500">
 							{targetId.slice(-8).toUpperCase()} | Last seen {lastSeen}
-						</p>
+						</p> */}
 						<div className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
 							{[
 								age && `${age} yrs`,

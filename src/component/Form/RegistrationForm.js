@@ -48,24 +48,17 @@ const RegistrationForm = () => {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setFormData({
-			...formData,
-			[ name ]: value,
-		});
+		setFormData({ ...formData, [ name ]: value });
 
 		if (errors[ name ]) {
-			setErrors((prevErrors) => ({
-				...prevErrors,
-				[ name ]: '',
-			}));
+			setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
 		}
 
 		if (formData.password.length > 7) {
-			setErrors((prevErrors) => ({
-				...prevErrors,
-				psdLength: '',
-			}));
+			setErrors((prevErrors) => ({ ...prevErrors, psdLength: '' }));
 		}
+
+		// if (!validateDOB(formData.dateOfBirth)) errors.dateOfBirth = 'You must be at least 18 years old.'
 	}
 
 
@@ -84,7 +77,7 @@ const RegistrationForm = () => {
 		if (!formData.lastName) newErrors.lastName = 'LastName is required';
 		if (!formData.gender) newErrors.gender = 'Gender is required';
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
-		if (formData.onBehalf === 'mySelf' && !validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
+		if (!validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
 		if (!formData.email) newErrors.email = 'Email is required';
 		if (!emailRegex.test(formData.email)) newErrors.email = "Invalid email format";
 		if (!formData.password) newErrors.password = 'Password is required';

@@ -16,6 +16,7 @@ const FamilyInformation = ({ onFormSubmit, loading, data }) => {
 		sistersMarried: '',
 	});
 	useEffect(() => {
+
 		if (data) {
 			setFormData({
 				familyValue: data?.familyValue,
@@ -48,10 +49,8 @@ const FamilyInformation = ({ onFormSubmit, loading, data }) => {
 		if (formData.sisters > 1 && !formData.sistersMarried) {
 			formErrors.sistersMarried = 'Please specify number of married sisters';
 		}
-
-		if (formData.brothers === 0) delete formData.brothersMarried
-		if (formData.sisters === 0) delete formData.sistersMarried
-
+		if (formData.brothers === '0') delete formData.brothersMarried;
+		if (formData.sisters === '0') delete formData.sistersMarried;
 		setErrors(formErrors);
 		return Object.keys(formErrors).length === 0;
 	};
@@ -79,6 +78,9 @@ const FamilyInformation = ({ onFormSubmit, loading, data }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		console.log(formData);
+
 		if (validateForm()) {
 			onFormSubmit({ familyDetails: formData });
 		} else {

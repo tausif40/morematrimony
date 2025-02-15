@@ -4,7 +4,7 @@ import { maritalStatus } from '../../data/MyProfileData';
 
 const BasicInformationForm = ({ data, onFormSubmit }) => {
 	const [ numberOfChildren, setNumberOfChildren ] = useState();
-	const { basicInfo, isLoading } = data;
+	const { agent, basicInfo, isLoading } = data;
 	const [ formData, setFormData ] = useState({
 		firstName: '',
 		lastName: '',
@@ -16,18 +16,19 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 	});
 
 	useEffect(() => {
-		if (basicInfo) {
+		console.log(agent);
+		if (basicInfo || agent) {
 			setFormData({
-				firstName: basicInfo.firstName || '',
-				lastName: basicInfo.lastName || '',
-				dateOfBirth: basicInfo.dateOfBirth ? basicInfo.dateOfBirth.split('T')[ 0 ] : '',
-				gender: basicInfo.gender || '',
-				onBehalf: basicInfo.onBehalf || '',
-				maritalStatus: basicInfo.maritalStatus || '',
-				numberOfChildren: basicInfo.numberOfChildren || ''
+				firstName: basicInfo?.firstName || agent?.firstName,
+				lastName: basicInfo?.lastName || agent?.lastName,
+				dateOfBirth: basicInfo?.dateOfBirth ? basicInfo?.dateOfBirth.split('T')[ 0 ] : agent?.dateOfBirth.split('T')[ 0 ],
+				gender: basicInfo?.gender || agent?.gender,
+				onBehalf: basicInfo?.onBehalf || agent?.onBehalf,
+				maritalStatus: basicInfo?.maritalStatus || '',
+				numberOfChildren: basicInfo?.numberOfChildren || ''
 			});
 		}
-	}, [ basicInfo ]);
+	}, [ basicInfo, agent ]);
 
 	const validateDOB = (dob) => {
 		const today = new Date();

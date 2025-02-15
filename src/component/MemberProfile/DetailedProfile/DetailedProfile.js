@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from 'moment';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
 
 const DetailedProfile = ({ userDetails }) => {
 
 	const data = userDetails?.data?.user;
+
+	const [ isPdf, setIsPdf ] = useState(false);
+	const [ kundli, setKundli ] = useState();
+
+	useEffect(() => {
+		setKundli(data?.spiritualAndSocialBackground?.kundli)
+		if (kundli) {
+			const fileExtension = kundli.split(".").pop().toLowerCase();
+			setIsPdf(fileExtension === "pdf");
+		}
+	}, [ data, kundli ]);
+
+	console.log("data -", data);
 
 	const profileData = {
 		introduction: data?.introduction || "_",
@@ -115,8 +130,7 @@ const DetailedProfile = ({ userDetails }) => {
 			generalRequirement: data?.partnerExpectation?.lookingFor || "_"
 		}
 	};
-	console.log("kundli -", data?.spiritualAndSocialBackground?.kundli);
-	console.log("data -", data);
+
 
 	return (
 		<div className="container text-textGray border shadow-md rounded-xl ">
@@ -279,14 +293,23 @@ const DetailedProfile = ({ userDetails }) => {
 								})}
 								{data?.spiritualAndSocialBackground?.kundli &&
 									<div className="grid grid-cols-2">
-										<dt className="text-md font-medium mb-2">
-											Kundli :
-										</dt>
+										<dt className="text-md font-medium mb-2">Kundli :</dt>
 										<dd>
-											<a href={data?.spiritualAndSocialBackground?.kundli}
-												className="px-3 py-[2px] border bg-emerald-200 hover:bg-emerald-300 border-green-500 rounded-full text-sm transition">Download</a>
+											{isPdf ?
+												// PDF Preview
+												<a href={data?.spiritualAndSocialBackground?.kundli}
+													className="px-3 py-[2px] border bg-emerald-200 hover:bg-emerald-300 border-green-500 rounded-full text-sm transition">Download</a>
+												:
+												// Image Preview
+												<PhotoProvider maskOpacity={0.8}>
+													<PhotoView src={kundli}>
+														<img src={kundli} alt="" className="border w-28 h-36 bg-gray-300 cursor-pointer" />
+													</PhotoView>
+												</PhotoProvider>
+											}
 										</dd>
-									</div>}
+									</div>
+								}
 							</div>
 						</div>
 

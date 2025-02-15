@@ -51,6 +51,7 @@ const MyProfilePage = () => {
 	}, [ dispatch ]);
 
 	const userData = userDetails?.user
+	const agent = userData?.agentId
 	const introductionData = userData?.introduction;
 	const basicInfo = userData?.basicInformation;
 	const presentAddress = userData?.presentAddress;
@@ -67,10 +68,11 @@ const MyProfilePage = () => {
 	useEffect(() => {
 		setIsLoading(formData?.loading)
 	}, [ formData?.loading ])
+	// console.log("formData - ", userDetails)
 
 	const handleFormSubmit = (data) => {
-		console.log("formData - ", formData)
-		console.log(data);
+		// console.log("formData - ", formData)
+		// console.log(data);
 		// const encryptedData = encryptData(data);
 		// console.log("encryptedData - ", encryptedData);
 		// const dData = decryptData(encryptedData);
@@ -82,7 +84,7 @@ const MyProfilePage = () => {
 	return (
 		<div className='space-y-10'>
 			<Introduction onFormSubmit={handleFormSubmit} data={{ introductionData, isLoading }} />
-			<BasicInformation onFormSubmit={handleFormSubmit} data={{ basicInfo, isLoading }} />
+			<BasicInformation onFormSubmit={handleFormSubmit} data={{ agent, basicInfo, isLoading }} />
 			<PresentAddress onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, presentAddress, isLoading }} />
 			<ResidencyInformation onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, residency, isLoading }} />
 			<EducationInfo onFormSubmit={handleFormSubmit} data={{ education, educationInfo, isLoading }} />
