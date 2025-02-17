@@ -13,7 +13,7 @@ const MainContent = () => {
 	const [ searchParams, setSearchParams ] = useSearchParams();
 	const [ loading, setLoading ] = useState(false)
 	const matchedProfile = useSelector((state) => state.matchProfile.matchedProfile);
-	const [ limit, setLimit ] = useState(5);
+	const [ limit, setLimit ] = useState(10);
 	const [ page, setPage ] = useState();
 	const [ total, setTotal ] = useState();
 
@@ -31,9 +31,9 @@ const MainContent = () => {
 		matchedProfile?.data?.user?.profilesWithStatus?.length === undefined ? setLoading(true) : setLoading(false)
 		// dispatch(getMatchedProfile({ isMatchedView: true }));
 		// console.log("matched loading - ", matchedProfile?.data?.user);
-		console.log("limit - ", matchedProfile?.data?.user?.limit);
-		console.log("totalPages - ", matchedProfile?.data?.user?.totalPages);
-		console.log("totalCount - ", matchedProfile?.data?.user?.totalCount);
+		// console.log("limit - ", matchedProfile?.data?.user?.limit);
+		// console.log("totalPages - ", matchedProfile?.data?.user?.totalPages);
+		// console.log("totalCount - ", matchedProfile?.data?.user?.totalCount);
 		setTotal(matchedProfile?.data?.user?.totalCount)
 		setLimit(5)
 	}, [ dispatch, matchedProfile ])
@@ -77,7 +77,7 @@ const MainContent = () => {
 	};
 
 	const profiles = matchedProfile?.data?.user?.profilesWithStatus ? mapProfiles(matchedProfile.data.user?.profilesWithStatus) : [];
-
+	console.log(profiles);
 	return (
 		<>
 			<div className="mx-auto md:px-4">

@@ -18,7 +18,7 @@ const DetailedProfile = ({ userDetails }) => {
 		}
 	}, [ data, kundli ]);
 
-	console.log("data -", data);
+	console.log("data -", data?.spiritualAndSocialBackground);
 
 	const profileData = {
 		introduction: data?.introduction || "_",
@@ -28,7 +28,9 @@ const DetailedProfile = ({ userDetails }) => {
 			dateOfBirth: data?.basicInformation?.dateOfBirth || "_",
 			gender: data?.basicInformation?.gender || "_",
 			maritalStatus: data?.basicInformation?.maritalStatus || "_",
-			numberOfChildren: data?.basicInformation?.numberOfChildren || "_",
+			...(data?.basicInformation?.maritalStatus?.toLowerCase() !== "single" && {
+				numberOfChildren: data?.basicInformation?.numberOfChildren || "_",
+			}),
 			profileCreatedBy: data?.basicInformation?.onBehalf || "_",
 		},
 		presentAddress: {
@@ -89,9 +91,11 @@ const DetailedProfile = ({ userDetails }) => {
 			rashi: data?.spiritualAndSocialBackground?.rashi?.name || "_",
 			zodiac: data?.spiritualAndSocialBackground?.zodiac?.name || "_",
 			timeOfBirth: data?.spiritualAndSocialBackground?.timeOfBirth || "_",
-			gothra: data?.spiritualAndSocialBackground?.gothra || "_",
-			dosh: data?.spiritualAndSocialBackground?.dosh || "_",
-			doshName: data?.spiritualAndSocialBackground?.doshName || "_",
+			...(data?.spiritualAndSocialBackground?.religion?.name?.toLowerCase() === "hindu" && {
+				gothra: data?.spiritualAndSocialBackground?.gothra || "_",
+				dosh: data?.spiritualAndSocialBackground?.dosh || "_",
+				doshName: data?.spiritualAndSocialBackground?.doshName || "_",
+			}),
 		},
 		lifestyle: {
 			diet: data?.lifestyle?.diet || "_",
@@ -268,9 +272,7 @@ const DetailedProfile = ({ userDetails }) => {
 									if (typeof value === 'object' && !Array.isArray(value)) {
 										return (
 											<div className="flex flex-col gap-2 mb-3" key={key}>
-												<p className="text-md font-medium capitalize">
-													{key.replace(/([A-Z])/g, ' $1')}:
-												</p>
+												<p className="text-md font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}:</p>
 												<div className="pl-6">
 													{Object.entries(value).map(([ subKey, subValue ]) => (
 														<p className="grid grid-cols-2" key={subKey}>
@@ -284,14 +286,12 @@ const DetailedProfile = ({ userDetails }) => {
 									}
 									return (
 										<div className="grid grid-cols-2" key={key}>
-											<dt className="text-md font-medium mb-2 capitalize">
-												{key.replace(/([A-Z])/g, ' $1')}:
-											</dt>
+											<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
 											<dd className="capitalize">{value}</dd>
 										</div>
 									);
 								})}
-								{data?.spiritualAndSocialBackground?.kundli &&
+								{profileData?.spiritualSocial?.religion === 'hindu' && data?.spiritualAndSocialBackground?.kundli &&
 									<div className="grid grid-cols-2">
 										<dt className="text-md font-medium mb-2">Kundli :</dt>
 										<dd>
@@ -303,7 +303,7 @@ const DetailedProfile = ({ userDetails }) => {
 												// Image Preview
 												<PhotoProvider maskOpacity={0.8}>
 													<PhotoView src={kundli}>
-														<img src={kundli} alt="" className="border w-28 h-36 bg-gray-300 cursor-pointer" />
+														<img src={kundli} alt="kundli" className="border w-28 h-36 bg-gray-300 object-cover cursor-pointer" />
 													</PhotoView>
 												</PhotoProvider>
 											}

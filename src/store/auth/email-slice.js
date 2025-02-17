@@ -6,9 +6,9 @@ export const verifyEmailOTP = createAsyncThunk('email/verifyEmailOTP', async (da
 	console.log(data);
 	try {
 		const response = await apiClient.post('/auth/verify-otp', data);
-		console.log(response.data);
 		return response.data;
 	} catch (error) {
+		console.log(error);
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });
@@ -19,6 +19,7 @@ export const resendEmailOTP = createAsyncThunk('email/resendEmailOTP', async (da
 		console.log(response.data);
 		return response.data;
 	} catch (error) {
+		console.log(error);
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });
@@ -29,15 +30,16 @@ export const forgotPsd = createAsyncThunk('email/forgotPsd', async (data, thunkA
 		console.log(response.data);
 		return response.data;
 	} catch (error) {
+		console.log(error);
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });
 export const resetPsd = createAsyncThunk('email/resetPsd', async (data, thunkAPI) => {
 	try {
-		const response = await apiClient.post(`/auth/reset-password?${data?.token}`, { password: data.password });
-		console.log(response.data);
+		const response = await apiClient.post(`/auth/reset-password?token=${data?.token}`, { password: data.password });
 		return response.data;
 	} catch (error) {
+		console.log(error);
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });

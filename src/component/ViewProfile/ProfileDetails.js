@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ShortProfile from "./ShortProfile";
 import moment from "moment";
@@ -6,12 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsById } from "../../store/features/matchProfile-slice";
 import ShortProfileDetailsSkeleton from "../Loader/ShortProfileDetailsSkeleton";
 import { setUserAction } from "../../store/features/userAction-slice";
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
 
 const ProfileDetails = () => {
 	const dispatch = useDispatch()
 	const params = useParams();
 	const targetId = params.targetId;
 	const userId = params.userId;
+
+	const [ isPdf, setIsPdf ] = useState(false);
+	const [ kundli, setKundli ] = useState();
 
 	// console.log("targetId -", targetId);
 
@@ -29,7 +34,15 @@ const ProfileDetails = () => {
 	}, [ targetId, dispatch ])
 
 	const data = userDetailsById?.data?.user
-	console.log("userDetailsById -", data);
+	// console.log("userDetailsById -", data);
+
+	useEffect(() => {
+		setKundli(data?.spiritualAndSocialBackground?.kundli)
+		if (kundli) {
+			const fileExtension = kundli.split(".").pop().toLowerCase();
+			setIsPdf(fileExtension === "pdf");
+		}
+	}, [ data, kundli ]);
 
 	useEffect(() => {
 		window.scrollTo({
@@ -354,14 +367,23 @@ const ProfileDetails = () => {
 											})}
 											{data?.spiritualAndSocialBackground?.kundli &&
 												<div className="grid grid-cols-2">
-													<dt className="text-md font-medium mb-2">
-														Kundli :
-													</dt>
+													<dt className="text-md font-medium mb-2">Kundli :</dt>
 													<dd>
-														<a href={data?.spiritualAndSocialBackground?.kundli}
-															className="px-3 py-[2px] border bg-emerald-200 hover:bg-emerald-300 border-green-500 rounded-full text-sm transition">Download</a>
+														{isPdf ?
+															// PDF Preview
+															<a href={data?.spiritualAndSocialBackground?.kundli}
+																className="px-3 py-[2px] border bg-emerald-200 hover:bg-emerald-300 border-green-500 rounded-full text-sm transition">Download</a>
+															:
+															// Image Preview
+															<PhotoProvider maskOpacity={0.8}>
+																<PhotoView src={kundli}>
+																	<img src={kundli} alt="kundli" className="border w-28 h-36 bg-gray-300 object-cover cursor-pointer" />
+																</PhotoView>
+															</PhotoProvider>
+														}
 													</dd>
-												</div>}
+												</div>
+											}
 										</div>
 									</div>
 

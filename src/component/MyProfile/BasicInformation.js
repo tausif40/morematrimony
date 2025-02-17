@@ -16,14 +16,14 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 	});
 
 	useEffect(() => {
-		console.log(agent);
-		if (basicInfo || agent) {
+		// console.log(agent);
+		if (basicInfo) {
 			setFormData({
-				firstName: basicInfo?.firstName || agent?.firstName,
-				lastName: basicInfo?.lastName || agent?.lastName,
-				dateOfBirth: basicInfo?.dateOfBirth ? basicInfo?.dateOfBirth.split('T')[ 0 ] : agent?.dateOfBirth.split('T')[ 0 ],
-				gender: basicInfo?.gender || agent?.gender,
-				onBehalf: basicInfo?.onBehalf || agent?.onBehalf,
+				firstName: basicInfo?.firstName || '',
+				lastName: basicInfo?.lastName || '',
+				dateOfBirth: basicInfo?.dateOfBirth && basicInfo?.dateOfBirth.split('T')[ 0 ],
+				gender: basicInfo?.gender || '',
+				onBehalf: basicInfo?.onBehalf || '',
 				maritalStatus: basicInfo?.maritalStatus || '',
 				numberOfChildren: basicInfo?.numberOfChildren || ''
 			});
@@ -201,7 +201,7 @@ const BasicInformationForm = ({ data, onFormSubmit }) => {
 				</div>
 
 				{/* Number of Children */}
-				{(formData.maritalStatus === 'married' || formData.maritalStatus === 'divorced' || formData.maritalStatus === 'widowed') && (
+				{(formData.maritalStatus === 'married' || formData.maritalStatus === 'divorced' || formData.maritalStatus === 'widowed' || formData.maritalStatus === 'widower') && (
 					<div>
 						<label htmlFor="numberOfChildren" className="block font-medium mb-1 mt-1 text-headingGray">
 							Number of Children<span className="text-red-500"> *</span>

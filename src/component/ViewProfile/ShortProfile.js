@@ -30,6 +30,7 @@ function ShortProfile({ data }) {
 	const [ acceptReq, setAcceptReq ] = useState(false);
 	const [ loadingSkip, setLoadingSkip ] = useState(false);
 	const [ loadingAccept, setLoadingAccept ] = useState(false);
+	const [ premium, setPremium ] = useState(false);
 
 	const userId = useSelector((state) => state.userDetails.userId);
 	const showSideMenu = () => setShowMenu((prev) => !prev);
@@ -138,7 +139,7 @@ function ShortProfile({ data }) {
 									}
 
 								</div>
-								<p className='font-medium text-xl md:text-2xl capitalize'>{data?.firstName} {data?.lastName}</p>
+								<p className='font-medium text-xl md:text-2xl capitalize'>{data?.firstName} {premium ? <span>{data?.lastName}</span> : <span className='blur-sm'>xxxxxxx</span>}</p>
 								<div className='flex items-center text-sm font-light text-headingGray py-2 tracking-wide'>
 									<p className=''>{data?.id?.slice(-8).toUpperCase()} </p>
 									{/* <span className='text-text'>&nbsp;|&nbsp;</span>

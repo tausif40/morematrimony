@@ -365,7 +365,7 @@ const SocialBackground = ({ data }) => {
 						value={formData.ethnicity}
 						onChange={handleChange}
 					>
-						<option value="" disabled>Select Ethnicity</option>
+						<option value="">Select Ethnicity</option>
 						{/* {languagesLoading && !languages?.length && <option value="" disabled> Loading languages...</option>} */}
 						{languages?.language?.map((language) => (
 							<option key={language._id} value={language._id}>
@@ -386,7 +386,7 @@ const SocialBackground = ({ data }) => {
 						onChange={handleChange}
 
 					>
-						<option value="" disabled>Select Star</option>
+						<option value="">Select Star</option>
 						{/* {starsLoading && !stars.length && <option value="" disabled> Loading stars...</option>} */}
 						{stars?.star?.map((stars) => (
 							<option key={stars._id} value={stars._id}>
@@ -406,7 +406,7 @@ const SocialBackground = ({ data }) => {
 						value={formData.rashi}
 						onChange={handleChange}
 					>
-						<option value="" disabled>Select Rashi</option>
+						<option value="">Select Rashi</option>
 						{formData.star === '' && <option value="" disabled>Select star fist</option>}
 						{loading.rashi && !rashiSignsList?.length && <option value="" disabled> Loading rashi...</option>}
 						{rashiSignsList?.rashiSign?.map((rashi) => (
@@ -428,7 +428,7 @@ const SocialBackground = ({ data }) => {
 						onChange={handleChange}
 
 					>
-						<option value="" disabled>Select Zodiac</option>
+						<option value="">Select Zodiac</option>
 						{/* {zodiacLoading && !zodiac?.length && <option value="" disabled> Loading zodiac...</option>} */}
 						{zodiac?.zodiac?.map((zodiac) => (
 							<option key={zodiac._id} value={zodiac._id}>

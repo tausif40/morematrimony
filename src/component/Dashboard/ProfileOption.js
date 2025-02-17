@@ -35,9 +35,9 @@ function ProfileOption() {
 	const lastName = userDetails?.data?.user?.basicInformation?.lastName || 'Name';
 	const dpImage = userDetails?.data?.user?.profileImage;
 
+	// console.log(userDetails);
 	useEffect(() => {
 		setProfileCompletion(percent)
-		// console.log(percent);
 		setIsLoading(userDetails?.loading)
 		percent && setColor(percentColor(percent))
 	}, [ userDetails, percent ])
@@ -69,7 +69,7 @@ function ProfileOption() {
 		{ name: 'Skip', path: '/dashboard/skip', icon: PiSkipForwardBold },
 		{ name: 'Change Password', path: '/dashboard/change-password', icon: LuKeyRound },
 		// { name: 'Deactivate Account', path: '/dashboard/deactivate-account', icon: HiOutlineLockClosed },
-		{ name: 'Delete Account', path: '/dashboard/delete-account', icon: HiOutlineTrash },
+		// { name: 'Delete Account', path: '/dashboard/delete-account', icon: HiOutlineTrash },
 	];
 
 	// console.log("pre - ", userDetails?.data?.user?.profileCompletion);

@@ -14,6 +14,7 @@ import Cookies from 'js-cookie';
 import useLogout from '../Logout/Logout';
 import { useDispatch, useSelector } from 'react-redux';
 import NotificationPopup from '../Notification/NotificationPopup';
+import { RiUserSettingsLine } from "react-icons/ri";
 
 const NavMain = () => {
 	const location = useLocation();
@@ -59,12 +60,14 @@ const NavMain = () => {
 		// { path: '/notifications', name: 'Notification', icon: IoIosNotificationsOutline },
 	]
 	const ProfileOption = [
-		{ path: '/my-profile', name: 'My Profile', icon: FaRegUser },
+		{ path: '/member-profile', name: 'My Profile', icon: FaRegUser },
+		{ path: '/my-profile', name: 'Setting', icon: RiUserSettingsLine },
 		{ path: '/help', name: 'Help', icon: IoIosHelpCircleOutline },
 	]
 	const MobileProfileOption = [
 		{ path: '/dashboard', name: 'Dashboard', icon: AiOutlineDashboard },
-		{ path: '/my-profile', name: 'My Profile', icon: FaRegUser },
+		{ path: '/member-profile', name: 'My Profile', icon: FaRegUser },
+		{ path: '/my-profile', name: 'Setting', icon: RiUserSettingsLine },
 		{ path: '/matches', name: 'Matches', icon: PiUsers },
 		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },

@@ -15,8 +15,8 @@ const LoginForm = () => {
 	const dispatch = useDispatch();
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
-	const [ passwordError, setPasswordError ] = useState('');
-	const [ emailError, setEmailError ] = useState('');
+	const [ passwordError, setPasswordError ] = useState(null);
+	const [ emailError, setEmailError ] = useState(null);
 	const [ error, setError ] = useState('');
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ showForgotPsd, setShowForgotPsd ] = useState(false);
@@ -36,10 +36,14 @@ const LoginForm = () => {
 		if (!password) {
 			setPasswordError("Please enter Password")
 			return;
+		} else if (password.length < 8) {
+			setPasswordError("Password at least 8 character!")
+			toast.error("Password min 8 character!")
+			return;
 		}
 
 		try {
-			const loadingToast = toast.loading('Logging.....');
+			const loadingToast = toast.loading('Logging...');
 			setIsLoading(true);
 			dispatch(loginUser({ email, password }))
 				.then((response) => {
@@ -59,6 +63,7 @@ const LoginForm = () => {
 						navigate('/dashboard');
 						toast.success(("Login successful!"), { id: loadingToast })
 					}
+					// toast.dismiss(loadingToast);
 				}).catch((error) => {
 					console.log(error);
 					const errorMessage = error?.response?.data?.message || error?.message || "Login failed.";

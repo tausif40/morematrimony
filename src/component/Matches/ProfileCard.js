@@ -26,6 +26,7 @@ const ProfileCard = (userData) => {
 	const [ acceptReq, setAcceptReq ] = useState(false);
 	const [ loadingSkip, setLoadingSkip ] = useState(false);
 	const [ loadingAccept, setLoadingAccept ] = useState(false);
+	const [ premium, setPremium ] = useState(false);
 
 	const userId = useSelector((state) => state.userDetails.userId);
 
@@ -105,13 +106,13 @@ const ProfileCard = (userData) => {
 					<div>
 						<Link to={`/matches/profile-details/${targetId}/${userId}`}>
 							<div>
-								<h3 className="text-xl font-semibold text-black pointer capitalize">{targetId.slice(-8).toUpperCase()}</h3>
+								<h3 className="text-xl font-semibold text-black pointer capitalize">{fistName} {premium ? <span>{lastName}</span> : <span className='blur-sm'>xxxxxxx</span>}</h3>
 								{/* {fistName} {lastName} */}
 							</div>
 						</Link>
-						{/* <p className="mt-1 text-sm text-gray-500">
-							{targetId.slice(-8).toUpperCase()} | Last seen {lastSeen}
-						</p> */}
+						<p className="mt-1 text-sm text-gray-500">
+							{targetId.slice(-8).toUpperCase()}
+						</p>
 						<div className="mt-4 text-sm ms:text-base text-textGray flex flex-wrap">
 							{[
 								age && `${age} yrs`,

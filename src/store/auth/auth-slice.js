@@ -33,6 +33,18 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, 
 		// window.location.reload(false);
 		return response.data;
 	} catch (error) {
+		console.log(error);
+		return thunkAPI.rejectWithValue(error.response.data);
+	}
+});
+
+// Login User
+export const changePassword = createAsyncThunk('auth/changePassword', async (password, thunkAPI) => {
+	try {
+		const response = await apiClient.post('/auth/change-password', password);
+		return response.data;
+	} catch (error) {
+		console.log(error);
 		return thunkAPI.rejectWithValue(error.response.data);
 	}
 });
@@ -62,6 +74,8 @@ export const logOut = createAsyncThunk('auth/logOut', async (_, thunkAPI) => {
 		);
 	}
 });
+
+
 function ClearAllCookies() {
 	const cookies = Object.keys(Cookies.get());
 	cookies.forEach(cookie => {

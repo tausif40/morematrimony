@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { changePassword } from '../../store/auth/auth-slice';
+import toast from 'react-hot-toast';
 
 const ChangePassword = () => {
-	// State for the form inputs
+	const dispatch = useDispatch()
 	const [ oldPassword, setOldPassword ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ confirmPassword, setConfirmPassword ] = useState('');
 	const [ loading, setLoading ] = useState(false);
-	const [ error, setError ] = useState('');
-	const [ success, setSuccess ] = useState('');
+	const [ error, setError ] = useState();
+	const [ success, setSuccess ] = useState();
 
 	// Submit handler
 	const handleSubmit = async (e) => {
@@ -18,24 +21,38 @@ const ChangePassword = () => {
 
 		// Basic validation
 		if (password !== confirmPassword) {
-			setError('Passwords do not match!');
+			setError('Passwords does not match!');
+			toast('Passwords does not match!', { icon: '⚠️' });
 			return;
 		}
 
-		setLoading(true);
-
 		try {
+			setLoading(true);
+			const loadingToast = toast.loading('Updating ...');
 			// Example API call using Axios
-			const response = await axios.post('', {
-				oldPassword,
-				password
-			});
-			setSuccess('Password changed successfully!');
+			dispatch(changePassword({ oldPassword: oldPassword, password: password }))
+				.then((res) => {
+					console.log(res)
+					if (res?.payload?.code === 401) {
+						setLoading(false);
+						toast.error('Old password is incorrect', { id: loadingToast });
+						setError('Old password is incorrect');
+						return;
+					} else {
+						toast.success('Password changed successfully', { id: loadingToast });
+						setSuccess('Password changed successfully');
+						setLoading(false);
+					}
+				}).catch((error) => {
+					toast.error('Failed to change password.', { id: loadingToast });
+					console.log(error)
+					setLoading(false);
+				})
 		} catch (err) {
+			console.log(err)
 			setError('Failed to change password.');
+			setLoading(false);
 		}
-
-		setLoading(false);
 	};
 
 	return (
@@ -95,7 +112,7 @@ const ChangePassword = () => {
 							className="gradient-btn px-4 py-2 rounded-md text-sm"
 							disabled={loading}
 						>
-							{loading ? 'Loading...' : 'Confirm'}
+							{loading ? 'Changing...' : 'Change'}
 						</button>
 					</div>
 				</form>
