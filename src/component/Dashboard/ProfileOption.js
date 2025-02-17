@@ -19,6 +19,7 @@ import { PiUserCheckLight } from "react-icons/pi";
 import { PiSkipForwardBold } from "react-icons/pi";
 import { FaUserCheck } from "react-icons/fa6";
 import { BsSend } from "react-icons/bs";
+import { MdOutlineWorkspacePremium } from "react-icons/md";
 
 function ProfileOption() {
 	const location = useLocation();
@@ -68,7 +69,7 @@ function ProfileOption() {
 		{ name: 'Viewed You', path: '/dashboard/viewed-you', icon: FaUsersViewfinder },
 		{ name: 'Skip', path: '/dashboard/skip', icon: PiSkipForwardBold },
 		{ name: 'Change Password', path: '/dashboard/change-password', icon: LuKeyRound },
-		// { name: 'Deactivate Account', path: '/dashboard/deactivate-account', icon: HiOutlineLockClosed },
+		{ name: 'Plan History', path: '/dashboard/plan-history', icon: MdOutlineWorkspacePremium },
 		// { name: 'Delete Account', path: '/dashboard/delete-account', icon: HiOutlineTrash },
 	];
 

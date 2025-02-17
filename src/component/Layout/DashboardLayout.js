@@ -94,7 +94,7 @@ function DashboardLayout() {
 				</div>
 
 				<div className="container flex justify-between gap-8 py-10 ">
-					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[793px]">
+					<div className="min-w-64 hidden lg:block border rounded-md overflow-hidden h-[832px]">
 						<ProfileOption />
 					</div>
 

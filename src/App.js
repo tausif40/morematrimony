@@ -49,7 +49,7 @@ const App = () => {
     '/dashboard/notification',
     '/dashboard/change-password',
     '/dashboard/gallery',
-    '/dashboard/deactivate-account',
+    '/dashboard/plan-history',
     '/dashboard/delete-account'
   ];
 

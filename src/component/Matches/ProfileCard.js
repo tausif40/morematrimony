@@ -106,7 +106,7 @@ const ProfileCard = (userData) => {
 					<div>
 						<Link to={`/matches/profile-details/${targetId}/${userId}`}>
 							<div>
-								<h3 className="text-xl font-semibold text-black pointer capitalize">{fistName} {premium ? <span>{lastName}</span> : <span className='blur-sm'>xxxxxxx</span>}</h3>
+								<h3 className="text-xl font-semibold text-black pointer capitalize">{fistName} {premium ? <span>{lastName}</span> : <span className='blur-sm select-none'>xxxxxxx</span>}</h3>
 								{/* {fistName} {lastName} */}
 							</div>
 						</Link>

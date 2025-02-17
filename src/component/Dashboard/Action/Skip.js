@@ -110,11 +110,11 @@ const Skip = () => {
 										<div className="flex justify-between items-start mb-3">
 											<div>
 												<Link to={`/matches/profile-details/${profile?.targetUserId}/${userId}`}>
-													<h2 className="text-2xl font-semibold text-gray-800 pb-1">
+													<h2 className="text-2xl font-semibold text-gray-800 pb-1 capitalize">
 														{profile.firstName !== undefined ? `${profile.firstName} ${profile.lastName}` : 'No name'}
 													</h2>
 												</Link>
-												<p className="text-gray-600 text-sm">
+												<p className="text-gray-600 text-sm h-4 truncate">
 													{profile.age !== undefined && `${profile.age} years • `}
 													{profile.height.feet !== undefined && `${profile.height.feet} ' ${profile.height.inch}" • `}
 													<span className='capitalize'>

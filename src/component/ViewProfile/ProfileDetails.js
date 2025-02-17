@@ -14,7 +14,7 @@ const ProfileDetails = () => {
 	const params = useParams();
 	const targetId = params.targetId;
 	const userId = params.userId;
-
+	const [ premium, setPremium ] = useState(false);
 	const [ isPdf, setIsPdf ] = useState(false);
 	const [ kundli, setKundli ] = useState();
 
@@ -89,7 +89,9 @@ const ProfileDetails = () => {
 			dateOfBirth: data?.basicInformation?.dateOfBirth || "_",
 			gender: data?.basicInformation?.gender || "_",
 			maritalStatus: data?.basicInformation?.maritalStatus || "_",
-			numberOfChildren: data?.basicInformation?.numberOfChildren || "_",
+			...(data?.basicInformation?.maritalStatus?.toLowerCase() !== "single" && {
+				numberOfChildren: data?.basicInformation?.numberOfChildren || "_",
+			}),
 			profileCreatedBy: data?.basicInformation?.onBehalf || "_",
 		},
 		presentAddress: {
@@ -150,10 +152,11 @@ const ProfileDetails = () => {
 			rashi: data?.spiritualAndSocialBackground?.rashi?.name || "_",
 			zodiac: data?.spiritualAndSocialBackground?.zodiac?.name || "_",
 			timeOfBirth: data?.spiritualAndSocialBackground?.timeOfBirth || "_",
-			kundli: data?.spiritualAndSocialBackground?.kundli || "_",
-			gothra: data?.spiritualAndSocialBackground?.gothra || "_",
-			dosh: data?.spiritualAndSocialBackground?.dosh || "_",
-			doshName: data?.spiritualAndSocialBackground?.doshName || "_",
+			...(data?.spiritualAndSocialBackground?.religion?.name?.toLowerCase() === "hindu" && {
+				gothra: data?.spiritualAndSocialBackground?.gothra || "_",
+				dosh: data?.spiritualAndSocialBackground?.dosh || "_",
+				doshName: data?.spiritualAndSocialBackground?.doshName || "_",
+			}),
 		},
 		lifestyle: {
 			diet: data?.lifestyle?.diet || "_",
@@ -219,16 +222,21 @@ const ProfileDetails = () => {
 								<div className="md:border-r">
 									{/* Profile Information */}
 									<div className="md:border-b pb-6 md:pr-6">
-										<dt className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
-											Profile Information
+										<dt className="bg-white text-primary w-44 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+											Basic Information
 										</dt>
 										<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-											{Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => (
-												<div className="grid grid-cols-2" key={key}>
-													<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-													<dd className="capitalize">{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
-												</div>
-											))}
+											{Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => {
+												const isLastName = key === "lastName";
+												return (
+													<div className="grid grid-cols-2" key={key}>
+														<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, " $1")}:</dt>
+														<dd className={`capitalize ${isLastName && !premium ? "blurred" : ""}`}>
+															{isLastName && !premium ? "xxxxxx" : key === "dateOfBirth" ? moment(value).isValid() ? moment(value).format("DD-MM-YYYY") : "_" : value}
+														</dd>
+													</div>
+												);
+											})}
 										</div>
 									</div>
 

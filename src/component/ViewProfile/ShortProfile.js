@@ -118,7 +118,7 @@ function ShortProfile({ data }) {
 					{/* details section */}
 					<div className='flex flex-col sm:flex-row gap-6 md:gap-8 lg:gap-12 w-full pt-2 pb-6 sm:py-6 '>
 						<div className='relative'>
-							<div>
+							<div className='w-full h-[22rem] sm:h-[20rem] md:h-[22rem] lg:h-96 bg-gray-200'>
 								<ProfileImage agentId={data?.agentId} />
 							</div>
 						</div>
@@ -139,7 +139,7 @@ function ShortProfile({ data }) {
 									}
 
 								</div>
-								<p className='font-medium text-xl md:text-2xl capitalize'>{data?.firstName} {premium ? <span>{data?.lastName}</span> : <span className='blur-sm'>xxxxxxx</span>}</p>
+								<p className='font-medium text-xl md:text-2xl capitalize'>{data?.firstName} {premium ? <span>{data?.lastName}</span> : <span className='blur-sm select-none'>xxxxxxx</span>}</p>
 								<div className='flex items-center text-sm font-light text-headingGray py-2 tracking-wide'>
 									<p className=''>{data?.id?.slice(-8).toUpperCase()} </p>
 									{/* <span className='text-text'>&nbsp;|&nbsp;</span>
