@@ -29,6 +29,7 @@ import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute';
 import { getNotification } from './store/features/notification-slice';
 import ResetPassword from './component/Form/ResetPassword';
 import VerifyEmail from './component/Form/VerifyEmail';
+import { getPlan } from './store/features/plan-slice';
 
 const App = () => {
   const location = useLocation()
@@ -70,6 +71,7 @@ const App = () => {
     dispatch(fetchEducation());
     dispatch(fetchOccupations());
     dispatch(fetchReligions());
+    dispatch(getPlan());
   }, [ dispatch, token ]);
 
   useEffect(() => {

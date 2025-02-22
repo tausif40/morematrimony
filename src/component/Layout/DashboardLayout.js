@@ -88,7 +88,7 @@ function DashboardLayout() {
 
 	return (
 		<>
-			<div className="app-container relative ">
+			<div className="app-container relative">
 				<div className="hidden lg:block">
 					<DashboardMenu />
 				</div>

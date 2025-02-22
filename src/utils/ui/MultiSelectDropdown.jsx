@@ -65,7 +65,7 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 	}, [ selectedItems ]);
 
 	return (
-		<div className="relative w-full" ref={dropdownRef}>
+		<div className="relative w-full " ref={dropdownRef}>
 			{/* Selected Tags */}
 			<div
 				className="flex items-center border border-gray-300 rounded-md px-2 h-[46px] cursor-pointer gap-2 overflow-hidden hover:overflow-x-auto customHorizontalScroll transition duration-0 hover:duration-300"

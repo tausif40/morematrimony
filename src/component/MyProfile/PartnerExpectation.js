@@ -70,6 +70,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 
 	useEffect(() => {
+		// console.log(partnerExpectation);
 		if (partnerExpectation) {
 			setFormData({
 				age: { min: partnerExpectation?.age?.min, max: partnerExpectation?.age?.max },
@@ -92,11 +93,19 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				complexion: partnerExpectation?.complexion || [],
 				lookingFor: partnerExpectation?.lookingFor || ''
 			});
+			setSelectedCast(partnerExpectation?.caste?.map(item => item._id) || [])
+			setMotherTongue(partnerExpectation?.motherTongue?.map(item => item._id) || [])
+			setEducationIds(partnerExpectation?.highestEducation?.map(item => item._id) || [])
+			setEmployedIn(partnerExpectation?.employedIn || [])
+			setOccupation(partnerExpectation?.occupation?.map(item => item._id) || [])
+			setPreferredCountry(partnerExpectation?.preferredCountry?.map(item => item._id) || [])
+			setPreferState(partnerExpectation?.preferState?.map(item => item._id) || [])
+			setBodyType(partnerExpectation?.bodyType || [])
+			setComplexion(partnerExpectation?.complexion || [])
 		}
 		if (partnerExpectation?.religion?._id) {
 			fetchCaste(partnerExpectation?.religion._id);
 		}
-
 	}, [ partnerExpectation ])
 
 
@@ -331,8 +340,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		}));
 
 		setErrors((prevErrors) => ({
-			...prevErrors,
-			[ name ]: ''
+			...prevErrors, [ name ]: ''
 		}));
 	};
 
@@ -506,7 +514,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				</div>
 
 				{/* Caste */}
-				<div>
+				<div className=''>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Caste <span className="text-red-500">*</span></label>
 					<MultiSelectDropdown
 						dataList={casteList?.caste}
@@ -773,21 +781,6 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						dataList={PhysicalAttributesData.complexion}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('complexion', selectedItems)}
 						fieldName={'Select Body Type'} />
-					{/* <select
-							id="complexion"
-							className={getInputClasses('complexion')}
-							name="complexion"
-							value={formData.complexion}
-							onChange={handleChange}
-						>
-							<option value="" disabled>Select Complexion</option>
-							<option value="doesn't matter">Doesn't matter</option>
-							{PhysicalAttributesData.complexion.map((value, index) => (
-								<option key={index} value={value}>
-									{value.charAt(0).toUpperCase() + value.slice(1)}
-								</option>
-							))}
-						</select> */}
 					{errors.complexion && <p className="text-red-500 text-xs">{errors.complexion}</p>}
 				</div>
 
@@ -796,7 +789,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">What we are looking for</label>
 					<textarea
 						type="text"
-						rows="3"
+						rows="4"
 						placeholder="General Requirement"
 						name="lookingFor"
 						className={getInputClasses('lookingFor')}

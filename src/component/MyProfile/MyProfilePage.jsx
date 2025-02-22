@@ -82,7 +82,7 @@ const MyProfilePage = () => {
 	};
 
 	return (
-		<div className='space-y-10'>
+		<div className='space-y-10 mb-36 z-50 overflow-visible'>
 			<Introduction onFormSubmit={handleFormSubmit} data={{ introductionData, isLoading }} />
 			<BasicInformation onFormSubmit={handleFormSubmit} data={{ agent, basicInfo, isLoading }} />
 			<PresentAddress onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, presentAddress, isLoading }} />
