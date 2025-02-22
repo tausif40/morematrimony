@@ -1,7 +1,7 @@
 // export const ProfileListData = {
 
 export const personalInformation = {
-	residencyStatus: [ "permanent resident", "investor", "work permit", "student visa", "temporary visa", "other" ], 
+	residencyStatus: [ "permanent resident", "investor", "work permit", "student visa", "temporary visa", "other" ],
 }
 export const PhysicalAttributesData = {
 	foot: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
@@ -52,7 +52,9 @@ export const partnerExpectations = {
 	smokingAcceptable: [ "yes", "no", "occasionally", "social smoker", "non-smoker" ],
 	drinkingAcceptable: [ "yes", "no", "occasionally", "social drinker", "non-drinker" ],
 	// dietingAcceptable: [ "vegetarian", "non-vegetarian", "pescatarian", "vegan", "other", "flexitarian" ],
-	employedIn: [ "government", "private", "business", "defence", "self-employed", "freelancer", "entrepreneur", "not working" ]
+	employedIn: [ "government", "private", "business", "defence", "self-employed", "freelancer", "entrepreneur", "not working" ],
+	complexion: [ "fair", "wheatish", "white", "dark", "medium", "dusky", "brown", "light brown", "doesn't matter" ],
+	bodyType: [ "slim", "athletic", "muscular", "average", "curvy", "heavy", "full-figured", "petite", "stocky", "tall", "short", "obese", "doesn't matter" ],
 }
 
 export const socialBackground = {

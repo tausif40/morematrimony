@@ -83,7 +83,7 @@ function Plans() {
 
 									<div className="mb-6 flex items-baseline gap-1">
 										<span className={`text-5xl font-bold ${colors.accent}`}>
-											${plan.price}
+											BD {plan.price}
 										</span>
 										<span className="text-gray-500">/{plan.duration}</span>
 									</div>

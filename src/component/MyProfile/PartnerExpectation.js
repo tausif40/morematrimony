@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { indiaId } from '../../data/config';
-import { partnerExpectations, maritalStatus, career, PhysicalAttributesData, lifestyle } from '../../data/MyProfileData';
+import { partnerExpectations, maritalStatus, career, lifestyle } from '../../data/MyProfileData';
 import apiClient from '../../api/apiClient';
 import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
 import MultiDropdown from '../../utils/ui/MultiDropdown';
@@ -699,7 +699,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						Body Type <span className="text-red-500">*</span>
 					</label>
 					<MultiDropdown
-						dataList={PhysicalAttributesData.bodyType}
+						dataList={partnerExpectations.bodyType}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('bodyType', selectedItems)}
 						fieldName={'Select Body Type'} />
 					{/* <select
@@ -778,7 +778,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						Complexion <span className="text-red-500">*</span>
 					</label>
 					<MultiDropdown
-						dataList={PhysicalAttributesData.complexion}
+						dataList={partnerExpectations.complexion}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('complexion', selectedItems)}
 						fieldName={'Select Body Type'} />
 					{errors.complexion && <p className="text-red-500 text-xs">{errors.complexion}</p>}

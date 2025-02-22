@@ -81,13 +81,13 @@ const MainContent = () => {
 	return (
 		<>
 			<div className="mx-auto md:px-4">
-				<div className="mb-4">
+				{/* <div className="mb-4">
 					<input
 						type="text"
 						placeholder="Search profiles..."
 						className="w-full p-3 mb-4 border rounded-md outline-none focus:border-gold"
 					/>
-				</div>
+				</div> */}
 
 				{loading && (
 					<>
