@@ -34,7 +34,7 @@ import { getPlan } from './store/features/plan-slice';
 const App = () => {
   const location = useLocation()
   const dispatch = useDispatch();
-  const token = Cookies.get('access_token')
+  const token = Cookies.get('access_token') || sessionStorage.getItem('AT');
   const userId = useSelector((state) => state.userDetails.userId);
   const dashboardPaths = [
     '/dashboard',
@@ -100,6 +100,8 @@ const App = () => {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+
+          {/* <Route path="/dashboard" element={<DashboardLayout />} /> */}
 
           <Route element={<ProtectedRoute />}>
             <Route path="/my-profile" element={<AgentProfile />} />

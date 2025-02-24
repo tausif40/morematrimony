@@ -19,7 +19,7 @@ const SocialBackground = ({ data }) => {
 
 	const [ loading, setLoading ] = useState({ state: false, city: false, caste: false, rashi: false, });
 
-	const token = Cookies.get('access_token');
+	const token = Cookies.get('access_token') || sessionStorage.getItem('AT');
 	const BASE_URL = process.env.REACT_APP_API_URL;
 
 	const [ formData, setFormData ] = useState({
