@@ -34,7 +34,7 @@ import { getPlan } from './store/features/plan-slice';
 const App = () => {
   const location = useLocation()
   const dispatch = useDispatch();
-  const token = sessionStorage.getItem('AT') || Cookies.get('access_token');
+  const token = Cookies.get('access_token') || sessionStorage.getItem('AT');
   const userId = useSelector((state) => state.userDetails.userId);
   const dashboardPaths = [
     '/dashboard',
