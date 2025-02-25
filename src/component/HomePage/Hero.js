@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 function Hero() {
 	const [ isUserLogin, setIsUserLogin ] = useState(false)
-	const token = Cookies.get('access_token') || sessionStorage.getItem('AT');
+	const token = sessionStorage.getItem('AT') || Cookies.get('access_token');
 
 	useEffect(() => {
 		token && setIsUserLogin(true)

@@ -5,7 +5,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
 
-	const token = Cookies.get('access_token') || sessionStorage.getItem('AT');
+	const token = sessionStorage.getItem('AT') || Cookies.get('access_token');
 	// console.log("token-", token);
 	const isAuthenticated = token ? true : false;
 	// console.log(isAuthenticated && token !== undefined && token !== '');

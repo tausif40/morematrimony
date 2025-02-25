@@ -25,7 +25,7 @@ const NavMain = () => {
 	const [ showNotification, setShowNotification ] = useState(false)
 	const dropdownRef = useRef(null);
 	const deviceType = DeviceDetector();
-	const token = Cookies.get('access_token') || sessionStorage.getItem('AT');
+	const token = sessionStorage.getItem('AT') || Cookies.get('access_token');
 	const handleLogout = useLogout();
 
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const getToken = () => Cookies.get('access_token') || sessionStorage.getItem('AT');
+const getToken = () => sessionStorage.getItem('AT') || Cookies.get('access_token');
 const BASE_URL = process.env.REACT_APP_API_URL;
 
 BASE_URL === undefined && console.log('Base url not found');
