@@ -10,7 +10,12 @@ const Hobbies = ({ onFormSubmit, data }) => {
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const dropdownRef = useRef(null);
 
-	const { hobbies, isLoading } = data;
+	const { bobbie, hobbies, isLoading } = data;
+
+	useEffect(() => {
+		// console.log(selectedHobbies);
+		setSelectedHobbies(bobbie?.hobbiesList);
+	}, [ bobbie ]);
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -69,13 +74,13 @@ const Hobbies = ({ onFormSubmit, data }) => {
 					</label>
 
 					{/* Display selected hobbies */}
-					{selectedHobbies.length > 0 && (
+					{selectedHobbies?.length > 0 && (
 						<div className="flex flex-wrap mb-2">
-							{selectedHobbies.map((hobby) => (
-								<div key={hobby._id} className="mr-3 mb-2 flex items-center justify-center bg-primary text-white pl-3 pr-2 py-1 rounded-full">
-									<span>{hobby.name}</span>
-									<button type="button" className="ml-2 text-white" onClick={() => handleUnselect(hobby._id)}>
-										<RxCross2 size={14} />
+							{selectedHobbies?.map((hobby) => (
+								<div key={hobby?._id} className="mr-3 mb-2 flex items-center justify-center bg-gray-200 text-gray-700 pl-3 pr-2 py-1 rounded-full capitalize">
+									<span>{hobby?.name}</span>
+									<button type="button" className="ml-2 text-white" onClick={() => handleUnselect(hobby?._id)}>
+										<RxCross2 size={14} color='red' />
 									</button>
 								</div>
 							))}
@@ -87,7 +92,7 @@ const Hobbies = ({ onFormSubmit, data }) => {
 							className="cursor-pointer flex justify-between items-center mt-1 p-3 w-full rounded-md border border-gray-300 shadow-sm outline-none hover:ring-primary hover:border-primary text-sm text-gray-700"
 							onClick={toggleDropdown}
 						>
-							<p>{selectedHobbies.length > 0 ? 'Select More Hobbies' : 'Select Hobbies'}</p>
+							<p>{selectedHobbies?.length > 0 ? 'Select More Hobbies' : 'Select Hobbies'}</p>
 							<span>
 								<IoIosArrowDown />
 							</span>
@@ -111,11 +116,11 @@ const Hobbies = ({ onFormSubmit, data }) => {
 								</div>
 
 								{/* Render hobbies in the dropdown */}
-								<div className="flex flex-wrap gap-3 justify-between px-4 pb-4 max-h-72 overflow-y-auto customScroll-bar">
+								<div className="flex flex-wrap gap-3 px-4 pb-4 max-h-72 overflow-y-auto customScroll-bar">
 									{filteredHobbies?.map((hobby) => (
 										<div
 											key={hobby._id}
-											className={`cursor-pointer py-2 text-xs text-center px-3 rounded-full ${selectedHobbies.some((h) => h._id === hobby._id) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
+											className={`cursor-pointer py-2 text-xs text-center px-3 rounded-full ${selectedHobbies?.some((h) => h._id === hobby._id) ? 'bg-gold' : 'bg-gray-200 hover:bg-gray-300'}`}
 											onClick={() => handleSelect(hobby.name)}
 										>
 											{hobby.name}
