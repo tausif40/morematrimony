@@ -12,8 +12,8 @@ const Hobbies = ({ onFormSubmit, data }) => {
 
 	const { bobbie, hobbies, isLoading } = data;
 
+	console.log(selectedHobbies);
 	useEffect(() => {
-		// console.log(selectedHobbies);
 		setSelectedHobbies(bobbie?.hobbiesList);
 	}, [ bobbie ]);
 
