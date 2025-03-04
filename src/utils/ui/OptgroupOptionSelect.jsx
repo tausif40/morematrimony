@@ -29,19 +29,6 @@ const OptgroupOptionSelect = ({ dataList, savedItems = [], onSelectionChange, fi
 
 	const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-	// const handleSelect = (item) => {
-	// 	const alreadySelected = selectedItems.some((selected) => selected.id === item.id);
-	// 	let updatedSelection;
-	// 	if (alreadySelected) {
-	// 		updatedSelection = selectedItems.filter((selected) => selected.id !== item.id);
-	// 	} else {
-	// 		updatedSelection = [ ...selectedItems, item ];
-	// 	}
-	// 	setSelectedItems(updatedSelection);
-
-	// 	onSelectionChange(updatedSelection.map((selected) => selected.id));
-	// };
-
 	const handleSelect = (item) => {
 		// console.log("Optgroup Selected item:", item);
 
@@ -55,10 +42,9 @@ const OptgroupOptionSelect = ({ dataList, savedItems = [], onSelectionChange, fi
 				updatedSelection = [ ...prevSelected, item ];
 			}
 
-			// ✅ Pass an array of `_id`s instead of a function
 			onSelectionChange(updatedSelection.map((selected) => selected?._id));
 
-			return updatedSelection; // Ensure the new selection is returned
+			return updatedSelection;
 		});
 	};
 

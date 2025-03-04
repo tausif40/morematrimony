@@ -22,20 +22,6 @@ const MultiDropdown = ({ dataList, savedItems = [], onSelectionChange, fieldName
 	// Toggle Dropdown
 	const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-	// Handle Selection
-	// const handleSelect = (item) => {
-	// 	const alreadySelected = selectedItems.includes(item);
-	// 	let updatedSelection;
-	// 	if (alreadySelected) {
-	// 		updatedSelection = selectedItems.filter((selected) => selected !== item);
-	// 	} else {
-	// 		updatedSelection = [ ...selectedItems, item ];
-	// 	}
-	// 	setSelectedItems(updatedSelection);
-
-	// 	// Pass selected names to the parent component
-	// 	onSelectionChange(updatedSelection);
-	// };
 	const handleSelect = (item) => {
 		// console.log("Selected item:", item);
 
@@ -46,13 +32,12 @@ const MultiDropdown = ({ dataList, savedItems = [], onSelectionChange, fieldName
 			if (alreadySelected) {
 				updatedSelection = prevSelected.filter((selected) => selected !== item);
 			} else {
-				updatedSelection = [ ...prevSelected, item ]; // Add item
+				updatedSelection = [ ...prevSelected, item ];
 			}
 
-			// ✅ Pass an array of `_id`s instead of a function
 			onSelectionChange(updatedSelection.map((selected) => selected));
 
-			return updatedSelection; // Ensure the new selection is returned
+			return updatedSelection;
 		});
 	};
 
@@ -61,11 +46,9 @@ const MultiDropdown = ({ dataList, savedItems = [], onSelectionChange, fieldName
 		const updatedSelection = selectedItems.filter((selected) => selected !== item);
 		setSelectedItems(updatedSelection);
 
-		// Pass updated list to the parent component
 		onSelectionChange(updatedSelection);
 	};
 
-	// Close dropdown when clicking outside
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -78,7 +61,7 @@ const MultiDropdown = ({ dataList, savedItems = [], onSelectionChange, fieldName
 		};
 	}, []);
 
-	// Filter items based on search query
+
 	useEffect(() => {
 		const filtered = dataList?.filter((item) =>
 			item.toLowerCase().includes(searchQuery.toLowerCase())

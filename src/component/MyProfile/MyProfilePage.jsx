@@ -72,7 +72,7 @@ const MyProfilePage = () => {
 	// console.log("formData - ", userDetails)
 
 	const handleFormSubmit = (data) => {
-		console.log("formData Before submit - ", data)
+		// console.log("formData Before submit - ", data)
 		// console.log(data);
 		// const encryptedData = encryptData(data);
 		// console.log("encryptedData - ", encryptedData);
@@ -96,7 +96,7 @@ const MyProfilePage = () => {
 			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries, socialBackgroundData, isLoading }} />
 			<Lifestyle onFormSubmit={handleFormSubmit} loading={isLoading} data={lifestyle} />
 			<FamilyInformation onFormSubmit={handleFormSubmit} loading={isLoading} data={familyDetails} />
-			<PartnerExpectation onFormSubmit={handleFormSubmit} data={{ countriesWithDoesNotMatter, religions, occupations, education, languages, isLoading, partnerExpectation }} />
+			<PartnerExpectation data={{ countriesWithDoesNotMatter, religions, occupations, education, languages, isLoading, partnerExpectation }} />
 		</div>
 	);
 };

@@ -6,13 +6,15 @@ import apiClient from '../../api/apiClient';
 import MultiSelectDropdown from '../../utils/ui/MultiSelectDropdown';
 import MultiDropdown from '../../utils/ui/MultiDropdown';
 import OptgroupOptionSelect from '../../utils/ui/OptgroupOptionSelect';
+import { getUserDetails } from '../../store/features/userDetails-slice';
+import { useDispatch } from 'react-redux';
 
-const PartnerExpectation = ({ data, onFormSubmit }) => {
+const PartnerExpectation = ({ data }) => {
+	const dispatch = useDispatch();
 	const { partnerExpectation, countriesWithDoesNotMatter, religions, occupations, education, languages } = data
-
 	const [ stateList, setStateList ] = useState([])
 	const [ casteList, setCasteList ] = useState([])
-	// const [ residencyCountryIds, setResidencyCountryIds ] = useState([]);
+	const [ selectedCastBackup, setSelectedCastBackup ] = useState([]);
 	const [ selectedCast, setSelectedCast ] = useState([]);
 	const [ motherTongue, setMotherTongue ] = useState([]);
 	const [ educationIds, setEducationIds ] = useState([]);
@@ -68,9 +70,8 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 	}, [ selectedCast, motherTongue, educationIds, employedIn, occupation, preferState, preferredCountry, bodyType, complexion ]);
 
 
-
 	useEffect(() => {
-		console.log("partnerExpectation-", partnerExpectation);
+		// console.log("partnerExpectation-", partnerExpectation);
 		if (partnerExpectation) {
 			setFormData({
 				age: { min: partnerExpectation?.age?.min, max: partnerExpectation?.age?.max },
@@ -94,6 +95,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				lookingFor: partnerExpectation?.lookingFor || ''
 			});
 			setSelectedCast(partnerExpectation?.caste || [])
+			setSelectedCastBackup(partnerExpectation?.caste || [])
 			setMotherTongue(partnerExpectation?.motherTongue || [])
 			setEducationIds(partnerExpectation?.highestEducation || [])
 			setEmployedIn(partnerExpectation?.employedIn || [])
@@ -218,7 +220,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const validatedData = validateFormData(formData);
-		console.log("Final FormData to Submit:", validatedData);
+		// console.log("Final FormData to Submit:", validatedData);
 		if (!formData.height.inches) delete formData.height.inches;
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
@@ -231,6 +233,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 			console.log(response);
 			if (response?.status === 200) {
 				toast.success('Update successful!', { id: loadingToast });
+				dispatch(getUserDetails());
 			}
 		} catch (error) {
 			console.log(error)
@@ -267,6 +270,11 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		}
 
 		if (name === 'religion') {
+			if (partnerExpectation?.religion?._id === value) {
+				setSelectedCast(selectedCastBackup)
+			} else {
+				setSelectedCast([])
+			}
 			setCasteList('')
 			fetchCaste(value);
 		}
@@ -389,19 +397,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				{/* Number of Children & Children Acceptable */}
 				{isChildrenFieldsVisible() && (
 					<>
-						{/* <div>
-							<label className="block font-medium mb-1 mt-1 text-headingGray">
-								Number of Children <span className="text-red-500">*</span>
-							</label>
-							<input
-								type="number"
-								className={getInputClasses('numberOfChildren')}
-								name="numberOfChildren"
-								value={formData.numberOfChildren}
-								onChange={handleChange}
-							/>
-							{errors.numberOfChildren && <p className="text-red-500 text-xs mt-1">{errors.numberOfChildren}</p>}
-						</div> */}
+
 						<div>
 							<label className="block font-medium mb-1 mt-1 text-headingGray">
 								Children Acceptable <span className="text-red-500">*</span>

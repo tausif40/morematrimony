@@ -12,24 +12,12 @@ const MultiSelectDropdown = ({ dataList, savedItems = [], onSelectionChange, fie
 	// Toggle Dropdown
 	const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-	// useEffect(() => {
-	// 	// if (JSON.stringify(savedItems) !== JSON.stringify(selectedItems)) { }
-	// 	// setSelectedItems(savedItems);
-	// 	console.log("savedItems=\n", fieldName, "-", savedItems);
-	// 	setSelectedItems(savedItems);
-
-	// 	savedItems.forEach((data) => {
-	// 		console.log(`pass '${fieldName}' data - `, data);
-	// 		handleSelect(data);
-	// 	});
-	// 	console.log("selectedItems=/", selectedItems);
-	// }, [ savedItems ]);
 	useEffect(() => {
 		// console.log("savedItems=\n", fieldName, "-", savedItems);
 
-		if (savedItems?.length > 0) {
-			setSelectedItems([ ...savedItems ]);
-		}
+		// if (savedItems?.length > 0) {
+		// }
+		setSelectedItems([ ...savedItems ]);
 	}, [ savedItems ]);
 
 
@@ -47,25 +35,7 @@ const MultiSelectDropdown = ({ dataList, savedItems = [], onSelectionChange, fie
 		}
 	}, [ selectedItems ]);
 
-	// Handle Selection
-	// const handleSelect = (item) => {
-	// 	console.log(item);
-	// 	console.log("selectedItems-", selectedItems);
-	// 	if (item?.id === 1) return;
-	// 	const alreadySelected = selectedItems?.some((selected) => selected?._id === item._id);
-	// 	let updatedSelection;
-	// 	console.log("alreadySelected-", alreadySelected);
-	// 	if (alreadySelected) {
-	// 		updatedSelection = selectedItems?.filter((selected) => selected?._id !== item._id);
-	// 	} else {
-	// 		updatedSelection = [ ...selectedItems, item ];
-	// 	}
-	// 	console.log("updatedSelection-", updatedSelection);
-	// 	setSelectedItems(updatedSelection);
 
-	// 	// Pass only `_id` to the parent component
-	// 	onSelectionChange(updatedSelection?.map((selected) => selected?._id));
-	// };
 	const handleSelect = (item) => {
 		// console.log("Selected item:", item);
 
@@ -78,8 +48,6 @@ const MultiSelectDropdown = ({ dataList, savedItems = [], onSelectionChange, fie
 			} else {
 				updatedSelection = [ ...prevSelected, item ]; // Add item
 			}
-
-			// ✅ Pass an array of `_id`s instead of a function
 			onSelectionChange(updatedSelection.map((selected) => selected?._id));
 
 			return updatedSelection; // Ensure the new selection is returned
