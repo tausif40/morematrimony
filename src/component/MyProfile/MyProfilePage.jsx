@@ -60,6 +60,7 @@ const MyProfilePage = () => {
 	const careerData = userData?.career;
 	const physicalAttributes = userData?.physicalAttributes;
 	const languageData = userData?.language;
+	const bobbie = userData?.hobbies;
 	const socialBackgroundData = userData?.spiritualAndSocialBackground;
 	const lifestyle = userData?.lifestyle;
 	const familyDetails = userData?.familyDetails;
@@ -71,7 +72,7 @@ const MyProfilePage = () => {
 	// console.log("formData - ", userDetails)
 
 	const handleFormSubmit = (data) => {
-		// console.log("formData - ", formData)
+		console.log("formData Before submit - ", data)
 		// console.log(data);
 		// const encryptedData = encryptData(data);
 		// console.log("encryptedData - ", encryptedData);
@@ -91,7 +92,7 @@ const MyProfilePage = () => {
 			<Career onFormSubmit={handleFormSubmit} data={{ countries, countriesLoading, occupations, careerData, isLoading }} />
 			<PhysicalAttributes onFormSubmit={handleFormSubmit} data={{ physicalAttributes, isLoading }} />
 			<Language onFormSubmit={handleFormSubmit} data={{ languages, languageLoading, languageData, isLoading }} />
-			<Hobbies onFormSubmit={handleFormSubmit} data={{ hobbies, hobbiesError, isLoading }} />
+			<Hobbies onFormSubmit={handleFormSubmit} data={{ bobbie, hobbies, hobbiesError, isLoading }} />
 			<SocialBackground onFormSubmit={handleFormSubmit} data={{ religions, divisions, stars, zodiac, languages, countries, socialBackgroundData, isLoading }} />
 			<Lifestyle onFormSubmit={handleFormSubmit} loading={isLoading} data={lifestyle} />
 			<FamilyInformation onFormSubmit={handleFormSubmit} loading={isLoading} data={familyDetails} />

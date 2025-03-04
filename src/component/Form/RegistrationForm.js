@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from "../../store/auth/auth-slice";
@@ -43,6 +43,8 @@ const RegistrationForm = () => {
 		gender: "",
 		dateOfBirth: "",
 		email: "",
+		countryCode: "",
+		mobile: "",
 		password: "",
 	});
 
@@ -79,6 +81,7 @@ const RegistrationForm = () => {
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
 		if (!validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
 		if (!formData.email) newErrors.email = 'Email is required';
+		if (!formData.mobile) newErrors.mobile = 'Mobile no. is required';
 		if (!emailRegex.test(formData.email)) newErrors.email = "Invalid email format";
 		if (!formData.password) newErrors.password = 'Password is required';
 		return newErrors;
@@ -90,8 +93,16 @@ const RegistrationForm = () => {
 		// Validate form fields
 		const newErrors = validateForm();
 		setErrors(newErrors);
+		console.log(formData);
+		console.log(newErrors);
 
-		if (formData.password.length < 8) {
+		// if (Object.keys(newErrors).length > 0) {
+		// 	setErrors(newErrors);
+		// 	toast.error('Please correct all highlighted errors!');
+		// 	return;
+		// }
+
+		if (formData.password.length !== 0 && formData.password.length < 8) {
 			setErrors((prevErrors) => ({
 				...prevErrors,
 				psdLength: 'Password must be at least 8 characters',
@@ -105,13 +116,9 @@ const RegistrationForm = () => {
 			}));
 			return;
 		}
+
 		if (!agreement) {
 			toast('Please accept the agreement!', { icon: '⚠️' });
-			return;
-		}
-		if (Object.keys(newErrors).length > 0) {
-			setErrors(newErrors);
-			toast.error('Please correct all highlighted errors!');
 			return;
 		}
 		setErrors({});
@@ -163,7 +170,7 @@ const RegistrationForm = () => {
 		window.scrollTo(0, 0)
 	}
 
-	const getInputClasses = (fieldName) => `cursor-pointer flex justify-between items-center mt-1 p-3  w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ fieldName ] && 'border-red-500'}`;
+	const getInputClasses = (fieldName) => `cursor-pointer flex justify-between items-center mt-1 p-3 w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ fieldName ] && 'border-red-500'}`;
 
 	return (
 		<>
@@ -272,6 +279,7 @@ const RegistrationForm = () => {
 						</div>
 					</div>
 
+
 					{/* Email address */}
 					<div className="mb-4">
 						<label className="block text-sm font-medium">
@@ -286,6 +294,38 @@ const RegistrationForm = () => {
 							placeholder="example@gmail.com"
 						/>
 						{errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+					</div>
+
+
+					{/* mobile address */}
+					<div className="flex gap-2 w-full items-end">
+						<div className="mb-4">
+							<label className="block text-sm font-medium">
+								Mobile No
+							</label>
+							<select
+								name="countryCode"
+								value={formData.countryCode}
+								onChange={handleChange}
+								className={getInputClasses('countryCode')}
+							>
+								<option value="+91">+91 Ind</option>
+								<option value="+973">+973 BD</option>
+								<option value="other">Other</option>
+							</select>
+							{errors.gender && <p className="text-red-500 text-xs">{errors.countryCode}</p>}
+						</div>
+						<div className="mb-4 w-full">
+							<input
+								type="number"
+								name="mobile"
+								value={formData.mobile}
+								onChange={handleChange}
+								className={getInputClasses('mobile')}
+								placeholder="9876....."
+							/>
+							{errors.email && <p className="text-red-500 text-xs">{errors.mobile}</p>}
+						</div>
 					</div>
 
 					{/* Password */}
@@ -332,12 +372,13 @@ const RegistrationForm = () => {
 							onChange={() => setAgreement(!agreement)}
 							className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
 							id="termAndCondition"
+						// required
 						/>
 						<label htmlFor="termAndCondition" className="ml-2 text-sm text-gray-600 cursor-pointer">
 							By signing up you agree to our{" "}
-							<a href="#" className="text-primary hover:underline">
+							<Link to='' className="text-primary hover:underline">
 								terms and conditions
-							</a>
+							</Link>
 							.
 						</label>
 					</div>

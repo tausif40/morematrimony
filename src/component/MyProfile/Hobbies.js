@@ -2,25 +2,40 @@ import React, { useState, useEffect, useRef } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from 'react-hot-toast';
+import '../../CSS/shakeText.css'
 
 const Hobbies = ({ onFormSubmit, data }) => {
+	const containerRef = useRef(null);
 	const [ isOpen, setIsOpen ] = useState(false);
 	const [ selectedHobbies, setSelectedHobbies ] = useState([]);
 	const [ error, setError ] = useState('');
+	const [ selectError, setSelectError ] = useState(null);
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const dropdownRef = useRef(null);
 
 	const { bobbie, hobbies, isLoading } = data;
 
-	console.log(selectedHobbies);
+	// console.log("Hobby data", data);
+	// console.log("selectedHobbies", selectedHobbies);
 	useEffect(() => {
-		setSelectedHobbies(bobbie?.hobbiesList);
+		setSelectedHobbies(bobbie?.hobbiesList || []);
 	}, [ bobbie ]);
+
+	useEffect(() => {
+		if (containerRef.current) {
+			containerRef.current.scrollLeft = containerRef.current.scrollWidth;
+		}
+	}, [ selectedHobbies ]);
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
 	const handleSelect = (hobbyName) => {
 		setError('')
+		setSelectError(null)
+		if (selectedHobbies.length >= 5) {
+			setSelectError('You can select only five')
+			return;
+		}
 		const hobby = hobbies.hobby.find((h) => h.name === hobbyName);
 		if (selectedHobbies.some((h) => h._id === hobby._id)) {
 			setSelectedHobbies(selectedHobbies.filter((h) => h._id !== hobby._id));
@@ -29,7 +44,9 @@ const Hobbies = ({ onFormSubmit, data }) => {
 		}
 	};
 
-	const handleUnselect = (hobbyId) => {
+	const handleUnselect = (hobbyId, event) => {
+		event.stopPropagation();
+		setSelectError(null)
 		setSelectedHobbies(selectedHobbies.filter((h) => h._id !== hobbyId));
 	};
 
@@ -74,7 +91,7 @@ const Hobbies = ({ onFormSubmit, data }) => {
 					</label>
 
 					{/* Display selected hobbies */}
-					{selectedHobbies?.length > 0 && (
+					{/* {selectedHobbies?.length > 0 && (
 						<div className="flex flex-wrap mb-2">
 							{selectedHobbies?.map((hobby) => (
 								<div key={hobby?._id} className="mr-3 mb-2 flex items-center justify-center bg-gray-200 text-gray-700 pl-3 pr-2 py-1 rounded-full capitalize">
@@ -85,21 +102,33 @@ const Hobbies = ({ onFormSubmit, data }) => {
 								</div>
 							))}
 						</div>
-					)}
+					)} */}
 
-					<div className="relative inline-block w-full" ref={dropdownRef}>
-						<div
-							className="cursor-pointer flex justify-between items-center mt-1 p-3 w-full rounded-md border border-gray-300 shadow-sm outline-none hover:ring-primary hover:border-primary text-sm text-gray-700"
-							onClick={toggleDropdown}
-						>
-							<p>{selectedHobbies?.length > 0 ? 'Select More Hobbies' : 'Select Hobbies'}</p>
-							<span>
-								<IoIosArrowDown />
-							</span>
+					<div className="relative w-full" ref={dropdownRef}>
+						<div className={`flex items-center justify-between px-2 border rounded-md pr-3 h-[46px] cursor-pointer gap-2 customHorizontalScroll overflow-hidden hover:overflow-x-auto transition duration-0 hover:duration-300 ${isOpen ? 'border-primary' : 'border-gray-300'}`} onClick={toggleDropdown} ref={containerRef}>
+							{/* <p>{selectedHobbies?.length > 0 ? 'Select More Hobbies' : 'Select Hobbies'}</p> */}
+							{/* Display selected hobbies */}
+							{selectedHobbies?.length > 0 ? (
+								<div className="flex items-center text-gray-600 rounded py-1 gap-2">
+									{selectedHobbies?.map((hobby) => (
+										<div key={hobby?._id} className="flex items-center justify-center bg-gray-100 text-gray-600 rounded-full pl-3 pr-2 py-1 capitalize">
+											<span className='min-w-max'>{hobby?.name}</span>
+											<button type="button" className="ml-2 text-white" onClick={(e) => handleUnselect(hobby?._id, e)}>
+												<RxCross2 size={14} color='red' />
+											</button>
+										</div>
+									))}
+								</div>
+							)
+								: <div className='flex items-center justify-between w-full text-gray-600 '>
+									<p className='min-w-max'>Select Hobbies</p>
+								</div>
+							}
+							<p><IoIosArrowDown /></p>
 						</div>
 
 						{isOpen && (
-							<div className="absolute mt-2 bg-white border border-gray-300 rounded-md shadow-lg w-full">
+							<div className="absolute mt-2 bg-white border border-gray-300 rounded-md shadow-lg">
 								{/* Search input */}
 								<div className="p-4">
 									<input
@@ -112,7 +141,9 @@ const Hobbies = ({ onFormSubmit, data }) => {
 										}}
 										className="w-full border border-gray-300 p-2 rounded-md outline-none focus:border-gold"
 									/>
-									<p className='text-red-500 font-light text-sm pt-1'>select only five</p>
+									<div className={`${selectError && 'shakeText'}`}>
+										<p className='text-red-500 font-light text-sm pt-1'>{selectError || 'select any five'}</p>
+									</div>
 								</div>
 
 								{/* Render hobbies in the dropdown */}

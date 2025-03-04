@@ -2,13 +2,21 @@ import React, { useState, useEffect, useRef } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 
-const OptgroupOptionSelect = ({ dataList, onSelectionChange, fieldName }) => {
+const OptgroupOptionSelect = ({ dataList, savedItems = [], onSelectionChange, fieldName }) => {
 	const [ selectedItems, setSelectedItems ] = useState([]);
 	const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ filteredItems, setFilteredItems ] = useState([]);
 	const dropdownRef = useRef(null);
 	const containerRef = useRef(null);
+
+	useEffect(() => {
+		// console.log("savedItems=\n", fieldName, "-", savedItems);
+
+		if (savedItems?.length > 0) {
+			setSelectedItems([ ...savedItems ]);
+		}
+	}, [ savedItems ]);
 
 	const flattenDataList = () => {
 		return dataList?.flatMap((group) =>
@@ -21,25 +29,45 @@ const OptgroupOptionSelect = ({ dataList, onSelectionChange, fieldName }) => {
 
 	const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-	const handleSelect = (item) => {
-		const alreadySelected = selectedItems.some((selected) => selected.id === item.id);
-		let updatedSelection;
-		if (alreadySelected) {
-			updatedSelection = selectedItems.filter((selected) => selected.id !== item.id);
-		} else {
-			updatedSelection = [ ...selectedItems, item ];
-		}
-		setSelectedItems(updatedSelection);
+	// const handleSelect = (item) => {
+	// 	const alreadySelected = selectedItems.some((selected) => selected.id === item.id);
+	// 	let updatedSelection;
+	// 	if (alreadySelected) {
+	// 		updatedSelection = selectedItems.filter((selected) => selected.id !== item.id);
+	// 	} else {
+	// 		updatedSelection = [ ...selectedItems, item ];
+	// 	}
+	// 	setSelectedItems(updatedSelection);
 
-		onSelectionChange(updatedSelection.map((selected) => selected.id));
+	// 	onSelectionChange(updatedSelection.map((selected) => selected.id));
+	// };
+
+	const handleSelect = (item) => {
+		// console.log("Optgroup Selected item:", item);
+
+		setSelectedItems((prevSelected) => {
+			const alreadySelected = prevSelected.some((selected) => selected?._id === item._id);
+			let updatedSelection;
+
+			if (alreadySelected) {
+				updatedSelection = prevSelected.filter((selected) => selected?._id !== item._id);
+			} else {
+				updatedSelection = [ ...prevSelected, item ];
+			}
+
+			// ✅ Pass an array of `_id`s instead of a function
+			onSelectionChange(updatedSelection.map((selected) => selected?._id));
+
+			return updatedSelection; // Ensure the new selection is returned
+		});
 	};
 
 	// Remove Selected Tag
 	const handleRemoveTag = (item) => {
-		const updatedSelection = selectedItems.filter((selected) => selected.id !== item.id);
+		const updatedSelection = selectedItems.filter((selected) => selected._id !== item._id);
 		setSelectedItems(updatedSelection);
 
-		onSelectionChange(updatedSelection.map((selected) => selected.id));
+		onSelectionChange(updatedSelection.map((selected) => selected._id));
 	};
 
 	// Close dropdown when clicking outside
@@ -91,10 +119,7 @@ const OptgroupOptionSelect = ({ dataList, onSelectionChange, fieldName }) => {
 				ref={containerRef}
 			>
 				{selectedItems.map((item) => (
-					<div
-						key={item.id}
-						className="flex items-center bg-gray-100 text-gray-600 rounded px-2 py-1 min-w-max"
-					>
+					<div key={item._id} className="flex items-center bg-gray-100 text-gray-600 rounded px-2 py-1 min-w-max capitalize"	>
 						{item.role}
 						<button
 							className="ml-1 text-red-500"
@@ -137,13 +162,13 @@ const OptgroupOptionSelect = ({ dataList, onSelectionChange, fieldName }) => {
 								{/* List of Roles */}
 								{roles.map((role) => (
 									<div
-										key={role.id}
+										key={role._id}
 										onClick={() => handleSelect(role)}
-										className={`flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-blue-100 ${selectedItems.some((selected) => selected.id === role.id) ? "bg-blue-50" : ""
+										className={`flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-blue-100 ${selectedItems.some((selected) => selected._id === role._id) ? "bg-blue-50" : ""
 											}`}
 									>
 										<span>{role.role}</span>
-										{selectedItems.some((selected) => selected.id === role.id) && (
+										{selectedItems.some((selected) => selected._id === role._id) && (
 											<span className="text-blue-600">✔</span>
 										)}
 									</div>

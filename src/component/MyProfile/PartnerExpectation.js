@@ -70,7 +70,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 
 	useEffect(() => {
-		// console.log(partnerExpectation);
+		console.log("partnerExpectation-", partnerExpectation);
 		if (partnerExpectation) {
 			setFormData({
 				age: { min: partnerExpectation?.age?.min, max: partnerExpectation?.age?.max },
@@ -78,7 +78,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				maritalStatus: partnerExpectation?.maritalStatus,
 				childrenAcceptable: partnerExpectation?.childrenAcceptable,
 				religion: partnerExpectation?.religion?._id || '',
-				caste: [ partnerExpectation?.caste?.map(item => item._id) ] || [],
+				caste: partnerExpectation?.caste?.map(item => item._id) || [],
 				motherTongue: partnerExpectation?.motherTongue?.map(item => item._id) || [],
 				highestEducation: partnerExpectation?.highestEducation?.map(item => item._id) || [],
 				employedIn: partnerExpectation?.employedIn || [],
@@ -93,13 +93,13 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 				complexion: partnerExpectation?.complexion || [],
 				lookingFor: partnerExpectation?.lookingFor || ''
 			});
-			setSelectedCast(partnerExpectation?.caste?.map(item => item._id) || [])
-			setMotherTongue(partnerExpectation?.motherTongue?.map(item => item._id) || [])
-			setEducationIds(partnerExpectation?.highestEducation?.map(item => item._id) || [])
+			setSelectedCast(partnerExpectation?.caste || [])
+			setMotherTongue(partnerExpectation?.motherTongue || [])
+			setEducationIds(partnerExpectation?.highestEducation || [])
 			setEmployedIn(partnerExpectation?.employedIn || [])
-			setOccupation(partnerExpectation?.occupation?.map(item => item._id) || [])
-			setPreferredCountry(partnerExpectation?.preferredCountry?.map(item => item._id) || [])
-			setPreferState(partnerExpectation?.preferState?.map(item => item._id) || [])
+			setOccupation(partnerExpectation?.occupation || [])
+			setPreferredCountry(partnerExpectation?.preferredCountry || [])
+			setPreferState(partnerExpectation?.preferState || [])
 			setBodyType(partnerExpectation?.bodyType || [])
 			setComplexion(partnerExpectation?.complexion || [])
 		}
@@ -107,7 +107,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 			fetchCaste(partnerExpectation?.religion._id);
 		}
 	}, [ partnerExpectation ])
-
+	// console.log(formData);
 
 	const fetchData = async (url, setData, type) => {
 		setLoading((prev) => ({ ...prev, [ type ]: true }));
@@ -130,52 +130,13 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 	const [ errors, setErrors ] = useState({});
 
 
-	// const validateForm = () => {
-	// 	let formErrors = {};
-
-	// 	Object.keys(formData).forEach((field) => {
-	// 		if (!formData[ field ] && field !== 'numberOfChildren' && field !== 'childrenAcceptable' && field !== 'lookingFor') {
-	// 			const formattedKey = field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
-	// 			formErrors[ field ] = `${formattedKey} is required`;
-	// 		}
-	// 	});
-
-	// 	if (!formData.age.min || !formData.age.max) {
-	// 		formErrors[ 'age.min' ] = 'Age (min and max) is required';
-	// 		formErrors[ 'age.max' ] = 'Age (min and max) is required';
-	// 	} else if (parseInt(formData.age.min) >= parseInt(formData.age.max)) {
-	// 		formErrors.age = 'Min age should be less than max age';
-	// 	}
-
-	// 	if (!formData.height.feet) {
-	// 		formErrors[ 'height.feet' ] = 'Height is required';
-	// 	}
-
-	// 	if (isChildrenFieldsVisible()) {
-	// 		if (!formData.numberOfChildren) {
-	// 			formErrors.numberOfChildren = 'Number of children is required';
-	// 		}
-	// 		if (!formData.childrenAcceptable) {
-	// 			formErrors.childrenAcceptable = 'Children acceptable is required';
-	// 		}
-	// 	}
-
-	// 	setErrors(formErrors);
-	// 	return Object.keys(formErrors).length === 0;
-	// };
-
 	const validateForm = () => {
 		let formErrors = {};
 
 		// Validate required fields
 		Object.keys(formData).forEach((field) => {
-			if (
-				!formData[ field ] &&
-				![ 'childrenAcceptable', 'lookingFor' ].includes(field)
-			) {
-				const formattedKey = field
-					.replace(/([A-Z])/g, ' $1')
-					.replace(/^./, (str) => str.toUpperCase());
+			if (!formData[ field ] && ![ 'childrenAcceptable', 'lookingFor' ].includes(field)) {
+				const formattedKey = field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
 				formErrors[ field ] = `${formattedKey} is required`;
 			}
 
@@ -221,6 +182,29 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 		return Object.keys(formErrors).length === 0;
 	};
 
+	const validateFormData = (data) => {
+		const cleanedData = {
+			age: data.age, // Always include age
+			height: data.height // Always include height
+		};
+
+		Object.keys(data).forEach((key) => {
+			if (key === "age" || key === "height") return;
+
+			const value = data[ key ];
+
+			// Allow only primitive values (string, number) and arrays of primitives
+			if (Array.isArray(value)) {
+				if (value.every(item => typeof item !== 'object' || item === null)) {
+					cleanedData[ key ] = value.filter(item => item !== null);
+				}
+			} else if (typeof value !== 'object' || value === null) {
+				cleanedData[ key ] = value;
+			}
+		});
+
+		return cleanedData;
+	};
 
 	const isChildrenFieldsVisible = () => {
 		if (formData.maritalStatus === 'single') {
@@ -233,77 +217,34 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(formData);
+		const validatedData = validateFormData(formData);
+		console.log("Final FormData to Submit:", validatedData);
 		if (!formData.height.inches) delete formData.height.inches;
 		if (!validateForm()) {
 			toast.error('Please fill in all required fields');
 			return;
 		}
-		onFormSubmit({ partnerExpectation: formData });
+
+		const loadingToast = toast.loading('Updating.....');
+		try {
+			const response = await apiClient.patch('/user/update-partnerExpectation', { partnerExpectation: validatedData });
+			console.log(response);
+			if (response?.status === 200) {
+				toast.success('Update successful!', { id: loadingToast });
+			}
+		} catch (error) {
+			console.log(error)
+			toast.error(error?.response?.data?.message || 'Upload failed', { id: loadingToast });
+		} finally {
+			setTimeout(() => {
+				toast.dismiss(loadingToast);
+			}, 3000);
+			// toast.dismiss(loadingToast);
+		}
+
+		// console.log("formData=", formData);
+		// onFormSubmit({ partnerExpectation: validatedData });
 	};
-
-	// const handleChange = (e) => {
-	// 	const { name, value } = e.target;
-
-	// 	setFormData((prevFormData) => ({
-	// 		...prevFormData,
-	// 		[ name ]: value,
-	// 	}));
-	// 	if (name.includes('age') || name.includes('height')) {
-	// 		const [ group, field ] = name.split('.');
-	// 		setFormData((prevFormData) => ({
-	// 			...prevFormData,
-	// 			[ group ]: { ...prevFormData[ group ], [ field ]: value }
-	// 		}));
-	// 	} else {
-	// 		setFormData((prevFormData) => ({
-	// 			...prevFormData,
-	// 			[ name ]: value
-	// 		}));
-	// 	}
-
-	// 	if (name === 'religion') {
-	// 		setCasteList('')
-	// 		fetchCaste(value);
-	// 	}
-	// 	setErrors((prevErrors) => ({ ...prevErrors, [ name ]: '' }));
-	// };
-
-	// const handleSelectionChange = (selectedIds) => {
-	// 	console.log("Selected IDs:", selectedIds);
-	// 	// setSelectedCountryIds(selectedIds);
-	// };
-	// console.log(employedIn);
-
-	// const handleChange = (e) => {
-	// 	const { name, value } = e.target;
-	// 	console.log(value);
-	// 	if (name === 'religion') {
-	// 		setFormData((prevFormData) => ({
-	// 			...prevFormData,
-	// 			religion: value,
-	// 			caste: []
-	// 		}));
-
-	// 		setErrors((prevErrors) => ({
-	// 			...prevErrors,
-	// 			religion: '',
-	// 			// caste: ''
-	// 		}));
-
-	// 		fetchCaste(value);
-	// 	} else {
-	// 		setFormData((prevFormData) => ({
-	// 			...prevFormData,
-	// 			[ name ]: value
-	// 		}));
-
-	// 		setErrors((prevErrors) => ({
-	// 			...prevErrors,
-	// 			[ name ]: ''
-	// 		}));
-	// 	}
-	// };
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -471,7 +412,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 								value={formData.childrenAcceptable}
 								onChange={handleChange}
 							>
-								<option value="" disabled>Select</option>
+								<option value="">Select</option>
 								<option value="yes">Yes</option>
 								<option value="no">No</option>
 							</select>
@@ -479,18 +420,6 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 						</div>
 					</>
 				)}
-
-				{/* Residence Country */}
-				{/* <div>
-					<label className="block font-medium mb-1 mt-1 text-headingGray">
-						Residency Country <span className="text-red-500">*</span>
-					</label>
-					<MultiSelectDropdown
-						dataList={countriesWithDoesNotMatter?.country}
-						onSelectionChange={(selectedItems) => handleMultiSelectChange('residencyCountry', selectedItems)}
-						fieldName={'Select Country'} />
-					{errors.residencyCountry && <p className="text-red-500 text-xs">{errors.residencyCountry}</p>}
-				</div> */}
 
 				{/* Religion */}
 				<div>
@@ -518,17 +447,18 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Caste <span className="text-red-500">*</span></label>
 					<MultiSelectDropdown
 						dataList={casteList?.caste}
+						savedItems={selectedCast}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('caste', selectedItems)}
 						fieldName={'Select Caste'} />
 					{errors.caste && <p className="text-red-500 text-xs">{errors.caste}</p>}
 				</div>
-
 
 				{/* Mother Tongue */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">Language<span className="text-red-500"> *</span></label>
 					<MultiSelectDropdown
 						dataList={languages?.language}
+						savedItems={motherTongue}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('motherTongue', selectedItems)}
 						fieldName={'Select Mother Tongue'} />
 					{errors.motherTongue && <p className="text-red-500 text-xs">{errors.motherTongue}</p>}
@@ -541,6 +471,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</label>
 					<OptgroupOptionSelect
 						dataList={education?.education}
+						savedItems={educationIds}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('highestEducation', selectedItems)}
 						fieldName={'Select Education'} />
 					{errors.highestEducation && <p className="text-red-500 text-xs">{errors.highestEducation}</p>}
@@ -553,6 +484,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</label>
 					<MultiDropdown
 						dataList={career.employedIn}
+						savedItems={employedIn}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('employedIn', selectedItems)}
 						fieldName={'Select Employed in'} />
 					{/* <select
@@ -573,12 +505,14 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					{errors.employedIn && <p className="text-red-500 text-xs">{errors.employedIn}</p>}
 				</div>
 
+				{/* Occupation */}
 				<div>
 					<label className="block font-medium mb-1 mt-1 text-headingGray">
 						Occupation <span className="text-red-500">*</span>
 					</label>
 					<OptgroupOptionSelect
 						dataList={occupations?.occupation}
+						savedItems={occupation}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('occupation', selectedItems)}
 						fieldName={'Select Occupation'} />
 					{/* <select
@@ -700,6 +634,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</label>
 					<MultiDropdown
 						dataList={partnerExpectations.bodyType}
+						savedItems={bodyType}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('bodyType', selectedItems)}
 						fieldName={'Select Body Type'} />
 					{/* <select
@@ -727,6 +662,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</label>
 					<MultiSelectDropdown
 						dataList={countriesWithDoesNotMatter?.country}
+						savedItems={preferredCountry}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('preferredCountry', selectedItems)}
 						fieldName={'Select Country'} />
 					{/* <select
@@ -752,6 +688,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</label>
 					<MultiSelectDropdown
 						dataList={stateList?.state}
+						savedItems={preferState}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('preferState', selectedItems)}
 						fieldName={'Select Country'} />
 					{/* <select
@@ -779,6 +716,7 @@ const PartnerExpectation = ({ data, onFormSubmit }) => {
 					</label>
 					<MultiDropdown
 						dataList={partnerExpectations.complexion}
+						savedItems={complexion}
 						onSelectionChange={(selectedItems) => handleMultiSelectChange('complexion', selectedItems)}
 						fieldName={'Select Body Type'} />
 					{errors.complexion && <p className="text-red-500 text-xs">{errors.complexion}</p>}

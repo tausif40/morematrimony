@@ -2,53 +2,36 @@ import React, { useState, useEffect, useRef } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 
-const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
+const MultiSelectDropdown = ({ dataList, savedItems = [], onSelectionChange, fieldName }) => {
+	const dropdownRef = useRef(null);
+	const containerRef = useRef(null);
 	const [ selectedItems, setSelectedItems ] = useState([]);
 	const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
 	const [ searchQuery, setSearchQuery ] = useState("");
 	const [ filteredItems, setFilteredItems ] = useState(dataList);
-	const dropdownRef = useRef(null);
-	const containerRef = useRef(null);
 	// Toggle Dropdown
 	const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-	// Handle Selection
-	const handleSelect = (item) => {
-		if (item.id === 1) return;
-		const alreadySelected = selectedItems?.some((selected) => selected._id === item._id);
-		let updatedSelection;
-		if (alreadySelected) {
-			updatedSelection = selectedItems?.filter((selected) => selected._id !== item._id);
-		} else {
-			updatedSelection = [ ...selectedItems, item ];
-		}
-		setSelectedItems(updatedSelection);
+	// useEffect(() => {
+	// 	// if (JSON.stringify(savedItems) !== JSON.stringify(selectedItems)) { }
+	// 	// setSelectedItems(savedItems);
+	// 	console.log("savedItems=\n", fieldName, "-", savedItems);
+	// 	setSelectedItems(savedItems);
 
-		// Pass only `_id` to the parent component
-		onSelectionChange(updatedSelection?.map((selected) => selected._id));
-	};
-
-	// Remove Selected Tag
-	const handleRemoveTag = (item) => {
-		const updatedSelection = selectedItems?.filter((selected) => selected._id !== item._id);
-		setSelectedItems(updatedSelection);
-
-		// Pass updated `_id` list to the parent component
-		onSelectionChange(updatedSelection?.map((selected) => selected._id));
-	};
-
-	// Close dropdown when clicking outside
+	// 	savedItems.forEach((data) => {
+	// 		console.log(`pass '${fieldName}' data - `, data);
+	// 		handleSelect(data);
+	// 	});
+	// 	console.log("selectedItems=/", selectedItems);
+	// }, [ savedItems ]);
 	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-				setIsDropdownOpen(false);
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+		// console.log("savedItems=\n", fieldName, "-", savedItems);
+
+		if (savedItems?.length > 0) {
+			setSelectedItems([ ...savedItems ]);
+		}
+	}, [ savedItems ]);
+
 
 	// Filter items based on search query
 	useEffect(() => {
@@ -64,6 +47,70 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 		}
 	}, [ selectedItems ]);
 
+	// Handle Selection
+	// const handleSelect = (item) => {
+	// 	console.log(item);
+	// 	console.log("selectedItems-", selectedItems);
+	// 	if (item?.id === 1) return;
+	// 	const alreadySelected = selectedItems?.some((selected) => selected?._id === item._id);
+	// 	let updatedSelection;
+	// 	console.log("alreadySelected-", alreadySelected);
+	// 	if (alreadySelected) {
+	// 		updatedSelection = selectedItems?.filter((selected) => selected?._id !== item._id);
+	// 	} else {
+	// 		updatedSelection = [ ...selectedItems, item ];
+	// 	}
+	// 	console.log("updatedSelection-", updatedSelection);
+	// 	setSelectedItems(updatedSelection);
+
+	// 	// Pass only `_id` to the parent component
+	// 	onSelectionChange(updatedSelection?.map((selected) => selected?._id));
+	// };
+	const handleSelect = (item) => {
+		// console.log("Selected item:", item);
+
+		setSelectedItems((prevSelected) => {
+			const alreadySelected = prevSelected.some((selected) => selected?._id === item._id);
+			let updatedSelection;
+
+			if (alreadySelected) {
+				updatedSelection = prevSelected.filter((selected) => selected?._id !== item._id); // Remove item
+			} else {
+				updatedSelection = [ ...prevSelected, item ]; // Add item
+			}
+
+			// ✅ Pass an array of `_id`s instead of a function
+			onSelectionChange(updatedSelection.map((selected) => selected?._id));
+
+			return updatedSelection; // Ensure the new selection is returned
+		});
+	};
+
+
+	// Remove Selected Tag
+	const handleRemoveTag = (item) => {
+		const updatedSelection = selectedItems?.filter((selected) => selected?._id !== item._id);
+		setSelectedItems(updatedSelection);
+
+		// Pass updated `_id` list to the parent component
+		onSelectionChange(updatedSelection?.map((selected) => selected?._id));
+	};
+
+	// Close dropdown when clicking outside
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setIsDropdownOpen(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
+
+
 	return (
 		<div className="relative w-full " ref={dropdownRef}>
 			{/* Selected Tags */}
@@ -72,23 +119,15 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 				onClick={toggleDropdown} ref={containerRef}
 			>
 				{selectedItems?.map((item) => (
-					<div
-						key={item._id}
-						className="flex items-center bg-gray-100 text-gray-600 rounded px-2 py-1 min-w-max"
-					>
-						{item.name}
-						<button
-							className="ml-1 text-red-500"
-							onClick={(e) => {
-								e.stopPropagation();
-								handleRemoveTag(item);
-							}}
-						>
+					<div key={item?._id} className="flex items-center bg-gray-100 text-gray-600 rounded px-2 py-1 min-w-max capitalize">
+						{item?.name}
+						<button className="ml-1 text-red-500"
+							onClick={(e) => { e.stopPropagation(); handleRemoveTag(item); }}>
 							<RxCross1 size={12} />
 						</button>
 					</div>
 				))}
-				{selectedItems.length === 0 && <p className="text-[#374151]">{fieldName}</p>}
+				{selectedItems?.length === 0 && <p className="text-[#374151]">{fieldName}</p>}
 				<div className="ml-auto py-4 px-1">
 					<IoIosArrowDown className="text-gray-700" />
 				</div>
@@ -113,12 +152,12 @@ const MultiSelectDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 						className="max-h-[50vh] overflow-y-auto shadow-xl text-black">
 						{filteredItems?.map((item) => (
 							<div
-								key={item._id}
+								key={item?._id}
 								onClick={() => handleSelect(item)}
-								className={`flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-blue-100 ${item.id === 1 && 'bg-gray-400 hover:bg-gray-400 cursor-default text-white'} ${selectedItems.some((selected) => (selected._id || selected.name) === (item._id || item.name)) ? "bg-blue-50" : ""}`}
+								className={`flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-blue-100 ${item?.id === 1 && 'bg-gray-400 hover:bg-gray-400 cursor-default text-white'} ${selectedItems?.some((selected) => (selected?._id || selected?.name) === (item?._id || item?.name)) ? "bg-blue-50" : ""}`}
 							>
-								<span>{item.name}</span>
-								{selectedItems?.some((selected) => selected._id === item._id) && (
+								<span>{item?.name}</span>
+								{selectedItems?.some((selected) => selected?._id === item?._id) && (
 									<span className="text-blue-600">✔</span>
 								)}
 							</div>

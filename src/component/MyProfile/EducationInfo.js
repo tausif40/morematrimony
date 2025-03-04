@@ -101,7 +101,7 @@ const EducationInfo = ({ onFormSubmit, data }) => {
 								key={education.name}
 							>
 								{education.roles.map((role) => (
-									<option key={role.id} value={role.id}>
+									<option key={role._id} value={role._id}>
 										{role.role}
 									</option>
 								))}

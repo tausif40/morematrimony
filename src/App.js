@@ -30,6 +30,8 @@ import { getNotification } from './store/features/notification-slice';
 import ResetPassword from './component/Form/ResetPassword';
 import VerifyEmail from './component/Form/VerifyEmail';
 import { getPlan } from './store/features/plan-slice';
+import { socket } from './utils/socket';
+import { addMessage, setConnected } from './store/features/socket-slice';
 
 const App = () => {
   const location = useLocation()
@@ -84,6 +86,28 @@ const App = () => {
   //     navigate('/')
   //   }
   // }, [ token ])
+  const messages = useSelector((state) => state.socket.messages);
+  console.log(messages);
+  // useEffect(() => {
+  //   // Connect to the socket server
+  //   socket.connect();
+
+  //   socket.on("connect", () => {
+  //     dispatch(setConnected(true));
+  //   });
+
+  //   socket.on("disconnect", () => {
+  //     dispatch(setConnected(false));
+  //   });
+
+  //   socket.on("message", (message) => {
+  //     dispatch(addMessage(message));
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [ dispatch ]);
 
   return (
     <>

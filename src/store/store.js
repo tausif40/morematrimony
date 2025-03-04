@@ -8,6 +8,7 @@ import matchProfileSlice from './features/matchProfile-slice';
 import userAction from './features/userAction-slice';
 import notificationSlice from './features/notification-slice';
 import planSlice from './features/plan-slice';
+import socketSlice from './features/socket-slice';
 
 
 export const store = configureStore({
@@ -21,6 +22,7 @@ export const store = configureStore({
 		userAction: userAction,
 		notification: notificationSlice,
 		planSlice: planSlice,
+		socket: socketSlice,
 	},
 
 	middleware: (getDefaultMiddleware) =>

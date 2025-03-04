@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 
-const MultiDropdown = ({ dataList, onSelectionChange, fieldName }) => {
+const MultiDropdown = ({ dataList, savedItems = [], onSelectionChange, fieldName }) => {
 	const [ selectedItems, setSelectedItems ] = useState([]);
 	const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
 	const [ searchQuery, setSearchQuery ] = useState("");
@@ -10,22 +10,50 @@ const MultiDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 	const dropdownRef = useRef(null);
 	const containerRef = useRef(null);
 
+	useEffect(() => {
+		// console.log("savedItems=\n", fieldName, "-", savedItems);
+
+		if (savedItems?.length > 0) {
+			setSelectedItems([ ...savedItems ]);
+		}
+	}, [ savedItems ]);
+
+
 	// Toggle Dropdown
 	const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
 	// Handle Selection
-	const handleSelect = (item) => {
-		const alreadySelected = selectedItems.includes(item);
-		let updatedSelection;
-		if (alreadySelected) {
-			updatedSelection = selectedItems.filter((selected) => selected !== item);
-		} else {
-			updatedSelection = [ ...selectedItems, item ];
-		}
-		setSelectedItems(updatedSelection);
+	// const handleSelect = (item) => {
+	// 	const alreadySelected = selectedItems.includes(item);
+	// 	let updatedSelection;
+	// 	if (alreadySelected) {
+	// 		updatedSelection = selectedItems.filter((selected) => selected !== item);
+	// 	} else {
+	// 		updatedSelection = [ ...selectedItems, item ];
+	// 	}
+	// 	setSelectedItems(updatedSelection);
 
-		// Pass selected names to the parent component
-		onSelectionChange(updatedSelection);
+	// 	// Pass selected names to the parent component
+	// 	onSelectionChange(updatedSelection);
+	// };
+	const handleSelect = (item) => {
+		// console.log("Selected item:", item);
+
+		setSelectedItems((prevSelected) => {
+			const alreadySelected = prevSelected.includes(item);
+			let updatedSelection;
+
+			if (alreadySelected) {
+				updatedSelection = prevSelected.filter((selected) => selected !== item);
+			} else {
+				updatedSelection = [ ...prevSelected, item ]; // Add item
+			}
+
+			// ✅ Pass an array of `_id`s instead of a function
+			onSelectionChange(updatedSelection.map((selected) => selected));
+
+			return updatedSelection; // Ensure the new selection is returned
+		});
 	};
 
 	// Remove Selected Tag
@@ -75,10 +103,10 @@ const MultiDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 				{selectedItems?.map((item) => (
 					<div
 						key={item}
-						className="flex items-center bg-gray-100 text-gray-600 rounded px-2 py-1 min-w-max"
+						className="flex items-center bg-gray-100 text-gray-600 rounded px-2 py-1 min-w-max capitalize"
 					>
 						{item}
-						<button	
+						<button
 							className="ml-1 text-red-500"
 							onClick={(e) => {
 								e.stopPropagation();
@@ -118,9 +146,9 @@ const MultiDropdown = ({ dataList, onSelectionChange, fieldName }) => {
 								className={`flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-blue-100 ${selectedItems.includes(item) ? "bg-blue-50" : ""
 									}`}
 							>
-								<span>{item}</span>
+								<span className="capitalize">{item}</span>
 								{selectedItems.includes(item) && (
-									<span className="text-blue-600">✔</span>
+									<span className="capitalize text-blue-600">✔</span>
 								)}
 							</div>
 						))}
