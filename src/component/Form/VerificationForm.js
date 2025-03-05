@@ -14,8 +14,8 @@ function VerificationForm({ email }) {
 	const handleVerification = () => {
 		const data = { email: email, otp: otp }
 		dispatch(verifyEmailOTP(data)).then((res) => {
-			navigate(`/dashboard`);
 			console.log(res);
+			navigate(`/dashboard`);
 		}).catch((error) => {
 			console.log(error);
 			setError('OTP is incorrect')

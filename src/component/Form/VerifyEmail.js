@@ -50,7 +50,7 @@ function VerifyEmail() {
 
 	const handleChange = (index, value) => {
 		if (isNaN(Number(value))) return;
-
+		setError("")
 		const newOtp = [ ...otp ];
 		newOtp[ index ] = value;
 		setOtp(newOtp);

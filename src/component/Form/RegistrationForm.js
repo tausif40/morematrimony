@@ -22,10 +22,6 @@ const RegistrationForm = () => {
 	// const profiles = [ 'mySelf', 'daughter', 'son', 'sister', 'brother', 'relative', 'friend' ];
 
 	useEffect(() => {
-		console.log("isLoading-", isLoading);
-	}, [ isLoading ])
-
-	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
 			}
@@ -93,8 +89,8 @@ const RegistrationForm = () => {
 		// Validate form fields
 		const newErrors = validateForm();
 		setErrors(newErrors);
-		console.log(formData);
-		console.log(newErrors);
+		// console.log(formData);
+		// console.log(newErrors);
 
 		// if (Object.keys(newErrors).length > 0) {
 		// 	setErrors(newErrors);
@@ -123,35 +119,27 @@ const RegistrationForm = () => {
 		}
 		setErrors({});
 
+		const loadingToast = toast.loading('Registering.....');
 		try {
-			const loadingToast = toast.loading('Registering.....');
-			dispatch(registerUser(formData)).then((res) => {
-				// const tokens = res?.payload?.tokens;
-				console.log(res?.payload);
-				if (res?.payload?.code === 400) {
-					const error = 'Email already exist, Please login!'
-					setErrors({ email: error })
-					toast.error(("Email already exist"), { id: loadingToast });
-					return;
-				} else if (!res?.payload?.user?.isVerifiedEmail) {
-					navigate('/verify-email', { state: { email: formData.email }, });
-					toast.dismiss(loadingToast);
-					toast(("Please Verify Email"), { icon: '⚠️' });
-				}
-				// Cookies.set('access_token', tokens.access.token);
-				// Cookies.set('refresh_token', tokens.refresh.token);
+			const res = await dispatch(registerUser(formData)).unwrap();
+			console.log(res);
 
-				// toast.success('Registration successful! Redirecting to dashboard...');
-				// navigate('/dashboard');
+			if (!res?.agent?.isVerifiedEmail) {
+				navigate('/verify-email', { state: { email: formData.email }, });
+				toast.dismiss(loadingToast);
+				toast(("Please Verify Email"), { icon: '⚠️' });
+			}
 
-				// navigate(`/dashboard?email=${formData.email}`);
-
-			}).catch((error) => {
-				toast.error((error.response.data.message || error.message || "Registration failed."), { id: loadingToast })
-			})
 		} catch (error) {
-			toast.error('An unexpected error occurred. Please try again later.');
 			console.error('Registration error:', error);
+			console.error('error code:', error?.code);
+			if (error?.code === 400) {
+				toast.error((error?.response?.data?.message || error?.message || "Registration failed."), { id: loadingToast })
+			}
+		} finally {
+			setTimeout(() => {
+				toast.dismiss(loadingToast);
+			}, 3000);
 		}
 	};
 
@@ -279,6 +267,37 @@ const RegistrationForm = () => {
 						</div>
 					</div>
 
+					{/* mobile address */}
+					<div className="flex gap-2 w-full items-end">
+						<div className="mb-4 w-32">
+							<label className="block text-sm font-medium">
+								Mobile No
+							</label>
+							<select
+								name="countryCode"
+								value={formData.countryCode}
+								onChange={handleChange}
+								className={`cursor-pointer flex justify-between items-center mt-1 py-3 sm:px-2 w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ 'countryCode' ] && 'border-red-500'}`}
+							>
+								{formData.countryCode === "" && <option value="" disabled selected>code</option>}
+								<option value="+91">+91 Ind</option>
+								<option value="+973">+973 BD</option>
+								<option value="other">Other</option>
+							</select>
+							{errors.countryCode && <p className="text-red-500 text-xs">{errors.countryCode}</p>}
+						</div>
+						<div className="mb-4 w-full">
+							<input
+								type="number"
+								name="mobile"
+								value={formData.mobile}
+								onChange={handleChange}
+								className={getInputClasses('mobile')}
+								placeholder="9876....."
+							/>
+							{errors.mobile && <p className="text-red-500 text-xs">{errors.mobile}</p>}
+						</div>
+					</div>
 
 					{/* Email address */}
 					<div className="mb-4">
@@ -296,37 +315,6 @@ const RegistrationForm = () => {
 						{errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
 					</div>
 
-
-					{/* mobile address */}
-					<div className="flex gap-2 w-full items-end">
-						<div className="mb-4">
-							<label className="block text-sm font-medium">
-								Mobile No
-							</label>
-							<select
-								name="countryCode"
-								value={formData.countryCode}
-								onChange={handleChange}
-								className={getInputClasses('countryCode')}
-							>
-								<option value="+91">+91 Ind</option>
-								<option value="+973">+973 BD</option>
-								<option value="other">Other</option>
-							</select>
-							{errors.gender && <p className="text-red-500 text-xs">{errors.countryCode}</p>}
-						</div>
-						<div className="mb-4 w-full">
-							<input
-								type="number"
-								name="mobile"
-								value={formData.mobile}
-								onChange={handleChange}
-								className={getInputClasses('mobile')}
-								placeholder="9876....."
-							/>
-							{errors.email && <p className="text-red-500 text-xs">{errors.mobile}</p>}
-						</div>
-					</div>
 
 					{/* Password */}
 					<div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-4">

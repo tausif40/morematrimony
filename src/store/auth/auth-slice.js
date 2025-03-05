@@ -17,7 +17,9 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 		const response = await apiClient.post('/auth/signUp', userData);
 		// const decryptedData = decryptData(response.data.encryptedData)
 		// return decryptedData;
-		return response.data;
+		console.log(response);
+		if (response?.status === 201 || response?.status === 200) return response.data;
+
 	} catch (error) {
 		console.log(error);
 		return thunkAPI.rejectWithValue(error.response.data);
