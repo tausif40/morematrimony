@@ -21,9 +21,9 @@ const SocketProvider = ({ children }) => {
 		});
 
 		// Listen for messages
-		socket.on("message", (message) => {
-			dispatch(addMessage(message));
-			console.log("New message:", message);
+		socket.on("socialActionUpdate", (data) => {
+			dispatch(addMessage(data));
+			console.log("New message: ", data);
 		});
 
 		return () => {
