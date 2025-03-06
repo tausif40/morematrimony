@@ -16,8 +16,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	uploadFileData, fetchStars, fetchZodiac, fetchLanguages, fetchHobbies, fetchDivision, fetchCountriesWithDoesNotMatter
 } from '../../store/features/profileData-slice';
-import apiClient from '../../api/apiClient';
-import { encryptData, decryptData } from "../../utils/encryption";
+import apiClient from '../../lib/apiClient';
+import { encryptData, decryptData } from "../../lib/encryption";
 import { socialBackground } from '../../data/MyProfileData';
 
 const MyProfilePage = () => {

@@ -5,7 +5,7 @@ import MainContent from './MainContent';
 import FilterMenu from './FilterMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { maritalStatus, personalInformation, PhysicalAttributesData, socialBackground } from '../../data/MyProfileData';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 import { setPage, setFilterApplied, matchProfileFilter, getMatchedProfile } from '../../store/features/matchProfile-slice';
 import { Socket } from 'socket.io-client';
 

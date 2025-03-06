@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 
 export const getPlan = createAsyncThunk('plan/getNotification', async (_, { rejectWithValue }) => {
 	try {

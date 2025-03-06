@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 import { getUserDetails, getProfileImages } from './userDetails-slice';
 import toast from 'react-hot-toast';
 

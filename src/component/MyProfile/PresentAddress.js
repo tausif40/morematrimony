@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 
 const PresentAddress = ({ onFormSubmit, data }) => {
 	const [ stateList, setStateList ] = useState([]);

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 
 const useLogout = () => {
 	const navigate = useNavigate();

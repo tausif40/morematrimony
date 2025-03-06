@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
 import { getProfileImages } from '../../store/features/userDetails-slice';

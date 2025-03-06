@@ -30,8 +30,8 @@ import { getNotification } from './store/features/notification-slice';
 import ResetPassword from './component/Form/ResetPassword';
 import VerifyEmail from './component/Form/VerifyEmail';
 import { getPlan } from './store/features/plan-slice';
-import { socket } from './utils/socket';
-import { addMessage, setConnected } from './store/features/socket-slice';
+import socket from './lib/socket';
+import { addMessage } from './store/features/socket-slice';
 
 const App = () => {
   const location = useLocation()
@@ -80,34 +80,25 @@ const App = () => {
     dispatch(getNotification(userId));
   }, [ location.pathname, dispatch, userId ]);
 
+  const isConnected = useSelector((state) => state.socket.isConnected);
+
+  useEffect(() => {
+    console.log("is Connected - ", isConnected);
+    console.log("userId-", userId);
+    if (isConnected) {
+      socket.emit("logIn", userId);
+    } else {
+      console.error("Socket is not connected.");
+    }
+  }, [ isConnected, userId ]);
+
   // useEffect(() => {
-  //   if (token  === undefined) {
-  //     window.location.reload();
-  //     navigate('/')
-  //   }
-  // }, [ token ])
-  const messages = useSelector((state) => state.socket.messages);
-  console.log(messages);
-  // useEffect(() => {
-  //   // Connect to the socket server
-  //   socket.connect();
+  // if (token === undefined) {
+  //   window.location.reload();
+  //   navigate('/')
+  // }
+  // }, [])
 
-  //   socket.on("connect", () => {
-  //     dispatch(setConnected(true));
-  //   });
-
-  //   socket.on("disconnect", () => {
-  //     dispatch(setConnected(false));
-  //   });
-
-  //   socket.on("message", (message) => {
-  //     dispatch(addMessage(message));
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, [ dispatch ]);
 
   return (
     <>

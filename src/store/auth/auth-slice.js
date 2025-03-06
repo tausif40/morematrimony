@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 import { toast } from 'react-hot-toast';
-import { encryptData, decryptData } from '../../utils/encryption';
+import { encryptData, decryptData } from '../../lib/encryption';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 

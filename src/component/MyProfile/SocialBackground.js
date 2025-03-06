@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { socialBackground } from '../../data/MyProfileData';
 import { hinduId, christianId } from '../../data/config';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 

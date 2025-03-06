@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 
 // verify otp
 export const verifyEmailOTP = createAsyncThunk('email/verifyEmailOTP', async (data, thunkAPI) => {

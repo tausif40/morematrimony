@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 import { getQueryParams } from '../../utils/utils';
 
 export const getUserDetailsById = createAsyncThunk('data/getUserDetailsById', async (ids, { rejectWithValue }) => {

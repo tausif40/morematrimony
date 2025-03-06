@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 
 export const getAgentDetails = createAsyncThunk('data/getAgentDetails', async (_, { rejectWithValue }) => {
 	try {
@@ -13,6 +13,7 @@ export const getAgentDetails = createAsyncThunk('data/getAgentDetails', async (_
 export const getUserDetails = createAsyncThunk('data/getUserDetails', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/user`);
+		// console.log("getUserDetails-", response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -24,7 +25,7 @@ export const getProfileImages = createAsyncThunk('data/getProfileImages', async 
 	try {
 		const response = await apiClient.get(`/gallery`);
 		// console.log(response.data);
-		return response.data;	
+		return response.data;
 	} catch (error) {
 		console.log(error);
 		return rejectWithValue(error.response?.data || 'Failed to fetch profile images');

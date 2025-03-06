@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 import { toast } from 'react-hot-toast';
 import { getUserDetails } from './userDetails-slice';
 import { indiaId } from '../../data/config';

@@ -13,7 +13,7 @@ const HomePageLayout = () => {
 	const navigate = useNavigate()
 	const [ searchParams ] = useSearchParams();
 	const token = searchParams.get('token');
-	console.log("param-", token);
+	// console.log("param-", token);
 
 	useEffect(() => {
 		if (token !== null && token.length >= 24) {

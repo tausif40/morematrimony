@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { personalInformation } from '../../data/MyProfileData';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../lib/apiClient';
 import { indiaId } from '../../data/config';
 
 const ResidencyInformation = ({ data, onFormSubmit }) => {
@@ -37,6 +37,7 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 	});
 
 	useEffect(() => {
+		// console.log("residency-", residency);
 		if (residency) {
 			setFormData({
 				birthCountry: residency?.birthCountry?._id || '',
@@ -45,8 +46,8 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 				residencyStatus: residency?.residencyStatus || '',
 				citizenship: residency?.citizenship?._id || '',
 				ancestralOrigin: {
-					state: residency?.ancestralOrigin?.state || '',
-					city: residency?.ancestralOrigin?.city || '',
+					state: residency?.ancestralOrigin?.state?._id || '',
+					city: residency?.ancestralOrigin?.city?._id || '',
 				},
 			});
 		}
@@ -67,7 +68,6 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 			setCityLoading(false)
 		}
 	}
-
 
 	const [ errors, setErrors ] = useState({});
 
