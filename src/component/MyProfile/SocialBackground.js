@@ -5,8 +5,11 @@ import { hinduId, christianId } from '../../data/config';
 import apiClient from '../../lib/apiClient';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { getUserDetails } from '../../store/features/userDetails-slice';
+import { useDispatch } from 'react-redux';
 
 const SocialBackground = ({ data }) => {
+	const dispatch = useDispatch();
 	const { religions, divisions, stars, zodiac, languages, countries, socialBackgroundData } = data;
 
 	const [ isChristian, setIsChristian ] = useState(false)
@@ -206,6 +209,7 @@ const SocialBackground = ({ data }) => {
 			if (response.status === 200) {
 				toast.success('Update successful!', { id: loadingToast });
 				setBtnDisable(false);
+				dispatch(getUserDetails());
 			} else {
 				toast.error('Update failed', { id: loadingToast });
 				setBtnDisable(false);

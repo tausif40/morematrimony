@@ -9,6 +9,7 @@ import { Search } from 'lucide-react';
 import ActionLoader from '../../Loader/ActionLoader';
 import Modal from '../../Modal/Modal'
 import '../../../CSS/LoaderAnimation.css'
+import toast from 'react-hot-toast';
 
 const mapReceivedInterest = (profiles) => {
 	return profiles?.map((profile) => {
@@ -38,13 +39,13 @@ const ReceivedInterest = () => {
 	const dispatch = useDispatch()
 	const [ myInterestList, setMyInterestList ] = useState([])
 	const [ searchQuery, setSearchQuery ] = useState('');
-	const [ confirmSkip, setConfirmSkip ] = useState(false);
 	const [ pendingAction, setPendingAction ] = useState(null);
-	const [ acceptReq, setAcceptReq ] = useState(false);
 	const [ showModal, setShowModal ] = useState(false);
-	const [ loadingSkip, setLoadingSkip ] = useState(false);
-	const [ loadingAccept, setLoadingAccept ] = useState(false);
 	const [ profileStatus, setProfileStatus ] = useState({});
+	// const [ confirmSkip, setConfirmSkip ] = useState(false);
+	// const [ acceptReq, setAcceptReq ] = useState(false);
+	// const [ loadingSkip, setLoadingSkip ] = useState(false);
+	// const [ loadingAccept, setLoadingAccept ] = useState(false);
 
 	const receivedInterest = useSelector((state) => state.userAction.receivedInterest);
 	const userId = useSelector((state) => state.userDetails.userId);
@@ -116,7 +117,7 @@ const ReceivedInterest = () => {
 	// 		});
 	// }
 
-	const executeAction = (activityType, agentId, targetUserId) => {
+	const executeAction = async (activityType, agentId, targetUserId) => {
 		setProfileStatus(prev => ({
 			...prev,
 			[ targetUserId ]: {
@@ -134,30 +135,33 @@ const ReceivedInterest = () => {
 			activityType: activityType
 		};
 
-		dispatch(acceptSkipInterest(data))
-			.then(() => {
-				setProfileStatus(prev => ({
-					...prev,
-					[ targetUserId ]: {
-						loadingAccept: false,
-						loadingSkip: false,
-						completed: true,
-						action: activityType
-					}
-				}));
-			})
-			.catch(() => {
-				setProfileStatus(prev => ({
-					...prev,
-					[ targetUserId ]: {
-						loadingAccept: false,
-						loadingSkip: false,
-						completed: false,
-						action: activityType
-					}
-				}));
-			});
-	};
+		try {
+
+			const res = await dispatch(acceptSkipInterest(data)).unwrap();
+			console.log(res);
+			setProfileStatus(prev => ({
+				...prev,
+				[ targetUserId ]: {
+					loadingAccept: false,
+					loadingSkip: false,
+					completed: true,
+					action: activityType
+				}
+			}));
+		} catch (error) {
+			console.log(error);
+			toast.error(error?.response?.data?.message || 'Failed!');
+			// setProfileStatus(prev => ({
+			// 	...prev,
+			// 	[ targetUserId ]: {
+			// 		loadingAccept: false,
+			// 		loadingSkip: false,
+			// 		completed: false,
+			// 		action: activityType
+			// 	}
+			// }));
+		};
+	}
 
 
 	return (

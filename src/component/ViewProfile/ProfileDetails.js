@@ -155,9 +155,12 @@ const ProfileDetails = () => {
 			...(data?.spiritualAndSocialBackground?.religion?.name?.toLowerCase() === "hindu" && {
 				gothra: data?.spiritualAndSocialBackground?.gothra || "_",
 				dosh: data?.spiritualAndSocialBackground?.dosh || "_",
-				doshName: data?.spiritualAndSocialBackground?.doshName || "_",
+				...(data?.spiritualAndSocialBackground?.dosh?.toLowerCase() === "yes" && {
+					doshName: data?.spiritualAndSocialBackground?.doshName || "_",
+				}),
 			}),
 		},
+
 		lifestyle: {
 			diet: data?.lifestyle?.diet || "_",
 			drink: data?.lifestyle?.drink || "_",
@@ -178,7 +181,7 @@ const ProfileDetails = () => {
 			age: `${data?.partnerExpectation?.age?.min || "_"} to ${data?.partnerExpectation?.age?.max || "_"}`,
 			height: `${data?.partnerExpectation?.height?.feet || 0} feet ${data?.partnerExpectation?.height?.inches || 0} inches`,
 			maritalStatus: data?.partnerExpectation?.maritalStatus || "_",
-			religion: data?.partnerExpectation?.religion[ 0 ]?.name,
+			religion: data?.partnerExpectation?.religion?.name || "_",
 			caste: data?.partnerExpectation?.caste?.map((caste) => `${caste.name}`).join(", ") || "_",
 			occupation: data?.partnerExpectation?.occupation?.map((occ) => `${occ.occupationName} (${occ.role})`).join(", ") || "_",
 			motherTongue: data?.partnerExpectation?.motherTongue?.map((caste) => `${caste.name}`).join(", ") || "_",
@@ -222,21 +225,16 @@ const ProfileDetails = () => {
 								<div className="md:border-r">
 									{/* Profile Information */}
 									<div className="md:border-b pb-6 md:pr-6">
-										<dt className="bg-white text-primary w-44 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
+										<dt className="bg-white text-primary w-48 flex justify-center text-xl font-medium relative -bottom-[14px] left-5">
 											Basic Information
 										</dt>
 										<div className="gradientBorder pb-4 px-6 pt-8 w-full rounded-xl">
-											{Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => {
-												const isLastName = key === "lastName";
-												return (
-													<div className="grid grid-cols-2" key={key}>
-														<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, " $1")}:</dt>
-														<dd className={`capitalize ${isLastName && !premium ? "blurred" : ""}`}>
-															{isLastName && !premium ? "xxxxxx" : key === "dateOfBirth" ? moment(value).isValid() ? moment(value).format("DD-MM-YYYY") : "_" : value}
-														</dd>
-													</div>
-												);
-											})}
+											{Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => (
+												<div className="grid grid-cols-2" key={key}>
+													<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
+													<dd className="capitalize">{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
+												</div>
+											))}
 										</div>
 									</div>
 
@@ -350,9 +348,7 @@ const ProfileDetails = () => {
 												if (typeof value === 'object' && !Array.isArray(value)) {
 													return (
 														<div className="flex flex-col gap-2 mb-3" key={key}>
-															<p className="text-md font-medium capitalize">
-																{key.replace(/([A-Z])/g, ' $1')}:
-															</p>
+															<p className="text-md font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}:</p>
 															<div className="pl-6">
 																{Object.entries(value).map(([ subKey, subValue ]) => (
 																	<p className="grid grid-cols-2" key={subKey}>
@@ -366,14 +362,12 @@ const ProfileDetails = () => {
 												}
 												return (
 													<div className="grid grid-cols-2" key={key}>
-														<dt className="text-md font-medium mb-2 capitalize">
-															{key.replace(/([A-Z])/g, ' $1')}:
-														</dt>
+														<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
 														<dd className="capitalize">{value}</dd>
 													</div>
 												);
 											})}
-											{data?.spiritualAndSocialBackground?.kundli &&
+											{profileData?.spiritualSocial?.religion === 'hindu' && data?.spiritualAndSocialBackground?.kundli &&
 												<div className="grid grid-cols-2">
 													<dt className="text-md font-medium mb-2">Kundli :</dt>
 													<dd>
@@ -438,6 +432,7 @@ const ProfileDetails = () => {
 									</div>
 								</div>
 							</div>
+
 						</div>
 					</div >
 					}

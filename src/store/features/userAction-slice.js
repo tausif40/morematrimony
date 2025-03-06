@@ -40,7 +40,7 @@ export const acceptSkipInterest = createAsyncThunk('action/acceptSkipInterest', 
 		return response.data;
 	} catch (error) {
 		console.log(error);
-		return rejectWithValue(error?.response?.data || 'Failed to send request');
+		return rejectWithValue(error || 'Failed to send request');
 	}
 });
 export const getAccepter = createAsyncThunk('action/getAccepter', async (id, { rejectWithValue }) => {

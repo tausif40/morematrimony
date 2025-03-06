@@ -38,6 +38,7 @@ const App = () => {
   const dispatch = useDispatch();
   const token = Cookies.get('access_token') || sessionStorage.getItem('AT');
   const userId = useSelector((state) => state.userDetails.userId);
+  const agentId = useSelector((state) => state.userDetails.agentId);
   const dashboardPaths = [
     '/dashboard',
     '/dashboard/matches',
@@ -84,13 +85,13 @@ const App = () => {
 
   useEffect(() => {
     console.log("is Connected - ", isConnected);
-    console.log("userId-", userId);
+    console.log("agentId-", agentId);
     if (isConnected) {
-      socket.emit("logIn", userId);
+      socket.emit("logIn", agentId);
     } else {
       console.error("Socket is not connected.");
     }
-  }, [ isConnected, userId ]);
+  }, [ isConnected, agentId ]);
 
   // useEffect(() => {
   // if (token === undefined) {

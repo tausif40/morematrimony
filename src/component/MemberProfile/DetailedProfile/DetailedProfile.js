@@ -94,9 +94,12 @@ const DetailedProfile = ({ userDetails }) => {
 			...(data?.spiritualAndSocialBackground?.religion?.name?.toLowerCase() === "hindu" && {
 				gothra: data?.spiritualAndSocialBackground?.gothra || "_",
 				dosh: data?.spiritualAndSocialBackground?.dosh || "_",
-				doshName: data?.spiritualAndSocialBackground?.doshName || "_",
+				...(data?.spiritualAndSocialBackground?.dosh?.toLowerCase() === "yes" && {
+					doshName: data?.spiritualAndSocialBackground?.doshName || "_",
+				}),
 			}),
 		},
+
 		lifestyle: {
 			diet: data?.lifestyle?.diet || "_",
 			drink: data?.lifestyle?.drink || "_",

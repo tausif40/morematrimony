@@ -9,11 +9,12 @@ import { acceptSkipInterest, getUserAction, setUserAction } from '../../store/fe
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '../Modal/Modal';
 import '../../CSS/LoaderAnimation.css'
+import toast from 'react-hot-toast';
 
 const ProfileCard = (userData) => {
 	const dispatch = useDispatch()
-	// console.log(userData);
 	const { fistName, lastName, gender, targetId, agentId, age, height, religion, caste, education, occupation, location, lastSeen, accountCreate, img, action, targetedAction } = userData;
+	// console.log(fistName, lastName, " - ", userData);
 
 	const [ interestReceived, setInterestReceived ] = useState(false);
 	const [ showModal, setShowModal ] = useState(false);
@@ -30,15 +31,24 @@ const ProfileCard = (userData) => {
 
 	const userId = useSelector((state) => state.userDetails.userId);
 
-	const handelAction = (actionType) => {
+	const handelAction = async (actionType) => {
 		actionType === 'send_interest' && setInterestLoad(true)
 		actionType === 'shortlist' && setShortlistLoad(true)
 		const action = { targetUserId: targetId, activityType: actionType }
-		dispatch(setUserAction(action))
-			.then(() => {
-				actionType === 'send_interest' && setIsSendInterest(true); setInterestLoad(false)
-				actionType === 'shortlist' && setIsShortlist(true); setShortlistLoad(false)
-			})
+		try {
+
+			const response = await dispatch(setUserAction(action)).unwrap();
+			console.log(response);
+			if (actionType === 'send_interest' && response?.socialAction?.send_interest?.isDone)
+				setIsSendInterest(true); setInterestLoad(false)
+			if (actionType === 'shortlist' && response?.socialAction?.shortlist?.isDone)
+				setIsShortlist(true); setShortlistLoad(false)
+			// actionType === 'shortlist' && setIsShortlist(true); setShortlistLoad(false)
+		} catch (error) {
+			console.log(error);
+			toast.error(error?.response?.data?.message || 'Failed!');
+		}
+
 	};
 
 	useEffect(() => {
@@ -59,7 +69,7 @@ const ProfileCard = (userData) => {
 		}
 	}, [ accountCreate ]);
 
-	const handelAcceptSkip = (activityType) => {
+	const handelAcceptSkip = async (activityType) => {
 		activityType === 'accept' && setLoadingAccept(true)
 		if (activityType === 'skip') { setLoadingSkip(true); setShowModal(false); }
 		console.log(activityType);
@@ -70,17 +80,23 @@ const ProfileCard = (userData) => {
 			activityType: activityType
 		}
 
-		dispatch(acceptSkipInterest(data))
-			.then(response => {
-				console.log("Response:", response);
-				activityType === 'accept' && setAcceptReq(true); setLoadingAccept(false)
-				activityType === 'skip' && setConfirmSkip(true); setLoadingSkip(false)
-			})
-			.catch(error => {
-				console.error("Error:", error);
-				activityType === 'accept' && setLoadingAccept(false)
-				activityType === 'skip' && setLoadingSkip(false)
-			});
+		try {
+			const response = await dispatch(acceptSkipInterest(data)).unwrap();
+			console.log("Response Data: ", response);
+			console.log("Response Data: ", response?.socialAction?.accept?.isDone);
+			if (activityType === 'accept' && response?.socialAction?.skip?.isDone)
+				activityType === 'accept' && setAcceptReq(true); setLoadingAccept(false);
+
+			if (activityType === 'skip' && response?.socialAction?.skip?.isDone)
+				activityType === 'skip' && setConfirmSkip(true); setLoadingSkip(false);
+
+		} catch (error) {
+			console.error("Error:", error);
+			toast.error(error?.response?.data?.message || 'Failed!');
+			// console.log("Error Status Code:", error.status);
+			activityType === 'accept' && setLoadingAccept(false)
+			activityType === 'skip' && setLoadingSkip(false)
+		}
 	}
 
 	return (
@@ -152,8 +168,8 @@ const ProfileCard = (userData) => {
 									{/* {interestLoad && <span className="loader left-2 border-white"></span>} */}
 								</p>
 
-								<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 cursor-pointer text-white ${IsSendInterest ? 'border-red-500 bg-red-500' : 'border-orange-500 bg-orange-500'} shadow transition-all`}
-									onClick={() => handelAction('send_interest')}
+								<p className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 text-white ${IsSendInterest ? 'border-red-500 bg-red-500 cursor-default' : 'cursor-pointer border-orange-500 bg-orange-500'} shadow transition-all`}
+									onClick={() => handelAction('send_interest')} disabled={IsSendInterest}
 								>
 									<span>{IsSendInterest ? 'Pending Interest' : 'Send Interest'}</span>
 									{/* {shortlistLoad && <span className="loader left-2 border-white"></span>} */}
