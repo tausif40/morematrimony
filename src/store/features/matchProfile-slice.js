@@ -41,23 +41,19 @@ const matchProfileSlice = createSlice({
 		matchedProfile: { data: [], loading: false, error: null },
 		matchedProfileGallery: { data: [], loading: false, error: null },
 		userDetailsById: { data: [], loading: false, error: null },
-		filters: {},
-		noOfFilter: 0,
-		page: 1,
+		filter: { page: '', limit: '', totalUsers: '' }
 	},
 	reducers: {
-		setFilterApplied(state, action) {
-			state.filters = action.payload;
-		},
-		setPage(state, action) {
-			state.page = action.payload;
-		},
-		setNoOfFilter(state, action) {
-			state.noOfFilter = action.payload;
-		},
+		setFilter(state, action) {
+			// eslint-disable-next-line no-unused-expressions, no-sequences
+			state.filter.limit = action.payload.limit,
+				state.filter.page = action.payload.page,
+				state.filter.totalUsers = action.payload.totalUsers
+			// console.log(action);
+		}
 	},
 	extraReducers: (builder) => {
-		console.log("filters - ", matchProfileSlice.filters);
+		// console.log("filters - ", matchProfileSlice.filters);
 		builder
 			// matchProfileFilter
 			.addCase(getMatchedProfile.pending, (state) => {
@@ -101,5 +97,5 @@ const matchProfileSlice = createSlice({
 	},
 });
 
-export const { setPage, setNoOfFilter, setFilterApplied } = matchProfileSlice.actions;
+export const { setFilter } = matchProfileSlice.actions;
 export default matchProfileSlice.reducer;

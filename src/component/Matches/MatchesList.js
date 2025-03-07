@@ -6,8 +6,7 @@ import FilterMenu from './FilterMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { maritalStatus, personalInformation, PhysicalAttributesData, socialBackground } from '../../data/MyProfileData';
 import apiClient from '../../lib/apiClient';
-import { setPage, setFilterApplied, matchProfileFilter, getMatchedProfile } from '../../store/features/matchProfile-slice';
-import { Socket } from 'socket.io-client';
+import { filter, getMatchedProfile } from '../../store/features/matchProfile-slice';
 
 export default function MatchesList() {
 	const dispatch = useDispatch()
@@ -88,7 +87,7 @@ export default function MatchesList() {
 	};
 
 	useEffect(() => {
-		dispatch(setFilterApplied(selectedFilters));
+		// dispatch(setFilterApplied(selectedFilters));
 		if (!clearFilter) dispatch(getMatchedProfile(selectedFilters));
 		// console.log("clearFilter - ", clearFilter);
 	}, [ dispatch, selectedFilters ])

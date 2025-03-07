@@ -2,46 +2,58 @@ import React, { useEffect, useState } from 'react';
 import '../ViewProfile/viewProfile.css';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileListSkeleton from '../Loader/ProfileListSkeleton';
-import { getMatchedProfile } from '../../store/features/matchProfile-slice';
+import { getMatchedProfile, setFilter } from '../../store/features/matchProfile-slice';
 import ProfileCard from './ProfileCard';
 import { Pagination } from 'antd';
 import '../../CSS/antPagination.css'
-import { useSearchParams } from 'react-router-dom';
 
 const MainContent = () => {
-	const dispatch = useDispatch()
-	const [ searchParams, setSearchParams ] = useSearchParams();
-	const [ loading, setLoading ] = useState(false)
+	const dispatch = useDispatch();
+	const [ loading, setLoading ] = useState(false);
 	const matchedProfile = useSelector((state) => state.matchProfile.matchedProfile);
-	const [ limit, setLimit ] = useState(10);
-	const [ page, setPage ] = useState();
-	const [ total, setTotal ] = useState();
+	const filterData = useSelector((state) => state.matchProfile.filter);
 
-	const currentPage = Number(searchParams.get("page")) || 1;
-
-	const handlePageChange = (page) => {
-		setSearchParams({ page });
-	};
+	const [ filterList, setFilterList ] = useState({
+		page: '',
+		limit: '',
+		totalUsers: '',
+	});
 
 	useEffect(() => {
-		dispatch(getMatchedProfile({ limit: limit, page: currentPage }));
-	}, [ dispatch, limit, currentPage ])
+		dispatch(getMatchedProfile(filterList));
+	}, [ filterList, dispatch ]);
 
 	useEffect(() => {
-		matchedProfile?.data?.user?.profilesWithStatus?.length === undefined ? setLoading(true) : setLoading(false)
-		// dispatch(getMatchedProfile({ isMatchedView: true }));
-		// console.log("matched loading - ", matchedProfile?.data?.user);
-		// console.log("limit - ", matchedProfile?.data?.user?.limit);
-		// console.log("totalPages - ", matchedProfile?.data?.user?.totalPages);
-		// console.log("totalCount - ", matchedProfile?.data?.user?.totalCount);
-		setTotal(matchedProfile?.data?.user?.totalCount)
-		setLimit(5)
-	}, [ dispatch, matchedProfile ])
+		const user = matchedProfile?.data?.user;
 
-	// console.log("matched Profile - ", matchedProfile?.data?.user?.profilesWithStatus);
+		if (user) {
+			setFilterList((prevFilter) => {
+				// Avoid updating state if values are unchanged
+				if (
+					prevFilter.limit === (filterData?.limit || user.limit) &&
+					prevFilter.page === (filterData?.page || user.page) &&
+					prevFilter.totalUsers === (filterData?.totalUsers || user.totalCount)
+				) {
+					return prevFilter; // No change, prevent re-render
+				}
+
+				return {
+					...prevFilter,
+					limit: filterData?.limit || user.limit,
+					page: filterData?.page || user.page,
+					totalUsers: filterData?.totalUsers || user.totalCount,
+				};
+			});
+		}
+	}, [ matchedProfile, filterData ]);
+
+
+
+	useEffect(() => {
+		dispatch(setFilter(filterList));
+	}, [ filterList, dispatch ]);
 
 	const mapProfiles = (profiles) => {
-		// console.log(profiles);
 		return profiles?.map((profile) => {
 			const {
 				_id,
@@ -77,18 +89,10 @@ const MainContent = () => {
 	};
 
 	const profiles = matchedProfile?.data?.user?.profilesWithStatus ? mapProfiles(matchedProfile.data.user?.profilesWithStatus) : [];
-	console.log(profiles);
+
 	return (
 		<>
 			<div className="mx-auto md:px-4">
-				{/* <div className="mb-4">
-					<input
-						type="text"
-						placeholder="Search profiles..."
-						className="w-full p-3 mb-4 border rounded-md outline-none focus:border-gold"
-					/>
-				</div> */}
-
 				{loading && (
 					<>
 						{[ ...Array(5) ].map((_, index) => (
@@ -102,7 +106,11 @@ const MainContent = () => {
 				))}
 				{!loading && profiles.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
 				<div className='flex justify-center pt-6 mb-4'>
-					<Pagination current={currentPage} total={total} onChange={handlePageChange} />
+					<Pagination align="center" defaultCurrent={filterData?.page} total={filterList?.totalUsers} pageSize={filterList?.limit || 10}
+						onChange={(page) => {
+							setFilterList((prev) => ({ ...prev, page: page }));
+						}}
+					/>
 				</div>
 			</div>
 		</>
