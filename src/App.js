@@ -75,11 +75,12 @@ const App = () => {
     dispatch(fetchOccupations());
     dispatch(fetchReligions());
     dispatch(getPlan());
-  }, [ dispatch, token ]);
-
-  useEffect(() => {
     dispatch(getNotification(userId));
-  }, [ location.pathname, dispatch, userId ]);
+  }, [ dispatch, token, userId ]);
+
+  // useEffect(() => {
+  //   dispatch(getNotification(userId));
+  // }, [ location.pathname, dispatch, userId ]);
 
   const isConnected = useSelector((state) => state.socket.isConnected);
 

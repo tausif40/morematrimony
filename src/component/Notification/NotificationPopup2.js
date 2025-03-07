@@ -1,14 +1,23 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { formatDistanceToNow } from 'date-fns';
+import { getNotification } from '../../store/features/notification-slice';
 
 const NotificationPopup = ({ isOpen, onClose }) => {
+	const dispatch = useDispatch();
 
-	const getNotification = useSelector((state) => state.notification.notification);
+	const userId = useSelector((state) => state.userDetails.userId);
+	const notification = useSelector((state) => state.notification.notification);
 
-	const notifications = getNotification?.data;
+	useEffect(() => {
+		dispatch(getNotification(userId));
+		console.log("isOpen-", isOpen);
+		console.log("notification-", notification);
+	}, [ isOpen, dispatch, userId ])
 
-	// console.log(notifications);
+
+	const notifications = notification?.data;
+
 
 	const getActivityMessage = (type, name) => {
 		switch (type) {
@@ -22,13 +31,13 @@ const NotificationPopup = ({ isOpen, onClose }) => {
 	};
 
 
-	if (!isOpen) return null;
+	// if (!isOpen) return null;
 
 	return (
-		<div className='shadow-lg border absolute right-[9%] top-12 w-96 p-2 rounded-lg py-1 z-20 max-h-[400px] overflow-y-auto custom-scrollbar bg-[#fbf8f6]' >
+		<div className='shadow-lg border absolute right-[9%] top-14 w-96 p-2 rounded-lg py-1 z-20 max-h-[400px] overflow-y-auto custom-scrollbar bg-[#fbf8f6]' >
 			<div className="px-2 pt-2 pb-3 space-y-1 sm:px-2">
 				<div className="space-y-4 ">
-					{notifications.socialAction.map((notification) => (
+					{notifications?.socialAction?.map((notification) => (
 						<div
 							key={notification._id}
 							className="flex items-start space-x-4 p-4 bg-white hover:bg-slate-50 rounded-lg transition border border-gray-100"
@@ -67,6 +76,7 @@ const NotificationPopup = ({ isOpen, onClose }) => {
 							</div>
 						</div>
 					))}
+					{notifications?.socialAction?.length === 0 && <div>No any notification</div>}
 				</div>
 			</div>
 		</div>

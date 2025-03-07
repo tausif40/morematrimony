@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import socket from "../../lib/socket";
-import { addMessage, setConnected } from "../../store/features/socket-slice";
+import { addMessage, setConnected, setNotification } from "../../store/features/socket-slice";
 
 const SocketProvider = ({ children }) => {
 	const dispatch = useDispatch();
@@ -22,8 +22,14 @@ const SocketProvider = ({ children }) => {
 
 		// Listen for messages
 		socket.on("socialActionUpdate", (data) => {
-			dispatch(addMessage(data));
-			console.log("New message: ", data);
+
+			console.log("social Action Update: ", data);
+		});
+
+		socket.on("newNotification", (data) => {
+			dispatch(setNotification(data));
+			console.log("new Notification: ", data);
+			// dispatch(setNotification(data));
 		});
 
 		return () => {

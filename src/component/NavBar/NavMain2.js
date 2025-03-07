@@ -15,7 +15,7 @@ import useLogout from '../Logout/Logout';
 import { useDispatch, useSelector } from 'react-redux';
 import NotificationPopup from '../Notification/NotificationPopup';
 import { RiUserSettingsLine } from "react-icons/ri";
-import { Avatar, Badge } from 'antd';
+import socket from '../../lib/socket';
 
 const NavMain = () => {
 	const location = useLocation();
@@ -30,8 +30,7 @@ const NavMain = () => {
 	const handleLogout = useLogout();
 
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
-	const notification = useSelector((state) => state.socket.notifications);
-	console.log("notification-", notification);
+	const agentId = useSelector((state) => state.userDetails.agentId);
 	const [ isNotificationOpen, setIsNotificationOpen ] = useState(false);
 	const notificationRef = useRef(null);
 
@@ -99,11 +98,18 @@ const NavMain = () => {
 
 	// console.log("activeNav-", activeNav);
 
+	const handelNotificationReset = () => {
+		setIsNotificationOpen(!isNotificationOpen)
+		console.log("isNotificationOpen-", isNotificationOpen);
+		socket.emit('resetNotification', agentId)
+	};
+
+
 	return (
 		<>
 			{/* <header className={`fixed w-full transition-transform duration-300 ease-in-out z-50 ${isVisible ? 'translate-y-0' : '-translate-y-full'} bg-white shadow-md z-10`}> */}
 			<header className="bg-white shadow-md z-50">
-				<div className="container mx-auto flex justify-between overflow-visible">
+				<div className="container mx-auto flex justify-between ">
 					<Link to='/' className=''>
 						<div className='flex items-center gap-2 p-2'>
 							<img src="/assets/img/logo/smallIcon.png" alt="" className='w-12' />
@@ -139,15 +145,19 @@ const NavMain = () => {
 						<div className='text-sm font-medium text-text flex gap-4 md:gap-6'>
 							{isUserRegister ?
 								<>
-									<div ref={notificationRef} >
-										<Badge count={notification}>
-											{/* <Avatar shape="circle" size="large" onClick={() => setIsNotificationOpen((prev) => !prev)} className='cursor-pointer' /> */}
-											<div className='w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full border-1 border-gray-300 flex items-center justify-center  focus:border-primary cursor-pointer' onClick={() => setIsNotificationOpen(!isNotificationOpen)}>
-												<FaBell size={18} color='#766e6f' />
-											</div>
-											<NotificationPopup isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)}
-											/>
-										</Badge>
+									<div ref={notificationRef} className='relative'>
+										<div class="absolute size-2 rounded-full bg-primary right-0 ">
+											{/* <span class="relative inline-flex size-1 rounded-full bg-sky-500"></span> */}
+										</div>
+										<div className='w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full border-1 border-gray-300 flex items-center justify-center  focus:border-primary cursor-pointer' onClick={handelNotificationReset}	>
+											<button>
+												<FaBell size={18} />
+											</button>
+										</div>
+										<NotificationPopup
+											isOpen={isNotificationOpen}
+											onClose={() => setIsNotificationOpen(false)}
+										/>
 									</div>
 									<div className='w-8 h-8 rounded-full'>
 										<button onClick={() => setIsOpen(!isOpen)}>
@@ -178,7 +188,7 @@ const NavMain = () => {
 
 						{/* ))} */}
 					</div>
-				</div >
+				</div>
 				{isOpen &&
 					<div className='shadow-md border absolute right-[6%] -mt-2 w-48 bg-white rounded-lg py-1 z-20' ref={dropdownRef}>
 						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-2" >
