@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../lib/apiClient';
 
-export const getAgentDetails = createAsyncThunk('data/getAgentDetails', async (_, { rejectWithValue }) => {
+export const getAgentDetails = createAsyncThunk('userData/getAgentDetails', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/agent`);
 		return response.data;
@@ -10,7 +10,7 @@ export const getAgentDetails = createAsyncThunk('data/getAgentDetails', async (_
 		return rejectWithValue(error.response?.data || 'Failed to fetch UserDetails');
 	}
 });
-export const getUserDetails = createAsyncThunk('data/getUserDetails', async (_, { rejectWithValue }) => {
+export const getUserDetails = createAsyncThunk('userData/getUserDetails', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/user`);
 		// console.log("getUserDetails-", response.data);
@@ -21,7 +21,7 @@ export const getUserDetails = createAsyncThunk('data/getUserDetails', async (_, 
 	}
 });
 
-export const getProfileImages = createAsyncThunk('data/getProfileImages', async (_, { rejectWithValue }) => {
+export const getProfileImages = createAsyncThunk('userData/getProfileImages', async (_, { rejectWithValue }) => {
 	try {
 		const response = await apiClient.get(`/gallery`);
 		// console.log(response.data);
@@ -33,7 +33,7 @@ export const getProfileImages = createAsyncThunk('data/getProfileImages', async 
 });
 
 const userDataSlice = createSlice({
-	name: 'data',
+	name: 'userData',
 	initialState: {
 		agentDetails: { data: [], loading: false, error: null },
 		userDetails: { data: [], loading: false, error: null },

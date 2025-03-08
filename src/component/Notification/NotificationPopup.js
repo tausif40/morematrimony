@@ -8,7 +8,7 @@ const NotificationPopup = ({ isOpen, onClose }) => {
 
 	const notifications = getNotification?.data;
 
-	// console.log(notifications);
+	console.log(notifications);
 
 	const getActivityMessage = (type, name) => {
 		switch (type) {

@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NotificationPopup from '../Notification/NotificationPopup';
 import { RiUserSettingsLine } from "react-icons/ri";
 import { Avatar, Badge } from 'antd';
+import socket from '../../lib/socket';
 
 const NavMain = () => {
 	const location = useLocation();
@@ -30,8 +31,9 @@ const NavMain = () => {
 	const handleLogout = useLogout();
 
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
+	const agentId = useSelector((state) => state.userDetails.agentId);
 	const notification = useSelector((state) => state.socket.notifications);
-	console.log("notification-", notification);
+
 	const [ isNotificationOpen, setIsNotificationOpen ] = useState(false);
 	const notificationRef = useRef(null);
 
@@ -99,11 +101,16 @@ const NavMain = () => {
 
 	// console.log("activeNav-", activeNav);
 
+	const handelNotificationReset = () => {
+		setIsNotificationOpen((pre) => !pre)
+		socket.emit('resetNotification', agentId)
+	};
+
 	return (
 		<>
 			{/* <header className={`fixed w-full transition-transform duration-300 ease-in-out z-50 ${isVisible ? 'translate-y-0' : '-translate-y-full'} bg-white shadow-md z-10`}> */}
 			<header className="bg-white shadow-md z-50">
-				<div className="container mx-auto flex justify-between overflow-visible">
+				<div className="container mx-auto flex justify-between overflow-visible" style={{ overflow: 'visible' }}>
 					<Link to='/' className=''>
 						<div className='flex items-center gap-2 p-2'>
 							<img src="/assets/img/logo/smallIcon.png" alt="" className='w-12' />
@@ -118,7 +125,7 @@ const NavMain = () => {
 						<div className='hidden md:block'>
 							<div className='flex items-center gap-2 sm:gap-4 md:gap-3 min-[900px]:gap-6 lg:gap-10 text-sm'>
 								{isUserRegister
-									? navOption.map((value, inx) => (
+									? navOption?.map((value, inx) => (
 										<NavLink to={value.path} key={inx} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`}`}>
 											<div className={`text-md px-2 cursor-pointer flex items-center gap-1`}>
 												<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
@@ -142,7 +149,7 @@ const NavMain = () => {
 									<div ref={notificationRef} >
 										<Badge count={notification}>
 											{/* <Avatar shape="circle" size="large" onClick={() => setIsNotificationOpen((prev) => !prev)} className='cursor-pointer' /> */}
-											<div className='w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full border-1 border-gray-300 flex items-center justify-center  focus:border-primary cursor-pointer' onClick={() => setIsNotificationOpen(!isNotificationOpen)}>
+											<div className='w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full border-1 border-gray-300 flex items-center justify-center  focus:border-primary cursor-pointer' onClick={handelNotificationReset}>
 												<FaBell size={18} color='#766e6f' />
 											</div>
 											<NotificationPopup isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)}
