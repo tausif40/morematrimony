@@ -18,7 +18,8 @@ const DetailedProfile = ({ userDetails }) => {
 		}
 	}, [ data, kundli ]);
 
-	console.log("data -", data?.spiritualAndSocialBackground);
+	console.log("data -", data);
+	console.log("sisters -", typeof data?.familyDetails?.sisters);
 
 	const profileData = {
 		introduction: data?.introduction || "_",
@@ -113,8 +114,12 @@ const DetailedProfile = ({ userDetails }) => {
 			motherOccupation: data?.familyDetails?.motherOccupation || "_",
 			brothers: data?.familyDetails?.brothers || "_",
 			sisters: data?.familyDetails?.sisters || "_",
-			brothersMarried: data?.familyDetails?.brothersMarried || "_",
-			sistersMarried: data?.familyDetails?.brothersMarried || "_",
+			...(data?.familyDetails?.sisters !== '0' && {
+				sistersMarried: data?.familyDetails?.sistersMarried || "_",
+			}),
+			...(data?.familyDetails?.brothers !== '0' && {
+				brothersMarried: data?.familyDetails?.brothersMarried || "_",
+			}),
 		},
 		partnerExpectation: {
 			age: `${data?.partnerExpectation?.age?.min || "_"} to ${data?.partnerExpectation?.age?.max || "_"}`,

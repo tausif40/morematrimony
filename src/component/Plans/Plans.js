@@ -82,10 +82,10 @@ function Plans() {
 									</h3>
 
 									<div className="mb-6 flex items-baseline gap-1">
-										<span className={`text-5xl font-bold ${colors.accent}`}>
+										<span className={`text-4xl font-bold ${colors.accent}`}>
 											BD {plan.price}
 										</span>
-										<span className="text-gray-500">/{plan.duration}</span>
+										<span className="text-gray-500">/{plan.duration} {plan.duration === '1' ? 'Month' : 'Months'}</span>
 									</div>
 
 									<div className="space-y-4 mb-8">
@@ -107,7 +107,7 @@ function Plans() {
 											</div>
 											<span className="text-gray-700">{plan.adminDescription}</span>
 										</div> */}
-									</div>    
+									</div>
 
 									<button
 										className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-colors ${colors.button} shadow-lg`}

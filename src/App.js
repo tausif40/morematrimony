@@ -31,7 +31,6 @@ import ResetPassword from './component/Form/ResetPassword';
 import VerifyEmail from './component/Form/VerifyEmail';
 import { getPlan } from './store/features/plan-slice';
 import socket from './lib/socket';
-import { addMessage } from './store/features/socket-slice';
 
 const App = () => {
   const location = useLocation()
@@ -86,13 +85,14 @@ const App = () => {
 
   useEffect(() => {
     console.log("is Connected - ", isConnected);
+    console.log("userId-", userId);
     console.log("agentId-", agentId);
     if (isConnected) {
       socket.emit("logIn", agentId);
     } else {
       console.error("Socket is not connected.");
     }
-  }, [ isConnected, agentId ]);
+  }, [ isConnected, agentId, userId ]);
 
   // useEffect(() => {
   // if (token === undefined) {

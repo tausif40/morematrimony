@@ -144,8 +144,9 @@ const PartnerExpectation = ({ data }) => {
 
 			// Validate nested fields
 			if (field === 'age') {
-				if (!formData.age.min || !formData.age.max) {
+				if (!formData.age.min) {
 					formErrors[ 'age.min' ] = 'Min age is required';
+				} else if (!formData.age.max) {
 					formErrors[ 'age.max' ] = 'Max age is required';
 				} else if (parseInt(formData.age.min) >= parseInt(formData.age.max)) {
 					formErrors.age = 'Min age should be less than max age';

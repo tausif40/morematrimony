@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getNotification } from "./notification-slice";
 
 const socketSlice = createSlice({
 	name: "socket",
@@ -14,6 +15,7 @@ const socketSlice = createSlice({
 		setNotification: (state, action) => {
 			console.log("action - ", action);
 			state.notifications = action.payload;
+			getNotification();
 			// state.notifications.new = action.payload.new;
 		},
 		addMessage: (state, action) => {

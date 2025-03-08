@@ -34,7 +34,6 @@ const ProfileDetails = () => {
 	}, [ targetId, dispatch ])
 
 	const data = userDetailsById?.data?.user
-	// console.log("userDetailsById -", data);
 
 	useEffect(() => {
 		setKundli(data?.spiritualAndSocialBackground?.kundli)
@@ -174,8 +173,12 @@ const ProfileDetails = () => {
 			motherOccupation: data?.familyDetails?.motherOccupation || "_",
 			brothers: data?.familyDetails?.brothers || "_",
 			sisters: data?.familyDetails?.sisters || "_",
-			brothersMarried: data?.familyDetails?.brothersMarried || "_",
-			sistersMarried: data?.familyDetails?.brothersMarried || "_",
+			...(data?.familyDetails?.sisters !== 0 && {
+				brothersMarried: data?.familyDetails?.brothersMarried || "_",
+			}),
+			...(data?.familyDetails?.brothers !== 0 && {
+				sistersMarried: data?.familyDetails?.brothersMarried || "_",
+			}),
 		},
 		partnerExpectation: {
 			age: `${data?.partnerExpectation?.age?.min || "_"} to ${data?.partnerExpectation?.age?.max || "_"}`,
@@ -232,7 +235,8 @@ const ProfileDetails = () => {
 											{Object.entries(profileData?.profileInfo || {}).map(([ key, value ]) => (
 												<div className="grid grid-cols-2" key={key}>
 													<dt className="text-md font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</dt>
-													<dd className="capitalize">{key === 'dateOfBirth' ? moment(value).isValid() ? moment(value).format('DD-MM-YYYY') : '_' : value}</dd>
+													<dd className="capitalize">{key === "dateOfBirth" ? moment(value).isValid() ? moment(value).format("DD-MM-YYYY") : "_" : key === "lastName" && !premium ? <span className="blur-sm select-none">Xxxxxxxx</span> : value}
+													</dd>
 												</div>
 											))}
 										</div>

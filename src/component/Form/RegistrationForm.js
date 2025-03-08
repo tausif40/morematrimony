@@ -77,6 +77,7 @@ const RegistrationForm = () => {
 		if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
 		if (!validateDOB(formData.dateOfBirth)) newErrors.dateOfBirth = 'You must be at least 18 years old.'
 		if (!formData.email) newErrors.email = 'Email is required';
+		if (!formData.countryCode) newErrors.countryCode = 'Country Code';
 		if (!formData.mobile) newErrors.mobile = 'Mobile no. is required';
 		if (!emailRegex.test(formData.email)) newErrors.email = "Invalid email format";
 		if (!formData.password) newErrors.password = 'Password is required';
@@ -158,7 +159,7 @@ const RegistrationForm = () => {
 		window.scrollTo(0, 0)
 	}
 
-	const getInputClasses = (fieldName) => `cursor-pointer flex justify-between items-center mt-1 p-3 w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ fieldName ] && 'border-red-500'}`;
+	const getInputClasses = (fieldName) => `flex justify-between items-center mt-1 p-3 w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ fieldName ] && 'border-red-500'}`;
 
 	return (
 		<>
@@ -268,25 +269,27 @@ const RegistrationForm = () => {
 					</div>
 
 					{/* mobile address */}
-					<div className="flex gap-2 w-full items-end">
+					<div className="flex gap-2 w-full">
 						<div className="mb-4 w-32">
 							<label className="block text-sm font-medium">
-								Mobile No
+								Code
 							</label>
 							<select
 								name="countryCode"
 								value={formData.countryCode}
 								onChange={handleChange}
-								className={`cursor-pointer flex justify-between items-center mt-1 py-3 sm:px-2 w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ 'countryCode' ] && 'border-red-500'}`}
+								className={`flex justify-between items-center mt-1 py-3 sm:px-2 w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ 'countryCode' ] && 'border-red-500'}`}
 							>
 								{formData.countryCode === "" && <option value="" disabled selected>code</option>}
 								<option value="+91">+91 Ind</option>
 								<option value="+973">+973 BD</option>
-								<option value="other">Other</option>
 							</select>
 							{errors.countryCode && <p className="text-red-500 text-xs">{errors.countryCode}</p>}
 						</div>
 						<div className="mb-4 w-full">
+							<label className="block text-sm font-medium">
+								Mobile No
+							</label>
 							<input
 								type="number"
 								name="mobile"

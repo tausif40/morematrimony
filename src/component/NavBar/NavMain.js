@@ -128,14 +128,16 @@ const NavMain = () => {
 									? navOption?.map((value, inx) => (
 										<NavLink to={value.path} key={inx} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`}`}>
 											<div className={`text-md px-2 cursor-pointer flex items-center gap-1`}>
-												<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+												{/* <value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /> */}
+												<p className='min-w-max'>{value.name}</p>
 											</div>
 										</NavLink>
 									))
 									: VisitorNav.map((value, inx) => (
 										<NavLink to={value.path} key={inx} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`}`}>
 											<div className={`text-md px-2 cursor-pointer flex items-center gap-1`}>
-												<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+												{/* <value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /> */}
+												<p className='min-w-max'>{value.name}</p>
 											</div>
 										</NavLink>
 									))
@@ -194,13 +196,15 @@ const NavMain = () => {
 								? MobileProfileOption.map((value, ind) => (
 									<NavLink to={value.path} key={ind} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`} text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center`}
 										onClick={() => setIsOpen(false)}>
-										<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+										{/* <value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /> */}
+										<p className='min-w-max'>{value.name}</p>
 									</NavLink>
 								))
 								: ProfileOption.map((value, ind) => (
 									<NavLink to={value.path} key={ind} className={({ isActive }) => `${isActive ? `text-gradient` : `text-headingGray`} text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center`}
 										onClick={() => setIsOpen(false)}>
-										<value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /><p className='min-w-max'>{value.name}</p>
+										{/* <value.icon className={`${value.path === currentPath && 'text-[#f45d2c]'}`} /> */}
+										<p className='min-w-max'>{value.name}</p>
 									</NavLink>
 								))}
 							<p className="text-headingGray hover:bg-gray-200 px-3 py-2 rounded-md text-sm flex gap-2 items-center cursor-pointer"
