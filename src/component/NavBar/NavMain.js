@@ -18,6 +18,7 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { Avatar, Badge } from 'antd';
 import socket from '../../lib/socket';
 
+
 const NavMain = () => {
 	const location = useLocation();
 	const [ currentPath, setCurrentPath ] = useState('')
@@ -50,6 +51,7 @@ const NavMain = () => {
 
 	const handelLogOut = () => {
 		const res = handleLogout();
+		console.log(res);
 		setIsOpen(false);
 	}
 

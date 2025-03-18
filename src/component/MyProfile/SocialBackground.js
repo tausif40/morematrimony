@@ -7,6 +7,9 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { getUserDetails } from '../../store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
 
 const SocialBackground = ({ data }) => {
 	const dispatch = useDispatch();
@@ -43,6 +46,7 @@ const SocialBackground = ({ data }) => {
 	});
 
 	useEffect(() => {
+		console.log("socialBackgroundData-", socialBackgroundData?.kundli);
 		if (socialBackgroundData) {
 			setFormData({
 				religion: socialBackgroundData?.religion?._id || '',
@@ -64,6 +68,7 @@ const SocialBackground = ({ data }) => {
 				dosh: socialBackgroundData?.dosh || '',
 				doshName: socialBackgroundData?.doshName || ''
 			});
+			// console.log("formData-", formData);
 
 			const religionId = socialBackgroundData?.religion._id
 			religionId === hinduId ? setIsHindu(true) : religionId === christianId && setIsChristian(true)
@@ -101,21 +106,21 @@ const SocialBackground = ({ data }) => {
 
 	const [ errors, setErrors ] = useState({});
 
-	const cleanFormData = (data) => {
-		const cleanedData = {};
+	// const cleanFormData = (data) => {
+	// 	const cleanedData = {};
 
-		for (const key in data) {
-			if (data[ key ] && typeof data[ key ] === 'object' && !Array.isArray(data[ key ])) {
-				const nestedData = cleanFormData(data[ key ]);
-				if (Object.keys(nestedData).length > 0) {
-					cleanedData[ key ] = nestedData;
-				}
-			} else if (data[ key ] !== '' && data[ key ] !== null && data[ key ] !== undefined) {
-				cleanedData[ key ] = data[ key ];
-			}
-		}
-		return cleanedData;
-	};
+	// 	for (const key in data) {
+	// 		if (data[ key ] && typeof data[ key ] === 'object' && !Array.isArray(data[ key ])) {
+	// 			const nestedData = cleanFormData(data[ key ]);
+	// 			if (Object.keys(nestedData).length > 0) {
+	// 				cleanedData[ key ] = nestedData;
+	// 			}
+	// 		} else if (data[ key ] !== '' && data[ key ] !== null && data[ key ] !== undefined) {
+	// 			cleanedData[ key ] = data[ key ];
+	// 		}
+	// 	}
+	// 	return cleanedData;
+	// };
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -233,6 +238,7 @@ const SocialBackground = ({ data }) => {
 			...prevFormData,
 			[ name ]: name === 'kundli' ? files[ 0 ] : value,
 		}));
+		// console.log(files);
 
 		if (name === 'religion') {
 			fetchCaste(value);
@@ -556,13 +562,21 @@ const SocialBackground = ({ data }) => {
 							<label htmlFor="kundli" className="block font-medium mb-1 mt-1 text-headingGray">
 								Upload Kundli
 							</label>
-							<input
-								type="file"
-								id="kundli"
-								className={getInputClasses('kundli')}
-								name="kundli"
-								onChange={handleChange}
-							/>
+							<div className='flex gap-2'>
+								{socialBackgroundData?.kundli &&
+									<PhotoProvider maskOpacity={0.8}>
+										<PhotoView src={socialBackgroundData?.kundli}>
+											<img src={socialBackgroundData?.kundli} alt="kundli" className='w-24 h-12 border rounded-md' />
+										</PhotoView>
+									</PhotoProvider>}
+								<input
+									type="file"
+									id="kundli"
+									className={getInputClasses('kundli')}
+									name="kundli"
+									onChange={handleChange}
+								/>
+							</div>
 							{/* {errors.kundli && <p className="text-red-500 text-xs">{errors.kundli}</p>} */}
 						</div>
 						{/* Have Dosh? */}
@@ -611,7 +625,8 @@ const SocialBackground = ({ data }) => {
 				)}
 
 				{/* Submit Button */}
-				<div className="col-span-2 flex justify-end mt-4">
+				<div className="col-span-2 flex justify-between items-center mt-4">
+					<p className="text-green-500 text-xs font-semibold mt-1">{socialBackgroundData !== undefined && <p className='flex items-center gap-1'>Completed <IoCheckmarkDoneOutline size={16} /></p>}</p>
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={btnDisable}>Update</button>
 				</div>
 			</form>

@@ -11,7 +11,6 @@ const NotificationPopup = ({ isOpen, onClose }) => {
 	const userId = useSelector((state) => state.userDetails.userId);
 	const [ premium, setPremium ] = useState(true);
 	const notifications = getNotification?.data;
-	console.log(notifications);
 	const getActivityMessage = (type, name) => {
 		switch (type) {
 			case 'accept':

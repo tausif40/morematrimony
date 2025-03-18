@@ -84,9 +84,9 @@ const App = () => {
   const isConnected = useSelector((state) => state.socket.isConnected);
 
   useEffect(() => {
-    console.log("is Connected - ", isConnected);
-    console.log("userId-", userId);
-    console.log("agentId-", agentId);
+    // console.log("is Connected - ", isConnected);
+    // console.log("userId-", userId);
+    // console.log("agentId-", agentId);
     if (isConnected) {
       socket.emit("logIn", agentId);
     } else {

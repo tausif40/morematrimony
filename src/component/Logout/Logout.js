@@ -17,6 +17,7 @@ const useLogout = () => {
 				toast.success('Logged out successfully.', { id: loadingToast });
 				ClearAllCookies();
 				navigate('/');
+				window.location.reload();
 			}).catch((error) => {
 				console.log(error);
 				toast.error('Failed to log out.', { id: loadingToast });

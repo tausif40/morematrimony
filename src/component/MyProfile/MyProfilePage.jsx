@@ -69,8 +69,8 @@ const MyProfilePage = () => {
 	useEffect(() => {
 		setIsLoading(formData?.loading)
 	}, [ formData?.loading ])
-	// console.log("formData - ", userDetails)
 
+	console.log("formData - ", userData)
 	const handleFormSubmit = (data) => {
 		// console.log("formData Before submit - ", data)
 		// console.log(data);

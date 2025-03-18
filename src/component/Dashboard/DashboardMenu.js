@@ -22,7 +22,7 @@ function DashboardMenu() {
 	const navOption = [
 		{ name: 'Dashboard', path: '/dashboard', icon: AiOutlineDashboard },
 		// { name: 'Matches', path: '/matches', icon: FaPeopleArrows },
-		{ name: 'My Profile', path: '/dashboard/profile-setting', icon: AiOutlineUser },
+		{ name: 'Manage Profile', path: '/dashboard/profile-setting', icon: AiOutlineUser },
 		{ name: 'Accepted', path: '/dashboard/accept-interest', icon: FaUserCheck },
 		{ name: 'Sent', path: '/dashboard/send-interest', icon: BsSend },
 		{ name: 'Received', path: '/dashboard/received-interest', icon: PiClockUser },

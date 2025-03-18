@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { career } from '../../data/MyProfileData';
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
 
 const Career = ({ data, onFormSubmit }) => {
 
@@ -199,7 +200,8 @@ const Career = ({ data, onFormSubmit }) => {
 					{errors.annualIncome && <p className="text-red-500 text-xs">{errors.annualIncome}</p>}
 				</div>
 
-				<div className="col-span-2 flex justify-end mt-4">
+				<div className="col-span-2 flex justify-between items-center mt-4">
+					<p className="text-green-500 text-xs font-semibold mt-1">{careerData !== undefined && <p className='flex items-center gap-1'>Completed <IoCheckmarkDoneOutline size={16} /></p>}</p>
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>Update</button>
 				</div>
 			</form>

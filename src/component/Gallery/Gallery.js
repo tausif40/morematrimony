@@ -6,10 +6,12 @@ import ImageUploader from '../../utils/ui/ImageUploader';
 import { deleteImage } from '../../store/features/images-slice';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import { Tooltip } from 'antd';
 
 function PhotoGallery() {
 	const dispatch = useDispatch();
 	const [ images, setImages ] = useState([]);
+	const [ conformation, setConformation ] = useState(false);
 
 	const profileImages = useSelector((state) => state.userDetails.profileImages);
 	const DpImage = useSelector((state) => state.image.DpImage);
@@ -43,19 +45,23 @@ function PhotoGallery() {
 									/>
 								</PhotoView>
 								<div className="absolute top-1 right-1 flex flex-col space-y-3">
-									<button
-										onClick={() => handelUploadImage(image.agentId, image.image)}
-										className={`bg-black/40 hover:bg-black/70 px-1 py-1 rounded transition-all ${DpImage.loading ? 'text-gray-400 cursor-wait' : 'text-white'}`}
-										disabled={DpImage.loading}
-									>
-										<img src="/assets/img/setProfile.png" alt="" className='w-6' />
-									</button>
-									<button
-										onClick={() => handelDeleteImage(image._id)}
-										className="bg-black/40 hover:bg-black/70 text-white px-1 py-1 rounded transition-all"
-									>
-										<MdDelete size={22} color="#f2432c" />
-									</button>
+									<Tooltip placement="right" title="Set as profile" color="blue">
+										<button
+											onClick={() => handelUploadImage(image.agentId, image.image)}
+											className={`bg-black/40 hover:bg-black/70 px-1 py-1 rounded transition-all ${DpImage.loading ? 'text-gray-400 cursor-wait' : 'text-white'}`}
+											disabled={DpImage.loading}
+										>
+											<img src="/assets/img/setProfile.png" alt="" className='w-6' />
+										</button>
+									</Tooltip>
+									<Tooltip placement="right" title="Delete" color="red">
+										<button
+											onClick={() => handelDeleteImage(image._id)}
+											className="bg-black/40 hover:bg-black/70 text-white px-1 py-1 rounded transition-all"
+										>
+											<MdDelete size={22} color="#f2432c" />
+										</button>
+									</Tooltip>
 								</div>
 							</div>
 						))}

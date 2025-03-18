@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
 
 const EducationInfo = ({ onFormSubmit, data }) => {
 
@@ -13,6 +14,7 @@ const EducationInfo = ({ onFormSubmit, data }) => {
 
 
 	useEffect(() => {
+		console.log("educationInfo-", educationInfo);
 		if (educationInfo) {
 			setFormData({
 				highestEducation: educationInfo?.highestEducation?._id || '',
@@ -146,7 +148,8 @@ const EducationInfo = ({ onFormSubmit, data }) => {
 				</div>
 
 				{/* Submit Button */}
-				<div className="col-span-2 flex justify-end mt-4">
+				<div className="col-span-2 flex justify-between items-center mt-4">
+					<p className="text-green-500 text-xs font-semibold mt-1">{educationInfo !== undefined && <p className='flex items-center gap-1'>Completed <IoCheckmarkDoneOutline size={16} /></p>}</p>
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm" disabled={isLoading}>Update</button>
 				</div>
 			</form >

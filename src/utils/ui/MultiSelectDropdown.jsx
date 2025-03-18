@@ -69,6 +69,7 @@ const MultiSelectDropdown = ({ dataList, savedItems = [], onSelectionChange, fie
 		const handleClickOutside = (event) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
 				setIsDropdownOpen(false);
+				setSearchQuery("");
 			}
 		};
 		document.addEventListener("mousedown", handleClickOutside);

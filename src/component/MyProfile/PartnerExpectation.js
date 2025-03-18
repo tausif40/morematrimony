@@ -8,6 +8,7 @@ import MultiDropdown from '../../utils/ui/MultiDropdown';
 import OptgroupOptionSelect from '../../utils/ui/OptgroupOptionSelect';
 import { getUserDetails } from '../../store/features/userDetails-slice';
 import { useDispatch } from 'react-redux';
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
 
 const PartnerExpectation = ({ data }) => {
 	const dispatch = useDispatch();
@@ -179,6 +180,9 @@ const PartnerExpectation = ({ data }) => {
 			if (!formData.childrenAcceptable) {
 				formErrors.childrenAcceptable = 'Children acceptable is required';
 			}
+		}
+		if (!formData.lookingFor) {
+			formErrors.lookingFor = 'What we are looking for description is required';
 		}
 
 		setErrors(formErrors);
@@ -721,7 +725,7 @@ const PartnerExpectation = ({ data }) => {
 
 				{/* {What we are looking for} */}
 				<div className='col-span-2'>
-					<label className="block font-medium mb-1 mt-1 text-headingGray">What we are looking for</label>
+					<label className="block font-medium mb-1 mt-1 text-headingGray">What we are looking for <span className='text-red-500'>*</span></label>
 					<textarea
 						type="text"
 						rows="4"
@@ -731,10 +735,12 @@ const PartnerExpectation = ({ data }) => {
 						value={formData.lookingFor}
 						onChange={handleChange}
 					></textarea>
+					{errors.lookingFor && <p className="text-red-500 text-xs">{errors.lookingFor}</p>}
 				</div>
 
 				{/* Submit Button */}
-				<div className="col-span-2 flex justify-end mt-4">
+				<div className="col-span-2 flex justify-between items-center mt-4">
+					<p className="text-green-500 text-xs font-semibold mt-1">{partnerExpectation !== undefined && <p className='flex items-center gap-1'>Completed <IoCheckmarkDoneOutline size={16} /></p>}</p>
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm">Update</button>
 				</div>
 

@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 import { personalInformation } from '../../data/MyProfileData';
 import apiClient from '../../lib/apiClient';
 import { indiaId } from '../../data/config';
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
 
 const ResidencyInformation = ({ data, onFormSubmit }) => {
 	const [ stateList, setStateList ] = useState([]);
@@ -287,7 +288,8 @@ const ResidencyInformation = ({ data, onFormSubmit }) => {
 				</div>
 
 				{/* Submit Button */}
-				<div className="col-span-2 flex justify-end mt-4">
+				<div className="col-span-2 flex justify-between items-center mt-4">
+					<p className="text-green-500 text-xs font-semibold mt-1">{residency !== undefined && <p className='flex items-center gap-1'>Completed <IoCheckmarkDoneOutline size={16} /></p>}</p>
 					<button type="submit" className="gradient-btn px-4 py-2 rounded-md text-sm " disabled={isLoading}>Update</button>
 				</div>
 			</form>
