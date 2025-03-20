@@ -83,7 +83,7 @@ const LoginForm = () => {
 			{/* {showEmailOtp && <VerifyEmail email={email} />} */}
 			{showForgotPsd && <ForgotPsd onClose={setShowForgotPsd} />}
 			{/* // <div className="flex items-center justify-center min-h-screen my-10 px-2 md:px-4"> */}
-			<div className="w-80 sm:min-w-[356px] md:min-w-96">
+			<div className="px-6 w-full sm:w-auto sm:px-0 sm:min-w-[356px] md:min-w-96">
 				<div className="px-6 md:px-8 py-6 rounded-lg shadow-md w-full inset-0 bg-black/60 ">
 					<div className='	'>
 						<h2 className="text-[1.375rem] text-center text-gold">MEMBER LOGIN</h2>

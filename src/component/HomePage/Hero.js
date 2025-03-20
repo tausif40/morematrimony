@@ -19,7 +19,7 @@ function Hero() {
 						<p className='text-gray-800 text-3xl md:text-4xl lg:text-5xl font-semibold md:leading-[60px] lg:leading-[60px]'>Every Love Story is <br /> Beautiful</p>
 						<p className='text-hotRed text-3xl md:text-4xl sm:leading-[50px]'>Make Yours <br /> Special</p>
 					</div> */}
-					<div className='mr-0 md:mr-12 lg:mr-28'>
+					<div className='w-full sm:w-auto mr-0 md:mr-12 lg:mr-28'>
 						{!isUserLogin && <LoginForm />}
 					</div>
 				</div>

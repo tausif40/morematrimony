@@ -65,7 +65,7 @@ const EditPopup = ({ field, value, onSave, onCancel }) => (
 	</div>
 );
 
-const CreativeProfilePage = () => {
+const AgentProfile = () => {
 	const dispatch = useDispatch();
 	const [ profileData, setProfileData ] = useState({});
 	const [ editingField, setEditingField ] = useState(null);
@@ -116,8 +116,7 @@ const CreativeProfilePage = () => {
 							icon={<Mail className="w-5 h-5" />}
 							label="Email"
 							value={profileData?.email}
-							isEditable={true}
-							onEdit={() => handleEdit('email')}
+							isEditable={false}
 						/>
 						<ProfileItem
 							icon={<Phone className="w-5 h-5" />}
@@ -165,5 +164,5 @@ const CreativeProfilePage = () => {
 	);
 };
 
-export default CreativeProfilePage;
+export default AgentProfile;
 

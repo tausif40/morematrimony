@@ -19,6 +19,7 @@ import ViewedYou from '../Dashboard/Action/ViewedYou';
 import ReceivedInterest from '../Dashboard/Action/ReceivedInterest';
 import AcceptedInterest from '../Dashboard/Action/AcceptedInterest';
 import Skip from '../Dashboard/Action/Skip';
+import PlanHistory from '../Plans/PlanHistory';
 
 function DashboardLayout() {
 	const location = useLocation();
@@ -81,6 +82,8 @@ function DashboardLayout() {
 				return <Skip />;
 			case '/dashboard/change-password':
 				return <ChangePassword />;
+			case '/dashboard/plan-history':
+				return <PlanHistory />;
 			default:
 				return <PageNotFound2 />;
 		}

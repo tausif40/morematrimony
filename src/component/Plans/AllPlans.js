@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Check, Star, Zap } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import { HiOutlineCalendarDateRange } from "react-icons/hi2";
 
-
-function Plans() {
+function AllPlans() {
 	const [ plans, setPlans ] = useState([])
 	const getPlan = useSelector((state) => state.planSlice.plans);
 	console.log(getPlan?.data?.plans);
@@ -20,21 +20,24 @@ function Plans() {
 				accent: 'text-rose-600',
 				button: 'bg-rose-600 hover:bg-rose-700',
 				icon: 'text-rose-500',
-				border: 'border-rose-200'
+				border: 'border-rose-200',
+				separate: 'bg-rose-400'
 			},
 			{
 				bg: 'bg-cyan-100',
 				accent: 'text-cyan-600',
 				button: 'bg-cyan-600 hover:bg-cyan-700',
 				icon: 'text-cyan-500',
-				border: 'border-cyan-200'
+				border: 'border-cyan-200',
+				separate: 'bg-cyan-400'
 			},
 			{
 				bg: 'bg-amber-100',
 				accent: 'text-amber-600',
 				button: 'bg-amber-600 hover:bg-amber-700',
 				icon: 'text-amber-500',
-				border: 'border-amber-200'
+				border: 'border-amber-200',
+				separate: 'bg-amber-400'
 			}
 		];
 		return schemes[ index % schemes.length ];
@@ -58,49 +61,58 @@ function Plans() {
 						return (
 							<div
 								key={plan._id}
-								className={`relative rounded-3xl overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-1 ${colors.bg} border-2 ${colors.border}`}
+								className={`flex flex-col justify-between relative rounded-3xl overflow-hidden transition-all duration-300 hover:scale-103 hover:-translate-y-1 ${colors.bg} border-2 ${colors.border}`}
 							>
-								{plan.Popular && (
+								{/* {plan.Popular && (
 									<div className="absolute top-0 right-0 left-0 text-center py-2 bg-yellow-400 text-yellow-900 font-semibold text-sm flex items-center justify-center gap-1">
 										<Star className="w-4 h-4" />
 										Most Popular
 										<Star className="w-4 h-4" />
 									</div>
-								)}
-
-								<div className="p-8 pt-4">
-									<div className="h-44 flex items-center justify-center mb-8">
-										<img
-											src={plan.image}
-											alt={plan.name}
-											className="max-h-full w-auto object-contain "
-										/>
+								)} */}
+								<div className="px-6 pt-4">
+									<div className={`flex items-center justify-center mb-4`}>
+										<img src={plan.image} alt={plan.name} className="h-44 w-full object-cover" />
 									</div>
-
-									<h3 className={`text-2xl font-bold mb-2 ${colors.accent}`}>
+									<h3 className={`text-2xl font-bold mb-3 text-center ${colors.accent}`}>
 										{plan.name}
 									</h3>
+									<div className={`w-full h-[1px] mb-4 ${colors.separate}`}></div>
 
-									<div className="mb-6 flex items-baseline gap-1">
-										<span className={`text-4xl font-bold ${colors.accent}`}>
-											BD {plan.price}
-										</span>
-										<span className="text-gray-500">/{plan.duration} {plan.duration === '1' ? 'Month' : 'Months'}</span>
+									<div className="mb-6 flex items-center gap-1">
+										<span className='text-xl font-semibold text-gray-500'>Price - </span>
+										<span className={`text-3xl font-bold ${colors.accent}`}>{plan.price} BD</span>
 									</div>
 
 									<div className="space-y-4 mb-8">
 										<div className="flex items-center gap-3">
 											<div className={`p-1 rounded-full ${colors.bg}`}>
+												<HiOutlineCalendarDateRange className={`w-5 h-5 ${colors.icon}`} />
+											</div>
+											{/* <span className="text-gray-700">View {plan.profileLimit} Mobile Number</span> */}
+											<span className="text-gray-700">Duration {plan.duration} {plan.duration === '1' ? 'Month' : 'Months'}</span>
+										</div>
+
+										<div className="flex items-center gap-3">
+											<div className={`p-1 rounded-full ${colors.bg}`}>
 												<Zap className={`w-5 h-5 ${colors.icon}`} />
 											</div>
-											<span className="text-gray-700">Up to {plan.profileLimit} profiles</span>
+											<span className="text-gray-700">View {plan.profileLimit} Mobile Number</span>
 										</div>
-										<div className="flex items-center gap-3">
+										{plan?.userDescription.map((value, index) => (
+											<div className="flex items-center gap-3">
+												<div className={`p-1 rounded-full ${colors.bg}`}>
+													<Check className={`w-5 h-5 ${colors.icon}`} />
+												</div>
+												<span className="text-gray-700">{value}</span>
+											</div>
+										))}
+										{/* <div className="flex items-center gap-3">
 											<div className={`p-1 rounded-full ${colors.bg}`}>
 												<Check className={`w-5 h-5 ${colors.icon}`} />
 											</div>
 											<span className="text-gray-700">{plan.userDescription}</span>
-										</div>
+										</div> */}
 										{/* <div className="flex items-center gap-3">
 											<div className={`p-1 rounded-full ${colors.bg}`}>
 												<Check className={`w-5 h-5 ${colors.icon}`} />
@@ -108,13 +120,13 @@ function Plans() {
 											<span className="text-gray-700">{plan.adminDescription}</span>
 										</div> */}
 									</div>
-
-									<button
-										className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-colors ${colors.button} shadow-lg`}
-									>
-										Get Started Now
-									</button>
 								</div>
+
+								<button
+									className={`m-3 py-4 px-6 rounded-xl font-semibold text-white transition-colors ${colors.button} shadow-lg`}
+								>
+									Get Started Now
+								</button>
 							</div>
 						);
 					})}
@@ -123,7 +135,7 @@ function Plans() {
 		</div>
 	);
 }
-export default Plans
+export default AllPlans;
 
 
 // import React from 'react'

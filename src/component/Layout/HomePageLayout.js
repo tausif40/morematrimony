@@ -4,7 +4,7 @@ import PremiumMembers from '../HomePage/PremiumMembers';
 import ContactUs from '../Form/ContactUs'
 import GetInTouch from '../HomePage/GetInTouch';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import Plans from '../Plans/Plans';
+import AllPlans from '../Plans/AllPlans';
 
 const HomePageLayout = () => {
 	const navigate = useNavigate()
@@ -23,7 +23,7 @@ const HomePageLayout = () => {
 		<div className="">
 			<Hero />
 			<PremiumMembers />
-			<Plans />
+			<AllPlans />
 			<div className='mt-8'>
 			</div>
 			<div className='bg-[#f6f6f6] grid grid-cols-1 md:grid-cols-2'>

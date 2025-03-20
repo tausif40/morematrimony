@@ -67,7 +67,7 @@ const RegistrationForm = () => {
 		return selectedDate <= minAgeDate;
 	};
 
-	const validateForm = () => {
+	const validateForm = () => {	
 		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		const newErrors = {};
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
@@ -90,14 +90,17 @@ const RegistrationForm = () => {
 		// Validate form fields
 		const newErrors = validateForm();
 		setErrors(newErrors);
+		// if (newErrors) {
+		// 	return;
+		// }
 		// console.log(formData);
 		// console.log(newErrors);
 
-		// if (Object.keys(newErrors).length > 0) {
-		// 	setErrors(newErrors);
-		// 	toast.error('Please correct all highlighted errors!');
-		// 	return;
-		// }
+		if (Object.keys(newErrors).length > 0) {
+			setErrors(newErrors);
+			toast.error('Please correct all highlighted errors!');
+			return;
+		}
 
 		if (formData.password.length !== 0 && formData.password.length < 8) {
 			setErrors((prevErrors) => ({

@@ -18,7 +18,7 @@ import MemberProfileLayout from './component/Layout/MemberProfileLayout';
 import ViewProfileLayout from './component/Layout/ViewProfileLayout';
 import ProfileDetails from './component/ViewProfile/ProfileDetails';
 import MatchesList from './component/Matches/MatchesList';
-import Plans from './component/Plans/Plans';
+import AllPlans from './component/Plans/AllPlans';
 import Help from './component/Help/Help';
 import AgentProfile from './component/AgentProfile/AgentProfile';
 
@@ -130,7 +130,7 @@ const App = () => {
             <Route path="/matches/profile-details/:targetId/:userId" element={<ProfileDetails />} />
           </Route>
 
-          <Route path="/plans" element={<Plans />} />
+          <Route path="/plans" element={<AllPlans />} />
           <Route path="/help" element={<Help />} />
           {!token && <Route path="/reset-password" element={<ResetPassword />} />}
         </Routes>

@@ -15,9 +15,9 @@ const useLogout = () => {
 			await apiClient.post('/auth/logout', logoutToken).then((response) => {
 				console.log(response);
 				toast.success('Logged out successfully.', { id: loadingToast });
-				ClearAllCookies();
-				navigate('/');
+				ClearAllCookies();	
 				window.location.reload();
+				navigate('/');
 			}).catch((error) => {
 				console.log(error);
 				toast.error('Failed to log out.', { id: loadingToast });
