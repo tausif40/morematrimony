@@ -8,7 +8,6 @@ function ForgotPsd({ onClose }) {
 	const dispatch = useDispatch();
 	const [ showModal, setShowModal ] = useState(true);
 	const [ email, setEmail ] = useState('');
-	const [ isOpen, setIsOpen ] = useState(true);
 	const [ isSubmitted, setIsSubmitted ] = useState(false);
 	const [ error, setError ] = useState('');
 	const [ isSending, setIsSending ] = useState(false);
@@ -38,8 +37,6 @@ function ForgotPsd({ onClose }) {
 			setIsSending(false);
 		}
 	};
-
-	if (!isOpen) return null;
 
 	return (
 		<>
@@ -100,7 +97,8 @@ function ForgotPsd({ onClose }) {
 								<span className="font-medium">{email}</span>
 							</p>
 							<button
-								onClick={() => setIsOpen(false)}
+								// onClick={() => setIsOpen(false)}
+								onClick={() => onClose()}
 								className="text-sm text-blue-600 hover:text-blue-800 font-medium"
 							>
 								Close this window

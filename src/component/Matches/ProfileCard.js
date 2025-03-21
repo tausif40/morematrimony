@@ -103,15 +103,15 @@ const ProfileCard = (userData) => {
 		<>
 			<div className="rounded-lg hover:shadow-lg shadow p-3 md:p-4 mb-6 flex flex-col sm:flex-row items-start sm:space-x-6 md:space-x-8 bg-white">
 				<div className="box flex-shrink-0 flex items-center justify-center relative w-full sm:w-auto rounded-md overflow-hidden">
+					<span className="text-4xl text-gray-400 z-20">
+						{newUser && <div className="ribbon"><span>New Join</span></div>}
+					</span>
 					<div className="absolute inset-0 bg-cover"
 						style={{ backgroundImage: `url(${img})`, filter: `blur(16px)` }} >
 					</div>
 					<div className="absolute inset-0 rounded-xl"></div>
 					<Link to={`/matches/profile-details/${targetId}/${userId}`} className="relative z-10">
-						<div className='relative z-10 border rounded-md overflow-hidden'>
-							<span className="text-4xl text-gray-400">
-								{newUser && <div className="ribbon"><span>New Join</span></div>}
-							</span>
+						<div className='relative z-10 rounded-md overflow-hidden'>
 							<img src={img === undefined ? gender === 'male' ? male : female : img} alt="img" className="object-contain sm:object-cover w-full h-96 sm:w-64 sm:h-64 mix-blend-multiply contrast-100" />
 						</div>
 					</Link>

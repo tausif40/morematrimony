@@ -12,7 +12,8 @@ const ResetPassword = () => {
 	const dispatch = useDispatch();
 	const [ password, setPassword ] = useState("");
 	const [ confirmPassword, setConfirmPassword ] = useState("");
-	const [ message, setMessage ] = useState("");
+	const [ psdError, setPsdError ] = useState("");
+	const [ psdCofError, setConfPsdError ] = useState("");
 	const [ token, setToken ] = useState("");
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ resetSuccess, setResetSuccess ] = useState(false);
@@ -29,14 +30,14 @@ const ResetPassword = () => {
 		e.preventDefault();
 
 		if (!password) {
-			setMessage("Please enter Password")
+			setPsdError("Please enter Password")
 			return;
 		} else if (password.length < 8) {
-			setMessage("Password at least 8 character!")
+			setPsdError("Password at least 8 character!")
 			toast.error("Password min 8 character!")
 			return;
 		} else if (password !== confirmPassword) {
-			setMessage("Passwords does not match!");
+			setConfPsdError("Passwords does not match!");
 			toast.error('Passwords does not match!')
 			return;
 		}
@@ -49,12 +50,13 @@ const ResetPassword = () => {
 					console.log(response);
 					if (response?.payload?.code === 401) {
 						setIsLoading(false)
+						setConfPsdError('This URL is expire! Forgot password again');
 						toast('This URL is expire', { icon: '⚠️' });
 						return;
 					}
 					setResetSuccess(true)
 					setIsLoading(false)
-					setMessage(response?.payload?.msg || "Password reset successful!");
+					setConfPsdError(response?.payload?.msg || "Password reset successful!");
 				}).catch((error) => {
 					setIsLoading(false)
 					console.log(error);
@@ -62,7 +64,7 @@ const ResetPassword = () => {
 
 		} catch (error) {
 			setIsLoading(false)
-			setMessage(error.response?.data?.message || "An error occurred");
+			setConfPsdError(error?.response?.data?.message || "An error occurred");
 		}
 	};
 
@@ -75,26 +77,30 @@ const ResetPassword = () => {
 			<section className="min-h-screen bg-gray-100">
 				<div className="flex justify-center pt-14 mx-1">
 					<div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-						<h2 className="text-2xl font-semibold mb-4 text-center text-black">Reset Password</h2>
+						<h2 className="text-2xl font-semibold mb-4 text-center text-black">Reset Your Password</h2>
 
 						<form onSubmit={handleResetPassword} className="">
+							{/* <label htmlFor="" className="text-sm text-black">Enter new password</label> */}
 							<input
 								type="password"
 								placeholder="New password"
 								value={password}
-								onChange={(e) => { setPassword(e.target.value); setMessage('') }}
-								required
+								onChange={(e) => { setPassword(e.target.value); setPsdError('') }}
 								className="input-field"
 							/>
-							<input
-								type="password"
-								placeholder="Confirm new password"
-								value={confirmPassword}
-								onChange={(e) => { setConfirmPassword(e.target.value); setMessage('') }}
-								required
-								className="input-field mt-4"
-							/>
-							{message && <p className="text-red-500 text-xs mt-1">{message}</p>}
+							{psdError && <p className="text-red-500 text-xs mt-1">{psdError}</p>}
+							<div className="mt-4">
+								{/* <label htmlFor="" className="text-sm text-black">Confirm new password</label> */}
+								<input
+									type="password"
+									placeholder="Confirm new password"
+									value={confirmPassword}
+									onChange={(e) => { setConfirmPassword(e.target.value); setConfPsdError('') }}
+									className="input-field mt-4"
+								/>
+							</div>
+							{/* {message && <p className="text-red-500 text-xs mt-1">{message}</p>} */}
+							{psdCofError && <p className="text-red-500 text-xs mt-1">{psdCofError}</p>}
 							<button
 								type="submit"
 								className={`w-full mt-6 text-white py-2 rounded-md ${resetSuccess ? 'bg-green-500' : 'gradient-btn'}`}
