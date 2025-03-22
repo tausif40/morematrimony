@@ -30,7 +30,7 @@ const NotificationPopup = ({ isOpen, onClose }) => {
 				<div className="space-y-4 ">
 					{notifications?.socialAction?.map((notification) => (
 						<Link to={`/matches/profile-details/${notification?.userId}/${userId}`} className="relative z-10 w-full" key={notification._id}>
-							<div className="flex items-start space-x-4 p-4 bg-white hover:bg-slate-50 rounded-lg transition border border-gray-100"	>
+							<div className="flex items-start space-x-4 p-4 bg-white hover:bg-slate-50 rounded-lg transition border border-gray-100" onClick={onClose}	>
 								<div className="flex-shrink-0">
 									<img
 										src={notification?.userDetails?.profileImage ? notification?.userDetails?.profileImage : notification?.userDetails?.basicInformation?.gender === 'male' ? male : female}
