@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { maritalStatus, personalInformation, PhysicalAttributesData, socialBackground } from '../../data/MyProfileData';
 import apiClient from '../../lib/apiClient';
 import { filter, getMatchedProfile } from '../../store/features/matchProfile-slice';
+import { LuFilter } from "react-icons/lu";
 
-export default function MatchesList() {
+export default function MatchesList({ onFilterClick }) {
 	const dispatch = useDispatch()
 	const [ activePopup, setActivePopup ] = useState(null);
 	const [ searchTerm, setSearchTerm ] = useState('');
@@ -88,9 +89,9 @@ export default function MatchesList() {
 
 	useEffect(() => {
 		// dispatch(setFilterApplied(selectedFilters));
-		if (!clearFilter) dispatch(getMatchedProfile(selectedFilters));
+		dispatch(getMatchedProfile(selectedFilters));
 		// console.log("clearFilter - ", clearFilter);
-	}, [ dispatch, selectedFilters ])
+	}, [ dispatch, selectedFilters, clearFilter ])
 
 	const fetchState = async (countryId) => {
 		setStateLoading(true)
@@ -234,16 +235,22 @@ export default function MatchesList() {
 		<>
 			<FilterMenu />
 			<div className="flex bg-gray-100">
-				<FilterSidebar
-					selectedFilters={selectedFilters}
-					setActivePopup={setActivePopup}
-					clearCategoryFilters={clearCategoryFilters}
-					getSelectedName={getSelectedName}
-					clearAllFilters={clearAllFilters}
-					removeFilter={removeFilter}
-					getCategoryDisplayName={getCategoryDisplayName}
-				/>
-				<div className="flex-1 mt-6 px-10 pb-10 pt-2">
+				<div className='hidden lg:block'>
+					<FilterSidebar
+						selectedFilters={selectedFilters}
+						setActivePopup={setActivePopup}
+						clearCategoryFilters={clearCategoryFilters}
+						getSelectedName={getSelectedName}
+						clearAllFilters={clearAllFilters}
+						removeFilter={removeFilter}
+						getCategoryDisplayName={getCategoryDisplayName}
+					/>
+				</div>
+
+				<div className="flex-1 mt-2 px-3 sm:px-6 md:px-10 pb-10 pt-3 lg:pt-6">
+					<div className='lg:hidden mb-3 w-full bg-gray-300 text-center px-4 py-2 rounded-md cursor-pointer' onClick={() => { console.log("click on filter button - ", onFilterClick) }}>
+						<h4 className="text-black flex items-center gap-2"><LuFilter /> <p>Filters</p></h4>
+					</div>
 					<MainContent />
 				</div>
 				{activePopup && (

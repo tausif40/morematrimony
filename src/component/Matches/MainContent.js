@@ -6,6 +6,7 @@ import { getMatchedProfile, setFilter } from '../../store/features/matchProfile-
 import ProfileCard from './ProfileCard';
 import { Pagination } from 'antd';
 import '../../CSS/antPagination.css'
+import { useRef } from 'react';
 
 const MainContent = () => {
 	const dispatch = useDispatch();
@@ -19,39 +20,49 @@ const MainContent = () => {
 		totalUsers: '',
 	});
 
-	useEffect(() => {
-		dispatch(getMatchedProfile(filterList));
-	}, [ filterList, dispatch ]);
-
-	useEffect(() => {
-		const user = matchedProfile?.data?.user;
-
-		if (user) {
-			setFilterList((prevFilter) => {
-				// Avoid updating state if values are unchanged
-				if (
-					prevFilter.limit === (filterData?.limit || user.limit) &&
-					prevFilter.page === (filterData?.page || user.page) &&
-					prevFilter.totalUsers === (filterData?.totalUsers || user.totalCount)
-				) {
-					return prevFilter; // No change, prevent re-render
-				}
-
-				return {
-					...prevFilter,
-					limit: filterData?.limit || user.limit,
-					page: filterData?.page || user.page,
-					totalUsers: filterData?.totalUsers || user.totalCount,
-				};
-			});
-		}
-	}, [ matchedProfile, filterData ]);
-
-
+	// useEffect(() => {
+	// 	dispatch(getMatchedProfile(filterList));
+	// }, [ filterList, dispatch ]);
 
 	useEffect(() => {
 		dispatch(setFilter(filterList));
 	}, [ filterList, dispatch ]);
+
+	const prevFilterListRef = useRef(filterList);
+
+	useEffect(() => {
+		const user = matchedProfile?.data?.user;
+		console.log("filter List - ", filterList);
+		console.log("filter Data - ", filterData);
+		console.log("user - ", user);
+		// if (user && (filterList.limit !== user.limit || filterList.page !== user.page || filterList.totalUsers !== user.totalCount)
+		// ) {
+		// 	setFilterList((prevFilter) => ({
+		// 		// Avoid updating state if values are unchanged
+		// 		...prevFilter,
+		// 		limit: filterData?.limit,
+		// 		page: filterData?.page || user.page,
+		// 		totalUsers: filterData?.totalUsers || user.totalCount,
+		// 	}));
+		// }
+		setFilterList((prevFilter) => ({
+			...prevFilter,
+			limit: filterData?.limit || user?.limit,
+			page: filterData?.page || user?.page,
+			totalUsers: filterData?.totalUsers || user?.totalCount,
+		}));
+	}, [ matchedProfile ]);
+
+	useEffect(() => {
+		if (JSON.stringify(prevFilterListRef.current) !== JSON.stringify(filterList)) {
+			dispatch(getMatchedProfile(filterList));
+			prevFilterListRef.current = filterList;
+		}
+	}, [ filterList, dispatch ]);
+
+	// useEffect(() => {
+	// 	dispatch(setFilter(filterList));
+	// }, [ filterList, dispatch ]);
 
 	const mapProfiles = (profiles) => {
 		return profiles?.map((profile) => {
@@ -92,7 +103,7 @@ const MainContent = () => {
 
 	return (
 		<>
-			<div className="mx-auto md:px-4">
+			<div className="mx-auto">
 				{loading && (
 					<>
 						{[ ...Array(5) ].map((_, index) => (
@@ -106,9 +117,16 @@ const MainContent = () => {
 				))}
 				{!loading && profiles.length === 0 && <div className='flex justify-center'><img src="/assets/img/resultNotFound.png" alt="" className='w-1/2' /></div>}
 				<div className='flex justify-center pt-6 mb-4'>
-					<Pagination align="center" defaultCurrent={filterData?.page} total={filterList?.totalUsers} pageSize={filterList?.limit || 10}
+					<Pagination align="center"
+						defaultCurrent={filterData?.page}
+						total={filterList?.totalUsers}
+						pageSize={filterList?.limit || 10}
 						onChange={(page) => {
 							setFilterList((prev) => ({ ...prev, page: page }));
+						}}
+						showQuickJumper
+						onShowSizeChange={(current, size) => {
+							setFilterList((prevFilter) => ({ ...prevFilter, limit: size, page: current }));
 						}}
 					/>
 				</div>

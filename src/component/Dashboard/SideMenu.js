@@ -3,6 +3,7 @@ import ProfileOption from './ProfileOption';
 import { IoCloseCircleOutline } from "react-icons/io5";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
+	console.log('SideMenu isOpen:', isOpen);
 	return (
 		<div
 			className={`fixed top-0 left-0 w-64 h-full text-white transition-transform duration-300 overflow-y-auto ${isOpen ? '' : '-translate-x-full'

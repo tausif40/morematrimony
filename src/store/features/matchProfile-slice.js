@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../../lib/apiClient';
 import { getQueryParams } from '../../utils/utils';
+// import getMatchedProfile
 
 export const getUserDetailsById = createAsyncThunk('data/getUserDetailsById', async (ids, { rejectWithValue }) => {
 	try {
@@ -41,15 +42,14 @@ const matchProfileSlice = createSlice({
 		matchedProfile: { data: [], loading: false, error: null },
 		matchedProfileGallery: { data: [], loading: false, error: null },
 		userDetailsById: { data: [], loading: false, error: null },
-		filter: { page: '', limit: '', totalUsers: '' }
+		filter: { page: 1, limit: '', totalUsers: '' }
 	},
 	reducers: {
 		setFilter(state, action) {
-			// eslint-disable-next-line no-unused-expressions, no-sequences
-			state.filter.limit = action.payload.limit,
-				state.filter.page = action.payload.page,
-				state.filter.totalUsers = action.payload.totalUsers
-			// console.log(action);
+			state.filter.limit = action.payload.limit;
+			state.filter.page = action.payload.page;
+			state.filter.totalUsers = action.payload.totalUsers;
+			getMatchedProfile(state.filter);
 		}
 	},
 	extraReducers: (builder) => {

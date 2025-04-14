@@ -36,7 +36,7 @@ function FilterMenu() {
 	return (
 		<>
 			< section className='bg-white w-full'>
-				<div className='flex flex-wrap justify-center text-headingGray space-x-2 pt-4 pb-2 border-b mt-4 '>
+				<div className='flex flex-wrap justify-center text-headingGray space-x-2 pb-2 border-b mt-4 '>
 					{navOption.map((value, index) => (
 						<Link Link to={`/matches?${value.key}`} key={index} >
 							{/* {console.log(value.key, "==", filterKey)} */}

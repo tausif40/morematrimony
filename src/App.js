@@ -31,6 +31,7 @@ import ResetPassword from './component/Form/ResetPassword';
 import VerifyEmail from './component/Form/VerifyEmail';
 import { getPlan } from './store/features/plan-slice';
 import socket from './lib/socket';
+import { getMatchedProfile } from './store/features/matchProfile-slice';
 
 const App = () => {
   const location = useLocation()
@@ -75,6 +76,7 @@ const App = () => {
     dispatch(fetchReligions());
     dispatch(getPlan());
     dispatch(getNotification(userId));
+    dispatch(getMatchedProfile());
   }, [ dispatch, token, userId ]);
 
   // useEffect(() => {
