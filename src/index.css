@@ -334,3 +334,20 @@ textarea:focus,
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #94A3B8;
 }
+
+
+/* Prevent filename overflow */
+.custom-upload .ant-upload-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.custom-upload .ant-upload-list-item-name {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+}

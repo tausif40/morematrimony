@@ -32,6 +32,7 @@ import VerifyEmail from './component/Form/VerifyEmail';
 import { getPlan } from './store/features/plan-slice';
 import socket from './lib/socket';
 import { getMatchedProfile } from './store/features/matchProfile-slice';
+import Payment from './component/Payment/Payment';
 
 const App = () => {
   const location = useLocation()
@@ -130,6 +131,7 @@ const App = () => {
             ))}
             <Route path="/member-profile" element={<MemberProfileLayout />} />
             <Route path="/matches/profile-details/:targetId/:userId" element={<ProfileDetails />} />
+            <Route path="/plan/payment" element={<Payment />} />
           </Route>
 
           <Route path="/plans" element={<AllPlans />} />

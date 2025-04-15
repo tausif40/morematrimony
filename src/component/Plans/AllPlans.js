@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Check, Star, Zap } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import { Check, Star, Zap } from 'lucide-react';
 import { HiOutlineCalendarDateRange } from "react-icons/hi2";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function AllPlans() {
+	const navigate = useNavigate();
+
 	const [ plans, setPlans ] = useState([])
 	const getPlan = useSelector((state) => state.planSlice.plans);
 	console.log(getPlan?.data?.plans);
@@ -12,6 +15,10 @@ function AllPlans() {
 		const activePlans = getPlan?.data?.plans?.filter(plan => plan.isActive);
 		setPlans(activePlans)
 	}, [ getPlan ])
+
+	const handelPlan = (selectedPlan) => {
+		navigate('/plan/payment', { state: selectedPlan });
+	}
 
 	const getColorScheme = (index) => {
 		const schemes = [
@@ -47,7 +54,7 @@ function AllPlans() {
 		<div className="py-16 px-4">
 			<div className="max-w-7xl mx-auto">
 				<div className="text-center mb-16">
-					<h2 className="text-4xl font-bold text-gray-900 mb-4">
+					<h2 className="text-4xl font-bold text-textGray mb-4">
 						Choose Your Perfect Plan
 					</h2>
 					<p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -121,9 +128,8 @@ function AllPlans() {
 										</div> */}
 									</div>
 								</div>
-
-								<button
-									className={`m-3 py-4 px-6 rounded-xl font-semibold text-white transition-colors ${colors.button} shadow-lg`}
+								<button className={`m-3 py-4 px-6 rounded-xl font-semibold text-white transition-colors ${colors.button} shadow-lg`}
+									onClick={() => handelPlan(plan)}
 								>
 									Get Started Now
 								</button>
