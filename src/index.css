@@ -351,3 +351,9 @@ textarea:focus,
   display: inline-block;
   vertical-align: middle;
 }
+
+@media screen and (max-width: 380px) {
+	.custom-upload .ant-upload-list-item-name {
+  max-width: 180px;
+  }
+}
