@@ -18,7 +18,9 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 		// const decryptedData = decryptData(response.data.encryptedData)
 		// return decryptedData;
 		console.log(response);
-		if (response?.status === 201 || response?.status === 200) return response.data;
+		if (response?.status === 201 || response?.status === 200) {
+			return response.data
+		};
 
 	} catch (error) {
 		console.log(error);

@@ -1,111 +1,99 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ImageUp } from 'lucide-react';
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, message, Upload } from 'antd';
+import toast from 'react-hot-toast';
+import { MdOutlineContentCopy } from "react-icons/md"
+import apiClient from '../../lib/apiClient';
 
 const Payment = () => {
 	const location = useLocation();
+	const emailRef = useRef(null);
+	const ibanRef = useRef(null);
 	const selectedPlan = location.state;
+	const [ selectedFileName, setSelectedFileName ] = useState(null);
+	const [ isUploading, setIsUploading ] = useState(false);
 	const [ uploaded, setUploaded ] = useState(false);
+	const [ formData, setFormData ] = useState([]);
 
-	// useEffect(() => {
-	// 	window.scrollTo({
-	// 		top: 0,
-	// 		left: 0,
-	// 		behavior: "instant",
-	// 	});
-	// }, [ location ]);
-
-	const props = {
-		name: 'file',
-		action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-		headers: {
-			authorization: 'authorization-text',
-		},
-		onChange(info) {
-			if (info.file.status !== 'uploading') {
-				console.log(info.file, info.fileList);
-			}
-			if (info.file.status === 'done') {
-				message.success(`${info.file.name} file uploaded successfully`);
-			} else if (info.file.status === 'error') {
-				message.error(`${info.file.name} file upload failed.`);
-			}
-		},
+	const copyText = (ref) => {
+		const text = ref.current?.innerText;
+		if (text) {
+			const range = document.createRange();
+			range.selectNode(ref.current);
+			const selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
+			navigator.clipboard.writeText(text);
+			toast.success("Copied!");
+		}
 	};
 
-	const handlePaymentSuccess = () => {
-		setUploaded(true);
-		alert("Payment successful! Admin will be notified for approval.");
+
+	useEffect(() => {
+		window.scrollTo({
+			top: 0,
+			left: 0,
+			behavior: "instant",
+		});
+	}, [ location ]);
+
+
+	const handleFileChange = (e) => {
+		if (e.target.files && e.target.files.length > 0) {
+			setSelectedFileName(e.target.files[ 0 ].name);
+			const file = e.target.files[ 0 ];
+			const newFormData = new FormData();
+			newFormData.append('file', file);
+			setFormData(newFormData);
+			setUploaded(false);
+		}
+	};
+
+	const handleUploadClick = async () => {
+		if (!formData || !selectedPlan?._id) return;
+		formData.append('planId', selectedPlan._id);
+		setIsUploading(true);
+		try {
+			const response = await apiClient.post('/transaction', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			console.log(response);
+
+		} catch (err) {
+			console.log(err);
+		} finally {
+			setIsUploading(false);
+			setUploaded(true);
+		}
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-100 p-4 md:p-8 flex flex-col gap-10 items-center justify-center">
-			<div className="text-center max-w-3xl mb-10">
+		<div className="shadow-inner bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-100 p-4 md:p-8 flex flex-col gap-5 items-center justify-center">
+			<div className="text-center max-w-3xl">
 				<h1 className="text-3xl md:text-4xl font-bold md:font-extrabold text-textGray mb-4">Upgrade to Premium</h1>
 				<p className="text-md md:text-lg text-gray-700">Get access to exclusive features, content, and priority support with our Premium Membership. Scan the QR code to pay and get started instantly!</p>
 			</div>
 
-			<div className="flex flex-col md:flex-row gap-20 w-full max-w-5xl">
-				{/* Plan Details */}
-				{/* <div className="bg-emerald-50 border border-emerald-200 shadow-md rounded-3xl w-full md:w-1/2">
-					<div
-						key={selectedPlan._id}
-						className={`flex flex-col justify-between relative rounded-3xl overflow-hidden`}
-					>
 
-						<div className="absolute top-0 right-0 left-0 text-center py-2 bg-yellow-300 text-yellow-700 font-semibold text-sm flex items-center justify-center gap-1">
-							<Star className="w-4 h-4" />
-							Your Selected Plan
-							<Star className="w-4 h-4" />
-						</div>
+			{/* office details*/}
+			<div className="mb-2 bg-white shadow-md rounded-3xl p-4 max-w-5xl w-full text-center">
+				<h4 className='text-2xl font-bold text-primary mb-2 '>You can reach out on this address</h4>
+				<div className='mt-4 flex items-center gap-2 justify-center'>
+					<h3 className="text-2xl font-semibold text-gold flex items-center gap-2">
+						<img src="/assets/img/address.png" alt="" className='w-5' /> <span>Address : </span>
+					</h3>
+					<p className="text-gray-600">city, state, country, pin-1234
+						{/* <span className="font-semibold text-purple-600">+91-98765-43210</span> */}
+					</p>
+				</div>
+			</div>
 
-
-						<div className="px-6 pt-12">
-							<div className={`flex items-center justify-center mb-4`}>
-								<img src={selectedPlan.image} alt={selectedPlan.name} className="h-44 w-full object-cover" />
-							</div>
-							<h3 className={`text-2xl font-bold mb-3 text-center text-emerald-600`}>
-								{selectedPlan.name}
-							</h3>
-							<div className={`w-full h-[1px] mb-4`}></div>
-
-							<div className="mb-6 flex items-center gap-1">
-								<span className='text-xl font-semibold text-gray-500'>Price - </span>
-								<span className={`text-3xl font-bold text-emerald-600`}>{selectedPlan.price} BD</span>
-							</div>
-
-							<div className="space-y-4 mb-8">
-								<div className="flex items-center gap-3">
-									<div className={`p-1 rounded-full`}>
-										<HiOutlineCalendarDateRange className={`w-5 h-5 text-emerald-600`} />
-									</div>
-									<span className="text-gray-700">Duration {selectedPlan.duration} {selectedPlan.duration === '1' ? 'Month' : 'Months'}</span>
-								</div>
-
-								<div className="flex items-center gap-3">
-									<div className={`p-1 rounded-full`}>
-										<Zap className={`w-5 h-5 text-emerald-600`} />
-									</div>
-									<span className="text-gray-700">View {selectedPlan.profileLimit} Mobile Number</span>
-								</div>
-								{selectedPlan?.userDescription.map((value, index) => (
-									<div className="flex items-center gap-3">
-										<div className={`p-1 rounded-full`}>
-											<Check className={`w-5 h-5 text-emerald-600`} />
-										</div>
-										<span className="text-gray-700">{value}</span>
-									</div>
-								))}
-
-							</div>
-						</div>
-					</div>
-				</div> */}
+			<div className="flex justify-between md:flex-row gap-20 w-full max-w-5xl mt-6">
 
 				{/* order summery */}
-				<div className="w-md mx-auto h-[350px] bg-white rounded-2xl shadow-md py-6 px-8">
+				<div className="w-md h-[350px] bg-white rounded-2xl shadow-md py-6 px-8">
 					<h2 className="text-xl font-semibold mb-4">Order Summary</h2>
 					<hr className="mb-4" />
 
@@ -140,44 +128,66 @@ const Payment = () => {
 
 				{/* Scanner */}
 				<div className="bg-white shadow-md rounded-2xl p-3 sm:p-4 md:p-8 pb-10 w-full md:w-1/2">
-					<h2 className="text-3xl font-extrabold mb-4 text-indigo-700">📷 Scan to Pay</h2>
+					<h2 className="text-3xl font-extrabold mb-4 text-indigo-700 flex items-center gap-3">
+						<img src="/assets/img/scan.png" alt="" className='w-6' /> <span>Scan to Pay</span>
+					</h2>
+
 					<div className="mt-6 p-4 flex items-center justify-center text-gray-500">
 						{/* Replace this with actual QR scanner component */}
 						{/* [ QR Scanner Placeholder ] */}
 
 						<img src="https://res.cloudinary.com/drfni1iqf/image/upload/v1744717196/Temp/qr-code_tw6lnk.png" alt="QR Code" className='w-56 rounded-2xl border-2 border-dashed border-gray-400 p-4 bg-gradient-to-br from-gray-100 to-gray-300 ' />
 					</div>
-					<p className='mt-4 text-center text-xl font-semibold'>You have to pay <span className='text-emerald-500'>{selectedPlan.price} BD</span></p>
 
 
-					{/* <div className="flex justify-center items-center gap-3 mt-6">
-						<label
-							htmlFor="upload"
-							className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-md cursor-pointer transition"
-						>
-							<ImageUp size={20} />
-							<span>Upload Payment Screenshot</span>
-						</label>
-						<input
-							type="file"
-							id="upload"
-							className="hidden"
-							accept="image/*"
-						/>
-					</div> */}
-					<div className='m-auto flex flex-col justify-center items-center gap-2 mt-6 border py-2 w-full sm:w-80 rounded-md bg-blue-100'>
-						<p className='min-w-max'>Upload Payment Screenshot</p>
-						<Upload {...props} className='py-2 custom-upload flex flex-col justify-center items-center'>
-							<Button icon={<UploadOutlined />}>Click to Upload</Button>
-						</Upload>
+					<div className='flex justify-center text-gray-700'>
+						<p className='flex justify-center items-center mt-2 border border-emerald-500 rounded-md px-4 py-1'><span className='font-semibold'>IBAN :&nbsp;</span>
+							<span ref={ibanRef}>JKDKSDKLSLKDSLDLSLDSL</span>
+							<button
+								onClick={() => copyText(ibanRef)}
+								className="inline-flex items-center justify-center rounded-md pl-2 text-gray-500 hover:text-gray-900"
+								aria-label="Copy email address"
+							>
+								<MdOutlineContentCopy />
+							</button>
+						</p>
+					</div>
+
+					<p className='mt-6 text-center text-xl font-semibold'>You have to pay <span className='text-emerald-500'>{selectedPlan.price} BD</span></p>
+					<div className="flex flex-col gap-4 mt-6">
+						<div className="flex justify-center items-center gap-3">
+							<label
+								htmlFor="upload"
+								className="flex items-center gap-2 bg-blue-400 hover:bg-blue-500 text-white py-2 px-4 rounded-md cursor-pointer transition"
+							>
+								<ImageUp size={20} />
+								<span>Upload Payment Screenshot</span>
+							</label>
+							<input
+								type="file"
+								id="upload"
+								className="hidden"
+								accept="image/*"
+								onChange={handleFileChange}
+								disabled={isUploading}
+							/>
+							<button
+								onClick={handleUploadClick}
+								className={`${uploaded ? 'bg-green-500' : 'bg-primary'}  text-white py-2 px-6 rounded-md transition`} disabled={isUploading}
+							>
+								{isUploading ? "Uploading..." : uploaded ? "Uploaded" : "Submit"}
+							</button>
+						</div>
+						{selectedFileName && (
+							<p className="text-sm text-gray-700"><span className='font-medium'>Selected file: </span><span className='text-primary '>{selectedFileName}</span> </p>
+						)}
 					</div>
 
 					{uploaded && (
-						<div className="mt-8 p-4 bg-red-50 text-red-600 rounded-lg text-center">
-							Note - Contact our admin directly via call or WhatsApp after payment: +91-98765-43210
+						<div className="mt-8 p-4 bg-red-50 text-gray-600 rounded-lg text-center">
+							<span className='text-red-600'>Note - </span> <span className='text-sm'>Contact our admin directly via call or WhatsApp after upload image: +91-98765-43210</span>
 						</div>
 					)}
-
 				</div>
 
 			</div>
@@ -188,6 +198,16 @@ const Payment = () => {
 				<p className="text-gray-600 mb-4">All transactions are secured with end-to-end encryption. <br /> If you face any issues, our support team is here to help you 24/7.</p>
 				<h3 className="text-2xl font-bold text-indigo-700 mb-2">📞 Need Help?</h3>
 				<p className="text-gray-600">Contact us directly through call or WhatsApp : <span className="font-semibold text-purple-600">+91-98765-43210</span></p>
+				<p className="text-gray-600 flex items-center justify-center">send us an email at :&nbsp;
+					<span className="font-semibold text-purple-600" ref={emailRef}>contact@bookapp.com</span>
+					<button
+						onClick={() => copyText(emailRef)}
+						className="inline-flex items-center justify-center rounded-md p-2 text-gray-500 hover:text-gray-900"
+						aria-label="Copy email address"
+					>
+						<MdOutlineContentCopy />
+					</button>
+				</p>
 			</div>
 		</div>
 	);

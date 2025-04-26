@@ -3,20 +3,27 @@ import { useSelector } from 'react-redux';
 import { Check, Star, Zap } from 'lucide-react';
 import { HiOutlineCalendarDateRange } from "react-icons/hi2";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import AccessRestricted from '../pages/AccessRestricted';
+import Modal from '../Modal/Modal';
 
 function AllPlans() {
 	const navigate = useNavigate();
-
 	const [ plans, setPlans ] = useState([])
+	const [ showLoginPopup, setShowLoginPopup ] = useState(false)
 	const getPlan = useSelector((state) => state.planSlice.plans);
-	console.log(getPlan?.data?.plans);
-
+	const token = Cookies.get('access_token');
+	const isAuthenticated = token ? true : false;
 	useEffect(() => {
 		const activePlans = getPlan?.data?.plans?.filter(plan => plan.isActive);
 		setPlans(activePlans)
 	}, [ getPlan ])
 
 	const handelPlan = (selectedPlan) => {
+		if (!isAuthenticated) {
+			setShowLoginPopup(true)
+			return;
+		}
 		navigate('/plan/payment', { state: selectedPlan });
 	}
 
@@ -51,94 +58,98 @@ function AllPlans() {
 	};
 
 	return (
-		<div className="py-16 px-4">
-			<div className="max-w-7xl mx-auto">
-				<div className="text-center mb-16">
-					<h2 className="text-4xl font-bold text-textGray mb-4">
-						Choose Your Perfect Plan
-					</h2>
-					<p className="text-lg text-gray-600 max-w-2xl mx-auto">
-						Select the plan that best fits your needs and start your journey today
-					</p>
-				</div>
+		<>
+			{showLoginPopup && <AccessRestricted onClose={setShowLoginPopup} />}
+			{/* <AccessRestricted /> */}
+			<div className="py-16 px-4">
+				<div className="max-w-7xl mx-auto">
+					<div className="text-center mb-16">
+						<h2 className="text-4xl font-bold text-textGray mb-4">
+							Choose Your Perfect Plan
+						</h2>
+						<p className="text-lg text-gray-600 max-w-2xl mx-auto">
+							Select the plan that best fits your needs and start your journey today
+						</p>
+					</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-					{plans?.map((plan, index) => {
-						const colors = getColorScheme(index);
-						return (
-							<div
-								key={plan._id}
-								className={`flex flex-col justify-between relative rounded-3xl overflow-hidden transition-all duration-300 hover:scale-103 hover:-translate-y-1 ${colors.bg} border-2 ${colors.border}`}
-							>
-								{/* {plan.Popular && (
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{plans?.map((plan, index) => {
+							const colors = getColorScheme(index);
+							return (
+								<div
+									key={plan._id}
+									className={`flex flex-col justify-between relative rounded-3xl overflow-hidden transition-all duration-300 hover:scale-103 hover:-translate-y-1 ${colors.bg} border-2 ${colors.border}`}
+								>
+									{/* {plan.Popular && (
 									<div className="absolute top-0 right-0 left-0 text-center py-2 bg-yellow-400 text-yellow-900 font-semibold text-sm flex items-center justify-center gap-1">
 										<Star className="w-4 h-4" />
 										Most Popular
 										<Star className="w-4 h-4" />
 									</div>
 								)} */}
-								<div className="px-6 pt-4">
-									<div className={`flex items-center justify-center mb-4`}>
-										<img src={plan.image} alt={plan.name} className="h-44 w-full object-cover" />
-									</div>
-									<h3 className={`text-2xl font-bold mb-3 text-center ${colors.accent}`}>
-										{plan.name}
-									</h3>
-									<div className={`w-full h-[1px] mb-4 ${colors.separate}`}></div>
+									<div className="px-6 pt-4">
+										<div className={`flex items-center justify-center mb-4`}>
+											<img src={plan.image} alt={plan.name} className="h-44 w-full object-cover" />
+										</div>
+										<h3 className={`text-2xl font-bold mb-3 text-center ${colors.accent}`}>
+											{plan.name}
+										</h3>
+										<div className={`w-full h-[1px] mb-4 ${colors.separate}`}></div>
 
-									<div className="mb-6 flex items-center gap-1">
-										<span className='text-xl font-semibold text-gray-500'>Price - </span>
-										<span className={`text-3xl font-bold ${colors.accent}`}>{plan.price} BD</span>
-									</div>
-
-									<div className="space-y-4 mb-8">
-										<div className="flex items-center gap-3">
-											<div className={`p-1 rounded-full ${colors.bg}`}>
-												<HiOutlineCalendarDateRange className={`w-5 h-5 ${colors.icon}`} />
-											</div>
-											{/* <span className="text-gray-700">View {plan.profileLimit} Mobile Number</span> */}
-											<span className="text-gray-700">Duration {plan.duration} {plan.duration === '1' ? 'Month' : 'Months'}</span>
+										<div className="mb-6 flex items-center gap-1">
+											<span className='text-xl font-semibold text-gray-500'>Price - </span>
+											<span className={`text-3xl font-bold ${colors.accent}`}>{plan.price} BD</span>
 										</div>
 
-										<div className="flex items-center gap-3">
-											<div className={`p-1 rounded-full ${colors.bg}`}>
-												<Zap className={`w-5 h-5 ${colors.icon}`} />
-											</div>
-											<span className="text-gray-700">View {plan.profileLimit} Mobile Number</span>
-										</div>
-										{plan?.userDescription.map((value, index) => (
+										<div className="space-y-4 mb-8">
 											<div className="flex items-center gap-3">
 												<div className={`p-1 rounded-full ${colors.bg}`}>
-													<Check className={`w-5 h-5 ${colors.icon}`} />
+													<HiOutlineCalendarDateRange className={`w-5 h-5 ${colors.icon}`} />
 												</div>
-												<span className="text-gray-700">{value}</span>
+												{/* <span className="text-gray-700">View {plan.profileLimit} Mobile Number</span> */}
+												<span className="text-gray-700">Duration {plan.duration} {plan.duration === '1' ? 'Month' : 'Months'}</span>
 											</div>
-										))}
-										{/* <div className="flex items-center gap-3">
+
+											<div className="flex items-center gap-3">
+												<div className={`p-1 rounded-full ${colors.bg}`}>
+													<Zap className={`w-5 h-5 ${colors.icon}`} />
+												</div>
+												<span className="text-gray-700">View {plan.profileLimit} Mobile Number</span>
+											</div>
+											{plan?.userDescription.map((value, index) => (
+												<div className="flex items-center gap-3">
+													<div className={`p-1 rounded-full ${colors.bg}`}>
+														<Check className={`w-5 h-5 ${colors.icon}`} />
+													</div>
+													<span className="text-gray-700">{value}</span>
+												</div>
+											))}
+											{/* <div className="flex items-center gap-3">
 											<div className={`p-1 rounded-full ${colors.bg}`}>
 												<Check className={`w-5 h-5 ${colors.icon}`} />
 											</div>
 											<span className="text-gray-700">{plan.userDescription}</span>
 										</div> */}
-										{/* <div className="flex items-center gap-3">
+											{/* <div className="flex items-center gap-3">
 											<div className={`p-1 rounded-full ${colors.bg}`}>
 												<Check className={`w-5 h-5 ${colors.icon}`} />
 											</div>
 											<span className="text-gray-700">{plan.adminDescription}</span>
 										</div> */}
+										</div>
 									</div>
+									<button className={`m-3 py-4 px-6 rounded-xl font-semibold text-white transition-colors ${colors.button} shadow-lg`}
+										onClick={() => handelPlan(plan)}
+									>
+										Get Started Now
+									</button>
 								</div>
-								<button className={`m-3 py-4 px-6 rounded-xl font-semibold text-white transition-colors ${colors.button} shadow-lg`}
-									onClick={() => handelPlan(plan)}
-								>
-									Get Started Now
-								</button>
-							</div>
-						);
-					})}
+							);
+						})}
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 export default AllPlans;

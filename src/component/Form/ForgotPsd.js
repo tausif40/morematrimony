@@ -93,8 +93,8 @@ function ForgotPsd({ onClose }) {
 							</div>
 							<h2 className="text-2xl font-semibold text-gray-900 mb-2">Check your email</h2>
 							<p className="text-gray-600 mb-6">
-								We've sent a password reset link to<br />
-								<span className="font-medium">{email}</span>
+								If <span className="font-medium text-red-400">{email}</span> exists in our database. We've sent a password reset link.<br />
+
 							</p>
 							<button
 								// onClick={() => setIsOpen(false)}

@@ -13,7 +13,7 @@ export default function FilterSidebar({
 }) {
 	// console.log("selectedFilters-", selectedFilters);
 	return (
-		<div className="w-72 bg-white shadow-lg sticky top-0 h-screen overflow-y-auto">
+		<div className="w-64 sm:w-72 bg-white shadow-lg sticky top-0 h-screen overflow-y-auto">
 			<div className="px-6 py-3 flex justify-between items-center mb-4 bg-gray-200">
 				<h4 className="text-black flex items-center gap-2"><LuFilter /> <p>Filters</p></h4>
 				<button onClick={clearAllFilters} className="	text-gray-500">

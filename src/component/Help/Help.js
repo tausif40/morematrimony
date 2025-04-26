@@ -49,32 +49,18 @@ function AccordionItem({ number, isOpen, onClick, question, answer }) {
 }
 
 export default function Help() {
-	const faqs = [
-		{
-			question: "Is there a free trial available for the paid options?",
-			answer: ""
-		},
-		{
-			question: "Is it possible to subscribe to the app annually?",
-			answer: ""
-		},
-		{
-			question: "Is it possible to cancel my subscription?",
-			answer: "Yes, of course. Just send us an email at contact@bookapp.com, and you will get a refund within 1-2 business days.",
-		},
-		{
-			question: "How do I change my account email?",
-			answer: ""
-		},
-		{
-			question: "How can I change my payment method?",
-			answer: ""
-		},
-	];
 
+	const emailRef = useRef(null);
 	const copyEmail = () => {
-		navigator.clipboard.writeText('contact@bookapp.com');
-		toast.success("copied");
+		const emailText = emailRef.current?.innerText;
+		if (emailText) {
+			const range = document.createRange();
+			range.selectNode(emailRef.current);
+			const selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
+			toast.success("copied");
+		}
 	};
 
 	return (
@@ -107,7 +93,7 @@ export default function Help() {
 						Don't hesitate to send us an email at:
 					</p>
 					<div className="max-w-min m-auto px-2 mt-4 flex items-center justify-center gap-2 border bg-gray-50 rounded-md">
-						<span className="text-sm text-black">contact@morematrimony.com</span>
+						<span className="text-sm text-black" ref={emailRef}>contact@morematrimony.com</span>
 						<button
 							onClick={copyEmail}
 							className="inline-flex items-center justify-center rounded-md p-2 text-gray-500 hover:text-gray-900"
@@ -121,3 +107,26 @@ export default function Help() {
 		</div>
 	);
 }
+
+const faqs = [
+	{
+		question: "Is there a free trial available for the paid options?",
+		answer: ""
+	},
+	{
+		question: "Is it possible to subscribe to the app annually?",
+		answer: ""
+	},
+	{
+		question: "Is it possible to cancel my subscription?",
+		answer: "Yes, of course. Just send us an email at contact@bookapp.com, and you will get a refund within 1-2 business days.",
+	},
+	{
+		question: "How do I change my account email?",
+		answer: ""
+	},
+	{
+		question: "How can I change my payment method?",
+		answer: ""
+	},
+];

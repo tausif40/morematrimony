@@ -67,7 +67,7 @@ const RegistrationForm = () => {
 		return selectedDate <= minAgeDate;
 	};
 
-	const validateForm = () => {	
+	const validateForm = () => {
 		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		const newErrors = {};
 		if (!formData.onBehalf) newErrors.onBehalf = 'On Behalf is required';
@@ -159,7 +159,11 @@ const RegistrationForm = () => {
 
 	const handleLoginPage = () => {
 		navigate('/')
-		window.scrollTo(0, 0)
+		window.scrollTo({
+			top: 0,
+			left: 0,
+			behavior: "instant",
+		});
 	}
 
 	const getInputClasses = (fieldName) => `flex justify-between items-center mt-1 p-3 w-full rounded-md border border-gray-300 shadow-sm outline-none focus:ring-gold focus:border-gold text-sm ${errors[ fieldName ] && 'border-red-500'}`;

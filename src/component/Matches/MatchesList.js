@@ -9,7 +9,7 @@ import apiClient from '../../lib/apiClient';
 import { filter, getMatchedProfile } from '../../store/features/matchProfile-slice';
 import { LuFilter } from "react-icons/lu";
 
-export default function MatchesList({ onFilterClick }) {
+export default function MatchesList() {
 	const dispatch = useDispatch()
 	const [ activePopup, setActivePopup ] = useState(null);
 	const [ searchTerm, setSearchTerm ] = useState('');
@@ -21,7 +21,7 @@ export default function MatchesList({ onFilterClick }) {
 	const [ cityLoading, setCityLoading ] = useState(false)
 	const [ clearFilter, setClearFilter ] = useState(false)
 	// const [ selectedFilters, setSelectedFilters ] = useState(filters || {});
-	const [ filterCount, setFilterCount ] = useState(0);
+	const [ sideFilter, setSideFilter ] = useState(false);
 
 	const countries = useSelector((state) => state.profileData.countries);
 	const indianState = useSelector((state) => state.profileData.indiaStates);
@@ -231,6 +231,9 @@ export default function MatchesList({ onFilterClick }) {
 		return filterCategoryDisplayNames[ category ] || category;
 	};
 
+	const filterToggle = () => {
+		setSideFilter((pre) => !pre)
+	}
 	return (
 		<>
 			<FilterMenu />
@@ -247,12 +250,31 @@ export default function MatchesList({ onFilterClick }) {
 					/>
 				</div>
 
+				{/* Toggle Button for Mobile */}
 				<div className="flex-1 mt-2 px-3 sm:px-6 md:px-10 pb-10 pt-3 lg:pt-6">
-					<div className='lg:hidden mb-3 w-full bg-gray-300 text-center px-4 py-2 rounded-md cursor-pointer' onClick={() => { console.log("click on filter button - ", onFilterClick) }}>
+					<div className="lg:hidden mb-3 w-full bg-gray-300 text-center px-4 py-2 rounded-md cursor-pointer" onClick={filterToggle}>
 						<h4 className="text-black flex items-center gap-2"><LuFilter /> <p>Filters</p></h4>
 					</div>
+					{sideFilter && (
+						<div className="fixed h-full w-full bg-black/50 top-0 left-0 z-20 overflow-y-auto"
+							onClick={filterToggle}
+						>
+							<div className="h-full w-64 sm:w-72 z-30" onClick={(e) => e.stopPropagation()}>
+								<FilterSidebar
+									selectedFilters={selectedFilters}
+									setActivePopup={setActivePopup}
+									clearCategoryFilters={clearCategoryFilters}
+									getSelectedName={getSelectedName}
+									clearAllFilters={clearAllFilters}
+									removeFilter={removeFilter}
+									getCategoryDisplayName={getCategoryDisplayName}
+								/>
+							</div>
+						</div>
+					)}
 					<MainContent />
 				</div>
+
 				{activePopup && (
 					<FilterPopup
 						activePopup={activePopup}

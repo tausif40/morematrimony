@@ -56,6 +56,7 @@ const NavMain = () => {
 	}
 
 	const VisitorNav = [
+		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },
 	]
 	const navOption = [

@@ -173,11 +173,11 @@ const ProfileDetails = () => {
 			motherOccupation: data?.familyDetails?.motherOccupation || "_",
 			brothers: data?.familyDetails?.brothers || "_",
 			sisters: data?.familyDetails?.sisters || "_",
-			...(data?.familyDetails?.sisters !== 0 && {
+			...(data?.familyDetails?.brothers !== "0" && {
 				brothersMarried: data?.familyDetails?.brothersMarried || "_",
 			}),
-			...(data?.familyDetails?.brothers !== 0 && {
-				sistersMarried: data?.familyDetails?.brothersMarried || "_",
+			...(data?.familyDetails?.sisters !== "0" && {
+				sistersMarried: data?.familyDetails?.sistersMarried || "_",
 			}),
 		},
 		partnerExpectation: {
@@ -204,7 +204,7 @@ const ProfileDetails = () => {
 
 	// console.log("data - ", data)
 	// console.log("partnerExpectation - ", data?.partnerExpectation)
-	// console.log("profileData - ", profileData?.partnerExpectation)
+	console.log("profileData - ", data)
 
 	return (
 		<>

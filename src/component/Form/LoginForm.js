@@ -43,13 +43,18 @@ const LoginForm = () => {
 		}
 
 		try {
-			const loadingToast = toast.loading('Logging...');
 			setIsLoading(true);
+			const loadingToast = toast.loading('Logging...');
 			dispatch(loginUser({ email, password }))
 				.then((response) => {
 					setIsLoading(false);
 					const data = response?.payload
 					console.log(response);
+
+					if (data?.code === 403) {
+						toast.error(("Incorrect email or password"), { id: loadingToast })
+					}
+
 					if (data?.user?.isVerifiedEmail === false) {
 						navigate('/verify-email', { state: { email: email }, });
 						toast(("Please Verify Email"), { icon: '⚠️' });
