@@ -12,9 +12,11 @@ const IntroductionForm = ({ data, onFormSubmit }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (introduction.trim() === '') {
+		console.log("introduction- ", introduction);
+		// if (introduction === undefined) return;
+		if (introduction === undefined || introduction?.trim() === '') {
 			setError('Introduction is required')
-			toast.error('Please correct all highlighted errors!');
+			toast.error('Introduction is required');
 			return;
 		}
 		onFormSubmit({ introduction });
@@ -46,7 +48,7 @@ const IntroductionForm = ({ data, onFormSubmit }) => {
 					</div>
 				</div>
 				<div className="flex justify-between items-center">
-					<p className="text-green-500 text-xs font-semibold mt-1">{introductionData !== undefined && <p className='flex items-center gap-1'>Completed <IoCheckmarkDoneOutline size={16}/></p>}</p>
+					<p className="text-green-500 text-xs font-semibold mt-1">{introductionData !== undefined && <p className='flex items-center gap-1'>Completed <IoCheckmarkDoneOutline size={16} /></p>}</p>
 					<button
 						disabled={isLoading}
 						type="submit"

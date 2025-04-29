@@ -32,9 +32,9 @@ const MainContent = () => {
 
 	useEffect(() => {
 		const user = matchedProfile?.data?.user;
-		console.log("filter List - ", filterList);
-		console.log("filter Data - ", filterData);
-		console.log("user - ", user);
+		// console.log("filter List - ", filterList);
+		// console.log("filter Data - ", filterData);
+		// console.log("user - ", user);
 		// if (user && (filterList.limit !== user.limit || filterList.page !== user.page || filterList.totalUsers !== user.totalCount)
 		// ) {
 		// 	setFilterList((prevFilter) => ({
