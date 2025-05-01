@@ -6,8 +6,6 @@ import Cookies from 'js-cookie';
 import { loginUser } from '../../store/auth/auth-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import ForgotPsd from './ForgotPsd';
-import VerificationForm from './VerificationForm';
-import VerifyEmail from './VerifyEmail';
 
 
 const LoginForm = () => {
