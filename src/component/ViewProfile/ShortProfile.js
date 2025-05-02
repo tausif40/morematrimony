@@ -14,11 +14,14 @@ import { acceptSkipInterest, setUserAction } from '../../store/features/userActi
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '../Modal/Modal';
 import '../../CSS/LoaderAnimation.css'
+import { Phone } from 'lucide-react';
+import { FaPhoneAlt } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 function ShortProfile({ data }) {
 	const hideSideMenu = useRef(null);
 	const dispatch = useDispatch();
-
+	const navigate = useNavigate();
 	const [ interestReceived, setInterestReceived ] = useState(false);
 	const [ showModal, setShowModal ] = useState(false);
 	const [ IsSendInterest, setIsSendInterest ] = useState(false);
@@ -124,7 +127,7 @@ function ShortProfile({ data }) {
 						</div>
 
 						<div className='px-4 md:px-0 flex flex-col justify-between w-full'>
-							<div className='relative text-black pb-4'>
+							<div className='relative text-black pb-6'>
 								<div className='absolute top-0 right-1 cursor-pointer z-10 flex flex-row-reverse'>
 									<div onClick={showSideMenu}>
 										<PiDotsThreeOutlineVerticalFill size={20} />
@@ -171,8 +174,15 @@ function ShortProfile({ data }) {
 							</div>
 
 							<div>
+								<div className='flex justify-end items-end md:items-center flex-col md:flex-row mb-3 gap-2 md:gap-3 lg:gap-6'>
+									{/* <p className='mr-2 md:mr-0'><span className='font-medium'>Mob: </span></p> */}
+									<div className='flex item-center justify-center gap-2 border-2 border-emerald-400 rounded-full px-4 py-1 bg-emerald-50 hover:bg-emerald-100 transition cursor-pointer text-emerald-800 min-w-max'>
+										<p><FaPhoneAlt size={16} color='blue' className='mt-1' /></p>
+										{acceptReq ? <a href={`tel:${data?.mobile}`}>{data?.mobile}</a> : <p onClick={() => navigate('/plans')}>Contact Details</p>}
+									</div>
+								</div>
 								<hr />
-								<div className='flex items-center justify-end gap-4 md:gap-6 mt-4'>
+								<div className='flex items-center justify-end gap-4 md:gap-6 mt-2'>
 									{interestReceived ?
 										<div className='flex items-center gap-4 md:gap-6 mt-4'>
 											{!acceptReq && <button className={`text-sm flex items-center border-2 border-gray-400 rounded-full px-6 py-2 cursor-pointer ${loadingSkip ? 'bg-gray-200 text-gray-500' : 'text-gray-600'}`} disabled={loadingSkip || isSkipped}

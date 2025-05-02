@@ -20,6 +20,7 @@ const Payment = () => {
 	const [ uploaded, setUploaded ] = useState(false);
 	const [ formData, setFormData ] = useState([]);
 	const [ showPopup, setShowPopup ] = useState(false);
+	const [ error, setError ] = useState('');
 
 	const copyText = (ref) => {
 		const text = ref.current?.innerText;
@@ -51,12 +52,14 @@ const Payment = () => {
 			newFormData.append('file', file);
 			setFormData(newFormData);
 			setUploaded(false);
+			setError('')
 		}
 	};
 
 	const handleUploadClick = async () => {
 		if (formData.length === 0 || !selectedPlan?._id) {
 			toast.error("Please Upload Payment Screenshot", { icon: '⚠️', })
+			setError("Please Upload Payment Screenshot")
 			return;
 		};
 		formData.append('planId', selectedPlan._id);
@@ -234,21 +237,24 @@ const Payment = () => {
 
 						<p className='mt-6 text-center text-xl font-semibold'>You have to pay <span className='text-emerald-500'>{selectedPlan.price} BD</span></p>
 						<div className="flex flex-col gap-4 mt-6">
-							<div className="flex justify-center flex-col sm:flex-row items-center gap-3">
-								<label
-									htmlFor="upload"
-									className="flex items-center gap-2 bg-blue-400 hover:bg-blue-500 text-white py-2 px-4 rounded-md cursor-pointer transition"
-								>
-									<ImageUp size={20} />
-									<span className=''>Upload Payment Screenshot</span>
-								</label>
-								<input
-									type="file"
-									id="upload"
-									className="hidden"
-									onChange={handleFileChange}
-									disabled={isUploading}
-								/>
+							<div className="flex justify-center flex-col sm:flex-row md:flex-col lg:flex-row items-center sm:items-start md:items-center lg:items-start gap-3">
+								<div>
+									<label
+										htmlFor="upload"
+										className="flex items-center gap-2 bg-blue-400 hover:bg-blue-500 text-white py-2 px-4 rounded-md cursor-pointer transition"
+									>
+										<ImageUp size={20} />
+										<span className=''>Upload Payment Screenshot</span>
+									</label>
+									<input
+										type="file"
+										id="upload"
+										className="hidden"
+										onChange={handleFileChange}
+										disabled={isUploading}
+									/>
+									<p className='text-sm text-red-500 mt-1 mb-2'>{error}</p>
+								</div>
 								<button
 									onClick={handleUploadClick}
 									className={`${uploaded ? 'bg-green-500' : 'bg-primary'}  text-white py-2 px-6 rounded-md transition`} disabled={isUploading}
@@ -256,8 +262,9 @@ const Payment = () => {
 									{isUploading ? "Uploading..." : uploaded ? "Uploaded" : "Submit"}
 								</button>
 							</div>
+
 							{!uploaded && selectedFileName && (
-								<p className="text-sm text-gray-700"><span className='font-medium'>Selected file: </span><span className='text-primary '>{selectedFileName}</span> </p>
+								<p className="text-sm text-gray-700"><span className='font-medium text-green-600 '>Selected file: </span><span className='text-gray-500 '>{selectedFileName}</span> </p>
 							)}
 						</div>
 

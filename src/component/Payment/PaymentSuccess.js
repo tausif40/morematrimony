@@ -17,7 +17,9 @@ function PaymentSuccess({ onClose }) {
 						</div>
 						<h2 className="text-2xl font-semibold text-gray-900 mb-4">Payment Successful</h2>
 						<p className="text-gray-600 mb-6">
-							Your payment details is submitted,<br /> admin will take action within few hours.<br /> Reach out at <a href="tel:+973 3452 7615" className='text-primary font-medium'>+973 3452 7615</a><br />
+							Your payment details is submitted,<br /> admin will take action within few hours.<br />
+							Email at : <a href="mailto:more@morematrimony.com" className='text-primary font-medium'>more@morematrimony.com</a><br />
+							Reach out at <a href="tel:+973 3452 7615" className='text-primary font-medium'>+973 3452 7615</a><br />
 						</p>
 						<button
 							onClick={() => onClose()}

@@ -56,6 +56,7 @@ const ProfileDetails = () => {
 		firstName: data?.basicInformation?.firstName || "",
 		lastName: data?.basicInformation?.lastName || "",
 		dateOfBirth: data?.basicInformation?.dateOfBirth || "",
+		mobile: data?.agentId?.mobile || "",
 		religion: data?.spiritualAndSocialBackground?.religion?.name || "",
 		caste: data?.spiritualAndSocialBackground?.caste?.name || "",
 		subCaste: data?.spiritualAndSocialBackground?.subCaste || "",
@@ -209,7 +210,7 @@ const ProfileDetails = () => {
 	return (
 		<>
 
-			<div className='px-3 sm:px-6 md:px-10 lg:px-24 xl:px-36 pt-12 pb-16'>
+			<div className='px-3 sm:px-6 md:px-10 lg:px-16 xl:px-36 pt-12 pb-16'>
 				<div className=''>
 					{loading ? < ShortProfileDetailsSkeleton /> :
 						<ShortProfile data={shortProfileData} />

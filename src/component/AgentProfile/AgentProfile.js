@@ -74,7 +74,7 @@ const AgentProfile = () => {
 	const dpImage = useSelector((state) => state.userDetails.dpImage.img);
 
 	// setProfileData(agentDetails)
-	console.log(agentDetails);
+	console.log("agentDetails-", agentDetails);
 
 	useEffect(() => {
 		dispatch(getAgentDetails());
