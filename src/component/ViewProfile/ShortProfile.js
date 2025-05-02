@@ -137,7 +137,6 @@ function ShortProfile({ data }) {
 											<p className='hover:bg-slate-100 py-[6px] pl-4 pr-12 text-sm' onClick={() => handelSideMenu('report')}>Report</p>
 										</div>
 									}
-
 								</div>
 								<p className='font-medium text-xl md:text-2xl capitalize'>{data?.firstName} {premium ? <span>{data?.lastName}</span> : <span className='blur-sm select-none'>xxxxxxx</span>}</p>
 								<div className='flex items-center text-sm font-light text-headingGray py-2 tracking-wide'>
@@ -194,7 +193,6 @@ function ShortProfile({ data }) {
 													{isShortlist ? <><IoMdStar />&nbsp;<p className=''>Shortlisted</p></> : <><IoIosStarOutline />&nbsp;<p className='border-text'>ShortList</p></>}
 												</span>
 											</button>}
-
 
 											{acceptReq ?
 												<button className={`text-sm flex items-center border gap-2 rounded-full px-4 py-2 text-white bg-green-500 border-green-500`}

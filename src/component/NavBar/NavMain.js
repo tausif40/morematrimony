@@ -68,13 +68,13 @@ const NavMain = () => {
 	]
 	const ProfileOption = [
 		{ path: '/member-profile', name: 'My Profile', icon: FaRegUser },
-		{ path: '/my-profile', name: 'Setting', icon: RiUserSettingsLine },
+		{ path: '/setting', name: 'Setting', icon: RiUserSettingsLine },
 		{ path: '/help', name: 'Help', icon: IoIosHelpCircleOutline },
 	]
 	const MobileProfileOption = [
 		{ path: '/dashboard', name: 'Dashboard', icon: AiOutlineDashboard },
 		{ path: '/member-profile', name: 'My Profile', icon: FaRegUser },
-		{ path: '/my-profile', name: 'Setting', icon: RiUserSettingsLine },
+		{ path: '/setting', name: 'Setting', icon: RiUserSettingsLine },
 		{ path: '/matches', name: 'Matches', icon: PiUsers },
 		{ path: '/plans', name: 'Plans', icon: PiCurrencyDollarDuotone },
 		{ path: '/contact-us', name: 'Contact', icon: TbMessage2Question },

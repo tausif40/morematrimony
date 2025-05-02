@@ -124,7 +124,7 @@ const App = () => {
           {/* <Route path="/dashboard" element={<DashboardLayout />} /> */}
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/my-profile" element={<AgentProfile />} />
+            <Route path="/setting" element={<AgentProfile />} />
             <Route path="/matches" element={<MatchesList />} />
             {dashboardPaths.map((path) => (
               <Route key={path} path={path} element={<DashboardLayout />} />

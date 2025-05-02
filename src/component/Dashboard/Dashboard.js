@@ -1,6 +1,6 @@
 import React from 'react'
 // import { useLocation } from 'react-router-dom'
-import PremiumPlans from '../PremiumPlans/PremiumPlans'
+import CurrentPlans from './CurrentPlans'
 
 function Dashboard() {
 	// const location = useLocation();
@@ -29,7 +29,7 @@ function Dashboard() {
 				<div className='py-12 flex sm:flex-row flex-col-reverse gap-6'>
 					<div className='border shadow-sm rounded-md w-full sm:w-1/2'>
 						<p className='px-6 py-2 border-b text-headingGray text-lg'>Current Plan</p>
-						<PremiumPlans />
+						<CurrentPlans />
 					</div>
 					<div className='space-y-6 w-full sm:w-1/2'>
 						{/* <div className='border w-full m-auto flex flex-col items-center pb-8 rounded-md shadow-sm'>
