@@ -1,4 +1,4 @@
-# 💍 More Matrimony
+# More Matrimony
 
 **More Matrimony** is a modern and user-friendly matrimonial website designed to help individuals find their perfect life partner. Built with a focus on clean UI, responsiveness, and ease of use, this platform offers essential features for profile creation, browsing, and connection.
 
@@ -42,8 +42,3 @@ npm install
 npm run dev
 
 ```
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
